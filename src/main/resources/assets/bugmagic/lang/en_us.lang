@@ -1,2 +1,5 @@
 # Tabs
 itemGroup.tab_bugmagic_general=BugMagic: General
+
+# Items
+item.bugmagic:wand_generic.name=Wand of the Bugoneer
