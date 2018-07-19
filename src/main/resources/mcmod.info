@@ -1,0 +1,18 @@
+[
+  {
+    "modid": "bugmagic",
+    "name": "BugMagic",
+    "description": "A magic mod for Minecraft Forge, focused around bugs.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "https://github.com/DeflatedPickle/BugMagic",
+    "updateUrl": "",
+    "authorList": [
+      "DeflatedPickle"
+    ],
+    "credits": "Mojang, Minecraft, Forge, FML",
+    "logoFile": "logo.png",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
