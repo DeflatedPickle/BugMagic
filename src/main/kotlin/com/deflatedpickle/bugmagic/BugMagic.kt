@@ -1,6 +1,7 @@
 package com.deflatedpickle.bugmagic
 
 import com.deflatedpickle.bugmagic.proxy.CommonProxy
+import com.deflatedpickle.picklelib.PickleLib
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.Mod.EventHandler
 import net.minecraftforge.fml.common.SidedProxy
@@ -18,6 +19,7 @@ object BugMagic {
     @EventHandler
     fun preInit(event: FMLPreInitializationEvent) {
         log.info("Starting preInit.")
+        PickleLib.setNameSpace(Reference.MOD_ID)
         proxy!!.preInit(event)
         log.info("Finished preInit.")
     }

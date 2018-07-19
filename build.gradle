@@ -33,11 +33,16 @@ minecraft {
 repositories {
     jcenter()
     maven { url = "http://maven.shadowfacts.net/" }
+    maven {
+        name = "CurseForge"
+        url = "https://minecraft.curseforge.com/api/maven/"
+    }
     mavenCentral()
 }
 
 dependencies {
     compile "net.shadowfacts:Forgelin:1.6.0"
+    deobfCompile "picklelib:picklelib:1.12.2:1.0.15.2"
 }
 
 processResources {
