@@ -7,8 +7,12 @@ import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.util.text.TextFormatting
 import net.minecraftforge.client.event.RenderGameOverlayEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
+import net.minecraftforge.fml.common.gameevent.TickEvent
+import net.minecraftforge.fml.relauncher.Side
 
 class ForgeEventHandler {
+    var tickCounter = 0
+
     @SubscribeEvent
     fun onRenderGameOverlayEvent(event: RenderGameOverlayEvent) {
         val player = Minecraft.getMinecraft().player
@@ -25,6 +29,20 @@ class ForgeEventHandler {
             Minecraft.getMinecraft().fontRenderer.drawString("%sBug Power: %d/%d".format(TextFormatting.WHITE,
                     BugUtil.getBugPower(player), playerData.getInteger("maxBugPower")),
                     5, ScaledResolution(Minecraft.getMinecraft()).scaledHeight - 15, ScaledResolution(Minecraft.getMinecraft()).scaledWidth - 5)
+        }
+    }
+
+    @SubscribeEvent
+    fun onPlayerTickEvent(event: TickEvent.PlayerTickEvent) {
+        if (event.phase == TickEvent.Phase.START) {
+            if (event.side == Side.CLIENT) {
+                tickCounter++
+
+                if (tickCounter == 60) {
+                    tickCounter = 0
+                    BugUtil.giveCappedBugPower(event.player, 1)
+                }
+            }
         }
     }
 }

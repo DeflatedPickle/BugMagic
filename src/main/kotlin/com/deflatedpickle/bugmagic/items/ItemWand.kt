@@ -26,7 +26,7 @@ class ItemWand(name: String, stackSize: Int, creativeTab: CreativeTabs) : ItemBa
             }
             else {
                 // TODO: Check the kind of wizard before casting the spell
-                BugUtil.useBugPower(playerIn, 5)
+                BugUtil.useCappedBugPower(playerIn, 5)
             }
         }
 

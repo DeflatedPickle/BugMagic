@@ -27,4 +27,20 @@ object BugUtil {
     fun useBugPower(playerIn: EntityPlayer, amount: Int?) {
         setBugPower(playerIn, getBugPower(playerIn) - amount!!)
     }
+
+    fun useCappedBugPower(playerIn: EntityPlayer, amount: Int?) {
+        if (getBugPower(playerIn) - amount!! >= 0) {
+            useBugPower(playerIn, amount)
+        }
+    }
+
+    fun giveBugPower(playerIn: EntityPlayer, amount: Int?) {
+        setBugPower(playerIn, getBugPower(playerIn) + amount!!)
+    }
+
+    fun giveCappedBugPower(playerIn: EntityPlayer, amount: Int?) {
+        if (getBugPower(playerIn) + amount!! <= 500) {
+            giveBugPower(playerIn, amount)
+        }
+    }
 }
