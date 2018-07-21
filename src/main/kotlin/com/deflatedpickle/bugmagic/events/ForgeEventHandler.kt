@@ -23,11 +23,12 @@ class ForgeEventHandler {
         if (!playerData.getBoolean("bugmagic.initPlayer")) {
             playerData.setBoolean("bugmagic.initPlayer", true)
             BugUtil.setBugPower(player, 500)
+            BugUtil.setMaxBugPower(player, 500)
         }
 
         if (player.heldItemMainhand.item is ItemWand) {
             Minecraft.getMinecraft().fontRenderer.drawString("%sBug Power: %d/%d".format(TextFormatting.WHITE,
-                    BugUtil.getBugPower(player), playerData.getInteger("maxBugPower")),
+                    BugUtil.getBugPower(player), BugUtil.getMaxBugPower(player)),
                     5, ScaledResolution(Minecraft.getMinecraft()).scaledHeight - 15, ScaledResolution(Minecraft.getMinecraft()).scaledWidth - 5)
         }
     }

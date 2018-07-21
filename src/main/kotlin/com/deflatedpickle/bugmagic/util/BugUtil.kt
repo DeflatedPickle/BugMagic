@@ -6,6 +6,22 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
 
 object BugUtil {
+    fun getMaxBugPower(playerIn: EntityPlayer): Int {
+        return playerIn.entityData.getInteger("bugMaxPower")
+    }
+
+    fun setMaxBugPower(playerIn: EntityPlayer?, amount: Int?) {
+        // Server
+        if (playerIn is EntityPlayerMP) {
+            playerIn.entityData.setInteger("bugMaxPower", getBugPower(playerIn))
+            BugMagic.networkWrapper.sendTo(PacketBugPower(playerIn), playerIn)
+        }
+        // Client
+        else {
+            playerIn?.entityData?.setInteger("bugMaxPower", amount!!)
+        }
+    }
+
     fun getBugPower(playerIn: EntityPlayer): Int {
         return playerIn.entityData.getInteger("bugPower")
     }
@@ -39,7 +55,7 @@ object BugUtil {
     }
 
     fun giveCappedBugPower(playerIn: EntityPlayer, amount: Int?) {
-        if (getBugPower(playerIn) + amount!! <= 500) {
+        if (getBugPower(playerIn) + amount!! <= getMaxBugPower(playerIn)) {
             giveBugPower(playerIn, amount)
         }
     }
