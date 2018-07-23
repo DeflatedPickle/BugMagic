@@ -41,7 +41,7 @@ class ForgeEventHandler {
             // Sets the initial Bug Power value
             if (!playerData.getBoolean("bugmagic.initPlayer")) {
                 playerData.setBoolean("bugmagic.initPlayer", true)
-                BugUtil.setBugPower(player, 50)
+                BugUtil.setBugPower(player, 30)
                 BugUtil.setMaxBugPower(player, RandomUtils.nextInt(40, 80))
             }
         }
@@ -53,7 +53,7 @@ class ForgeEventHandler {
             if (event.side == Side.CLIENT) {
                 tickCounter++
 
-                if (tickCounter == 60) {
+                if (tickCounter == 240) {
                     tickCounter = 0
                     BugUtil.giveCappedBugPower(event.player, 1)
                 }
