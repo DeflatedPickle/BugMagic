@@ -17,19 +17,24 @@ class ItemBugNet(name: String, stackSize: Int, creativeTab: CreativeTabs, val bu
             if (!stack.hasTagCompound()) {
                 stack.tagCompound = NBTTagCompound()
             }
-
-            // TODO: Change this to catch a small portion of the amount of bugs in the biome, based on biome type and size
-            val caughtAmount = (0..3).shuffled().last()
-
             val compound = stack.tagCompound!!
-            val bugAmount = compound.getInteger("bugs")
 
-            if (bugAmount < bugLimit) {
-                if (bugAmount + caughtAmount < bugLimit) {
-                    compound.setInteger("bugs", caughtAmount + bugAmount)
-                }
-                else {
-                    compound.setInteger("bugs", bugLimit)
+            if (playerIn.isSneaking) {
+                compound.setInteger("bugs", 0)
+            }
+            else {
+                // TODO: Change this to catch a small portion of the amount of bugs in the biome, based on biome type and size
+                val caughtAmount = (0..3).shuffled().last()
+
+                val bugAmount = compound.getInteger("bugs")
+
+                if (bugAmount < bugLimit) {
+                    if (bugAmount + caughtAmount < bugLimit) {
+                        compound.setInteger("bugs", caughtAmount + bugAmount)
+                    }
+                    else {
+                        compound.setInteger("bugs", bugLimit)
+                    }
                 }
             }
         }
