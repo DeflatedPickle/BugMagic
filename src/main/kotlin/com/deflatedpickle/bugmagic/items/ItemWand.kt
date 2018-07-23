@@ -3,9 +3,7 @@ package com.deflatedpickle.bugmagic.items
 import com.deflatedpickle.bugmagic.util.BugUtil
 import com.deflatedpickle.picklelib.item.ItemBase
 import net.minecraft.creativetab.CreativeTabs
-import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.item.EnumAction
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ActionResult
@@ -24,10 +22,10 @@ class ItemWand(name: String, stackSize: Int, creativeTab: CreativeTabs) : ItemBa
                     // TODO: Save the spell as an NBT tag
                 }
             }
-            else {
-                // TODO: Check the kind of wizard before casting the spell
-                BugUtil.useCappedBugPower(playerIn, 5)
-            }
+        }
+        else {
+            // TODO: Check the kind of wizard before casting the spell
+            BugUtil.useCappedBugPower(playerIn, 5)
         }
 
         return super.onItemRightClick(worldIn, playerIn, handIn)
