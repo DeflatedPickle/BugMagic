@@ -1,5 +1,6 @@
 package com.deflatedpickle.bugmagic.events
 
+import com.deflatedpickle.bugmagic.BugMagic
 import com.deflatedpickle.bugmagic.items.ItemWand
 import com.deflatedpickle.bugmagic.util.BugUtil
 import net.minecraft.client.Minecraft
@@ -8,6 +9,7 @@ import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.util.text.TextFormatting
+import net.minecraftforge.client.event.MouseEvent
 import net.minecraftforge.client.event.RenderGameOverlayEvent
 import net.minecraftforge.event.entity.EntityJoinWorldEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
@@ -57,6 +59,19 @@ class ForgeEventHandler {
                     tickCounter = 0
                     BugUtil.giveCappedBugPower(event.player, 1)
                 }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    fun onMouseEvent(event: MouseEvent) {
+        val player = BugMagic.proxy?.getPlayer()!!
+
+        if (player.isSneaking) {
+            if (player.heldItemMainhand.item is ItemWand) {
+                (player.heldItemMainhand.item as ItemWand).onMouseEvent()
+
+                event.isCanceled = true
             }
         }
     }
