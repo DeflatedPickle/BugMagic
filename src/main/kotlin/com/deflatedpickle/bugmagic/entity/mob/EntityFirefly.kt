@@ -50,7 +50,8 @@ class EntityFirefly(worldIn: World) : EntityTameable(worldIn), IEntityLightEvent
     }
 
     override fun initEntityAI() {
-        this.tasks.addTask(2, EntityAIFollowOwner(this, 3.0, 0.5f, 50.0f))
+        // this.tasks.addTask(2, EntityAIFollowOwner(this, 3.0, 0.5f, 50.0f))
+        this.tasks.addTask(2, EntityAIModHoverToOwner(this, 0.11f, 1f, 1f))
     }
 
     override fun applyEntityAttributes() {
