@@ -4,6 +4,6 @@ import net.ilexiconn.llibrary.client.model.tabula.TabulaModel
 import net.ilexiconn.llibrary.client.model.tabula.TabulaModelHandler
 
 object ModelFirefly {
-    private val container = TabulaModelHandler.INSTANCE.loadTabulaModel("assets/bugmagic/models/entities/firefly.tbl")
+    private val container = TabulaModelHandler.INSTANCE.loadTabulaModel("assets/bugmagic/models/entity/firefly.tbl")
     val model = TabulaModel(container)
 }

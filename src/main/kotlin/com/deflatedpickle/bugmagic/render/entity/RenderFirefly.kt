@@ -9,8 +9,10 @@ import net.minecraft.client.renderer.entity.RenderManager
 
 
 class RenderFirefly(renderManager: RenderManager) : RenderLiving<EntityFirefly>(renderManager, ModelFirefly.model, 0f) {
+    val texture = ResourceLocation("bugmagic:textures/entity/firefly.png")
+
     override fun getEntityTexture(entity: EntityFirefly?): ResourceLocation? {
         // TODO: Fix texture
-        return ResourceLocation("assets/bugmagic/textures/entities/firefly")
+        return texture
     }
 }
