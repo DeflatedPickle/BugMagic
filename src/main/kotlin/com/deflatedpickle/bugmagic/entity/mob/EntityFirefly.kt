@@ -1,13 +1,12 @@
 package com.deflatedpickle.bugmagic.entity.mob
 
-import com.deflatedpickle.bugmagic.entity.ai.EntityAIModHoverToOwner
+import com.deflatedpickle.bugmagic.entity.ai.EntityAIHoverToOwner
 import com.elytradev.mirage.event.GatherLightsEvent
 import com.elytradev.mirage.lighting.IEntityLightEventConsumer
 import com.elytradev.mirage.lighting.Light
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityAgeable
 import net.minecraft.entity.SharedMonsterAttributes
-import net.minecraft.entity.ai.EntityAIFollowOwner
 import net.minecraft.entity.passive.EntityTameable
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.world.World
@@ -51,7 +50,7 @@ class EntityFirefly(worldIn: World) : EntityTameable(worldIn), IEntityLightEvent
 
     override fun initEntityAI() {
         // this.tasks.addTask(2, EntityAIFollowOwner(this, 3.0, 0.5f, 50.0f))
-        this.tasks.addTask(2, EntityAIModHoverToOwner(this, 0.11f, 1.2f, 1.2f))
+        this.tasks.addTask(2, EntityAIHoverToOwner(this, 0.11f, 1.2f, 1.2f))
     }
 
     override fun applyEntityAttributes() {
