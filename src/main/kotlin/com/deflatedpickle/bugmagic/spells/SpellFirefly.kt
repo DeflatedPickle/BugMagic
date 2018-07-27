@@ -5,9 +5,12 @@ import com.deflatedpickle.bugmagic.entity.mob.EntityFirefly
 class SpellFirefly : SpellBase() {
     init {
         name = "Firefly"
+        id = 1
         cost = 15
         drain = 2
         drainWait = 60
+
+        addToMap()
     }
 
     override fun cast() {

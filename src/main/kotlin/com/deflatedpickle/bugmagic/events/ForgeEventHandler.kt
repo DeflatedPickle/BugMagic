@@ -8,6 +8,7 @@ import net.minecraft.client.entity.EntityPlayerSP
 import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.text.TextFormatting
 import net.minecraftforge.client.event.MouseEvent
 import net.minecraftforge.client.event.RenderGameOverlayEvent
@@ -25,7 +26,6 @@ class ForgeEventHandler {
     @SubscribeEvent
     fun onRenderGameOverlayEvent(event: RenderGameOverlayEvent) {
         val player = Minecraft.getMinecraft().player
-        val playerData = player.entityData
 
         if (player.heldItemMainhand.item is ItemWand) {
             Minecraft.getMinecraft().fontRenderer.drawString("%sBug Power: %d/%d".format(TextFormatting.WHITE,
@@ -36,15 +36,18 @@ class ForgeEventHandler {
 
     @SubscribeEvent
     fun onEntityJoinWorldEvent(event: EntityJoinWorldEvent) {
-        if (event.entity is EntityPlayerSP) {
+        if (event.entity is EntityPlayer) {
             val player = event.entity as EntityPlayer
             val playerData = player.entityData
 
-            // Sets the initial Bug Power value
-            if (!playerData.getBoolean("bugmagic.initPlayer")) {
+            playerData.setTag("bugmagic.spells", NBTTagCompound())
+
+            if (event.entity is EntityPlayerSP) {
+                // Sets the initial Bug Power value
                 playerData.setBoolean("bugmagic.initPlayer", true)
                 BugUtil.setBugPower(player, 30)
                 BugUtil.setMaxBugPower(player, RandomUtils.nextInt(40, 80))
+                // playerData.setTag("bugmagic.spells", NBTTagCompound())
             }
         }
     }

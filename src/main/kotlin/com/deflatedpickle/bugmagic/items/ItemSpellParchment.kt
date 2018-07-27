@@ -15,6 +15,7 @@ class ItemSpellParchment(name: String, stackSize: Int, creativeTab: CreativeTabs
             // If so, send a message to the player
             // If not, run spell#learn
         spell.caster = playerIn
+        spell.parchment = playerIn.getHeldItem(handIn)
         spell.learn()
 
         return super.onItemRightClick(worldIn, playerIn, handIn)
