@@ -3,6 +3,7 @@ package com.deflatedpickle.bugmagic.proxy
 import com.deflatedpickle.bugmagic.BugMagic
 import com.deflatedpickle.bugmagic.events.ForgeEventHandler
 import com.deflatedpickle.bugmagic.init.ModCreativeTabs
+import com.deflatedpickle.bugmagic.init.ModEntities
 import com.deflatedpickle.bugmagic.init.ModItems
 import com.deflatedpickle.bugmagic.network.PacketBugPower
 import net.minecraft.entity.player.EntityPlayer
@@ -20,8 +21,9 @@ open class CommonProxy {
         ModItems
     }
 
-    fun init(event: FMLInitializationEvent) {
+    open fun init(event: FMLInitializationEvent) {
         MinecraftForge.EVENT_BUS.register(ForgeEventHandler())
+        ModEntities
     }
 
     open fun getPlayer(): EntityPlayer? {
