@@ -33,12 +33,6 @@ class EntityFirefly(worldIn: World) : EntityTameable(worldIn), IEntityLightEvent
         return false
     }
 
-    // TODO: Make a model and texture for the firefly, and then use CTM to define a glowing part
-    // @SideOnly(Side.CLIENT)
-    // override fun getBrightnessForRender(): Int {
-    //     return 16
-    // }
-
     @Optional.Method(modid = "mirage")
     override fun gatherLights(event: GatherLightsEvent, entity: Entity) {
         event.add(Light.builder()

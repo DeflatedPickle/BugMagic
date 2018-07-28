@@ -1,5 +1,6 @@
 package com.deflatedpickle.bugmagic.events
 
+import com.deflatedpickle.bugmagic.BugMagic
 import com.deflatedpickle.bugmagic.items.ItemWand
 import com.deflatedpickle.bugmagic.util.BugUtil
 import net.minecraft.client.Minecraft
@@ -7,7 +8,9 @@ import net.minecraft.client.entity.EntityPlayerSP
 import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.text.TextFormatting
+import net.minecraftforge.client.event.MouseEvent
 import net.minecraftforge.client.event.RenderGameOverlayEvent
 import net.minecraftforge.event.entity.EntityJoinWorldEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
@@ -23,7 +26,6 @@ class ForgeEventHandler {
     @SubscribeEvent
     fun onRenderGameOverlayEvent(event: RenderGameOverlayEvent) {
         val player = Minecraft.getMinecraft().player
-        val playerData = player.entityData
 
         if (player.heldItemMainhand.item is ItemWand) {
             Minecraft.getMinecraft().fontRenderer.drawString("%sBug Power: %d/%d".format(TextFormatting.WHITE,
@@ -34,15 +36,18 @@ class ForgeEventHandler {
 
     @SubscribeEvent
     fun onEntityJoinWorldEvent(event: EntityJoinWorldEvent) {
-        if (event.entity is EntityPlayerSP) {
+        if (event.entity is EntityPlayer) {
             val player = event.entity as EntityPlayer
             val playerData = player.entityData
 
-            // Sets the initial Bug Power value
-            if (!playerData.getBoolean("bugmagic.initPlayer")) {
+            playerData.setTag("bugmagic.spells", NBTTagCompound())
+
+            if (event.entity is EntityPlayerSP) {
+                // Sets the initial Bug Power value
                 playerData.setBoolean("bugmagic.initPlayer", true)
                 BugUtil.setBugPower(player, 30)
                 BugUtil.setMaxBugPower(player, RandomUtils.nextInt(40, 80))
+                // playerData.setTag("bugmagic.spells", NBTTagCompound())
             }
         }
     }
@@ -57,6 +62,19 @@ class ForgeEventHandler {
                     tickCounter = 0
                     BugUtil.giveCappedBugPower(event.player, 1)
                 }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    fun onMouseEvent(event: MouseEvent) {
+        val player = BugMagic.proxy?.getPlayer()!!
+
+        if (player.isSneaking) {
+            if (player.heldItemMainhand.item is ItemWand) {
+                (player.heldItemMainhand.item as ItemWand).onMouseEvent()
+
+                event.isCanceled = true
             }
         }
     }
