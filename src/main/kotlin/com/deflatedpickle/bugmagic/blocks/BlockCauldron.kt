@@ -1,6 +1,7 @@
 package com.deflatedpickle.bugmagic.blocks
 
 import com.deflatedpickle.bugmagic.init.ModCreativeTabs
+import com.deflatedpickle.bugmagic.init.ModItems
 import com.deflatedpickle.bugmagic.items.ItemBugNet
 import com.deflatedpickle.bugmagic.items.ItemBugPart
 import com.deflatedpickle.bugmagic.tileentity.TileEntityBugJar
@@ -20,8 +21,6 @@ import net.minecraft.world.World
 import org.apache.commons.lang3.tuple.ImmutablePair
 
 class BlockCauldron(name: String, val stirsRequired: Int) : BlockBase(name, Material.IRON, 2f, 10f, ImmutablePair("pickaxe", 0), ModCreativeTabs.tabGeneral), ITileEntityProvider {
-    var fullyStirred = false
-
     override fun isFullCube(state: IBlockState?): Boolean {
         return false
     }
@@ -47,7 +46,7 @@ class BlockCauldron(name: String, val stirsRequired: Int) : BlockBase(name, Mate
 
                             if (tileEntity.getParts() > 0) {
                                 if (tileEntity.stirAmount >= stirsRequired / (tileEntity.getParts() / 2)) {
-                                    fullyStirred = true
+                                    tileEntity.fullyStirred = true
                                 }
                             }
                         }
@@ -72,11 +71,21 @@ class BlockCauldron(name: String, val stirsRequired: Int) : BlockBase(name, Mate
                                 if (tileEntity.waterAmount == tileEntity.maxWater) {
                                     itemStack.shrink(1)
 
-                                    if (fullyStirred) {
+                                    if (tileEntity.fullyStirred) {
                                         // TODO: Create a fluid for bug resonance
                                     }
                                     else {
                                         playerIn.inventory.addItemStackToInventory(ItemStack(Items.WATER_BUCKET))
+                                    }
+                                }
+                            }
+                            Items.GLASS_BOTTLE -> {
+                                if (tileEntity.waterAmount > 0f) {
+                                    if (tileEntity.fullyStirred) {
+                                        itemStack.shrink(1)
+                                        playerIn.inventory.addItemStackToInventory(ItemStack(ModItems.bugJuice))
+
+                                        tileEntity.waterAmount -= 1f
                                     }
                                 }
                             }

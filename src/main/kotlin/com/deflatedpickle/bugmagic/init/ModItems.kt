@@ -19,4 +19,6 @@ object ModItems {
             ItemBugPart("bug_part_wing", "wing"),
             ItemBugPart("bug_part_leg", "leg")
     )
+
+    val bugJuice = ItemBugJuice("bug_juice", 25)
 }

@@ -26,6 +26,8 @@ class TileEntityCauldron(val maxParts: Int, val maxWater: Float = 1f) : TileEnti
     var stirAmount = 0
     var hasStirrer = false
 
+    var fullyStirred = false
+
     override fun writeToNBT(compound: NBTTagCompound?): NBTTagCompound {
         super.writeToNBT(compound)
 
@@ -33,6 +35,7 @@ class TileEntityCauldron(val maxParts: Int, val maxWater: Float = 1f) : TileEnti
         compound.setFloat("waterAmount", waterAmount)
         compound.setInteger("stirAmount", stirAmount)
         compound.setBoolean("hasStirrer", hasStirrer)
+        compound.setBoolean("fullyStirred", fullyStirred)
 
         return compound
     }
@@ -44,5 +47,6 @@ class TileEntityCauldron(val maxParts: Int, val maxWater: Float = 1f) : TileEnti
         waterAmount = compound.getFloat("waterAmount")
         stirAmount = compound.getInteger("stirAmount")
         hasStirrer = compound.getBoolean("hasStirrer")
+        fullyStirred = compound.getBoolean("fullyStirred")
     }
 }
