@@ -1,9 +1,9 @@
 {
 	"credit": "Made with Blockbench",
+	"parent": "block/block",
 	"textures": {
-		"0": "minecraft:blocks/glass",
-		"1": "minecraft:blocks/planks_oak",
-		"particle": "block/glass"
+		"0": "blocks/glass",
+		"1": "blocks/planks_oak"
 	},
 	"elements": [
 		{
@@ -63,7 +63,8 @@
 		},
 		"gui": {
 			"scale": [1.5, 1.5, 1.5],
-			"translation": [0, 7, 0]
+			"translation": [0, 7, 0],
+			"rotation": [30, -50, 0]
 		}
 	}
 }
