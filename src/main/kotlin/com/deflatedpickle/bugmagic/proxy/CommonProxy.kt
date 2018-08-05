@@ -5,7 +5,10 @@ import com.deflatedpickle.bugmagic.events.ForgeEventHandler
 import com.deflatedpickle.bugmagic.init.*
 import com.deflatedpickle.bugmagic.network.PacketBugPower
 import com.deflatedpickle.bugmagic.network.PacketWand
+import com.deflatedpickle.bugmagic.util.AltarUtil
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.init.Blocks
+import net.minecraft.init.Items
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
@@ -26,6 +29,13 @@ open class CommonProxy {
     open fun init(event: FMLInitializationEvent) {
         MinecraftForge.EVENT_BUS.register(ForgeEventHandler())
         ModEntities
+
+        // TODO: Move to an object
+        AltarUtil.addRecipe(ModItems.spellFirefly,
+                listOf(ModItems.partLeg, ModItems.partLeg, ModItems.partLeg, ModItems.partLeg,
+                        ModItems.partWing, ModItems.partWing,
+                        ModItems.partBody, ModItems.partHead,
+                        Items.GLOWSTONE_DUST))
     }
 
     open fun getPlayer(): EntityPlayer? {

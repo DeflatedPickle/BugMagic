@@ -15,9 +15,16 @@ object ModItems {
     val spellBugpack = ItemSpellParchment("spell_bugpack", 1, ModCreativeTabs.tabGeneral, SpellBugpack())
 
     // Bug Parts
+    val partLeg = ItemBugPart("bug_part_leg", "leg")
+    val partWing = ItemBugPart("bug_part_wing", "wing")
+    val partBody = ItemBugPart("bug_part_body", "body")
+    val partHead = ItemBugPart("bug_part_head", "head")
+
     val bugParts = listOf<ItemBugPart>(
-            ItemBugPart("bug_part_wing", "wing"),
-            ItemBugPart("bug_part_leg", "leg")
+            partWing,
+            partLeg,
+            partBody,
+            partHead
     )
 
     val bugJuice = ItemBugJuice("bug_juice", 25)
