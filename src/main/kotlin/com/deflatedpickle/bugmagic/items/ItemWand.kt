@@ -6,11 +6,14 @@ import com.deflatedpickle.picklelib.item.ItemBase
 import net.minecraft.client.entity.EntityPlayerSP
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.Entity
+import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
+import net.minecraft.item.EnumAction
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ActionResult
+import net.minecraft.util.EnumActionResult
 import net.minecraft.util.EnumHand
 import net.minecraft.util.text.TextComponentString
 import net.minecraft.world.World
@@ -22,31 +25,31 @@ class ItemWand(name: String, stackSize: Int, creativeTab: CreativeTabs) : ItemBa
     val playerSpells: MutableList<String> = mutableListOf()
     var currentSpellIndex = 0
 
-    override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack> {
-        val stack = playerIn.getHeldItem(handIn)
-
+    override fun onItemUseFinish(stack: ItemStack?, worldIn: World?, entityLiving: EntityLivingBase?): ItemStack {
         // TODO: Figure out a way to change spells
 
-        if (!stack.hasTagCompound()) {
+        if (!stack!!.hasTagCompound()) {
             stack.tagCompound = NBTTagCompound()
         }
 
-        if (!playerIn.isSneaking) {
-            // TODO: Check the kind of wizard before casting the spell
-            if (!playerIn.world.isRemote) {
-                BugUtil.useCappedBugPower(playerIn, 5)
+        if (entityLiving is EntityPlayer) {
+            if (!entityLiving.isSneaking) {
+                // TODO: Check the kind of wizard before casting the spell
+                if (!entityLiving.world.isRemote) {
+                    BugUtil.useCappedBugPower(entityLiving, 5)
 
-                val spell = stack.tagCompound!!.getString("currentSpell")
+                    val spell = stack.tagCompound!!.getString("currentSpell")
 
-                if (spell != "") {
-                    val spellClass = SpellUtil.spellMap[spell]!!
-                    spellClass.caster = playerIn
-                    spellClass.cast()
+                    if (spell != "") {
+                        val spellClass = SpellUtil.spellMap[spell]!!
+                        spellClass.caster = entityLiving
+                        spellClass.cast()
+                    }
                 }
             }
         }
 
-        return super.onItemRightClick(worldIn, playerIn, handIn)
+        return super.onItemUseFinish(stack, worldIn, entityLiving)
     }
 
     fun onMouseEvent() {
@@ -117,6 +120,15 @@ class ItemWand(name: String, stackSize: Int, creativeTab: CreativeTabs) : ItemBa
     }
 
     override fun getMaxItemUseDuration(stack: ItemStack?): Int {
-        return 36000
+        return 32
+    }
+
+    override fun getItemUseAction(stack: ItemStack?): EnumAction {
+        return EnumAction.BOW
+    }
+
+    override fun onItemRightClick(worldIn: World?, playerIn: EntityPlayer?, handIn: EnumHand?): ActionResult<ItemStack> {
+        playerIn!!.activeHand = handIn!!
+        return ActionResult(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn))
     }
 }

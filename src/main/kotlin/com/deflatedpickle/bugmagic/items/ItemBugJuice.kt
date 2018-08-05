@@ -26,7 +26,7 @@ class ItemBugJuice(name: String, val amount: Int) : ItemBase(name, 1, ModCreativ
     }
 
     override fun getItemUseAction(stack: ItemStack?): EnumAction {
-        return EnumAction.EAT
+        return EnumAction.DRINK
     }
 
     override fun onItemRightClick(worldIn: World?, playerIn: EntityPlayer?, handIn: EnumHand?): ActionResult<ItemStack> {
