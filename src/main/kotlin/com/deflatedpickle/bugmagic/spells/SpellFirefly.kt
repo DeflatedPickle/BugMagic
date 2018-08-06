@@ -10,6 +10,7 @@ class SpellFirefly : SpellBase() {
         drain = 2
         drainWait = 60
         castLimit = 1
+        cooldownTime = 20
 
         addToMap()
     }

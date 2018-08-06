@@ -23,6 +23,8 @@ abstract class SpellBase {
     var drainWait: Int = 0
     // The limit that can be casted (-1 = infinite, 0 = can't cast, > 1 = limited)
     var castLimit: Int = -1
+    // The cooldown applied after the spell is cast
+    var cooldownTime: Int = 0
 
     fun addToMap() {
         // Add the class to the spell map
@@ -35,6 +37,8 @@ abstract class SpellBase {
     fun cast() {
         val casted = caster!!.entityData.getTag("bugmagic.casted") as NBTTagCompound?
 
+        caster!!.cooldownTracker.setCooldown(caster!!.heldItemMainhand.item, cooldownTime)
+
         if (casted!!.getInteger(name) < castLimit) {
             casted.setInteger(name, casted.getInteger(name) + 1)
             limitedCast()
@@ -43,6 +47,10 @@ abstract class SpellBase {
             casted.setInteger(name, casted.getInteger(name) + 1)
             unlimitedCast()
         }
+        else {
+            caster!!.cooldownTracker.setCooldown(caster!!.heldItemMainhand.item, 0)
+        }
+    }
     }
 
     open fun limitedCast() {}
