@@ -20,7 +20,7 @@ import net.minecraft.world.World
 import org.lwjgl.input.Mouse
 
 class ItemWand(name: String, stackSize: Int, creativeTab: CreativeTabs) : ItemBase(name, stackSize, creativeTab) {
-    // TODO: Take the players spells and put them in to a list upon sneaking
+    // TODO: Allow the player to uncast their spells at will
     var hasBeenScrolled = false
     val playerSpells: MutableList<String> = mutableListOf()
     var currentSpellIndex = 0
@@ -34,7 +34,6 @@ class ItemWand(name: String, stackSize: Int, creativeTab: CreativeTabs) : ItemBa
 
         if (entityLiving is EntityPlayer) {
             if (!entityLiving.isSneaking) {
-                // TODO: Check the kind of wizard before casting the spell
                 // if (!entityLiving.world.isRemote) {
                     val spell = stack.tagCompound!!.getString("currentSpell")
 
@@ -76,7 +75,6 @@ class ItemWand(name: String, stackSize: Int, creativeTab: CreativeTabs) : ItemBa
                     if (hasBeenScrolled) {
                         val mouseWheel = Mouse.getEventDWheel()
 
-                        // TODO: Scroll through the players spells
                         if (mouseWheel == -120) {
                             // Scrolled forward
                             

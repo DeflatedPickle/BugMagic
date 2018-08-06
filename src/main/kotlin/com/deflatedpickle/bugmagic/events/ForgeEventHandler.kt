@@ -3,8 +3,8 @@ package com.deflatedpickle.bugmagic.events
 import com.deflatedpickle.bugmagic.BugMagic
 import com.deflatedpickle.bugmagic.items.ItemWand
 import com.deflatedpickle.bugmagic.util.BugUtil
+import com.deflatedpickle.bugmagic.util.SpellUtil
 import net.minecraft.client.Minecraft
-import net.minecraft.client.entity.EntityPlayerSP
 import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.nbt.NBTTagCompound
@@ -52,6 +52,12 @@ class ForgeEventHandler {
                 // playerData.setTag("bugmagic.spells", NBTTagCompound())
             }
         }
+    }
+
+    @SubscribeEvent
+    fun onPlayerLoggedOutEvent(event: PlayerEvent.PlayerLoggedOutEvent) {
+        // TODO: Save somewhere on the client side to kill on relog, as entities are killed a tick after the world has been unloaded
+        SpellUtil.uncastAllSpells(event.player)
     }
 
     @SubscribeEvent

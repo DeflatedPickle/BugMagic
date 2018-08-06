@@ -13,6 +13,7 @@ abstract class SpellBase {
     var caster: EntityPlayer? = null
     var parchment: ItemStack? = null
 
+    // TODO: Localize spell names in the lang file
     // The name of the spell
     var name: String = "base"
     var id: Int = 0
@@ -59,6 +60,10 @@ abstract class SpellBase {
             }
             else {
                 caster!!.cooldownTracker.setCooldown(caster!!.heldItemMainhand.item, 0)
+
+                if (!caster!!.world.isRemote) {
+                    caster!!.sendStatusMessage(TextComponentString("Spell cast limit reached"), true)
+                }
             }
         }
         else {
@@ -67,6 +72,11 @@ abstract class SpellBase {
             }
         }
     }
+
+    open fun uncast() {
+        val casted = caster!!.entityData.getTag("bugmagic.casted") as NBTTagCompound?
+
+        casted!!.setInteger(name, casted.getInteger(name) - 1)
     }
 
     open fun limitedCast() {}
