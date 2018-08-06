@@ -3,5 +3,23 @@ itemGroup.tab_bugmagic_general=BugMagic: General
 
 # Items
 item.bugmagic:wand_generic.name=Wand of the Bugoneer
-
 item.bugmagic:bug_net.name=Bug Net
+item.bugmagic:magnifying_glass.name=Magnifying Glass
+## Spells
+item.bugmagic:spell_firefly.name=Scroll of the Firefly
+item.bugmagic:spell_bugpack.name=Scroll of the Bugpack
+## Bug Parts
+item.bugmagic:bug_part_leg.name=Leg of Bug
+item.bugmagic:bug_part_wing.name=Wing of Bug
+item.bugmagic:bug_part_body.name=Torso of Bug
+item.bugmagic:bug_part_head.name=Head of Bug
+## Other
+item.bugmagic:bug_juice.name=Bug Juice
+
+# Blocks
+tile.bugmagic:bug_jar.name=Small Bug Jar
+tile.bugmagic:cauldron.name=Cauldron
+tile.bugmagic:altar.name=Bug Altar
+
+# Entities
+entity.firefly.name=Firefly
