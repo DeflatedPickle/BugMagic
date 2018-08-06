@@ -3,6 +3,8 @@ package com.deflatedpickle.bugmagic.items
 import com.deflatedpickle.bugmagic.BugMagic
 import com.deflatedpickle.bugmagic.spells.SpellBase
 import com.deflatedpickle.picklelib.item.ItemBase
+import net.minecraft.client.renderer.ItemMeshDefinition
+import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
@@ -38,5 +40,9 @@ class ItemSpellParchment(name: String, stackSize: Int, creativeTab: CreativeTabs
     override fun onItemRightClick(worldIn: World?, playerIn: EntityPlayer?, handIn: EnumHand?): ActionResult<ItemStack> {
         playerIn!!.activeHand = handIn!!
         return ActionResult(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn))
+    }
+
+    override fun getCustomMeshDefinition(): ItemMeshDefinition {
+        return ItemMeshDefinition { ModelResourceLocation("bugmagic:spell_parchment") }
     }
 }
