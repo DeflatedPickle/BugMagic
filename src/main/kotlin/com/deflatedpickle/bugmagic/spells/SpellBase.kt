@@ -32,15 +32,15 @@ abstract class SpellBase {
         SpellUtil.idToNameMap[id] = name
     }
 
-    open fun cast() {
+    fun cast() {
         val casted = caster!!.entityData.getTag("bugmagic.casted") as NBTTagCompound?
 
-        if (casted!!.getInteger(name) < castLimit || castLimit == -1) {
+        if (casted!!.getInteger(name) < castLimit) {
             casted.setInteger(name, casted.getInteger(name) + 1)
             limitedCast()
         }
-        else {
-            casted.setInteger(name, 1)
+        else if (castLimit == -1) {
+            casted.setInteger(name, casted.getInteger(name) + 1)
             unlimitedCast()
         }
     }
