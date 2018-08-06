@@ -9,11 +9,12 @@ class SpellFirefly : SpellBase() {
         cost = 15
         drain = 2
         drainWait = 60
+        castLimit = 1
 
         addToMap()
     }
 
-    override fun cast() {
+    override fun limitedCast() {
         val entity = EntityFirefly(caster!!.world)
         entity.ownerId = caster!!.gameProfile.id
         entity.setPositionAndRotation(caster!!.posX + 1, caster!!.posY, caster!!.posZ + 1, 0f, 0f)

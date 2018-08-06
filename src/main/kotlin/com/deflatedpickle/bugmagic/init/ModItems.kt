@@ -14,6 +14,8 @@ object ModItems {
     val spellFirefly = ItemSpellParchment("spell_firefly", 1, ModCreativeTabs.tabGeneral, SpellFirefly())
     val spellBugpack = ItemSpellParchment("spell_bugpack", 1, ModCreativeTabs.tabGeneral, SpellBugpack())
 
+    val spellList = listOf(spellFirefly, spellBugpack)
+
     // Bug Parts
     val partLeg = ItemBugPart("bug_part_leg", "leg")
     val partWing = ItemBugPart("bug_part_wing", "wing")

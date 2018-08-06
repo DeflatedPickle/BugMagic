@@ -21,6 +21,8 @@ abstract class SpellBase {
     var drain: Int = 0
     // The amount of time (in ticks) until the drain is applied
     var drainWait: Int = 0
+    // The limit that can be casted (-1 = infinite, 0 = can't cast, > 1 = limited)
+    var castLimit: Int = -1
 
     fun addToMap() {
         // Add the class to the spell map
@@ -30,7 +32,21 @@ abstract class SpellBase {
         SpellUtil.idToNameMap[id] = name
     }
 
-    abstract fun cast()
+    open fun cast() {
+        val casted = caster!!.entityData.getTag("bugmagic.casted") as NBTTagCompound?
+
+        if (casted!!.getInteger(name) < castLimit || castLimit == -1) {
+            casted.setInteger(name, casted.getInteger(name) + 1)
+            limitedCast()
+        }
+        else {
+            casted.setInteger(name, 1)
+            unlimitedCast()
+        }
+    }
+
+    open fun limitedCast() {}
+    open fun unlimitedCast() {}
 
     open fun learn() {
         val spells = caster!!.entityData.getTag("bugmagic.spells") as NBTTagCompound?

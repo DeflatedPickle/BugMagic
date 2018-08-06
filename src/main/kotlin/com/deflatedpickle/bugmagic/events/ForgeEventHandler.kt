@@ -41,6 +41,7 @@ class ForgeEventHandler {
             val playerData = player.entityData
 
             playerData.setTag("bugmagic.spells", NBTTagCompound())
+            playerData.setTag("bugmagic.casted", NBTTagCompound())
 
             if (event.entity is EntityPlayerSP) {
                 // Sets the initial Bug Power value
