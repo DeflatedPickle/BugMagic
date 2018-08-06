@@ -1,5 +1,6 @@
 package com.deflatedpickle.bugmagic.spells
 
+import com.deflatedpickle.bugmagic.util.BugUtil
 import com.deflatedpickle.bugmagic.util.SpellUtil
 import net.minecraft.client.entity.EntityPlayerSP
 import net.minecraft.entity.player.EntityPlayer
@@ -37,18 +38,33 @@ abstract class SpellBase {
     fun cast() {
         val casted = caster!!.entityData.getTag("bugmagic.casted") as NBTTagCompound?
 
-        caster!!.cooldownTracker.setCooldown(caster!!.heldItemMainhand.item, cooldownTime)
+        if (BugUtil.getBugPower(caster!!) - cost >= 0) {
+            caster!!.cooldownTracker.setCooldown(caster!!.heldItemMainhand.item, cooldownTime)
 
-        if (casted!!.getInteger(name) < castLimit) {
-            casted.setInteger(name, casted.getInteger(name) + 1)
-            limitedCast()
-        }
-        else if (castLimit == -1) {
-            casted.setInteger(name, casted.getInteger(name) + 1)
-            unlimitedCast()
+            if (casted!!.getInteger(name) < castLimit) {
+                BugUtil.useCappedBugPower(caster!!, cost)
+
+                if (!caster!!.world.isRemote) {
+                    casted.setInteger(name, casted.getInteger(name) + 1)
+                    limitedCast()
+                }
+            }
+            else if (castLimit == -1) {
+                BugUtil.useCappedBugPower(caster!!, cost)
+
+                if (!caster!!.world.isRemote) {
+                    casted.setInteger(name, casted.getInteger(name) + 1)
+                    unlimitedCast()
+                }
+            }
+            else {
+                caster!!.cooldownTracker.setCooldown(caster!!.heldItemMainhand.item, 0)
+            }
         }
         else {
-            caster!!.cooldownTracker.setCooldown(caster!!.heldItemMainhand.item, 0)
+            if (!caster!!.world.isRemote) {
+                caster!!.sendStatusMessage(TextComponentString("Not enough bug power"), true)
+            }
         }
     }
     }
@@ -65,7 +81,7 @@ abstract class SpellBase {
         else {
             spells.setBoolean(name, true)
 
-            if (caster is EntityPlayerSP) {
+            if (!caster!!.world.isRemote) {
                 caster!!.sendStatusMessage(TextComponentString("Learnt the $name spell"), true)
             }
             parchment!!.shrink(1)

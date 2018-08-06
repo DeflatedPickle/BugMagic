@@ -42,6 +42,7 @@ class BlockAltar(name: String) : BlockBase(name, Material.IRON, 2f, 10f, Immutab
                             for (i in tileEntity.getParts()) {
                                 worldIn.spawnEntity(EntityItem(worldIn, pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble(), ItemStack(i)))
                             }
+                            tileEntity.clearParts()
                         }
                         else {
                             // Attempt to craft the items together
@@ -54,9 +55,8 @@ class BlockAltar(name: String) : BlockBase(name, Material.IRON, 2f, 10f, Immutab
                         }
                     }
                     else if (itemStack.item is Item) {
-                        itemStack.shrink(1)
-
                         tileEntity.addPart(itemStack.item)
+                        itemStack.shrink(1)
                     }
                 }
             }

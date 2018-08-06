@@ -17,7 +17,8 @@ import net.minecraftforge.fml.relauncher.Side
 
 open class CommonProxy {
     fun preInit(event: FMLPreInitializationEvent) {
-        BugMagic.networkWrapper.registerMessage(PacketBugPower::class.java, PacketBugPower::class.java, 0, Side.CLIENT)
+        // BugMagic.networkWrapper.registerMessage(PacketBugPower::class.java, PacketBugPower::class.java, 0, Side.CLIENT)
+        BugMagic.networkWrapper.registerMessage(PacketBugPower::class.java, PacketBugPower::class.java, 0, Side.SERVER)
         BugMagic.networkWrapper.registerMessage(PacketWand::class.java, PacketWand::class.java, 1, Side.SERVER)
 
         ModCreativeTabs

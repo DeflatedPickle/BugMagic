@@ -15,8 +15,11 @@ import net.minecraft.world.World
 
 class ItemBugJuice(name: String, val amount: Int) : ItemBase(name, 1, ModCreativeTabs.tabGeneral) {
     override fun onItemUseFinish(stack: ItemStack?, worldIn: World?, entityLiving: EntityLivingBase?): ItemStack {
-        if (entityLiving is EntityPlayerSP) {
-            BugUtil.setBugPower(entityLiving, BugUtil.getBugPower(entityLiving) + amount)
+        if (entityLiving is EntityPlayer) {
+            if (worldIn!!.isRemote) {
+                // TODO: Check the players bug power plus the amount first
+                BugUtil.giveCappedBugPower(entityLiving, amount)
+            }
         }
         return super.onItemUseFinish(stack, worldIn, entityLiving)
     }

@@ -35,9 +35,7 @@ class ItemWand(name: String, stackSize: Int, creativeTab: CreativeTabs) : ItemBa
         if (entityLiving is EntityPlayer) {
             if (!entityLiving.isSneaking) {
                 // TODO: Check the kind of wizard before casting the spell
-                if (!entityLiving.world.isRemote) {
-                    BugUtil.useCappedBugPower(entityLiving, 5)
-
+                // if (!entityLiving.world.isRemote) {
                     val spell = stack.tagCompound!!.getString("currentSpell")
 
                     if (spell != "") {
@@ -45,7 +43,7 @@ class ItemWand(name: String, stackSize: Int, creativeTab: CreativeTabs) : ItemBa
                         spellClass.caster = entityLiving
                         spellClass.cast()
                     }
-                }
+                // }
             }
         }
 
@@ -101,9 +99,8 @@ class ItemWand(name: String, stackSize: Int, creativeTab: CreativeTabs) : ItemBa
                         if (playerSpells.count() > 0) {
                             val currentSpell = SpellUtil.spellMap[playerSpells[currentSpellIndex]]
 
-                            if (entityIn is EntityPlayerSP) {
+                            if (entityIn.world.isRemote) {
                                 entityIn.sendStatusMessage(TextComponentString(currentSpell!!.name), true)
-                                // stack.tagCompound!!.setString("currentSpell", currentSpell.name)
 
                                 // This is fired only on the client, so let's packet it through
                                 SpellUtil.setCurrentSpell(stack, currentSpell.name)
