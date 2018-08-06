@@ -11,15 +11,17 @@ object BugUtil {
     }
 
     fun setMaxBugPower(playerIn: EntityPlayer?, amount: Int?) {
-        // Server
-        if (playerIn is EntityPlayerMP) {
-            playerIn.entityData.setInteger("bugMaxPower", getBugPower(playerIn))
-            BugMagic.networkWrapper.sendTo(PacketBugPower(playerIn), playerIn)
-        }
-        // Client
-        else {
-            playerIn?.entityData?.setInteger("bugMaxPower", amount!!)
-        }
+        // // Server
+        // if (playerIn is EntityPlayerMP) {
+        //     playerIn.entityData.setInteger("bugMaxPower", getBugPower(playerIn))
+        //     BugMagic.networkWrapper.sendTo(PacketBugPower(playerIn), playerIn)
+        // }
+        // // Client
+        // else {
+        //     playerIn?.entityData?.setInteger("bugMaxPower", amount!!)
+        // }
+        playerIn?.entityData?.setInteger("bugMaxPower", amount!!)
+        BugMagic.networkWrapper.sendToServer(PacketBugPower(playerIn!!))
     }
 
     fun getBugPower(playerIn: EntityPlayer): Int {
@@ -27,17 +29,19 @@ object BugUtil {
     }
 
     fun setBugPower(playerIn: EntityPlayer?, amount: Int?) {
-        // Server
-        if (playerIn is EntityPlayerMP) {
-            BugMagic.logger.warn("Setting the Bug Power for %s on the server, ignoring the given amount (%d) and using the clients NBT".format(playerIn.displayName.formattedText, amount))
-            playerIn.entityData.setInteger("bugPower", getBugPower(playerIn))
-            BugMagic.networkWrapper.sendTo(PacketBugPower(playerIn), playerIn)
-        }
-        // Client
-        else {
-            BugMagic.logger.info("Setting the Bug Power for %s on the client to %d".format(playerIn?.displayName?.formattedText, amount))
-            playerIn?.entityData?.setInteger("bugPower", amount!!)
-        }
+        // // Server
+        // if (playerIn is EntityPlayerMP) {
+        //     BugMagic.logger.warn("Setting the Bug Power for %s on the server, ignoring the given amount (%d) and using the clients NBT".format(playerIn.displayName.formattedText, amount))
+        //     playerIn.entityData.setInteger("bugPower", getBugPower(playerIn))
+        //     BugMagic.networkWrapper.sendTo(PacketBugPower(playerIn), playerIn)
+        // }
+        // // Client
+        // else {
+        //     BugMagic.logger.info("Setting the Bug Power for %s on the client to %d".format(playerIn?.displayName?.formattedText, amount))
+        //     playerIn?.entityData?.setInteger("bugPower", amount!!)
+        // }
+        playerIn?.entityData?.setInteger("bugPower", amount!!)
+        BugMagic.networkWrapper.sendToServer(PacketBugPower(playerIn!!))
     }
 
     fun useBugPower(playerIn: EntityPlayer, amount: Int?) {

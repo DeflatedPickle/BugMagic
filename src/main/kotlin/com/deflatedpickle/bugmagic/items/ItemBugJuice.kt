@@ -1,11 +1,9 @@
 package com.deflatedpickle.bugmagic.items
 
-import com.deflatedpickle.bugmagic.BugMagic
-import com.deflatedpickle.bugmagic.spells.SpellBase
+import com.deflatedpickle.bugmagic.init.ModCreativeTabs
+import com.deflatedpickle.bugmagic.util.BugUtil
 import com.deflatedpickle.picklelib.item.ItemBase
-import net.minecraft.client.renderer.ItemMeshDefinition
-import net.minecraft.client.renderer.block.model.ModelResourceLocation
-import net.minecraft.creativetab.CreativeTabs
+import net.minecraft.client.entity.EntityPlayerSP
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.EnumAction
@@ -15,17 +13,14 @@ import net.minecraft.util.EnumActionResult
 import net.minecraft.util.EnumHand
 import net.minecraft.world.World
 
-class ItemSpellParchment(name: String, stackSize: Int, creativeTab: CreativeTabs, val spell: SpellBase) : ItemBase(name, stackSize, creativeTab) {
+class ItemBugJuice(name: String, val amount: Int) : ItemBase(name, 1, ModCreativeTabs.tabGeneral) {
     override fun onItemUseFinish(stack: ItemStack?, worldIn: World?, entityLiving: EntityLivingBase?): ItemStack {
         if (entityLiving is EntityPlayer) {
-            // Check if the player already knows this spell
-                // If so, send a message to the player
-                // If not, run spell#learn
-            spell.caster = entityLiving
-            spell.parchment = stack
-            spell.learn()
+            if (worldIn!!.isRemote) {
+                // TODO: Check the players bug power plus the amount first
+                BugUtil.giveCappedBugPower(entityLiving, amount)
+            }
         }
-
         return super.onItemUseFinish(stack, worldIn, entityLiving)
     }
 
@@ -34,15 +29,11 @@ class ItemSpellParchment(name: String, stackSize: Int, creativeTab: CreativeTabs
     }
 
     override fun getItemUseAction(stack: ItemStack?): EnumAction {
-        return EnumAction.BOW
+        return EnumAction.DRINK
     }
 
     override fun onItemRightClick(worldIn: World?, playerIn: EntityPlayer?, handIn: EnumHand?): ActionResult<ItemStack> {
         playerIn!!.activeHand = handIn!!
         return ActionResult(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn))
-    }
-
-    override fun getCustomMeshDefinition(): ItemMeshDefinition {
-        return ItemMeshDefinition { ModelResourceLocation("bugmagic:spell_parchment") }
     }
 }

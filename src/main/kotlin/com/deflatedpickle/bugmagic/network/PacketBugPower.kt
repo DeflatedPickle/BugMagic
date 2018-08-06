@@ -2,6 +2,7 @@ package com.deflatedpickle.bugmagic.network
 
 import com.deflatedpickle.bugmagic.BugMagic
 import com.deflatedpickle.bugmagic.util.BugUtil
+import com.deflatedpickle.bugmagic.util.SpellUtil
 import io.netty.buffer.ByteBuf
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage
@@ -30,8 +31,10 @@ class PacketBugPower : IMessage, IMessageHandler<PacketBugPower, IMessage> {
     }
 
     override fun onMessage(message: PacketBugPower, ctx: MessageContext?): IMessage? {
-        BugUtil.setBugPower(BugMagic.proxy?.getPlayer(), message.bugPower)
-        BugUtil.setMaxBugPower(BugMagic.proxy?.getPlayer(), message.bugMaxPower)
+        // BugUtil.setBugPower(BugMagic.proxy?.getPlayer(), message.bugPower)
+        // BugUtil.setMaxBugPower(BugMagic.proxy?.getPlayer(), message.bugMaxPower)
+        ctx!!.serverHandler.player.entityData.setInteger("bugPower", message.bugPower)
+        ctx.serverHandler.player.entityData.setInteger("bugMaxPower", message.bugMaxPower)
 
         return null
     }

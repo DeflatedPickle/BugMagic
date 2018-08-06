@@ -1,5 +1,6 @@
 package com.deflatedpickle.bugmagic.spells
 
+import com.deflatedpickle.bugmagic.util.BugUtil
 import com.deflatedpickle.bugmagic.util.SpellUtil
 import net.minecraft.client.entity.EntityPlayerSP
 import net.minecraft.entity.player.EntityPlayer
@@ -12,6 +13,7 @@ abstract class SpellBase {
     var caster: EntityPlayer? = null
     var parchment: ItemStack? = null
 
+    // TODO: Localize spell names in the lang file
     // The name of the spell
     var name: String = "base"
     var id: Int = 0
@@ -21,6 +23,10 @@ abstract class SpellBase {
     var drain: Int = 0
     // The amount of time (in ticks) until the drain is applied
     var drainWait: Int = 0
+    // The limit that can be casted (-1 = infinite, 0 = can't cast, > 1 = limited)
+    var castLimit: Int = -1
+    // The cooldown applied after the spell is cast
+    var cooldownTime: Int = 0
 
     fun addToMap() {
         // Add the class to the spell map
@@ -30,7 +36,51 @@ abstract class SpellBase {
         SpellUtil.idToNameMap[id] = name
     }
 
-    abstract fun cast()
+    fun cast() {
+        val casted = caster!!.entityData.getTag("bugmagic.casted") as NBTTagCompound?
+
+        if (BugUtil.getBugPower(caster!!) - cost >= 0) {
+            caster!!.cooldownTracker.setCooldown(caster!!.heldItemMainhand.item, cooldownTime)
+
+            if (casted!!.getInteger(name) < castLimit) {
+                BugUtil.useCappedBugPower(caster!!, cost)
+
+                if (!caster!!.world.isRemote) {
+                    casted.setInteger(name, casted.getInteger(name) + 1)
+                    limitedCast()
+                }
+            }
+            else if (castLimit == -1) {
+                BugUtil.useCappedBugPower(caster!!, cost)
+
+                if (!caster!!.world.isRemote) {
+                    casted.setInteger(name, casted.getInteger(name) + 1)
+                    unlimitedCast()
+                }
+            }
+            else {
+                caster!!.cooldownTracker.setCooldown(caster!!.heldItemMainhand.item, 0)
+
+                if (!caster!!.world.isRemote) {
+                    caster!!.sendStatusMessage(TextComponentString("Spell cast limit reached"), true)
+                }
+            }
+        }
+        else {
+            if (!caster!!.world.isRemote) {
+                caster!!.sendStatusMessage(TextComponentString("Not enough bug power"), true)
+            }
+        }
+    }
+
+    open fun uncast() {
+        val casted = caster!!.entityData.getTag("bugmagic.casted") as NBTTagCompound?
+
+        casted!!.setInteger(name, casted.getInteger(name) - 1)
+    }
+
+    open fun limitedCast() {}
+    open fun unlimitedCast() {}
 
     open fun learn() {
         val spells = caster!!.entityData.getTag("bugmagic.spells") as NBTTagCompound?
@@ -41,7 +91,7 @@ abstract class SpellBase {
         else {
             spells.setBoolean(name, true)
 
-            if (caster is EntityPlayerSP) {
+            if (!caster!!.world.isRemote) {
                 caster!!.sendStatusMessage(TextComponentString("Learnt the $name spell"), true)
             }
             parchment!!.shrink(1)
