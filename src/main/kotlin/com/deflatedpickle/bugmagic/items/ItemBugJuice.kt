@@ -3,9 +3,9 @@ package com.deflatedpickle.bugmagic.items
 import com.deflatedpickle.bugmagic.init.ModCreativeTabs
 import com.deflatedpickle.bugmagic.util.BugUtil
 import com.deflatedpickle.picklelib.item.ItemBase
-import net.minecraft.client.entity.EntityPlayerSP
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.init.Items
 import net.minecraft.item.EnumAction
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ActionResult
@@ -19,6 +19,9 @@ class ItemBugJuice(name: String, val amount: Int) : ItemBase(name, 1, ModCreativ
             if (worldIn!!.isRemote) {
                 // TODO: Check the players bug power plus the amount first
                 BugUtil.giveCappedBugPower(entityLiving, amount)
+
+                stack!!.shrink(1)
+                entityLiving.inventory.addItemStackToInventory(ItemStack(Items.GLASS_BOTTLE))
             }
         }
         return super.onItemUseFinish(stack, worldIn, entityLiving)
