@@ -9,11 +9,13 @@ class SpellBugpack : SpellBase() {
         cost = 15
         drain = 4
         drainWait = 60
+        castLimit = 3
+        cooldownTime = 25
 
         addToMap()
     }
 
-    override fun cast() {
+    override fun limitedCast() {
         val entity = EntityBugpack(caster!!.world)
         entity.ownerId = caster!!.gameProfile.id
         entity.setPositionAndRotation(caster!!.posX + 1, caster!!.posY, caster!!.posZ + 1, 0f, 0f)

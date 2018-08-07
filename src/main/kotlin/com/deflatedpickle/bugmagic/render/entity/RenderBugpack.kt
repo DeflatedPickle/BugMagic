@@ -7,13 +7,20 @@ import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.entity.RenderLiving
 import net.minecraft.util.ResourceLocation
 import net.minecraft.client.renderer.entity.RenderManager
+import net.minecraftforge.common.DimensionManager.getWorld
+import net.minecraft.client.Minecraft
+import net.minecraft.client.renderer.block.model.IBakedModel
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms
+import net.minecraft.client.renderer.texture.TextureMap
+import net.minecraft.entity.item.EntityItem
+import net.minecraft.init.Items
+import net.minecraft.item.ItemStack
+import net.minecraftforge.client.ForgeHooksClient
+import net.minecraftforge.items.ItemStackHandler
 
 
 class RenderBugpack(renderManager: RenderManager) : RenderLiving<EntityBugpack>(renderManager, ModelBugpack.model, 0.35f) {
     val texture = ResourceLocation("bugmagic:textures/entity/bugpack.png")
-
-    val chest_model = ModelChest()
-    val chest_texture = ResourceLocation("textures/entity/chest/normal.png")
 
     override fun getEntityTexture(entity: EntityBugpack?): ResourceLocation? {
         return texture
@@ -25,20 +32,26 @@ class RenderBugpack(renderManager: RenderManager) : RenderLiving<EntityBugpack>(
 
         GlStateManager.pushMatrix()
         run {
-            // Move the chest to the bugs location
-            GlStateManager.translate(x, ny, z)
+            // Move the item to the bugs location
+            GlStateManager.translate(x , ny + 0.07f, z)
             GlStateManager.rotate(-entityYaw, 0f, 1f, 0f)
 
-            // Rotate the chest to stand "up"
+            // // Rotate the item
             GlStateManager.rotate(180f, 1f, 0f, 0f)
-            GlStateManager.scale(0.35f, 0.35f, 0.35f)
+            GlStateManager.rotate(45f, 0f, 0f, 1f)
+            GlStateManager.scale(0.5f, 0.5f, 0.5f)
 
-            GlStateManager.translate(-0.5f, -0.3f, -0.45f)
+            GlStateManager.translate(0.13f, 0f, 0f)
+
             GlStateManager.rotate(15f, 1f, 0f, 0f)
-            GlStateManager.translate(0.005f, 0.2f, -0.1f)
 
-            this.bindTexture(chest_texture)
-            chest_model.renderAll()
+            val stack = entity.dataManager.get(EntityBugpack.dataItemStack)
+
+            var model = Minecraft.getMinecraft().renderItem.getItemModelWithOverrides(stack, entity.world, null)
+            model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.GROUND, false)
+
+            Minecraft.getMinecraft().textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE)
+            Minecraft.getMinecraft().renderItem.renderItem(stack, model)
         }
         GlStateManager.popMatrix()
     }
