@@ -3,6 +3,8 @@ package com.deflatedpickle.bugmagic.spells
 import com.deflatedpickle.bugmagic.entity.mob.EntityBugpack
 
 class SpellBugpack : SpellBase() {
+    var entity: EntityBugpack? = null
+
     init {
         name = "Bugpack"
         id = 2
@@ -16,10 +18,17 @@ class SpellBugpack : SpellBase() {
     }
 
     override fun limitedCast() {
-        val entity = EntityBugpack(caster!!.world)
-        entity.ownerId = caster!!.gameProfile.id
-        entity.setPositionAndRotation(caster!!.posX + 1, caster!!.posY, caster!!.posZ + 1, 0f, 0f)
+        entity = EntityBugpack(caster!!.world)
+        entity!!.ownerId = caster!!.gameProfile.id
+        entity!!.setPositionAndRotation(caster!!.posX + 1, caster!!.posY, caster!!.posZ + 1, 0f, 0f)
 
-        caster!!.world.spawnEntity(entity)
+        caster!!.world.spawnEntity(entity!!)
+    }
+
+    override fun uncast() {
+        super.uncast()
+
+        entity!!.world.removeEntityDangerously(entity!!)
+        entity!!.world.removeEntity(entity!!)
     }
 }
