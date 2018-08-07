@@ -45,16 +45,16 @@ abstract class SpellBase {
             if (casted!!.getInteger(name) < castLimit) {
                 BugUtil.useCappedBugPower(caster!!, cost)
 
+                casted.setInteger(name, casted.getInteger(name) + 1)
                 if (!caster!!.world.isRemote) {
-                    casted.setInteger(name, casted.getInteger(name) + 1)
                     limitedCast()
                 }
             }
             else if (castLimit == -1) {
                 BugUtil.useCappedBugPower(caster!!, cost)
 
+                casted.setInteger(name, casted.getInteger(name) + 1)
                 if (!caster!!.world.isRemote) {
-                    casted.setInteger(name, casted.getInteger(name) + 1)
                     unlimitedCast()
                 }
             }

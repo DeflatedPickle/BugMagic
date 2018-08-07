@@ -22,6 +22,7 @@ import org.apache.commons.lang3.RandomUtils
 
 class ForgeEventHandler {
     var tickCounter = 0
+    val drainMap: MutableMap<String, Int> = mutableMapOf()
 
     @SubscribeEvent
     @SideOnly(value = Side.CLIENT)
@@ -69,6 +70,29 @@ class ForgeEventHandler {
                 if (tickCounter == 240) {
                     tickCounter = 0
                     BugUtil.giveCappedBugPower(event.player, 1)
+                }
+
+                // Drain the players bug power
+                // TODO: Fix this? Might get laggy
+                for (i in SpellUtil.getCastedSpells(event.player)) {
+                    if (!drainMap.containsKey(i)) {
+                        drainMap[i] = SpellUtil.spellMap[i]!!.drainWait
+                    }
+                    else {
+                        drainMap[i] = drainMap[i]!! - 1
+                    }
+
+                    if (drainMap[i]!! <= 0) {
+                        BugUtil.useCappedBugPower(event.player, SpellUtil.spellMap[i]!!.drain)
+                        drainMap[i] = SpellUtil.spellMap[i]!!.drainWait
+                    }
+                }
+
+                // Uncast all spells when power runs out
+                if (BugUtil.getBugPower(event.player) <= 0) {
+                    for (i in SpellUtil.getCastedSpells(event.player)) {
+                        SpellUtil.spellMap[i]!!.uncast()
+                    }
                 }
             }
         }
