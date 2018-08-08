@@ -26,8 +26,6 @@ class ItemWand(name: String, stackSize: Int, creativeTab: CreativeTabs) : ItemBa
     var currentSpellIndex = 0
 
     override fun onItemUseFinish(stack: ItemStack?, worldIn: World?, entityLiving: EntityLivingBase?): ItemStack {
-        // TODO: Figure out a way to change spells
-
         if (!stack!!.hasTagCompound()) {
             stack.tagCompound = NBTTagCompound()
         }

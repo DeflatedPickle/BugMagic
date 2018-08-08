@@ -25,7 +25,6 @@ import org.apache.commons.lang3.tuple.ImmutablePair
 
 class BlockBugJar(name: String, val maxBugs: Int) : BlockBase(name, Material.GLASS, 1f, 1f, ImmutablePair("pickaxe", 0), ModCreativeTabs.tabGeneral), ITileEntityProvider {
     // TODO: Fix the bounding box (it appears to move with the player, and the player doesn't collide with it)
-    // TODO: Fix the model and textures
 
     private val axisAlignedBB = AxisAlignedBB(6.0 / 16, 0.0, 6.0 / 16, 6.0 / 10, 6.0 / 16, 6.0 / 10)
 
