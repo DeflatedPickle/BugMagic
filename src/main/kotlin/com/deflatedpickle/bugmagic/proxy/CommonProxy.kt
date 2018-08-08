@@ -30,6 +30,7 @@ open class CommonProxy {
     open fun init(event: FMLInitializationEvent) {
         MinecraftForge.EVENT_BUS.register(ForgeEventHandler())
         ModEntities
+        ModCrafting
 
         // TODO: Move to an object
         AltarUtil.addRecipe(ModItems.spellFirefly,
