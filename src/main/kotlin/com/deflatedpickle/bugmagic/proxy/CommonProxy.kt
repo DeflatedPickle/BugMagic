@@ -9,6 +9,7 @@ import com.deflatedpickle.bugmagic.util.AltarUtil
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Blocks
 import net.minecraft.init.Items
+import net.minecraft.item.ItemStack
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
@@ -38,6 +39,12 @@ open class CommonProxy {
                         ModItems.partWing, ModItems.partWing,
                         ModItems.partBody, ModItems.partHead,
                         Items.GLOWSTONE_DUST))
+
+        AltarUtil.addRecipe(ModItems.spellBugpack,
+                listOf(ModItems.partLeg, ModItems.partLeg, ModItems.partLeg, ModItems.partLeg,
+                        ModItems.partWing, ModItems.partWing,
+                        ModItems.partBody, ModItems.partHead,
+                        ItemStack(Blocks.CHEST).item))
     }
 
     open fun getPlayer(): EntityPlayer? {

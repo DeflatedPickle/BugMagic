@@ -38,7 +38,7 @@ class BlockCauldron(name: String, val stirsRequired: Int) : BlockBase(name, Mate
                     val itemStack = playerIn!!.getHeldItem(hand)
 
                     if (itemStack.isEmpty) {
-                        // TODO: Stir the cauldron, if it has a stirring stick
+                        // Stir the cauldron, if it has a stirring stick
                         if (tileEntity.hasStirrer) {
                             if (tileEntity.waterAmount == 1f) {
                                 tileEntity.stirAmount++
