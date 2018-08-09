@@ -12,7 +12,7 @@ class SpellBugpack : SpellBase() {
         drain = 4
         drainWait = 60
         castLimit = 3
-        cooldownTime = 25
+        cooldownTime = 1200
 
         addToMap()
     }

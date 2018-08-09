@@ -44,7 +44,7 @@ class ForgeEventHandler {
 
             playerData.setTag("bugmagic.spells", NBTTagCompound())
             playerData.setTag("bugmagic.casted", NBTTagCompound())
-            playerData.setTag("bugmagic.drain", NBTTagCompound())
+            // playerData.setTag("bugmagic.drain", NBTTagCompound())
 
             if (event.entity.world.isRemote) {
                 // Sets the initial Bug Power value
