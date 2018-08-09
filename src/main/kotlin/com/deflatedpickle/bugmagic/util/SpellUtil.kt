@@ -25,7 +25,7 @@ object SpellUtil {
         if (!player.world.isRemote) {
 
             for (i in getCastedSpells(player)) {
-                SpellUtil.spellMap[i]!!.uncast()
+                SpellUtil.spellMap[i.first]!!.uncast()
             }
         }
     }
@@ -40,11 +40,13 @@ object SpellUtil {
         return list
     }
 
-    fun getCastedSpells(player: EntityPlayer): List<String> {
-        val list = mutableListOf<String>()
+    fun getCastedSpells(player: EntityPlayer): List<Pair<String, Int>> {
+        val casted = player.entityData.getTag("bugmagic.casted") as NBTTagCompound?
 
-        for (i in (player.entityData.getTag("bugmagic.casted") as NBTTagCompound?)!!.keySet) {
-            list.add(i)
+        val list = mutableListOf<Pair<String, Int>>()
+
+        for (i in casted!!.keySet) {
+            list.add(Pair(i, casted.getInteger(i)))
         }
 
         return list

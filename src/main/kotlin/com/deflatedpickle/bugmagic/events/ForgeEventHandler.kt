@@ -22,7 +22,7 @@ import org.apache.commons.lang3.RandomUtils
 
 class ForgeEventHandler {
     var tickCounter = 0
-    val drainMap: MutableMap<String, Int> = mutableMapOf()
+    val drainMap: MutableMap<String, MutableList<Int>> = mutableMapOf()
 
     @SubscribeEvent
     @SideOnly(value = Side.CLIENT)
@@ -44,6 +44,7 @@ class ForgeEventHandler {
 
             playerData.setTag("bugmagic.spells", NBTTagCompound())
             playerData.setTag("bugmagic.casted", NBTTagCompound())
+            playerData.setTag("bugmagic.drain", NBTTagCompound())
 
             if (event.entity.world.isRemote) {
                 // Sets the initial Bug Power value
@@ -74,25 +75,33 @@ class ForgeEventHandler {
 
                 // Drain the players bug power
                 // TODO: Fix this? Might get laggy
+                // TODO: Move this to NBT
                 for (i in SpellUtil.getCastedSpells(event.player)) {
-                    if (!drainMap.containsKey(i)) {
-                        drainMap[i] = SpellUtil.spellMap[i]!!.drainWait
-                    }
-                    else {
-                        drainMap[i] = drainMap[i]!! - 1
-                    }
+                    for (n in 0 until i.second) {
+                        if (!drainMap.containsKey(i.first)) {
+                            drainMap[i.first] = MutableList(i.second) { SpellUtil.spellMap[i.first]!!.drainWait }
+                        }
+                        else if (drainMap[i.first]!!.size != i.second) {
+                            // TODO: Make this use the current wait values for casted spells instead of resetting all of them
+                            drainMap[i.first] = MutableList(i.second) { SpellUtil.spellMap[i.first]!!.drainWait }
+                        }
+                        else {
+                            drainMap[i.first]!![n] = drainMap[i.first]!![n] - 1
+                        }
 
-                    if (drainMap[i]!! <= 0) {
-                        BugUtil.useCappedBugPower(event.player, SpellUtil.spellMap[i]!!.drain)
-                        drainMap[i] = SpellUtil.spellMap[i]!!.drainWait
+                        if (drainMap[i.first]!![n] <= 0) {
+                            BugUtil.useCappedBugPower(event.player, SpellUtil.spellMap[i.first]!!.drain)
+                            drainMap[i.first]!![n] = SpellUtil.spellMap[i.first]!!.drainWait
+                        }
                     }
                 }
 
                 // Uncast all spells when power runs out
                 if (BugUtil.getBugPower(event.player) <= 0) {
                     for (i in SpellUtil.getCastedSpells(event.player)) {
-                        SpellUtil.spellMap[i]!!.uncast()
+                        SpellUtil.spellMap[i.first]!!.uncast()
                     }
+                    drainMap.clear()
                 }
             }
         }

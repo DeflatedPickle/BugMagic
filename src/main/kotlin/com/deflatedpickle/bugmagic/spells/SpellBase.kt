@@ -76,7 +76,9 @@ abstract class SpellBase {
     open fun uncast() {
         val casted = caster!!.entityData.getTag("bugmagic.casted") as NBTTagCompound?
 
-        casted!!.setInteger(name, casted.getInteger(name) - 1)
+        if (casted!!.getInteger(name) - 1 >= 0) {
+            casted.setInteger(name, casted.getInteger(name) - 1)
+        }
     }
 
     open fun limitedCast() {}
