@@ -10,9 +10,9 @@ class SpellFirefly : SpellBase() {
         id = 1
         cost = 15
         drain = 2
-        drainWait = 60
+        drainWait = 1600
         castLimit = 1
-        cooldownTime = 1600
+        cooldownTime = 20
 
         addToMap()
     }

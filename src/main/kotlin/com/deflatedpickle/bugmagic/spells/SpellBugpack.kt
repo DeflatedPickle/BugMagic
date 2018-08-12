@@ -10,9 +10,9 @@ class SpellBugpack : SpellBase() {
         id = 2
         cost = 15
         drain = 4
-        drainWait = 60
+        drainWait = 1200
         castLimit = 3
-        cooldownTime = 1200
+        cooldownTime = 25
 
         addToMap()
     }
