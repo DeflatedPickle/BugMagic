@@ -46,7 +46,7 @@ class BookBuganomicon : IGuideBook {
         val binder = BookBinder(ResourceLocation(Reference.MOD_ID, "buganomicon"))
 
         // Setup
-        val title = "Buganomicon"
+        val title = "bugmagic.buganomicon.title"
         binder.setGuideTitle(title)
         binder.setItemName(title)
         binder.setHeader(title)
@@ -131,7 +131,7 @@ class BookBuganomicon : IGuideBook {
         entrySpell.add(PageText("it will take for the wand to cooldown after casting the spell."))
         categoryBugsics[ResourceLocation(Reference.MOD_ID, "page_spell")] = EntryItemStack(entrySpell, "bugmagic.buganomicon.bugsics.spell.title", ItemStack(ModItems.spellFirefly))
 
-        binder.addCategory(CategoryItemStack(categoryBugsics, "Bugsics", ItemStack(ModItems.wandGeneric)))
+        binder.addCategory(CategoryItemStack(categoryBugsics, "bugmagic.buganomicon.bugsics.title", ItemStack(ModItems.wandGeneric)))
 
         // Bugstiary
         val categoryBugstiary = LinkedHashMap<ResourceLocation, EntryAbstract>()
@@ -149,7 +149,7 @@ class BookBuganomicon : IGuideBook {
         entryBugpack.add(PageAltarRecipe(ModItems.spellBugpack, BugMagic.proxy!!.bugpackList))
         categoryBugstiary[ResourceLocation(Reference.MOD_ID, "page_bugpack")] = EntryItemStack(entryBugpack, "bugmagic.buganomicon.bugsics.bugpack.title", ItemStack(ModItems.spellBugpack))
 
-        binder.addCategory(CategoryItemStack(categoryBugstiary, "Bugstiary", ItemStack(ModItems.partHead)))
+        binder.addCategory(CategoryItemStack(categoryBugstiary, "bugmagic.buganomicon.bugstiary.title", ItemStack(ModItems.partHead)))
 
         binder.setSpawnWithBook()
 

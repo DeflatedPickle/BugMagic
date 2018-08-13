@@ -2,6 +2,7 @@
 itemGroup.tab_bugmagic_general=BugMagic: General
 
 # Items
+## General
 item.bugmagic:wand_generic.name=Wand of the Bugoneer
 item.bugmagic:bug_net.name=Bug Net
 item.bugmagic:magnifying_glass.name=Magnifying Glass
@@ -24,3 +25,24 @@ tile.bugmagic:altar.name=Bug Altar
 # Entities
 entity.firefly.name=Firefly
 entity.bugpack.name=Bugpack
+
+# Guides
+bugmagic.buganomicon.title=Buganomicon
+## Categories
+bugmagic.buganomicon.bugsics.title=Bugsics
+bugmagic.buganomicon.bugstiary.title=Bugstiary
+## Pages
+### Bugsics
+bugmagic.buganomicon.bugsics.welcome.title=Welcome to Bugmagic
+bugmagic.buganomicon.bugsics.book.title=Buganomicon
+bugmagic.buganomicon.bugsics.wand.title=Wand of the Bugoneer
+bugmagic.buganomicon.bugsics.net.title=Bug Net
+bugmagic.buganomicon.bugsics.magnifying.title=Magnifying Glass
+bugmagic.buganomicon.bugsics.part.title=Bug Parts
+bugmagic.buganomicon.bugsics.jar.title=Bug Jar
+bugmagic.buganomicon.bugsics.cauldron.title=Cauldron
+bugmagic.buganomicon.bugsics.altar.title=Altar
+bugmagic.buganomicon.bugsics.spell.title=Spells
+### Bugstiary
+bugmagic.buganomicon.bugsics.firefly.title=Firefly
+bugmagic.buganomicon.bugsics.bugpack.title=Bugpack
