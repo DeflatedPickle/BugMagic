@@ -140,6 +140,11 @@ class BookBuganomicon : IGuideBook {
         // TODO: Write a custom image class to render a border and a smaller image
         entryFirefly.add(PageText("The Firefly spell will spawn a small fly that will follow you, hovering in the air, that will light up the area just around it.\nThough the Firefly is not at all smart, and can get caught on blocks or even kill itself."))
         categoryBugstiary[ResourceLocation(Reference.MOD_ID, "page_firefly")] = EntryItemStack(entryFirefly, "bugmagic.buganomicon.bugsics.firefly.title", ItemStack(ModItems.spellFirefly))
+
+        val entryBugpack = ArrayList<IPage>()
+        entryBugpack.add(PageText("The Bugpack spell will spawn a small fly that will follow you, hovering in the air, and will hold a single stack for you.\nThough the Bugpack is not at all smart, and can get caught on blocks or even kill itself."))
+        categoryBugstiary[ResourceLocation(Reference.MOD_ID, "page_bugpack")] = EntryItemStack(entryBugpack, "bugmagic.buganomicon.bugsics.bugpack.title", ItemStack(ModItems.spellBugpack))
+
         binder.addCategory(CategoryItemStack(categoryBugstiary, "Bugstiary", ItemStack(ModItems.partHead)))
 
         binder.setSpawnWithBook()
