@@ -80,6 +80,16 @@ class BookBuganomicon : IGuideBook {
                 "W  ",
                 'W', Items.STICK, 'S', Items.STRING)))
         categoryBugsics[ResourceLocation(Reference.MOD_ID, "page_net")] = EntryItemStack(entryBugNet, "bugmagic.buganomicon.bugsics.net.title", ItemStack(ModItems.bugNet))
+
+        val entryMagnifyingGlass = ArrayList<IPage>()
+        entryMagnifyingGlass.add(PageText("The magnifying glass is used to examine bugs inside of a bug jar, to obtain bug parts. It can be crafted with the recipe on the next page."))
+        entryMagnifyingGlass.add(PageIRecipe(ShapedOreRecipe(ResourceLocation("bugmagic:magnifying_glass_recipe"),
+                ItemStack(ModItems.magnifyingGlass),
+                "  G",
+                " S ",
+                "S  ",
+                'G', Blocks.GLASS, 'S', Items.STICK)))
+        categoryBugsics[ResourceLocation(Reference.MOD_ID, "page_magnifying")] = EntryItemStack(entryMagnifyingGlass, "bugmagic.buganomicon.bugsics.magnifying.title", ItemStack(ModItems.magnifyingGlass))
         binder.addCategory(CategoryItemStack(categoryBugsics, "Bugsics", ItemStack(ModItems.wandGeneric)))
         binder.setSpawnWithBook()
 
