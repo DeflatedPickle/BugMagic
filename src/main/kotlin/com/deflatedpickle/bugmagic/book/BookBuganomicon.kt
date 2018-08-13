@@ -94,6 +94,16 @@ class BookBuganomicon : IGuideBook {
         val entryBugPart = ArrayList<IPage>()
         entryBugPart.add(PageText("Bug parts are used to form scrolls on the altar, they can be acquired by examining bugs inside jars.\n\nParts come in four forms; legs, wings, bodies and heads. These are required in different amounts at an altar to craft spells."))
         categoryBugsics[ResourceLocation(Reference.MOD_ID, "page_part")] = EntryItemStack(entryBugPart, "bugmagic.buganomicon.bugsics.part.title", ItemStack(ModItems.partLeg))
+
+        val entryBugJar = ArrayList<IPage>()
+        entryBugJar.add(PageText("The bug jar is used to hold bugs caught with the bug net. The bugs inside can be examined by using the magnifying glass. It can be crafted with the recipe on the next page."))
+        entryBugJar.add(PageIRecipe(ShapedOreRecipe(ResourceLocation("bugmagic:bug_jar_recipe"),
+                ItemStack(ModBlocks.bugJar),
+                " W ",
+                "G G",
+                "GGG",
+                'W', Blocks.PLANKS, 'G', Blocks.GLASS)))
+        categoryBugsics[ResourceLocation(Reference.MOD_ID, "page_jar")] = EntryItemStack(entryBugJar, "bugmagic.buganomicon.bugsics.jar.title", ItemStack(ModBlocks.bugJar))
         binder.addCategory(CategoryItemStack(categoryBugsics, "Bugsics", ItemStack(ModItems.wandGeneric)))
         binder.setSpawnWithBook()
 
