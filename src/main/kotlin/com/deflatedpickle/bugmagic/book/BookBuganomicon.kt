@@ -60,6 +60,16 @@ class BookBuganomicon : IGuideBook {
         entryWelcome.add(PageText("This guide will serve as an introduction into the certain magic of bugs. Now, be weary, this magic is not for the simple wizard or witch, as, to progress any true amount, you will have to partake in a cult of bugs, and have to sacrifice bugs to create new spells."))
         categoryBugsics[ResourceLocation(Reference.MOD_ID, "page_welcome")] = EntryItemStack(entryWelcome, "bugmagic.buganomicon.bugsics.welcome.title", ItemStack(Items.BOOK))
 
+
+        val entryWand = ArrayList<IPage>()
+        entryWand.add(PageText("To get started in the vein of magic with so-called bugs, a wizard or witch must find or craft themselves the basic Wand of the Bugoneer. It can be crafted at a table with a combination of sticks formed in the pattern on the next page."))
+        entryWand.add(PageIRecipe(ShapedOreRecipe(ResourceLocation("bugmagic:generic_wand_recipe"),
+                ItemStack(ModItems.wandGeneric),
+                "  S",
+                " S ",
+                "S  ",
+                'S', Items.STICK)))
+        categoryBugsics[ResourceLocation(Reference.MOD_ID, "page_wand")] = EntryItemStack(entryWand, "bugmagic.buganomicon.bugsics.wand.title", ItemStack(ModItems.wandGeneric))
         binder.addCategory(CategoryItemStack(categoryBugsics, "Bugsics", ItemStack(ModItems.wandGeneric)))
         binder.setSpawnWithBook()
 
