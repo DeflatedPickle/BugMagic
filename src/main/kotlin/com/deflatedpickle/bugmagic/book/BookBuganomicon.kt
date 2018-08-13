@@ -104,6 +104,16 @@ class BookBuganomicon : IGuideBook {
                 "GGG",
                 'W', Blocks.PLANKS, 'G', Blocks.GLASS)))
         categoryBugsics[ResourceLocation(Reference.MOD_ID, "page_jar")] = EntryItemStack(entryBugJar, "bugmagic.buganomicon.bugsics.jar.title", ItemStack(ModBlocks.bugJar))
+
+        val entryCauldron = ArrayList<IPage>()
+        entryCauldron.add(PageText("The cauldron is used to boil bug parts into bug resonance, which can be bottled up and drunk to regenerate bug power. It can be crafted with the recipe on the next page."))
+        entryCauldron.add(PageIRecipe(ShapedOreRecipe(ResourceLocation("bugmagic:cauldron_recipe"),
+                ItemStack(ModBlocks.cauldron),
+                "I I",
+                "I I",
+                "IBI",
+                'I', Items.IRON_INGOT, 'B', Blocks.IRON_BLOCK)))
+        categoryBugsics[ResourceLocation(Reference.MOD_ID, "page_cauldron")] = EntryItemStack(entryCauldron, "bugmagic.buganomicon.bugsics.cauldron.title", ItemStack(ModBlocks.cauldron))
         binder.addCategory(CategoryItemStack(categoryBugsics, "Bugsics", ItemStack(ModItems.wandGeneric)))
         binder.setSpawnWithBook()
 
