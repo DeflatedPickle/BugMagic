@@ -53,6 +53,7 @@ dependencies {
     compile 'com.elytradev:mirage:2.0.3-rc3-SNAPSHOT'
     // deobfCompile 'albedo:albedo:0.1.3'
     compile "net.ilexiconn:llibrary:1.7.9-1.12.2:dev"
+    deobfCompile "guide-api:Guide-API-1.12:2.1.6:61"
 
     // Tabula
     deobfCompile "ichunutil:iChunUtil:1.12.2:7.1.4"
