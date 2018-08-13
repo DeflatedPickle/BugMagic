@@ -16,6 +16,7 @@ abstract class SpellBase {
     // TODO: Localize spell names in the lang file
     // The name of the spell
     var name: String = "base"
+    var cult: String = "general"
     var id: Int = 0
     // The cost of the spell
     var cost: Int = 0
