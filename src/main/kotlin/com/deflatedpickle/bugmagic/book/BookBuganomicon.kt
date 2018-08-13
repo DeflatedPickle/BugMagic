@@ -114,6 +114,16 @@ class BookBuganomicon : IGuideBook {
                 "IBI",
                 'I', Items.IRON_INGOT, 'B', Blocks.IRON_BLOCK)))
         categoryBugsics[ResourceLocation(Reference.MOD_ID, "page_cauldron")] = EntryItemStack(entryCauldron, "bugmagic.buganomicon.bugsics.cauldron.title", ItemStack(ModBlocks.cauldron))
+
+        val entryAltar = ArrayList<IPage>()
+        entryAltar.add(PageText("The altar is used to form spells using bug parts and other items. The recipes in it must follow a specific order that will be shown in the spell pages. It can be crafted with the recipe on the next page."))
+        entryAltar.add(PageIRecipe(ShapedOreRecipe(ResourceLocation("bugmagic:altar_recipe"),
+                ItemStack(ModBlocks.altar),
+                "SSS",
+                " W ",
+                "SSS",
+                'S', Blocks.STONE_SLAB, 'W', Blocks.PLANKS)))
+        categoryBugsics[ResourceLocation(Reference.MOD_ID, "page_altar")] = EntryItemStack(entryAltar, "bugmagic.buganomicon.bugsics.altar.title", ItemStack(ModBlocks.altar))
         binder.addCategory(CategoryItemStack(categoryBugsics, "Bugsics", ItemStack(ModItems.wandGeneric)))
         binder.setSpawnWithBook()
 
