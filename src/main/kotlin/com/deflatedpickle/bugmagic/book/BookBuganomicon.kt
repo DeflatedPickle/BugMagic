@@ -70,6 +70,16 @@ class BookBuganomicon : IGuideBook {
                 "S  ",
                 'S', Items.STICK)))
         categoryBugsics[ResourceLocation(Reference.MOD_ID, "page_wand")] = EntryItemStack(entryWand, "bugmagic.buganomicon.bugsics.wand.title", ItemStack(ModItems.wandGeneric))
+
+        val entryBugNet = ArrayList<IPage>()
+        entryBugNet.add(PageText("The bug net is used to capture bugs. It can be crafted with the recipe on the next page."))
+        entryBugNet.add(PageIRecipe(ShapedOreRecipe(ResourceLocation("bugmagic:bug_net_recipe"),
+                ItemStack(ModItems.bugNet),
+                " WS",
+                " WS",
+                "W  ",
+                'W', Items.STICK, 'S', Items.STRING)))
+        categoryBugsics[ResourceLocation(Reference.MOD_ID, "page_net")] = EntryItemStack(entryBugNet, "bugmagic.buganomicon.bugsics.net.title", ItemStack(ModItems.bugNet))
         binder.addCategory(CategoryItemStack(categoryBugsics, "Bugsics", ItemStack(ModItems.wandGeneric)))
         binder.setSpawnWithBook()
 
