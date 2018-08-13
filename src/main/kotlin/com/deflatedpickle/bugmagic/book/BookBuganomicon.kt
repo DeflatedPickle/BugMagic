@@ -132,6 +132,16 @@ class BookBuganomicon : IGuideBook {
         categoryBugsics[ResourceLocation(Reference.MOD_ID, "page_spell")] = EntryItemStack(entrySpell, "bugmagic.buganomicon.bugsics.spell.title", ItemStack(ModItems.spellFirefly))
 
         binder.addCategory(CategoryItemStack(categoryBugsics, "Bugsics", ItemStack(ModItems.wandGeneric)))
+
+        // Bugstiary
+        val categoryBugstiary = LinkedHashMap<ResourceLocation, EntryAbstract>()
+
+        val entryFirefly = ArrayList<IPage>()
+        // TODO: Write a custom image class to render a border and a smaller image
+        entryFirefly.add(PageText("The Firefly spell will spawn a small fly that will follow you, hovering in the air, that will light up the area just around it.\nThough the Firefly is not at all smart, and can get caught on blocks or even kill itself."))
+        categoryBugstiary[ResourceLocation(Reference.MOD_ID, "page_firefly")] = EntryItemStack(entryFirefly, "bugmagic.buganomicon.bugsics.firefly.title", ItemStack(ModItems.spellFirefly))
+        binder.addCategory(CategoryItemStack(categoryBugstiary, "Bugstiary", ItemStack(ModItems.partHead)))
+
         binder.setSpawnWithBook()
 
         guide = binder.build()
