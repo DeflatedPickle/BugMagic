@@ -53,6 +53,14 @@ class BookBuganomicon : IGuideBook {
         binder.setAuthor("DeflatedPickle")
         binder.setCreativeTab(ModCreativeTabs.tabGeneral)
 
+        // Bugsics
+        val categoryBugsics = LinkedHashMap<ResourceLocation, EntryAbstract>()
+
+        val entryWelcome = ArrayList<IPage>()
+        entryWelcome.add(PageText("This guide will serve as an introduction into the certain magic of bugs. Now, be weary, this magic is not for the simple wizard or witch, as, to progress any true amount, you will have to partake in a cult of bugs, and have to sacrifice bugs to create new spells."))
+        categoryBugsics[ResourceLocation(Reference.MOD_ID, "page_welcome")] = EntryItemStack(entryWelcome, "bugmagic.buganomicon.bugsics.welcome.title", ItemStack(Items.BOOK))
+
+        binder.addCategory(CategoryItemStack(categoryBugsics, "Bugsics", ItemStack(ModItems.wandGeneric)))
         binder.setSpawnWithBook()
 
         guide = binder.build()
