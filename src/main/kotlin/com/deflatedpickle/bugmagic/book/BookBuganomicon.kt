@@ -124,6 +124,13 @@ class BookBuganomicon : IGuideBook {
                 "SSS",
                 'S', Blocks.STONE_SLAB, 'W', Blocks.PLANKS)))
         categoryBugsics[ResourceLocation(Reference.MOD_ID, "page_altar")] = EntryItemStack(entryAltar, "bugmagic.buganomicon.bugsics.altar.title", ItemStack(ModBlocks.altar))
+
+        val entrySpell = ArrayList<IPage>()
+        entrySpell.add(PageText("Spells are acquired in the form of scrolls, found in chests, crafted or given by your cult leader (if you decided to join one). The scroll can be learnt to gain the spell and then selected with your wand. Each spell has a different class, cost, drain cost, drain interval, cast limit and cooldown."))
+        entrySpell.add(PageText("The cost is simply how much bug power it will cost to cast the spell, the drain cost is how much bug power will be drained every drain interval whilst the spell is cast, the drain interval is how long it will take to drain, the cast limit is how many of the spell can be cast at once, and the cooldown is how long"))
+        entrySpell.add(PageText("it will take for the wand to cooldown after casting the spell."))
+        categoryBugsics[ResourceLocation(Reference.MOD_ID, "page_spell")] = EntryItemStack(entrySpell, "bugmagic.buganomicon.bugsics.spell.title", ItemStack(ModItems.spellFirefly))
+
         binder.addCategory(CategoryItemStack(categoryBugsics, "Bugsics", ItemStack(ModItems.wandGeneric)))
         binder.setSpawnWithBook()
 
