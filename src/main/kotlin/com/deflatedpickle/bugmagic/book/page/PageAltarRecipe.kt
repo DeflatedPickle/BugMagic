@@ -17,6 +17,7 @@ import net.minecraft.util.ResourceLocation
 import net.minecraft.util.text.TextFormatting
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
+import java.awt.Color
 
 class PageAltarRecipe(private val result: Item, private val ingredients: List<Item>) : Page() {
     val requirements = mutableListOf<String>()
@@ -37,7 +38,6 @@ class PageAltarRecipe(private val result: Item, private val ingredients: List<It
         GuiHelper.drawScaledItemStack(ItemStack(ModBlocks.altar), centerX - 7, centerY - 6, 2f)
         // GuiHelper.drawScaledItemStack(ItemStack(result), guiLeft + 75, guiTop + 115, 2.5f)
 
-        // TODO: Add an arrow pointing clockwise from the first/gilded item
         // TODO: Split into an inner and outer circle for big recipes
 
         // Adapted from an answer on StackOverflow by trashgod
@@ -50,6 +50,10 @@ class PageAltarRecipe(private val result: Item, private val ingredients: List<It
 
         var tooltip = mutableListOf<String>()
 
+        var drawArrow = false
+        var arrowX = 0
+        var arrowY = 0
+
         for (i in 0 until segments) {
             val t = 2 * Math.PI * i / segments
             val x = Math.round(centerX + radius * Math.cos(t))
@@ -59,10 +63,15 @@ class PageAltarRecipe(private val result: Item, private val ingredients: List<It
             Minecraft.getMinecraft().textureManager.bindTexture(ResourceLocation("bugmagic:textures/gui/profile/item/backing.png"))
             GuiHelper.drawSizedIconWithoutColor(x.toInt() - 4, y.toInt() - 4, guiBase.xSize / scale, guiBase.ySize / scale, 0.0f)
 
-            // Gilding
             if (i == 0) {
+                // Gilding
                 Minecraft.getMinecraft().textureManager.bindTexture(ResourceLocation("bugmagic:textures/gui/profile/item/gilding.png"))
                 GuiHelper.drawSizedIconWithoutColor(x.toInt() - 4, y.toInt() - 4, guiBase.xSize / scale, guiBase.ySize / scale, 0.0f)
+
+                // Arrow
+                drawArrow = true
+                arrowX = x.toInt()
+                arrowY = y.toInt()
             }
 
             // Item
@@ -73,6 +82,13 @@ class PageAltarRecipe(private val result: Item, private val ingredients: List<It
             }
         }
 
+        if (drawArrow) {
+            Minecraft.getMinecraft().textureManager.bindTexture(ResourceLocation("guideapi:textures/gui/book_colored.png"))
+
+            guiBase.drawTexturedModalRectWithColor(arrowX - 4, arrowY + 58, 24, 214, 18, 10, Color.YELLOW)
+        }
+
+        // Tooltips
         if (!tooltip.isEmpty()) {
             guiBase.drawHoveringText(tooltip, mouseX, mouseY)
             tooltip.clear()
