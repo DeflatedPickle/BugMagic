@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.OpenGlHelper
 import net.minecraft.client.renderer.entity.layers.LayerRenderer
 import net.minecraft.util.ResourceLocation
 
-class LayerFireflyLight(val fireflyRendererIn: RenderFirefly) : LayerRenderer<EntityFirefly> {
+class LayerFireflyLight(private val fireflyRendererIn: RenderFirefly) : LayerRenderer<EntityFirefly> {
     val texture = ResourceLocation("bugmagic:textures/entity/firefly/firefly_light.png")
 
     override fun shouldCombineTextures(): Boolean {

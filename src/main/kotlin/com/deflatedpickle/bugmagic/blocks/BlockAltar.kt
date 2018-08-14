@@ -2,7 +2,6 @@ package com.deflatedpickle.bugmagic.blocks
 
 import com.deflatedpickle.bugmagic.init.ModCreativeTabs
 import com.deflatedpickle.bugmagic.tileentity.TileEntityAltar
-import com.deflatedpickle.bugmagic.tileentity.TileEntityCauldron
 import com.deflatedpickle.bugmagic.util.AltarUtil
 import com.deflatedpickle.picklelib.block.BlockBase
 import net.minecraft.block.ITileEntityProvider
@@ -28,8 +27,8 @@ class BlockAltar(name: String) : BlockBase(name, Material.IRON, 2f, 10f, Immutab
         return false
     }
 
-    override fun onBlockActivated(worldIn: World?, pos: BlockPos?, state: IBlockState?, playerIn: EntityPlayer?, hand: EnumHand?, facing: EnumFacing?, hitX: Float, hitY: Float, hitZ: Float): Boolean {
-        val tileEntity = worldIn!!.getTileEntity(pos!!)
+    override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState?, playerIn: EntityPlayer?, hand: EnumHand?, facing: EnumFacing?, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+        val tileEntity = worldIn.getTileEntity(pos)
 
         if (!worldIn.isRemote) {
             if (tileEntity is TileEntityAltar) {
@@ -65,7 +64,7 @@ class BlockAltar(name: String) : BlockBase(name, Material.IRON, 2f, 10f, Immutab
         return true
     }
 
-    override fun createNewTileEntity(worldIn: World?, meta: Int): TileEntity? {
+    override fun createNewTileEntity(worldIn: World?, meta: Int): TileEntity {
         return TileEntityAltar(16)
     }
 }

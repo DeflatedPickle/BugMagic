@@ -12,11 +12,11 @@ import net.minecraft.util.EnumActionResult
 import net.minecraft.util.EnumHand
 import net.minecraft.world.World
 
-class ItemBugNet(name: String, stackSize: Int, creativeTab: CreativeTabs, val bugLimit: Int) : ItemBase(name, stackSize, creativeTab) {
-    override fun onItemUseFinish(stack: ItemStack?, worldIn: World?, entityLiving: EntityLivingBase?): ItemStack {
+class ItemBugNet(name: String, stackSize: Int, creativeTab: CreativeTabs, private val bugLimit: Int) : ItemBase(name, stackSize, creativeTab) {
+    override fun onItemUseFinish(stack: ItemStack, worldIn: World, entityLiving: EntityLivingBase): ItemStack {
         if (entityLiving is EntityPlayer) {
-            if (!worldIn!!.isRemote) {
-                if (!stack!!.hasTagCompound()) {
+            if (!worldIn.isRemote) {
+                if (!stack.hasTagCompound()) {
                     stack.tagCompound = NBTTagCompound()
                 }
                 val compound = stack.tagCompound!!
@@ -45,12 +45,12 @@ class ItemBugNet(name: String, stackSize: Int, creativeTab: CreativeTabs, val bu
         return super.onItemUseFinish(stack, worldIn, entityLiving)
     }
 
-    override fun showDurabilityBar(stack: ItemStack?): Boolean {
+    override fun showDurabilityBar(stack: ItemStack): Boolean {
         return true
     }
 
-    override fun getDurabilityForDisplay(stack: ItemStack?): Double {
-        return if (stack!!.hasTagCompound()) {
+    override fun getDurabilityForDisplay(stack: ItemStack): Double {
+        return if (stack.hasTagCompound()) {
             (bugLimit - stack.tagCompound!!.getInteger("bugs").toDouble()) / bugLimit
         }
         else {
@@ -58,16 +58,16 @@ class ItemBugNet(name: String, stackSize: Int, creativeTab: CreativeTabs, val bu
         }
     }
 
-    override fun getMaxItemUseDuration(stack: ItemStack?): Int {
+    override fun getMaxItemUseDuration(stack: ItemStack): Int {
         return 32
     }
 
-    override fun getItemUseAction(stack: ItemStack?): EnumAction {
+    override fun getItemUseAction(stack: ItemStack): EnumAction {
         return EnumAction.BOW
     }
 
-    override fun onItemRightClick(worldIn: World?, playerIn: EntityPlayer?, handIn: EnumHand?): ActionResult<ItemStack> {
-        playerIn!!.activeHand = handIn!!
+    override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack> {
+        playerIn.activeHand = handIn
         return ActionResult(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn))
     }
 }

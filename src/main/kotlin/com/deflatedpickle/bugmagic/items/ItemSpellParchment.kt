@@ -1,6 +1,5 @@
 package com.deflatedpickle.bugmagic.items
 
-import com.deflatedpickle.bugmagic.BugMagic
 import com.deflatedpickle.bugmagic.spells.SpellBase
 import com.deflatedpickle.picklelib.item.ItemBase
 import net.minecraft.client.renderer.ItemMeshDefinition
@@ -16,11 +15,8 @@ import net.minecraft.util.EnumHand
 import net.minecraft.world.World
 
 class ItemSpellParchment(name: String, stackSize: Int, creativeTab: CreativeTabs, val spell: SpellBase) : ItemBase(name, stackSize, creativeTab) {
-    override fun onItemUseFinish(stack: ItemStack?, worldIn: World?, entityLiving: EntityLivingBase?): ItemStack {
+    override fun onItemUseFinish(stack: ItemStack, worldIn: World, entityLiving: EntityLivingBase): ItemStack {
         if (entityLiving is EntityPlayer) {
-            // Check if the player already knows this spell
-                // If so, send a message to the player
-                // If not, run spell#learn
             spell.caster = entityLiving
             spell.parchment = stack
             spell.learn()
@@ -29,16 +25,16 @@ class ItemSpellParchment(name: String, stackSize: Int, creativeTab: CreativeTabs
         return super.onItemUseFinish(stack, worldIn, entityLiving)
     }
 
-    override fun getMaxItemUseDuration(stack: ItemStack?): Int {
+    override fun getMaxItemUseDuration(stack: ItemStack): Int {
         return 32
     }
 
-    override fun getItemUseAction(stack: ItemStack?): EnumAction {
+    override fun getItemUseAction(stack: ItemStack): EnumAction {
         return EnumAction.BOW
     }
 
-    override fun onItemRightClick(worldIn: World?, playerIn: EntityPlayer?, handIn: EnumHand?): ActionResult<ItemStack> {
-        playerIn!!.activeHand = handIn!!
+    override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack> {
+        playerIn.activeHand = handIn
         return ActionResult(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn))
     }
 

@@ -28,10 +28,10 @@ class TileEntityCauldron(val maxParts: Int, val maxWater: Float = 1f) : TileEnti
 
     var fullyStirred = false
 
-    override fun writeToNBT(compound: NBTTagCompound?): NBTTagCompound {
+    override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
         super.writeToNBT(compound)
 
-        compound!!.setInteger("partAmount", partAmount)
+        compound.setInteger("partAmount", partAmount)
         compound.setFloat("waterAmount", waterAmount)
         compound.setInteger("stirAmount", stirAmount)
         compound.setBoolean("hasStirrer", hasStirrer)
@@ -40,10 +40,10 @@ class TileEntityCauldron(val maxParts: Int, val maxWater: Float = 1f) : TileEnti
         return compound
     }
 
-    override fun readFromNBT(compound: NBTTagCompound?) {
+    override fun readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound)
 
-        partAmount = compound!!.getInteger("partAmount")
+        partAmount = compound.getInteger("partAmount")
         waterAmount = compound.getFloat("waterAmount")
         stirAmount = compound.getInteger("stirAmount")
         hasStirrer = compound.getBoolean("hasStirrer")

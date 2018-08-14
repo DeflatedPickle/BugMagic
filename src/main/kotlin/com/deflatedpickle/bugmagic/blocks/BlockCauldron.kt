@@ -2,9 +2,7 @@ package com.deflatedpickle.bugmagic.blocks
 
 import com.deflatedpickle.bugmagic.init.ModCreativeTabs
 import com.deflatedpickle.bugmagic.init.ModItems
-import com.deflatedpickle.bugmagic.items.ItemBugNet
 import com.deflatedpickle.bugmagic.items.ItemBugPart
-import com.deflatedpickle.bugmagic.tileentity.TileEntityBugJar
 import com.deflatedpickle.bugmagic.tileentity.TileEntityCauldron
 import com.deflatedpickle.picklelib.block.BlockBase
 import net.minecraft.block.ITileEntityProvider
@@ -20,7 +18,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import org.apache.commons.lang3.tuple.ImmutablePair
 
-class BlockCauldron(name: String, val stirsRequired: Int) : BlockBase(name, Material.IRON, 2f, 10f, ImmutablePair("pickaxe", 0), ModCreativeTabs.tabGeneral), ITileEntityProvider {
+class BlockCauldron(name: String, private val stirsRequired: Int) : BlockBase(name, Material.IRON, 2f, 10f, ImmutablePair("pickaxe", 0), ModCreativeTabs.tabGeneral), ITileEntityProvider {
     override fun isFullCube(state: IBlockState?): Boolean {
         return false
     }
@@ -29,8 +27,8 @@ class BlockCauldron(name: String, val stirsRequired: Int) : BlockBase(name, Mate
         return false
     }
 
-    override fun onBlockActivated(worldIn: World?, pos: BlockPos?, state: IBlockState?, playerIn: EntityPlayer?, hand: EnumHand?, facing: EnumFacing?, hitX: Float, hitY: Float, hitZ: Float): Boolean {
-        val tileEntity = worldIn!!.getTileEntity(pos!!)
+    override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState?, playerIn: EntityPlayer?, hand: EnumHand?, facing: EnumFacing?, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+        val tileEntity = worldIn.getTileEntity(pos)
 
         if (worldIn.isRemote) {
             if (tileEntity is TileEntityCauldron) {
@@ -105,7 +103,7 @@ class BlockCauldron(name: String, val stirsRequired: Int) : BlockBase(name, Mate
         return true
     }
 
-    override fun createNewTileEntity(worldIn: World?, meta: Int): TileEntity? {
+    override fun createNewTileEntity(worldIn: World?, meta: Int): TileEntity {
         return TileEntityCauldron(8)
     }
 }

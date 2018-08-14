@@ -9,7 +9,6 @@ import com.deflatedpickle.picklelib.block.BlockBase
 import net.minecraft.block.ITileEntityProvider
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
-import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntity
@@ -20,10 +19,12 @@ import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 import org.apache.commons.lang3.RandomUtils
 import org.apache.commons.lang3.tuple.ImmutablePair
 
-class BlockBugJar(name: String, val maxBugs: Int) : BlockBase(name, Material.GLASS, 1f, 1f, ImmutablePair("pickaxe", 0), ModCreativeTabs.tabGeneral), ITileEntityProvider {
+class BlockBugJar(name: String, private val maxBugs: Int) : BlockBase(name, Material.GLASS, 1f, 1f, ImmutablePair("pickaxe", 0), ModCreativeTabs.tabGeneral), ITileEntityProvider {
     // TODO: Fix the bounding box (it appears to move with the player, and the player doesn't collide with it)
 
     private val axisAlignedBB = AxisAlignedBB(6.0 / 16, 0.0, 6.0 / 16, 6.0 / 10, 6.0 / 16, 6.0 / 10)
@@ -36,6 +37,7 @@ class BlockBugJar(name: String, val maxBugs: Int) : BlockBase(name, Material.GLA
         return false
     }
 
+    @SideOnly(Side.CLIENT)
     override fun getBlockLayer(): BlockRenderLayer {
         return BlockRenderLayer.TRANSLUCENT
     }
@@ -44,12 +46,8 @@ class BlockBugJar(name: String, val maxBugs: Int) : BlockBase(name, Material.GLA
         return axisAlignedBB
     }
 
-    override fun addCollisionBoxToList(state: IBlockState?, worldIn: World?, pos: BlockPos?, entityBox: AxisAlignedBB?, collidingBoxes: MutableList<AxisAlignedBB>?, entityIn: Entity?, isActualState: Boolean) {
-        super.addCollisionBoxToList(state, worldIn, pos, axisAlignedBB, collidingBoxes, entityIn, isActualState)
-    }
-
-    override fun onBlockActivated(worldIn: World?, pos: BlockPos?, state: IBlockState?, playerIn: EntityPlayer?, hand: EnumHand?, facing: EnumFacing?, hitX: Float, hitY: Float, hitZ: Float): Boolean {
-        val tileEntity = worldIn!!.getTileEntity(pos)
+    override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState?, playerIn: EntityPlayer?, hand: EnumHand?, facing: EnumFacing?, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+        val tileEntity = worldIn.getTileEntity(pos)
 
         if (worldIn.isRemote) {
             if (tileEntity is TileEntityBugJar) {
@@ -95,7 +93,7 @@ class BlockBugJar(name: String, val maxBugs: Int) : BlockBase(name, Material.GLA
         return true
     }
 
-    override fun createNewTileEntity(worldIn: World?, meta: Int): TileEntity? {
+    override fun createNewTileEntity(worldIn: World?, meta: Int): TileEntity {
         return TileEntityBugJar(maxBugs)
     }
 }

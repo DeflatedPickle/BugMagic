@@ -1,10 +1,8 @@
 package com.deflatedpickle.bugmagic.entity.mob
 
 import com.deflatedpickle.bugmagic.entity.ai.EntityAIHoverToOwner
-import com.deflatedpickle.bugmagic.util.AltarUtil
 import net.minecraft.entity.EntityAgeable
 import net.minecraft.entity.SharedMonsterAttributes
-import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.passive.EntityTameable
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Blocks
@@ -59,8 +57,8 @@ class EntityBugpack(worldIn: World) : EntityTameable(worldIn) {
         return null
     }
 
-    override fun processInteract(player: EntityPlayer?, hand: EnumHand?): Boolean {
-        if (!player!!.world.isRemote) {
+    override fun processInteract(player: EntityPlayer, hand: EnumHand?): Boolean {
+        if (!player.world.isRemote) {
             if (player == owner) {
                 if (hand == EnumHand.MAIN_HAND) {
                     val stack = player.getHeldItem(hand)

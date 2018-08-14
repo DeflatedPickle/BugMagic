@@ -15,7 +15,6 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import net.minecraftforge.fml.relauncher.Side
 
-
 open class CommonProxy {
     val fireflyList = listOf(ModItems.partLeg, ModItems.partLeg, ModItems.partLeg, ModItems.partLeg,
             ModItems.partWing, ModItems.partWing,

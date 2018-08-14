@@ -20,7 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly
 import java.awt.Color
 
 class PageAltarRecipe(private val result: Item, private val ingredients: List<Item>) : Page() {
-    val requirements = mutableListOf<String>()
+    private val requirements = mutableListOf<String>()
 
     @SideOnly(Side.CLIENT)
     override fun onInit(book: Book?, category: CategoryAbstract?, entry: EntryAbstract?, player: EntityPlayer?, bookStack: ItemStack?, guiEntry: GuiEntry?) {

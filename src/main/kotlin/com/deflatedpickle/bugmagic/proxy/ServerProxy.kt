@@ -1,4 +1,3 @@
 package com.deflatedpickle.bugmagic.proxy
 
-class ServerProxy : CommonProxy() {
-}
+class ServerProxy : CommonProxy()

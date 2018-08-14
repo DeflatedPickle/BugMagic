@@ -11,7 +11,7 @@ class ItemMagnifyingGlass(name: String) : ItemBase(name, 1, ModCreativeTabs.tabG
 
     // The use is implemented in BlockBugJar, maybe move parts here?
 
-    override fun showDurabilityBar(stack: ItemStack?): Boolean {
+    override fun showDurabilityBar(stack: ItemStack): Boolean {
         return true
     }
 }

@@ -2,9 +2,7 @@ package com.deflatedpickle.bugmagic.spells
 
 import com.deflatedpickle.bugmagic.util.BugUtil
 import com.deflatedpickle.bugmagic.util.SpellUtil
-import net.minecraft.client.entity.EntityPlayerSP
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.text.TextComponentString

@@ -19,7 +19,6 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import org.apache.commons.lang3.RandomUtils
 
-
 class ForgeEventHandler {
     var tickCounter = 0
     val drainMap: MutableMap<String, MutableList<Int>> = mutableMapOf()

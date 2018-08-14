@@ -25,17 +25,17 @@ class TileEntityBugJar(val maxBugs: Int) : TileEntity() {
         currentBugs = 0
     }
 
-    override fun writeToNBT(compound: NBTTagCompound?): NBTTagCompound {
+    override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
         super.writeToNBT(compound)
 
-        compound!!.setInteger("bugs", currentBugs)
+        compound.setInteger("bugs", currentBugs)
 
         return compound
     }
 
-    override fun readFromNBT(compound: NBTTagCompound?) {
+    override fun readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound)
 
-        currentBugs = compound!!.getInteger("bugs")
+        currentBugs = compound.getInteger("bugs")
     }
 }

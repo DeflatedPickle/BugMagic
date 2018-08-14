@@ -12,7 +12,6 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.world.World
 import net.minecraftforge.fml.common.Optional
 
-
 @Optional.Interface(iface="com.elytradev.mirage.lighting.IEntityLightEventConsumer", modid="mirage")
 class EntityFirefly(worldIn: World) : EntityTameable(worldIn), IEntityLightEventConsumer {
     init {

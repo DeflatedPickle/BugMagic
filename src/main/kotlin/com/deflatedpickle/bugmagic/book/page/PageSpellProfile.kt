@@ -10,12 +10,11 @@ import amerifrance.guideapi.page.PageText
 import com.deflatedpickle.bugmagic.spells.SpellBase
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.FontRenderer
-import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
-class PageSpellProfile(spell: SpellBase, val image: ResourceLocation) : Page() {
+class PageSpellProfile(spell: SpellBase, private val image: ResourceLocation) : Page() {
     private val pageText = PageText("Spell Class: ${spell.cult.capitalize()}\nCost: ${spell.cost}bp\nDrain Cost: ${spell.drain}bp\nDrain Interval: ${spell.drainWait / 20}s\nCast Limit: ${spell.castLimit}\nCooldown: ${spell.cooldownTime / 20}s")
 
     @SideOnly(Side.CLIENT)
