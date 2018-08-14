@@ -6,9 +6,11 @@ import amerifrance.guideapi.api.impl.abstraction.CategoryAbstract
 import amerifrance.guideapi.api.impl.abstraction.EntryAbstract
 import amerifrance.guideapi.api.util.GuiHelper
 import amerifrance.guideapi.gui.GuiBase
+import amerifrance.guideapi.gui.GuiEntry
 import com.deflatedpickle.bugmagic.init.ModBlocks
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.FontRenderer
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
@@ -16,6 +18,16 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
 class PageAltarRecipe(private val result: Item, private val ingredients: List<Item>) : Page() {
+    val requirements = mutableListOf<String>()
+
+    @SideOnly(Side.CLIENT)
+    override fun onInit(book: Book?, category: CategoryAbstract?, entry: EntryAbstract?, player: EntityPlayer?, bookStack: ItemStack?, guiEntry: GuiEntry?) {
+        requirements.add("§fRequirements")
+        for (i in ingredients.groupingBy { it }.eachCount()) {
+            requirements.add("§7${i.value}x ${i.key.getItemStackDisplayName(ItemStack(i.key))}")
+        }
+    }
+
     @SideOnly(Side.CLIENT)
     override fun draw(book: Book, category: CategoryAbstract, entry: EntryAbstract, guiLeft: Int, guiTop: Int, mouseX: Int, mouseY: Int, guiBase: GuiBase, fontRendererObj: FontRenderer) {
         val centerX = guiLeft + 87
@@ -62,6 +74,10 @@ class PageAltarRecipe(private val result: Item, private val ingredients: List<It
         if (!tooltip.isEmpty()) {
             guiBase.drawHoveringText(tooltip, mouseX, mouseY)
             tooltip.clear()
+        }
+
+        if (GuiHelper.isMouseBetween(mouseX, mouseY, centerX - 4, centerY - 4, 24, 28)) {
+            guiBase.drawHoveringText(requirements, mouseX, mouseY)
         }
     }
 }
