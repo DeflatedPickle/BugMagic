@@ -14,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.text.TextFormatting
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
@@ -22,9 +23,10 @@ class PageAltarRecipe(private val result: Item, private val ingredients: List<It
 
     @SideOnly(Side.CLIENT)
     override fun onInit(book: Book?, category: CategoryAbstract?, entry: EntryAbstract?, player: EntityPlayer?, bookStack: ItemStack?, guiEntry: GuiEntry?) {
-        requirements.add("§fRequirements")
+        requirements.clear()
+        requirements.add("${TextFormatting.WHITE}Requirements")
         for (i in ingredients.groupingBy { it }.eachCount()) {
-            requirements.add("§7${i.value}x ${i.key.getItemStackDisplayName(ItemStack(i.key))}")
+            requirements.add("${TextFormatting.GRAY}${i.value}x ${i.key.getItemStackDisplayName(ItemStack(i.key))}")
         }
     }
 
