@@ -2,6 +2,7 @@
 itemGroup.tab_bugmagic_general=BugMagic: General
 
 # Items
+## General
 item.bugmagic:wand_generic.name=Wand of the Bugoneer
 item.bugmagic:bug_net.name=Bug Net
 item.bugmagic:magnifying_glass.name=Magnifying Glass
@@ -24,3 +25,47 @@ tile.bugmagic:altar.name=Bug Altar
 # Entities
 entity.firefly.name=Firefly
 entity.bugpack.name=Bugpack
+
+# Guides
+bugmagic.buganomicon.title=Buganomicon
+## Categories
+bugmagic.buganomicon.bugsics.title=Bugsics
+bugmagic.buganomicon.bugstiary.title=Bugstiary
+## Pages
+### Bugsics
+#### Welcome
+bugmagic.buganomicon.bugsics.welcome.title=Welcome to Bugmagic
+bugmagic.buganomicon.bugsics.welcome.description=This guide will serve as an introduction into the certain magic of bugs. Now, be weary, this magic is not for the simple wizard or witch, as, to progress any true amount, you will have to partake in a cult of bugs, and have to sacrifice bugs to create new spells.
+#### Book
+bugmagic.buganomicon.bugsics.book.title=Buganomicon
+#### Wand
+bugmagic.buganomicon.bugsics.wand.title=Wand of the Bugoneer
+bugmagic.buganomicon.bugsics.wand.description=To get started in the vein of magic with so-called bugs, a wizard or witch must find or craft themselves the basic Wand of the Bugoneer. It can be crafted at a table with a combination of sticks formed in the pattern on the next page.
+#### Net
+bugmagic.buganomicon.bugsics.net.title=Bug Net
+bugmagic.buganomicon.bugsics.net.description=The bug net is used to capture bugs. It can be crafted with the recipe on the next page.
+#### Magnifying
+bugmagic.buganomicon.bugsics.magnifying.title=Magnifying Glass
+bugmagic.buganomicon.bugsics.magnifying.description=The magnifying glass is used to examine bugs inside of a bug jar, to obtain bug parts. It can be crafted with the recipe on the next page.
+#### Part
+bugmagic.buganomicon.bugsics.part.title=Bug Parts
+bugmagic.buganomicon.bugsics.part.description=Bug parts are used to form scrolls on the altar, they can be acquired by examining bugs inside jars.\n\nParts come in four forms; legs, wings, bodies and heads. These are required in different amounts at an altar to craft spells.
+#### Jar
+bugmagic.buganomicon.bugsics.jar.title=Bug Jar
+bugmagic.buganomicon.bugsics.jar.description=The bug jar is used to hold bugs caught with the bug net. The bugs inside can be examined by using the magnifying glass. It can be crafted with the recipe on the next page.
+#### Cauldron
+bugmagic.buganomicon.bugsics.cauldron.title=Cauldron
+bugmagic.buganomicon.bugsics.cauldron.description=The cauldron is used to boil bug parts into bug resonance, which can be bottled up and drunk to regenerate bug power. It can be crafted with the recipe on the next page.
+#### Altar
+bugmagic.buganomicon.bugsics.altar.title=Altar
+bugmagic.buganomicon.bugsics.altar.description=The altar is used to form spells using bug parts and other items. The recipes in it must follow a specific order that will be shown in the spell pages. It can be crafted with the recipe on the next page.
+#### Spells
+bugmagic.buganomicon.bugsics.spell.title=Spells
+bugmagic.buganomicon.bugsics.spell.description=Spells are acquired in the form of scrolls, found in chests, crafted or given by your cult leader (if you decided to join one). The scroll can be learnt to gain the spell and then selected with your wand. Each spell has a different class, cost, drain cost, drain interval, cast limit and cooldown. The cost is simply how much bug power it will cost to cast the spell, the drain cost is how much bug power will be drained every drain interval whilst the spell is cast, the drain interval is how long it will take to drain, the cast limit is how many of the spell can be cast at once, and the cooldown is how long it will take for the wand to cooldown after casting the spell.
+### Bugstiary
+#### Firefly
+bugmagic.buganomicon.bugstiary.firefly.title=Firefly
+bugmagic.buganomicon.bugstiary.firefly.description=The Firefly spell will spawn a small fly that will follow you, hovering in the air, that will light up the area just around it.\nThough the Firefly is not at all smart, and can get caught on blocks or even kill itself.
+#### Bugpack
+bugmagic.buganomicon.bugstiary.bugpack.title=Bugpack
+bugmagic.buganomicon.bugstiary.bugpack.description=The Bugpack spell will spawn a small fly that will follow you, hovering in the air, and will hold a single stack for you.\nThough the Bugpack is not at all smart, and can get caught on blocks or even kill itself.

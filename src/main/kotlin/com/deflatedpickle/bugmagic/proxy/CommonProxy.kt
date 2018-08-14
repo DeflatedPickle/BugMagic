@@ -17,6 +17,16 @@ import net.minecraftforge.fml.relauncher.Side
 
 
 open class CommonProxy {
+    val fireflyList = listOf(ModItems.partLeg, ModItems.partLeg, ModItems.partLeg, ModItems.partLeg,
+            ModItems.partWing, ModItems.partWing,
+            ModItems.partBody, ModItems.partHead,
+            Items.GLOWSTONE_DUST)
+
+    val bugpackList = listOf(ModItems.partLeg, ModItems.partLeg, ModItems.partLeg, ModItems.partLeg,
+            ModItems.partWing, ModItems.partWing,
+            ModItems.partBody, ModItems.partHead,
+            ItemStack(Blocks.CHEST).item)
+
     fun preInit(event: FMLPreInitializationEvent) {
         // BugMagic.networkWrapper.registerMessage(PacketBugPower::class.java, PacketBugPower::class.java, 0, Side.CLIENT)
         BugMagic.networkWrapper.registerMessage(PacketBugPower::class.java, PacketBugPower::class.java, 0, Side.SERVER)
@@ -34,17 +44,8 @@ open class CommonProxy {
         ModCrafting
 
         // TODO: Move to an object
-        AltarUtil.addRecipe(ModItems.spellFirefly,
-                listOf(ModItems.partLeg, ModItems.partLeg, ModItems.partLeg, ModItems.partLeg,
-                        ModItems.partWing, ModItems.partWing,
-                        ModItems.partBody, ModItems.partHead,
-                        Items.GLOWSTONE_DUST))
-
-        AltarUtil.addRecipe(ModItems.spellBugpack,
-                listOf(ModItems.partLeg, ModItems.partLeg, ModItems.partLeg, ModItems.partLeg,
-                        ModItems.partWing, ModItems.partWing,
-                        ModItems.partBody, ModItems.partHead,
-                        ItemStack(Blocks.CHEST).item))
+        AltarUtil.addRecipe(ModItems.spellFirefly, fireflyList)
+        AltarUtil.addRecipe(ModItems.spellBugpack, bugpackList)
     }
 
     open fun getPlayer(): EntityPlayer? {
