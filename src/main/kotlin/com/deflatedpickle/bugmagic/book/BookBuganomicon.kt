@@ -26,7 +26,6 @@ import com.deflatedpickle.bugmagic.BugMagic
 import com.deflatedpickle.bugmagic.book.page.PageAltarRecipe
 import com.deflatedpickle.bugmagic.book.page.PageSpellProfile
 import com.deflatedpickle.bugmagic.init.ModBlocks
-import com.deflatedpickle.bugmagic.proxy.ClientProxy
 import com.deflatedpickle.bugmagic.spells.SpellBugpack
 import com.deflatedpickle.bugmagic.spells.SpellFirefly
 import net.minecraft.item.crafting.Ingredient
@@ -36,7 +35,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe
 
 @GuideBook
 class BookBuganomicon : IGuideBook {
-    lateinit var guide: Book
+    private lateinit var guide: Book
 
     override fun buildBook(): Book? {
         val binder = BookBinder(ResourceLocation(Reference.MOD_ID, "buganomicon"))
