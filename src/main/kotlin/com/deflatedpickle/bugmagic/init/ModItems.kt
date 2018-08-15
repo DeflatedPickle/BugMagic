@@ -12,6 +12,8 @@ object ModItems {
     val magnifyingGlass = ItemMagnifyingGlass("magnifying_glass")
 
     // Spells
+    val spellEmpty = ItemSpellParchment("spell_empty", 64, ModCreativeTabs.tabGeneral, null)
+
     val spellFirefly = ItemSpellParchment("spell_firefly", 1, ModCreativeTabs.tabGeneral, SpellFirefly())
     val spellBugpack = ItemSpellParchment("spell_bugpack", 1, ModCreativeTabs.tabGeneral, SpellBugpack())
     val spellWurm = ItemSpellParchment("spell_wurm", 1, ModCreativeTabs.tabGeneral, SpellWurm())

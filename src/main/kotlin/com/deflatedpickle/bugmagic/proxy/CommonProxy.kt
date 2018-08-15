@@ -16,17 +16,17 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import net.minecraftforge.fml.relauncher.Side
 
 open class CommonProxy {
-    val fireflyList = listOf(ModItems.partLeg, ModItems.partLeg, ModItems.partLeg, ModItems.partLeg,
+    val fireflyList = listOf(ModItems.spellEmpty, ModItems.partLeg, ModItems.partLeg, ModItems.partLeg, ModItems.partLeg,
             ModItems.partWing, ModItems.partWing,
             ModItems.partBody, ModItems.partHead,
             Items.GLOWSTONE_DUST)
 
-    val bugpackList = listOf(ModItems.partLeg, ModItems.partLeg, ModItems.partLeg, ModItems.partLeg,
+    val bugpackList = listOf(ModItems.spellEmpty, ModItems.partLeg, ModItems.partLeg, ModItems.partLeg, ModItems.partLeg,
             ModItems.partWing, ModItems.partWing,
             ModItems.partBody, ModItems.partHead,
             ItemStack(Blocks.CHEST).item)
 
-    val wurmList = listOf(ModItems.partBody, ModItems.partHead,
+    val wurmList = listOf(ModItems.spellEmpty, ModItems.partBody, ModItems.partHead,
             Items.BONE, ItemStack(Blocks.DIRT).item, ItemStack(Blocks.DIRT).item, ItemStack(Blocks.DIRT).item)
 
     fun preInit(event: FMLPreInitializationEvent) {

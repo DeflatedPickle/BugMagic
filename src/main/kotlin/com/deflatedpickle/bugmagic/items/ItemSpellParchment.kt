@@ -14,28 +14,45 @@ import net.minecraft.util.EnumActionResult
 import net.minecraft.util.EnumHand
 import net.minecraft.world.World
 
-class ItemSpellParchment(name: String, stackSize: Int, creativeTab: CreativeTabs, val spell: SpellBase) : ItemBase(name, stackSize, creativeTab) {
+class ItemSpellParchment(name: String, stackSize: Int, creativeTab: CreativeTabs, private val spell: SpellBase?) : ItemBase(name, stackSize, creativeTab) {
     override fun onItemUseFinish(stack: ItemStack, worldIn: World, entityLiving: EntityLivingBase): ItemStack {
-        if (entityLiving is EntityPlayer) {
-            spell.caster = entityLiving
-            spell.parchment = stack
-            spell.learn()
+        if (spell != null) {
+            if (entityLiving is EntityPlayer) {
+                spell.caster = entityLiving
+                spell.parchment = stack
+                spell.learn()
+            }
         }
 
         return super.onItemUseFinish(stack, worldIn, entityLiving)
     }
 
     override fun getMaxItemUseDuration(stack: ItemStack): Int {
-        return 32
+        return if (spell != null) {
+            32
+        }
+        else {
+            0
+        }
     }
 
     override fun getItemUseAction(stack: ItemStack): EnumAction {
-        return EnumAction.BOW
+        return if (spell != null) {
+            EnumAction.BOW
+        }
+        else {
+            EnumAction.NONE
+        }
     }
 
     override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack> {
-        playerIn.activeHand = handIn
-        return ActionResult(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn))
+        if (spell != null) {
+            playerIn.activeHand = handIn
+            return ActionResult(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn))
+        }
+        else {
+            return ActionResult(EnumActionResult.FAIL, playerIn.getHeldItem(handIn))
+        }
     }
 
     override fun getCustomMeshDefinition(): ItemMeshDefinition {

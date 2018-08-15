@@ -7,6 +7,7 @@ item.bugmagic:wand_generic.name=Wand of the Bugoneer
 item.bugmagic:bug_net.name=Bug Net
 item.bugmagic:magnifying_glass.name=Magnifying Glass
 ## Spells
+item.bugmagic:spell_empty.name=Blank Scroll
 item.bugmagic:spell_firefly.name=Scroll of the Firefly
 item.bugmagic:spell_bugpack.name=Scroll of the Bugpack
 item.bugmagic:spell_wurm.name=Scroll of the Wurm

@@ -30,6 +30,13 @@ object ModCrafting {
                 "S  ",
                 'G', Blocks.GLASS, 'S', Items.STICK)
 
+        GameRegistry.addShapedRecipe(ResourceLocation("bugmagic:spell_empty_recipe"), ResourceLocation("bugmagic"),
+                ItemStack(ModItems.spellEmpty),
+                "GPG",
+                " P ",
+                "GPG",
+                'G', Items.GOLD_INGOT, 'P', Items.PAPER)
+
         // Blocks
         GameRegistry.addShapedRecipe(ResourceLocation("bugmagic:bug_jar_recipe"), ResourceLocation("bugmagic"),
                 ItemStack(ModBlocks.bugJar),
