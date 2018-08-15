@@ -21,7 +21,6 @@ class SpellWurm : SpellBase() {
         entity = EntityWurm(caster!!.world)
         entity!!.ownerId = caster!!.gameProfile.id
         entity!!.setPositionAndRotation(caster!!.posX, caster!!.posY, caster!!.posZ, 0f, 0f)
-        // entity.startRiding(caster)
 
         caster!!.world.spawnEntity(entity!!)
     }
