@@ -27,7 +27,6 @@ class EntityWurm(worldIn: World) : EntityTameable(worldIn) {
     }
 
     override fun initEntityAI() {
-        // TODO: Add an AI to dig down to bedrock, if the block below is bedrock, die
         this.tasks.addTask(2, EntityAIDigDown(this))
     }
 

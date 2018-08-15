@@ -20,7 +20,7 @@ class SpellWurm : SpellBase() {
     override fun limitedCast() {
         entity = EntityWurm(caster!!.world)
         entity!!.ownerId = caster!!.gameProfile.id
-        entity!!.setPositionAndRotation(caster!!.posX + 1, caster!!.posY, caster!!.posZ + 1, 0f, 0f)
+        entity!!.setPositionAndRotation(caster!!.posX, caster!!.posY, caster!!.posZ, 0f, 0f)
         // entity.startRiding(caster)
 
         caster!!.world.spawnEntity(entity!!)
