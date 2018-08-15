@@ -71,3 +71,6 @@ bugmagic.buganomicon.bugstiary.firefly.description=The Firefly spell will spawn 
 #### Bugpack
 bugmagic.buganomicon.bugstiary.bugpack.title=Bugpack
 bugmagic.buganomicon.bugstiary.bugpack.description=The Bugpack spell will spawn a small fly that will follow you, hovering in the air, and will hold a single stack for you.\nThough the Bugpack is not at all smart, and can get caught on blocks or even kill itself.
+#### Wurm
+bugmagic.buganomicon.bugstiary.wurm.title=Wurm
+bugmagic.buganomicon.bugstiary.wurm.description=The Wurm spell will spawn a small, imobile worm that will eat its' way to bedrock, feeding the items back to its' owner until it reaches bedrock, where it will instantly starve and commit unexistence.
