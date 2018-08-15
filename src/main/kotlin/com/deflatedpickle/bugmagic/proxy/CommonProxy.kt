@@ -26,6 +26,9 @@ open class CommonProxy {
             ModItems.partBody, ModItems.partHead,
             ItemStack(Blocks.CHEST).item)
 
+    val wurmList = listOf(ModItems.partBody, ModItems.partHead,
+            Items.BONE, ItemStack(Blocks.DIRT).item, ItemStack(Blocks.DIRT).item, ItemStack(Blocks.DIRT).item)
+
     fun preInit(event: FMLPreInitializationEvent) {
         // BugMagic.networkWrapper.registerMessage(PacketBugPower::class.java, PacketBugPower::class.java, 0, Side.CLIENT)
         BugMagic.networkWrapper.registerMessage(PacketBugPower::class.java, PacketBugPower::class.java, 0, Side.SERVER)
@@ -45,6 +48,7 @@ open class CommonProxy {
         // TODO: Move to an object
         AltarUtil.addRecipe(ModItems.spellFirefly, fireflyList)
         AltarUtil.addRecipe(ModItems.spellBugpack, bugpackList)
+        AltarUtil.addRecipe(ModItems.spellWurm, wurmList)
     }
 
     open fun getPlayer(): EntityPlayer? {

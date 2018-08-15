@@ -28,6 +28,7 @@ import com.deflatedpickle.bugmagic.book.page.PageSpellProfile
 import com.deflatedpickle.bugmagic.init.ModBlocks
 import com.deflatedpickle.bugmagic.spells.SpellBugpack
 import com.deflatedpickle.bugmagic.spells.SpellFirefly
+import com.deflatedpickle.bugmagic.spells.SpellWurm
 import net.minecraft.item.crafting.Ingredient
 import net.minecraft.util.text.translation.I18n
 import net.minecraftforge.oredict.ShapedOreRecipe
@@ -143,6 +144,12 @@ class BookBuganomicon : IGuideBook {
         entryBugpack.addAll(PageHelper.pagesForLongText(I18n.translateToLocal("bugmagic.buganomicon.bugstiary.bugpack.description"), 300))
         entryBugpack.add(PageAltarRecipe(ModItems.spellBugpack, BugMagic.proxy!!.bugpackList))
         categoryBugstiary[ResourceLocation(Reference.MOD_ID, "page_bugpack")] = EntryItemStack(entryBugpack, "bugmagic.buganomicon.bugstiary.bugpack.title", ItemStack(ModItems.spellBugpack))
+
+        val entryWurm = ArrayList<IPage>()
+        entryWurm.add(PageSpellProfile(SpellWurm(), ResourceLocation("bugmagic:textures/gui/spells/wurm.png")))
+        entryWurm.addAll(PageHelper.pagesForLongText(I18n.translateToLocal("bugmagic.buganomicon.bugstiary.wurm.description"), 300))
+        entryWurm.add(PageAltarRecipe(ModItems.spellWurm, BugMagic.proxy!!.wurmList))
+        categoryBugstiary[ResourceLocation(Reference.MOD_ID, "page_wurm")] = EntryItemStack(entryWurm, "bugmagic.buganomicon.bugstiary.wurm.title", ItemStack(ModItems.spellWurm))
 
         binder.addCategory(CategoryItemStack(categoryBugstiary, "bugmagic.buganomicon.bugstiary.title", ItemStack(ModItems.partHead)))
 
