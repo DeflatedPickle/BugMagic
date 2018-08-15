@@ -27,35 +27,37 @@ class BlockAltar(name: String) : BlockBase(name, Material.IRON, 2f, 10f, Immutab
         return false
     }
 
-    override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState?, playerIn: EntityPlayer?, hand: EnumHand?, facing: EnumFacing?, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+    override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState?, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
         val tileEntity = worldIn.getTileEntity(pos)
 
         if (!worldIn.isRemote) {
             if (tileEntity is TileEntityAltar) {
-                if (hand == EnumHand.MAIN_HAND) {
-                    val itemStack = playerIn!!.getHeldItem(hand)
+                if (playerIn.canPlayerEdit(pos, facing, playerIn.getHeldItem(hand))) {
+                    if (hand == EnumHand.MAIN_HAND) {
+                        val itemStack = playerIn.getHeldItem(hand)
 
-                    if (itemStack.isEmpty) {
-                        if (playerIn.isSneaking) {
-                            // Throw the parts back into the world
-                            for (i in tileEntity.getParts()) {
-                                worldIn.spawnEntity(EntityItem(worldIn, pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble(), ItemStack(i)))
+                        if (itemStack.isEmpty) {
+                            if (playerIn.isSneaking) {
+                                // Throw the parts back into the world
+                                for (i in tileEntity.getParts()) {
+                                    worldIn.spawnEntity(EntityItem(worldIn, pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble(), ItemStack(i)))
+                                }
+                                tileEntity.clearParts()
                             }
-                            tileEntity.clearParts()
-                        }
-                        else {
-                            // Attempt to craft the items together
-                            if (AltarUtil.getRecipes().containsKey(tileEntity.getParts())) {
-                                // The recipe's valid, poof out the item, please
-                                val item = EntityItem(worldIn, pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble(), ItemStack(AltarUtil.getRecipes()[tileEntity.getParts()]!!))
-                                worldIn.spawnEntity(item)
-                            }
+                            else {
+                                // Attempt to craft the items together
+                                if (AltarUtil.getRecipes().containsKey(tileEntity.getParts())) {
+                                    // The recipe's valid, poof out the item, please
+                                    val item = EntityItem(worldIn, pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble(), ItemStack(AltarUtil.getRecipes()[tileEntity.getParts()]!!))
+                                    worldIn.spawnEntity(item)
+                                }
 
+                            }
                         }
-                    }
-                    else if (itemStack.item is Item) {
-                        tileEntity.addPart(itemStack.item)
-                        itemStack.shrink(1)
+                        else if (itemStack.item is Item) {
+                            tileEntity.addPart(itemStack.item)
+                            itemStack.shrink(1)
+                        }
                     }
                 }
             }

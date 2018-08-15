@@ -46,44 +46,46 @@ class BlockBugJar(name: String, private val maxBugs: Int) : BlockBase(name, Mate
         return axisAlignedBB
     }
 
-    override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState?, playerIn: EntityPlayer?, hand: EnumHand?, facing: EnumFacing?, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+    override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState?, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
         val tileEntity = worldIn.getTileEntity(pos)
 
         if (worldIn.isRemote) {
             if (tileEntity is TileEntityBugJar) {
-                if (hand == EnumHand.MAIN_HAND) {
-                    val itemStack = playerIn!!.getHeldItem(hand)
-                    if (itemStack.item is ItemBugNet) {
-                        // Remove bugs from the net
-                        val stackCompound = itemStack.tagCompound!!
+                if (playerIn.canPlayerEdit(pos, facing, playerIn.getHeldItem(hand))) {
+                    if (hand == EnumHand.MAIN_HAND) {
+                        val itemStack = playerIn.getHeldItem(hand)
+                        if (itemStack.item is ItemBugNet) {
+                            // Remove bugs from the net
+                            val stackCompound = itemStack.tagCompound!!
 
-                        if (stackCompound.getInteger("bugs") >= 0 && tileEntity.getBugs() < maxBugs) {
-                            stackCompound.setInteger("bugs", stackCompound.getInteger("bugs") - 1)
+                            if (stackCompound.getInteger("bugs") >= 0 && tileEntity.getBugs() < maxBugs) {
+                                stackCompound.setInteger("bugs", stackCompound.getInteger("bugs") - 1)
 
-                            tileEntity.addBug(1)
-                        }
-                    }
-                    else if (itemStack.item is ItemMagnifyingGlass) {
-                        if (tileEntity.getBugs() > 0) {
-                            itemStack.itemDamage = itemStack.itemDamage - 1
-
-                            val bugParts = RandomUtils.nextInt(1, 2)
-
-                            for (i in 0..bugParts) {
-                                val partType = ModItems.bugParts.shuffled().last()
-
-                                playerIn.inventory.addItemStackToInventory(ItemStack(partType))
+                                tileEntity.addBug(1)
                             }
+                        }
+                        else if (itemStack.item is ItemMagnifyingGlass) {
+                            if (tileEntity.getBugs() > 0) {
+                                itemStack.itemDamage = itemStack.itemDamage - 1
 
-                            tileEntity.removeBug()
+                                val bugParts = RandomUtils.nextInt(1, 2)
+
+                                for (i in 0..bugParts) {
+                                    val partType = ModItems.bugParts.shuffled().last()
+
+                                    playerIn.inventory.addItemStackToInventory(ItemStack(partType))
+                                }
+
+                                tileEntity.removeBug()
+                            }
                         }
-                    }
-                    else if (itemStack.isEmpty) {
-                        if (playerIn.isSneaking) {
-                            tileEntity.clearBugs()
-                        }
-                        else {
-                            tileEntity.removeBug()
+                        else if (itemStack.isEmpty) {
+                            if (playerIn.isSneaking) {
+                                tileEntity.clearBugs()
+                            }
+                            else {
+                                tileEntity.removeBug()
+                            }
                         }
                     }
                 }
