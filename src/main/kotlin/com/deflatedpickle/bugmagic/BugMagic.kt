@@ -13,6 +13,10 @@ import org.apache.logging.log4j.Logger
 
 @Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION, acceptedMinecraftVersions = Reference.ACCEPTED_VERSIONS, dependencies = Reference.DEPENDENCIES, modLanguageAdapter = Reference.ADAPTER)
 object BugMagic {
+    init {
+        PickleLib.setNameSpace(Reference.MOD_ID)
+    }
+
     @SidedProxy(clientSide = Reference.CLIENT_PROXY_CLASS, serverSide = Reference.SERVER_PROXY_CLASS)
     var proxy: CommonProxy? = null
 
@@ -23,7 +27,6 @@ object BugMagic {
     @EventHandler
     fun preInit(event: FMLPreInitializationEvent) {
         logger.info("Starting preInit.")
-        PickleLib.setNameSpace(Reference.MOD_ID)
         proxy!!.preInit(event)
         logger.info("Finished preInit.")
     }
