@@ -1,14 +1,11 @@
 package com.deflatedpickle.bugmagic.items
 
-import com.deflatedpickle.bugmagic.util.BugUtil
 import com.deflatedpickle.bugmagic.util.SpellUtil
 import com.deflatedpickle.picklelib.item.ItemBase
-import net.minecraft.client.entity.EntityPlayerSP
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.EnumAction
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
@@ -21,12 +18,12 @@ import org.lwjgl.input.Mouse
 
 class ItemWand(name: String, stackSize: Int, creativeTab: CreativeTabs) : ItemBase(name, stackSize, creativeTab) {
     // TODO: Allow the player to uncast their spells at will
-    var hasBeenScrolled = false
-    val playerSpells: MutableList<String> = mutableListOf()
-    var currentSpellIndex = 0
+    private var hasBeenScrolled = false
+    private val playerSpells: MutableList<String> = mutableListOf()
+    private var currentSpellIndex = 0
 
-    override fun onItemUseFinish(stack: ItemStack?, worldIn: World?, entityLiving: EntityLivingBase?): ItemStack {
-        if (!stack!!.hasTagCompound()) {
+    override fun onItemUseFinish(stack: ItemStack, worldIn: World, entityLiving: EntityLivingBase): ItemStack {
+        if (!stack.hasTagCompound()) {
             stack.tagCompound = NBTTagCompound()
         }
 
