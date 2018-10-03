@@ -91,7 +91,6 @@ class BlockCauldron(name: String, private val stirsRequired: Int) : BlockBase(na
                                 }
                             }
                             Items.GLASS_BOTTLE -> {
-                                println(tileEntity.waterAmount)
                                 if (tileEntity.waterAmount > 0.1f) {
                                     if (tileEntity.fullyStirred) {
                                         itemStack.shrink(1)

@@ -8,25 +8,39 @@ import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.util.ResourceLocation
+import org.apache.commons.lang3.RandomUtils
 import org.lwjgl.opengl.GL11
 
 class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
     private val textureWater = ResourceLocation("minecraft:textures/blocks/water_still.png")
     private val texturePlanks = ResourceLocation("minecraft:textures/blocks/planks_oak.png")
-
     private val textureBugEssence = TextureUtil.recolourTexture(textureWater, textureWater.resourceDomain + "_recolour", "#BBFF70")
 
     private val tessellator = Tessellator.getInstance()
 
     val size = 0.03125
 
-    var angle = 0f
+    // TODO: Move the animation variables to the TileEntity
+    private var angle = 0f
+
+    private var stirAmount = 0
+
+    private var wasStirred = false
+    private var stirRotationAmount = 0.0  // Speed
+    // TODO: Apply more drag as it becomes more bug essence
+    private val stirRotationDrag = 0.55
+    private val stirRotationMomentum = 0.1
+
+    private var stirRotationMomentumTick = 0
+
+    private val stirRotationMin = 10
+    private val stirRotationMax = 13
 
     override fun render(te: TileEntityCauldron, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float) {
         super.render(te, x, y, z, partialTicks, destroyStage, alpha)
 
         if (te.hasStirrer) {
-            drawHandle(x, y, z)
+            drawHandle(x, y, z, te.stirAmount)
         }
 
         if (te.waterAmount >= 0.1f) {
@@ -61,8 +75,8 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
         tessellator.buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX)
 
         // TODO: Animate the liquid
-
-        // TODO: Render the height of the liquid
+        // TODO: Make the water spin with the stirrer by rotating the UVs
+        // TODO: Puff out particles when stirring
 
         val height = 0.1 + (0.95 - 0.1) * fluidHeight
 
@@ -81,23 +95,43 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
         GlStateManager.popMatrix()
     }
 
-    private fun drawHandle(x: Double, y: Double, z: Double) {
+    private fun drawHandle(x: Double, y: Double, z: Double, tileStirAmount: Int) {
+        // Check if it was stirred
+        if (stirAmount < tileStirAmount) {
+            wasStirred = true
+            stirAmount = tileStirAmount
+        }
+
         GlStateManager.pushMatrix()
 
         GlStateManager.translate(x, y, z)
 
         // Stir the stick
-        // TODO: Increase the angle when the player right-clicks
+        if (wasStirred) {
+            stirRotationAmount = RandomUtils.nextInt(stirRotationMin, stirRotationMax).toDouble()
+
+            wasStirred = false
+
+            stirRotationMomentumTick = 4
+        }
+
+        if (stirRotationMomentumTick > 0) {
+            stirRotationMomentumTick -= 1
+
+            stirRotationAmount += stirRotationMomentum
+        }
+
         GlStateManager.translate(0.5, 0.5, 0.5)
         GlStateManager.rotate(angle, 0f, 1f, 0f)
         GlStateManager.translate(-0.5, -0.5, -0.5)
 
-        // if (angle < 360f) {
-        //     angle += 1f
-        // }
-        // else {
-        //     angle = 0f
-        // }
+        if (stirRotationAmount > 0.1) {
+            stirRotationAmount -= stirRotationDrag
+        }
+        else {
+            stirRotationAmount = 0.0
+        }
+        angle += stirRotationAmount.toFloat()
 
         // Tilt the stick
         // TODO: Reset the stick to 25f when not stirred for awhile
@@ -131,13 +165,13 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
         // Bottom Face
         tessellator.buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX)
             // Bottom Left
-        tessellator.buffer.pos(size, heightBottom, 0.1).tex(texSize, 0.0).endVertex()
+        tessellator.buffer.pos(0.1, heightBottom, 0.1).tex(texSize, 0.0).endVertex()
             // Bottom Right
-        tessellator.buffer.pos(0.1, heightBottom, 0.1).tex(0.0, 0.0).endVertex()
+        tessellator.buffer.pos(size, heightBottom, 0.1).tex(0.0, 0.0).endVertex()
             // Top Right
-        tessellator.buffer.pos(0.1, heightBottom, size).tex(0.0, texSize).endVertex()
+        tessellator.buffer.pos(size, heightBottom, size).tex(0.0, texSize).endVertex()
             // Top Left
-        tessellator.buffer.pos(size, heightBottom, size).tex(texSize, texSize).endVertex()
+        tessellator.buffer.pos(0.1, heightBottom, size).tex(texSize, texSize).endVertex()
         tessellator.draw()
 
         val sizeSide = size
