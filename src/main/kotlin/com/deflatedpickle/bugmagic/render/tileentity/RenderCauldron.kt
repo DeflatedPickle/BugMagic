@@ -20,6 +20,8 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
 
     val size = 0.03125
 
+    var angle = 0f
+
     override fun render(te: TileEntityCauldron, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float) {
         super.render(te, x, y, z, partialTicks, destroyStage, alpha)
 
@@ -83,10 +85,27 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
         GlStateManager.pushMatrix()
 
         GlStateManager.translate(x, y, z)
-        GlStateManager.translate(0.32, 0.5, 0.6)
-        GlStateManager.rotate(25f, 1f, 0f, 0f)
 
+        // Stir the stick
+        // TODO: Increase the angle when the player right-clicks
+        GlStateManager.translate(0.5, 0.5, 0.5)
+        GlStateManager.rotate(angle, 0f, 1f, 0f)
+        GlStateManager.translate(-0.5, -0.5, -0.5)
+
+        // if (angle < 360f) {
+        //     angle += 1f
+        // }
+        // else {
+        //     angle = 0f
+        // }
+
+        // Tilt the stick
+        // TODO: Reset the stick to 25f when not stirred for awhile
+        GlStateManager.rotate(17f, 1f, 0f, 0f)
         GlStateManager.translate(0.0, -0.35, -0.2)
+
+        // Move the stick to the center
+        GlStateManager.translate(0.32, 0.5, 0.5)
 
         Minecraft.getMinecraft().textureManager.bindTexture(texturePlanks)
         GL11.glDisable(GL11.GL_LIGHTING)
