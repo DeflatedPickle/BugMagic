@@ -6,7 +6,12 @@ import com.deflatedpickle.bugmagic.entity.mob.EntityWurm
 import com.deflatedpickle.bugmagic.render.entity.RenderBugpack
 import com.deflatedpickle.bugmagic.render.entity.RenderFirefly
 import com.deflatedpickle.bugmagic.render.entity.RenderWurm
+import com.deflatedpickle.bugmagic.render.tileentity.RenderAltar
+import com.deflatedpickle.bugmagic.render.tileentity.RenderCauldron
+import com.deflatedpickle.bugmagic.tileentity.TileEntityAltar
+import com.deflatedpickle.bugmagic.tileentity.TileEntityCauldron
 import net.minecraft.client.Minecraft
+import net.minecraftforge.fml.client.registry.ClientRegistry
 import net.minecraftforge.fml.client.registry.RenderingRegistry
 
 object ModRenders {
@@ -14,5 +19,7 @@ object ModRenders {
         RenderingRegistry.registerEntityRenderingHandler(EntityFirefly::class.java, RenderFirefly(Minecraft.getMinecraft().renderManager))
         RenderingRegistry.registerEntityRenderingHandler(EntityBugpack::class.java, RenderBugpack(Minecraft.getMinecraft().renderManager))
         RenderingRegistry.registerEntityRenderingHandler(EntityWurm::class.java, RenderWurm(Minecraft.getMinecraft().renderManager))
+
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCauldron::class.java, RenderCauldron())
     }
 }
