@@ -18,7 +18,10 @@ class TileEntityCauldron(val maxParts: Int, val maxWater: Float = 1f) : TileEnti
 
     var waterAmount = 0f
     set(value) {
-        if (waterAmount + value <= maxWater) {
+        if (value == 0f) {
+            field = value
+        }
+        else if (waterAmount + value <= maxWater) {
             field += value
         }
     }

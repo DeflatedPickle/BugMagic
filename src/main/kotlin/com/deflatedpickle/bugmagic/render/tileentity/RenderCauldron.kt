@@ -14,7 +14,7 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
     private val textureWater = ResourceLocation("minecraft:textures/blocks/water_still.png")
     private val texturePlanks = ResourceLocation("minecraft:textures/blocks/planks_oak.png")
 
-    private val newTextureWater = TextureUtil.recolourTexture(textureWater, textureWater.resourceDomain + "_recolour", "#BBFF70")
+    private val textureBugEssence = TextureUtil.recolourTexture(textureWater, textureWater.resourceDomain + "_recolour", "#BBFF70")
 
     private val tessellator = Tessellator.getInstance()
 
@@ -23,16 +23,37 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
     override fun render(te: TileEntityCauldron, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float) {
         super.render(te, x, y, z, partialTicks, destroyStage, alpha)
 
-        drawFluidLayer(x, y, z)
-        drawHandle(x, y, z)
+        if (te.hasStirrer) {
+            drawHandle(x, y, z)
+        }
+
+        if (te.waterAmount > 0.1f) {
+            // drawFluidLayer(x, y, z, te.waterAmount, te.stirAmount)
+            drawFluid(x, y, z, te.waterAmount, te.stirAmount)
+        }
     }
 
-    private fun drawFluidLayer(x: Double, y: Double, z: Double) {
+    private fun drawFluid(x: Double, y: Double, z: Double, fluidHeight: Float, stirAmount: Int) {
         GlStateManager.pushMatrix()
+
+        // TODO: Check if the cauldron has bug parts, if so, do this
+        GlStateManager.color(1f, 1f, 1f, 15 / stirAmount.toFloat())
+        drawFluidLayer(x, y, z, textureWater, fluidHeight)
+
+        GlStateManager.color(1f, 1f, 1f, stirAmount.toFloat() / 15)
+        drawFluidLayer(x, y, z, textureBugEssence, fluidHeight)
+
+        GlStateManager.popMatrix()
+    }
+
+    private fun drawFluidLayer(x: Double, y: Double, z: Double, texture: ResourceLocation, fluidHeight: Float) {
+        GlStateManager.pushMatrix()
+        GlStateManager.enableBlend()
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
 
         GlStateManager.translate(x, y, z)
 
-        Minecraft.getMinecraft().textureManager.bindTexture(newTextureWater)
+        Minecraft.getMinecraft().textureManager.bindTexture(texture)
         GL11.glDisable(GL11.GL_LIGHTING)
 
         tessellator.buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX)
@@ -40,9 +61,6 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
         // TODO: Animate the liquid
 
         // TODO: Render the height of the liquid
-        // TODO: Remove the stick from the model
-        // TODO: Render the stick in a matrix here, if the cauldron has one
-        // TODO: Render the right liquid type
 
         // Bottom Left
         tessellator.buffer.pos(0.9, 0.95, 0.1).tex(0.0, 0.0).endVertex()
@@ -55,6 +73,7 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
 
         tessellator.draw()
 
+        GlStateManager.disableBlend()
         GlStateManager.popMatrix()
     }
 

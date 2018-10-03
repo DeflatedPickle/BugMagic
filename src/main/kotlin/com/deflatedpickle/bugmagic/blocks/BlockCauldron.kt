@@ -38,7 +38,7 @@ class BlockCauldron(name: String, private val stirsRequired: Int) : BlockBase(na
                     if (itemStack.isEmpty) {
                         // Stir the cauldron, if it has a stirring stick
                         if (tileEntity.hasStirrer) {
-                            if (tileEntity.waterAmount == 1f) {
+                            if (tileEntity.waterAmount == tileEntity.maxWater) {
                                 tileEntity.stirAmount++
                             }
 
@@ -74,6 +74,8 @@ class BlockCauldron(name: String, private val stirsRequired: Int) : BlockBase(na
                                     }
                                     else {
                                         playerIn.inventory.addItemStackToInventory(ItemStack(Items.WATER_BUCKET))
+
+                                        tileEntity.waterAmount = 0f
                                     }
                                 }
                             }
@@ -82,6 +84,13 @@ class BlockCauldron(name: String, private val stirsRequired: Int) : BlockBase(na
                                     if (tileEntity.fullyStirred) {
                                         itemStack.shrink(1)
                                         playerIn.inventory.addItemStackToInventory(ItemStack(ModItems.bugJuice))
+
+                                        tileEntity.waterAmount -= 1f
+                                    }
+                                    else {
+                                        itemStack.shrink(1)
+                                        // TODO: Actually give a water bottle
+                                        // playerIn.inventory.addItemStackToInventory(ItemStack(Items.POTIONITEM, 0))
 
                                         tileEntity.waterAmount -= 1f
                                     }
