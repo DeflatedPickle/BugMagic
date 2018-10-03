@@ -27,7 +27,7 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
             drawHandle(x, y, z)
         }
 
-        if (te.waterAmount > 0.1f) {
+        if (te.waterAmount >= 0.1f) {
             // drawFluidLayer(x, y, z, te.waterAmount, te.stirAmount)
             drawFluid(x, y, z, te.waterAmount, te.stirAmount)
         }
@@ -62,14 +62,16 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
 
         // TODO: Render the height of the liquid
 
+        val height = 0.1 + (0.95 - 0.1) * fluidHeight
+
         // Bottom Left
-        tessellator.buffer.pos(0.9, 0.95, 0.1).tex(0.0, 0.0).endVertex()
+        tessellator.buffer.pos(0.9, height, 0.1).tex(0.0, 0.0).endVertex()
         // Bottom Right
-        tessellator.buffer.pos(0.1, 0.95, 0.1).tex(0.0, size).endVertex()
+        tessellator.buffer.pos(0.1, height, 0.1).tex(0.0, size).endVertex()
         // Top Right
-        tessellator.buffer.pos(0.1, 0.95, 0.9).tex(1.0, size).endVertex()
+        tessellator.buffer.pos(0.1, height, 0.9).tex(1.0, size).endVertex()
         // Top Left
-        tessellator.buffer.pos(0.9, 0.95, 0.9).tex(1.0, 0.0).endVertex()
+        tessellator.buffer.pos(0.9, height, 0.9).tex(1.0, 0.0).endVertex()
 
         tessellator.draw()
 

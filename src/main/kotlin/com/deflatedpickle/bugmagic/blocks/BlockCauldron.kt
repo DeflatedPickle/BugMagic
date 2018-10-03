@@ -10,7 +10,9 @@ import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Items
+import net.minecraft.init.PotionTypes
 import net.minecraft.item.ItemStack
+import net.minecraft.potion.PotionUtils
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
@@ -60,7 +62,7 @@ class BlockCauldron(name: String, private val stirsRequired: Int) : BlockBase(na
                             }
                             Items.WATER_BUCKET -> {
                                 // Fill the cauldron
-                                tileEntity.waterAmount = tileEntity.maxWater
+                                tileEntity.increaseWater(1f)
                                 itemStack.shrink(1)
                                 playerIn.inventory.addItemStackToInventory(ItemStack(Items.BUCKET))
                             }
@@ -75,24 +77,34 @@ class BlockCauldron(name: String, private val stirsRequired: Int) : BlockBase(na
                                     else {
                                         playerIn.inventory.addItemStackToInventory(ItemStack(Items.WATER_BUCKET))
 
-                                        tileEntity.waterAmount = 0f
+                                        tileEntity.resetWater()
                                     }
                                 }
                             }
+                            Items.POTIONITEM -> {
+                                println(tileEntity.waterAmount)
+                                if (itemStack.tagCompound?.getString("Potion") == "minecraft:water") {
+                                    itemStack.shrink(1)
+                                    playerIn.inventory.addItemStackToInventory(ItemStack(Items.GLASS_BOTTLE))
+
+                                    tileEntity.increaseWater(0.1f)
+                                }
+                            }
                             Items.GLASS_BOTTLE -> {
-                                if (tileEntity.waterAmount > 0f) {
+                                println(tileEntity.waterAmount)
+                                if (tileEntity.waterAmount > 0.1f) {
                                     if (tileEntity.fullyStirred) {
                                         itemStack.shrink(1)
                                         playerIn.inventory.addItemStackToInventory(ItemStack(ModItems.bugJuice))
 
-                                        tileEntity.waterAmount -= 1f
+                                        tileEntity.decreaseWater(0.1f)
                                     }
                                     else {
                                         itemStack.shrink(1)
                                         // TODO: Actually give a water bottle
-                                        // playerIn.inventory.addItemStackToInventory(ItemStack(Items.POTIONITEM, 0))
+                                        playerIn.inventory.addItemStackToInventory(PotionUtils.addPotionToItemStack(ItemStack(Items.POTIONITEM), PotionTypes.WATER))
 
-                                        tileEntity.waterAmount -= 1f
+                                        tileEntity.decreaseWater(0.1f)
                                     }
                                 }
                             }

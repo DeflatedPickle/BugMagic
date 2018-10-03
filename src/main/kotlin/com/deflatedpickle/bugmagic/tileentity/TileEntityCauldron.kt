@@ -17,19 +17,30 @@ class TileEntityCauldron(val maxParts: Int, val maxWater: Float = 1f) : TileEnti
     }
 
     var waterAmount = 0f
-    set(value) {
-        if (value == 0f) {
-            field = value
-        }
-        else if (waterAmount + value <= maxWater) {
-            field += value
-        }
-    }
 
     var stirAmount = 0
     var hasStirrer = false
 
     var fullyStirred = false
+
+    fun increaseWater(amount: Float) {
+        if (waterAmount + amount <= maxWater) {
+            waterAmount += amount
+        }
+        else {
+            waterAmount = maxWater
+        }
+    }
+
+    fun decreaseWater(amount: Float) {
+        if (waterAmount - amount >= 0) {
+            waterAmount -= amount
+        }
+    }
+
+    fun resetWater() {
+        waterAmount = 0f
+    }
 
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
         super.writeToNBT(compound)
