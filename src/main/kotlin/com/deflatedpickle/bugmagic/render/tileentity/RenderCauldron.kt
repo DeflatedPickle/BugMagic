@@ -1,6 +1,8 @@
 package com.deflatedpickle.bugmagic.render.tileentity
 
 import com.deflatedpickle.bugmagic.tileentity.TileEntityCauldron
+import com.deflatedpickle.bugmagic.util.TextureUtil
+import com.deflatedpickle.picklelib.colour.Colour
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.Tessellator
@@ -9,6 +11,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.util.ResourceLocation
 import org.lwjgl.opengl.GL11
+import java.awt.Color
 import java.awt.color.ColorSpace
 import java.awt.image.BufferedImage
 import java.awt.image.ColorConvertOp
@@ -19,6 +22,9 @@ import kotlin.math.roundToLong
 
 class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
     private val texture = ResourceLocation("minecraft:textures/blocks/water_still.png")
+
+    private val newTexture = TextureUtil.recolourTexture(texture, texture.resourceDomain + "_recolour", "#BBFF70")
+
     private val tessellator = Tessellator.getInstance()
 
     override fun render(te: TileEntityCauldron, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float) {
@@ -28,7 +34,7 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
 
         GlStateManager.translate(x, y, z)
 
-        Minecraft.getMinecraft().textureManager.bindTexture(textureGrayscale(texture))
+        Minecraft.getMinecraft().textureManager.bindTexture(newTexture)
 
         GL11.glDisable(GL11.GL_LIGHTING)
 
@@ -53,23 +59,5 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
         tessellator.draw()
 
         GlStateManager.popMatrix()
-    }
-
-    private fun textureGrayscale(texture: ResourceLocation): ResourceLocation {
-        // val filePath = texture.resourcePath
-        // val file = ImageIO.read(URL(filePath))
-
-        val inputStream = Minecraft.getMinecraft().resourceManager.getResource(texture).inputStream
-        val image = ImageIO.read(inputStream)
-
-        val colourConvertOP = ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null)
-        colourConvertOP.filter(image, image)
-
-        val dynamicTexture = DynamicTexture(image)
-
-        val resourceLocation = ResourceLocation("bugmagic:textures/blocks/gray_water.png")
-        Minecraft.getMinecraft().textureManager.loadTexture(resourceLocation, dynamicTexture)
-
-        return resourceLocation
     }
 }
