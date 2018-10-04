@@ -27,8 +27,8 @@ object ModItems {
     val partHead = ItemBugPart("bug_part_head", "head")
 
     val bugParts = listOf<ItemBugPart>(
-            partWing,
             partLeg,
+            partWing,
             partBody,
             partHead
     )

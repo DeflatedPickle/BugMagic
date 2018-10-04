@@ -1,19 +1,31 @@
 package com.deflatedpickle.bugmagic.tileentity
 
+import com.deflatedpickle.bugmagic.init.ModItems
+import com.deflatedpickle.bugmagic.items.ItemBugPart
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
 
 class TileEntityCauldron(val maxParts: Int, val maxWater: Float = 1f) : TileEntity() {
     private var partAmount = 0
+    private var partList = IntArray(6)
 
-    fun getParts(): Int {
+    fun getPartAmount(): Int {
         return partAmount
     }
 
-    fun addParts(amount: Int) {
+    fun addPartAmount(amount: Int) {
         if (partAmount + amount <= maxParts) {
             partAmount += amount
         }
+    }
+
+    fun getParts(): IntArray {
+        return partList
+    }
+
+    fun addPart(part: ItemBugPart) {
+        partList[partAmount] = ModItems.bugParts.indexOf(part) + 1
+        addPartAmount(1)
     }
 
     var waterAmount = 0f
@@ -47,6 +59,7 @@ class TileEntityCauldron(val maxParts: Int, val maxWater: Float = 1f) : TileEnti
         super.writeToNBT(compound)
 
         compound.setInteger("partAmount", partAmount)
+        compound.setIntArray("partList", partList)
         compound.setFloat("waterAmount", waterAmount)
         compound.setDouble("stirAmount", stirAmount)
         compound.setBoolean("hasStirrer", hasStirrer)
@@ -60,6 +73,7 @@ class TileEntityCauldron(val maxParts: Int, val maxWater: Float = 1f) : TileEnti
         super.readFromNBT(compound)
 
         partAmount = compound.getInteger("partAmount")
+        partList = compound.getIntArray("partList")
         waterAmount = compound.getFloat("waterAmount")
         stirAmount = compound.getDouble("stirAmount")
         hasStirrer = compound.getBoolean("hasStirrer")

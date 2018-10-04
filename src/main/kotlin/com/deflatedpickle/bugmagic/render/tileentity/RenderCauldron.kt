@@ -1,13 +1,19 @@
 package com.deflatedpickle.bugmagic.render.tileentity
 
+import com.deflatedpickle.bugmagic.entity.mob.EntityBugpack
+import com.deflatedpickle.bugmagic.init.ModItems
 import com.deflatedpickle.bugmagic.tileentity.TileEntityCauldron
 import com.deflatedpickle.bugmagic.util.TextureUtil
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.Tessellator
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms
+import net.minecraft.client.renderer.texture.TextureMap
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
+import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
+import net.minecraftforge.client.ForgeHooksClient
 import org.apache.commons.lang3.RandomUtils
 import org.lwjgl.opengl.GL11
 
@@ -20,6 +26,7 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
 
     val size = 0.03125
 
+    var waterHeight = 0.0
     // TODO: Move the animation variables to the TileEntity
     private var angle = 0f
 
@@ -41,6 +48,19 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
 
     override fun render(te: TileEntityCauldron, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float) {
         super.render(te, x, y, z, partialTicks, destroyStage, alpha)
+
+        waterHeight = 0.15 + (0.95 - 0.15) * te.waterAmount
+
+        // println(te.getParts())
+        for (i in 0 until te.getPartAmount()) {
+            //if (i > 0) {
+                // TODO: Randomly rotate the item when first added
+                // TODO: Make items slowly bob up and down in the water
+                // TODO: Rotate the items around the cauldron when spinning the stick
+                // TODO: Rotate the items locally based on a fraction of momentum gained from spinning the stick
+                drawItem(x, y, z, ItemStack(ModItems.bugParts[i]), i, te.getPartAmount())
+            //}
+        }
 
         if (te.hasStirrer) {
             drawHandle(x, y, z, te.waterAmount, te.stirAmount)
@@ -89,20 +109,38 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
         // TODO: Make the water spin with the stirrer by rotating the UVs
         // TODO: Puff out particles when stirring
 
-        val height = 0.15 + (0.95 - 0.15) * fluidHeight
-
         // Bottom Left
-        tessellator.buffer.pos(0.9, height, 0.1).tex(0.0, 0.0).endVertex()
+        tessellator.buffer.pos(0.9, waterHeight, 0.1).tex(0.0, 0.0).endVertex()
         // Bottom Right
-        tessellator.buffer.pos(0.1, height, 0.1).tex(0.0, size).endVertex()
+        tessellator.buffer.pos(0.1, waterHeight, 0.1).tex(0.0, size).endVertex()
         // Top Right
-        tessellator.buffer.pos(0.1, height, 0.9).tex(1.0, size).endVertex()
+        tessellator.buffer.pos(0.1, waterHeight, 0.9).tex(1.0, size).endVertex()
         // Top Left
-        tessellator.buffer.pos(0.9, height, 0.9).tex(1.0, 0.0).endVertex()
+        tessellator.buffer.pos(0.9, waterHeight, 0.9).tex(1.0, 0.0).endVertex()
 
         tessellator.draw()
 
         GlStateManager.disableBlend()
+        GlStateManager.popMatrix()
+    }
+
+    private fun drawItem(x: Double, y: Double, z: Double, item: ItemStack, partOrder: Int, partCount: Int) {
+        GlStateManager.pushMatrix()
+        GlStateManager.translate(x, y, z)
+
+        // GlStateManager.translate(0.5, 0.5, 0.5)
+        // GlStateManager.rotate(RandomUtils.nextFloat(0f, 360f), 0f, 1f, 0f)
+        // GlStateManager.translate(-0.5, -0.5, -0.5)
+
+        GlStateManager.rotate(90f, 1f, 0f, 0f)
+        GlStateManager.translate(0.5, 0.4, (-waterHeight - 0.001) - (0.05 * partOrder) + (0.05 * partCount))
+
+        var model = Minecraft.getMinecraft().renderItem.getItemModelWithOverrides(item, Minecraft.getMinecraft().world, null)
+        model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.GROUND, false)
+
+        Minecraft.getMinecraft().textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE)
+        Minecraft.getMinecraft().renderItem.renderItem(item, model)
+
         GlStateManager.popMatrix()
     }
 
@@ -121,7 +159,6 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
         }
 
         GlStateManager.pushMatrix()
-
         GlStateManager.translate(x, y, z)
 
         // Stir the stick
