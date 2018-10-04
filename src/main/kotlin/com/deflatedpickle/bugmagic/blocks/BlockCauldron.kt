@@ -40,13 +40,17 @@ class BlockCauldron(name: String, private val stirsRequired: Int) : BlockBase(na
                     if (itemStack.isEmpty) {
                         // Stir the cauldron, if it has a stirring stick
                         if (tileEntity.hasStirrer) {
-                            if (tileEntity.waterAmount == tileEntity.maxWater) {
-                                tileEntity.stirAmount++
-                            }
-
                             if (tileEntity.getParts() > 0) {
-                                if (tileEntity.stirAmount >= stirsRequired / (tileEntity.getParts() / 2)) {
+                                tileEntity.stirsRequired = stirsRequired / (tileEntity.getParts() / 6.4)
+
+                                if (tileEntity.stirAmount >= tileEntity.stirsRequired) {
                                     tileEntity.fullyStirred = true
+                                    println("Fully stirred!")
+                                }
+                                else {
+                                    if (tileEntity.waterAmount <= tileEntity.maxWater) {
+                                        tileEntity.stirAmount += 2 / tileEntity.waterAmount
+                                    }
                                 }
                             }
                         }
@@ -65,6 +69,8 @@ class BlockCauldron(name: String, private val stirsRequired: Int) : BlockBase(na
                                 tileEntity.increaseWater(1f)
                                 itemStack.shrink(1)
                                 playerIn.inventory.addItemStackToInventory(ItemStack(Items.BUCKET))
+
+                                tileEntity.stirAmount = 0.0
                             }
                             Items.BUCKET -> {
                                 // Empty the cauldron
@@ -82,12 +88,18 @@ class BlockCauldron(name: String, private val stirsRequired: Int) : BlockBase(na
                                 }
                             }
                             Items.POTIONITEM -> {
-                                println(tileEntity.waterAmount)
                                 if (itemStack.tagCompound?.getString("Potion") == "minecraft:water") {
                                     itemStack.shrink(1)
                                     playerIn.inventory.addItemStackToInventory(ItemStack(Items.GLASS_BOTTLE))
 
                                     tileEntity.increaseWater(0.1f)
+
+                                    if (tileEntity.stirAmount - 3 > 0) {
+                                        tileEntity.stirAmount -= 3
+                                    }
+                                    else {
+                                        tileEntity.stirAmount = 0.0
+                                    }
                                 }
                             }
                             Items.GLASS_BOTTLE -> {

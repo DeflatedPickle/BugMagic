@@ -18,10 +18,11 @@ class TileEntityCauldron(val maxParts: Int, val maxWater: Float = 1f) : TileEnti
 
     var waterAmount = 0f
 
-    var stirAmount = 0
+    var stirAmount = 0.0
     var hasStirrer = false
 
     var fullyStirred = false
+    var stirsRequired = 0.0
 
     fun increaseWater(amount: Float) {
         if (waterAmount + amount <= maxWater) {
@@ -47,9 +48,10 @@ class TileEntityCauldron(val maxParts: Int, val maxWater: Float = 1f) : TileEnti
 
         compound.setInteger("partAmount", partAmount)
         compound.setFloat("waterAmount", waterAmount)
-        compound.setInteger("stirAmount", stirAmount)
+        compound.setDouble("stirAmount", stirAmount)
         compound.setBoolean("hasStirrer", hasStirrer)
         compound.setBoolean("fullyStirred", fullyStirred)
+        compound.setDouble("stirRequired", stirsRequired)
 
         return compound
     }
@@ -59,8 +61,9 @@ class TileEntityCauldron(val maxParts: Int, val maxWater: Float = 1f) : TileEnti
 
         partAmount = compound.getInteger("partAmount")
         waterAmount = compound.getFloat("waterAmount")
-        stirAmount = compound.getInteger("stirAmount")
+        stirAmount = compound.getDouble("stirAmount")
         hasStirrer = compound.getBoolean("hasStirrer")
         fullyStirred = compound.getBoolean("fullyStirred")
+        stirsRequired = compound.getDouble("stirRequired")
     }
 }

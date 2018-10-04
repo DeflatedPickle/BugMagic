@@ -23,13 +23,16 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
     // TODO: Move the animation variables to the TileEntity
     private var angle = 0f
 
-    private var stirAmount = 0
+    private var stirAmount = 0.0
 
     private var wasStirred = false
     private var stirRotationAmount = 0.0  // Speed
     // TODO: Apply more drag as it becomes more bug essence
     private val stirRotationDrag = 0.55
+    private val stirEmptyRotationDrag = 2.0
     private val stirRotationMomentum = 0.1
+
+    private var stirCurrentDrag = stirRotationDrag
 
     private var stirRotationMomentumTick = 0
 
@@ -40,23 +43,31 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
         super.render(te, x, y, z, partialTicks, destroyStage, alpha)
 
         if (te.hasStirrer) {
-            drawHandle(x, y, z, te.stirAmount)
+            drawHandle(x, y, z, te.waterAmount, te.stirAmount)
         }
 
-        if (te.waterAmount >= 0.1f) {
+        if (te.waterAmount >= 0.0f) {
             // drawFluidLayer(x, y, z, te.waterAmount, te.stirAmount)
-            drawFluid(x, y, z, te.waterAmount, te.stirAmount)
+            drawFluid(x, y, z, te.waterAmount, te.stirAmount, te.stirsRequired)
         }
     }
 
-    private fun drawFluid(x: Double, y: Double, z: Double, fluidHeight: Float, stirAmount: Int) {
+    private fun drawFluid(x: Double, y: Double, z: Double, fluidHeight: Float, stirAmount: Double, stirsRequired: Double) {
         GlStateManager.pushMatrix()
 
         // TODO: Check if the cauldron has bug parts, if so, do this
-        GlStateManager.color(1f, 1f, 1f, 15 / stirAmount.toFloat())
+
+        val stirsNeeded = if (stirsRequired == 0.0 && stirAmount == 0.0) {
+            15 / stirAmount.toFloat()
+        }
+        else {
+            (stirsRequired / stirAmount).toFloat()
+        }
+
+        GlStateManager.color(1f, 1f, 1f, stirsNeeded)
         drawFluidLayer(x, y, z, textureWater, fluidHeight)
 
-        GlStateManager.color(1f, 1f, 1f, stirAmount.toFloat() / 15)
+        GlStateManager.color(1f, 1f, 1f, (stirAmount / stirsRequired).toFloat())
         drawFluidLayer(x, y, z, textureBugEssence, fluidHeight)
 
         GlStateManager.popMatrix()
@@ -78,7 +89,8 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
         // TODO: Make the water spin with the stirrer by rotating the UVs
         // TODO: Puff out particles when stirring
 
-        val height = 0.1 + (0.95 - 0.1) * fluidHeight
+        val height = 0.15 + (0.95 - 0.15) * fluidHeight
+        println(height)
 
         // Bottom Left
         tessellator.buffer.pos(0.9, height, 0.1).tex(0.0, 0.0).endVertex()
@@ -95,11 +107,18 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
         GlStateManager.popMatrix()
     }
 
-    private fun drawHandle(x: Double, y: Double, z: Double, tileStirAmount: Int) {
+    private fun drawHandle(x: Double, y: Double, z: Double, fluidHeight: Float, tileStirAmount: Double) {
         // Check if it was stirred
         if (stirAmount < tileStirAmount) {
             wasStirred = true
             stirAmount = tileStirAmount
+        }
+
+        if (fluidHeight < 0.5f && fluidHeight > 0f) {
+            stirCurrentDrag = 0.25 / fluidHeight
+        }
+        else if (fluidHeight > 0.5f && fluidHeight < 1f) {
+            stirCurrentDrag = 0.25 * fluidHeight
         }
 
         GlStateManager.pushMatrix()
@@ -126,7 +145,7 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
         GlStateManager.translate(-0.5, -0.5, -0.5)
 
         if (stirRotationAmount > 0.1) {
-            stirRotationAmount -= stirRotationDrag
+            stirRotationAmount -= stirCurrentDrag
         }
         else {
             stirRotationAmount = 0.0
