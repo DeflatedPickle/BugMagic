@@ -40,12 +40,12 @@ class BlockCauldron(name: String, private val stirsRequired: Int) : BlockBase(na
                     if (itemStack.isEmpty) {
                         // Stir the cauldron, if it has a stirring stick
                         if (tileEntity.hasStirrer) {
-                            if (tileEntity.getParts() > 0) {
-                                tileEntity.stirsRequired = stirsRequired / (tileEntity.getParts() / 6.4)
+                            if (tileEntity.getParts() > 0 && tileEntity.waterAmount > 0.0) {
+                                tileEntity.stirsRequired = stirsRequired / (tileEntity.getParts() * tileEntity.waterAmount).toDouble()
 
                                 if (tileEntity.stirAmount >= tileEntity.stirsRequired) {
                                     tileEntity.fullyStirred = true
-                                    println("Fully stirred!")
+                                    // println("Fully stirred!")
                                 }
                                 else {
                                     if (tileEntity.waterAmount <= tileEntity.maxWater) {
@@ -58,7 +58,7 @@ class BlockCauldron(name: String, private val stirsRequired: Int) : BlockBase(na
                     else {
                         when (itemStack.item) {
                             Items.STICK -> {
-                                // At a stirring stick
+                                // Has a stirring stick
                                 if (!tileEntity.hasStirrer) {
                                     tileEntity.hasStirrer = true
                                     itemStack.shrink(1)

@@ -90,7 +90,6 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
         // TODO: Puff out particles when stirring
 
         val height = 0.15 + (0.95 - 0.15) * fluidHeight
-        println(height)
 
         // Bottom Left
         tessellator.buffer.pos(0.9, height, 0.1).tex(0.0, 0.0).endVertex()
@@ -114,10 +113,10 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
             stirAmount = tileStirAmount
         }
 
-        if (fluidHeight < 0.5f && fluidHeight > 0f) {
+        if (fluidHeight < 0.5f) {
             stirCurrentDrag = 0.25 / fluidHeight
         }
-        else if (fluidHeight > 0.5f && fluidHeight < 1f) {
+        else if (fluidHeight > 0.5f) {
             stirCurrentDrag = 0.25 * fluidHeight
         }
 
