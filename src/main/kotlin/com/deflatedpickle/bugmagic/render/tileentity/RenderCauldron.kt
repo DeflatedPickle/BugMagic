@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.Tuple
 import net.minecraftforge.client.ForgeHooksClient
 import org.apache.commons.lang3.RandomUtils
 import org.lwjgl.opengl.GL11
@@ -46,19 +47,36 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
     private val stirRotationMin = 10
     private val stirRotationMax = 13
 
+    private val partRotationList = mutableListOf<Float>()
+    private val partPositionList = mutableListOf<Tuple<Double, Double>>()
+    private val partSizeList = mutableListOf<Float>()
+
     override fun render(te: TileEntityCauldron, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float) {
         super.render(te, x, y, z, partialTicks, destroyStage, alpha)
 
         waterHeight = 0.15 + (0.95 - 0.15) * te.waterAmount
 
-        // println(te.getParts())
         for (i in 0 until te.getPartAmount()) {
             //if (i > 0) {
-                // TODO: Randomly rotate the item when first added
                 // TODO: Make items slowly bob up and down in the water
-                // TODO: Rotate the items around the cauldron when spinning the stick
                 // TODO: Rotate the items locally based on a fraction of momentum gained from spinning the stick
-                drawItem(x, y, z, ItemStack(ModItems.bugParts[i]), i, te.getPartAmount())
+
+                if (partRotationList.getOrNull(i) == null) {
+                    partRotationList.add(RandomUtils.nextFloat(0f, 360f))
+                }
+
+                if (partPositionList.getOrNull(i) == null) {
+                    val min = -0.1
+                    val max = 0.1
+
+                    partPositionList.add(Tuple(Math.random() * (max - min) + min, Math.random() * (max - min) + min))
+                }
+
+                if (partSizeList.getOrNull(i) == null) {
+                    partSizeList.add(RandomUtils.nextFloat(0.5f, 0.7f))
+                }
+
+                drawItem(x, y, z, ItemStack(ModItems.bugParts[te.getParts()[i]]), i, te.getPartAmount(), te.stirAmount, te.stirsRequired)
             //}
         }
 
@@ -120,23 +138,40 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
 
         tessellator.draw()
 
+        GL11.glEnable(GL11.GL_LIGHTING)
         GlStateManager.disableBlend()
         GlStateManager.popMatrix()
     }
 
-    private fun drawItem(x: Double, y: Double, z: Double, item: ItemStack, partOrder: Int, partCount: Int) {
+    private fun drawItem(x: Double, y: Double, z: Double, item: ItemStack, partOrder: Int, partCount: Int, stirAmount: Double, stirsRequired: Double) {
         GlStateManager.pushMatrix()
+
         GlStateManager.translate(x, y, z)
 
-        // GlStateManager.translate(0.5, 0.5, 0.5)
-        // GlStateManager.rotate(RandomUtils.nextFloat(0f, 360f), 0f, 1f, 0f)
-        // GlStateManager.translate(-0.5, -0.5, -0.5)
+        val offset = 0.5
+        GlStateManager.translate(offset, 0.0, offset)
+        // TODO: Add an rotation handler (like the handle has) to apply more drag the lower the part is
+        GlStateManager.rotate(angle - partRotationList[partOrder] - ((partOrder - partCount) * 10), 0f, 1f, 0f)
+        GlStateManager.translate(-offset, 0.0, -offset)
+
+        // TODO: Properly stack the items when there's not enough water to make them float
+        var height = (waterHeight - 0.001) - (0.05 * partOrder) * partCount
+
+        if (height < 0.2) {
+            height = 0.2
+        }
+
+        GlStateManager.translate(0.36 - partPositionList[partOrder].first,
+                height,
+                0.36 - partPositionList[partOrder].second)
 
         GlStateManager.rotate(90f, 1f, 0f, 0f)
-        GlStateManager.translate(0.5, 0.4, (-waterHeight - 0.001) - (0.05 * partOrder) + (0.05 * partCount))
 
+        // TODO: Make the items more transparent as they are mixed in
         var model = Minecraft.getMinecraft().renderItem.getItemModelWithOverrides(item, Minecraft.getMinecraft().world, null)
         model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.GROUND, false)
+
+        GlStateManager.scale(partSizeList[partOrder], partSizeList[partOrder], partSizeList[partOrder])
 
         Minecraft.getMinecraft().textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE)
         Minecraft.getMinecraft().renderItem.renderItem(item, model)
@@ -283,6 +318,7 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
         tessellator.buffer.pos(size, heightTop, size).tex(0.0, 0.0).endVertex()
         tessellator.draw()
 
+        GL11.glEnable(GL11.GL_LIGHTING)
         GlStateManager.popMatrix()
     }
 }

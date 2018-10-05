@@ -41,6 +41,7 @@ class BlockCauldron(name: String, private val stirsRequired: Int) : BlockBase(na
                         // Stir the cauldron, if it has a stirring stick
                         if (tileEntity.hasStirrer) {
                             if (tileEntity.getPartAmount() > 0 && tileEntity.waterAmount > 0.0) {
+                                // TODO: Reduce the stirs required by a fraction when there's fire under the cauldron
                                 tileEntity.stirsRequired = stirsRequired / (tileEntity.getPartAmount() * tileEntity.waterAmount).toDouble()
 
                                 if (tileEntity.stirAmount >= tileEntity.stirsRequired) {

@@ -24,7 +24,7 @@ class TileEntityCauldron(val maxParts: Int, val maxWater: Float = 1f) : TileEnti
     }
 
     fun addPart(part: ItemBugPart) {
-        partList[partAmount] = ModItems.bugParts.indexOf(part) + 1
+        partList[partAmount] = ModItems.bugParts.indexOf(part)
         addPartAmount(1)
     }
 
