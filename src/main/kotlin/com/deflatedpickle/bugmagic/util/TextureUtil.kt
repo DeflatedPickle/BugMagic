@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage
 import java.awt.image.ColorConvertOp
 import javax.imageio.ImageIO
 
+// TODO: Move to PickleLib
 object TextureUtil {
     fun bufferedImageFromResourceLocation(resourceLocation: ResourceLocation): BufferedImage {
         val inputStream = Minecraft.getMinecraft().resourceManager.getResource(resourceLocation).inputStream

@@ -28,6 +28,11 @@ class TileEntityCauldron(val maxParts: Int, val maxWater: Float = 1f) : TileEnti
         addPartAmount(1)
     }
 
+    fun resetParts() {
+        partList = IntArray(6)
+        partAmount = 0
+    }
+
     var waterAmount = 0f
 
     var stirAmount = 0.0
