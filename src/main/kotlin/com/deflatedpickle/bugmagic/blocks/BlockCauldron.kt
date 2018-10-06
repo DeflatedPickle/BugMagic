@@ -46,6 +46,10 @@ class BlockCauldron(name: String, private val stirsRequired: Int) : BlockBase(na
                 if (hand == EnumHand.MAIN_HAND) {
                     val itemStack = playerIn!!.getHeldItem(hand)
 
+                    val posX = pos.x + RandomUtils.nextDouble(0.2, 0.8)
+                    val posY = pos.y + 0.15 + (0.95 - 0.15) * tileEntity.waterAmount
+                    val posZ = pos.z + RandomUtils.nextDouble(0.2, 0.8)
+
                     if (itemStack.isEmpty) {
                         // Stir the cauldron, if it has a stirring stick
                         if (tileEntity.hasStirrer) {
@@ -57,10 +61,6 @@ class BlockCauldron(name: String, private val stirsRequired: Int) : BlockBase(na
                                     tileEntity.stirsRequired /= 1.5
                                     // println("Fire!")
                                 }
-
-                                val posX = pos.x + RandomUtils.nextDouble(0.2, 0.8)
-                                val posY = pos.y + 0.15 + (0.95 - 0.15) * tileEntity.waterAmount
-                                val posZ = pos.z + RandomUtils.nextDouble(0.2, 0.8)
 
                                 if (tileEntity.stirAmount >= tileEntity.stirsRequired) {
                                     tileEntity.fullyStirred = true
@@ -83,12 +83,16 @@ class BlockCauldron(name: String, private val stirsRequired: Int) : BlockBase(na
                         }
                     }
                     else {
+                        var splash = false
+
                         when (itemStack.item) {
                             Items.STICK -> {
                                 // Has a stirring stick
                                 if (!tileEntity.hasStirrer) {
                                     tileEntity.hasStirrer = true
                                     itemStack.shrink(1)
+
+                                    splash = true
                                 }
                             }
                             Items.WATER_BUCKET -> {
@@ -98,6 +102,8 @@ class BlockCauldron(name: String, private val stirsRequired: Int) : BlockBase(na
                                 playerIn.inventory.addItemStackToInventory(ItemStack(Items.BUCKET))
 
                                 tileEntity.stirAmount = 0.0
+
+                                splash = true
                             }
                             Items.BUCKET -> {
                                 // Empty the cauldron
@@ -130,6 +136,8 @@ class BlockCauldron(name: String, private val stirsRequired: Int) : BlockBase(na
                                     else {
                                         tileEntity.stirAmount = 0.0
                                     }
+
+                                    splash = true
                                 }
                             }
                             Items.GLASS_BOTTLE -> {
@@ -159,7 +167,15 @@ class BlockCauldron(name: String, private val stirsRequired: Int) : BlockBase(na
                                     // tileEntity.addPartAmout(1)
                                     tileEntity.addPart(itemStack.item as ItemBugPart)
                                     itemStack.shrink(1)
+
+                                    splash = true
                                 }
+                            }
+                        }
+
+                        if (splash) {
+                            for (i in 1..2) {
+                                worldIn.spawnParticle(EnumParticleTypes.WATER_SPLASH, posX, posY, posZ, 0.0, 0.0, 0.0)
                             }
                         }
                     }
