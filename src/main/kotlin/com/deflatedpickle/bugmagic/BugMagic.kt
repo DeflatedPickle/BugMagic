@@ -18,7 +18,7 @@ object BugMagic {
     }
 
     @SidedProxy(clientSide = Reference.CLIENT_PROXY_CLASS, serverSide = Reference.SERVER_PROXY_CLASS)
-    var proxy: CommonProxy? = null
+    lateinit var proxy: CommonProxy
 
     val networkWrapper: SimpleNetworkWrapper = SimpleNetworkWrapper(Reference.NAME)
 
@@ -27,14 +27,14 @@ object BugMagic {
     @EventHandler
     fun preInit(event: FMLPreInitializationEvent) {
         logger.info("Starting preInit.")
-        proxy!!.preInit(event)
+        proxy.preInit()
         logger.info("Finished preInit.")
     }
 
     @EventHandler
     fun init(event: FMLInitializationEvent) {
         logger.info("Starting init.")
-        proxy!!.init(event)
+        proxy.init()
         logger.info("Finished init.")
     }
 }

@@ -1,12 +1,10 @@
 package com.deflatedpickle.bugmagic.blocks
 
-import com.deflatedpickle.bugmagic.init.ModCreativeTabs
 import com.deflatedpickle.bugmagic.init.ModItems
 import com.deflatedpickle.bugmagic.items.ItemBugNet
 import com.deflatedpickle.bugmagic.items.ItemMagnifyingGlass
 import com.deflatedpickle.bugmagic.tileentity.TileEntityBugJar
-import com.deflatedpickle.picklelib.block.BlockBase
-import net.minecraft.block.ITileEntityProvider
+import net.minecraft.block.Block
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
@@ -22,9 +20,8 @@ import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import org.apache.commons.lang3.RandomUtils
-import org.apache.commons.lang3.tuple.ImmutablePair
 
-class BlockBugJar(name: String, private val maxBugs: Int) : BlockBase(name, Material.GLASS, 1f, 1f, ImmutablePair("pickaxe", 0), ModCreativeTabs.tabGeneral), ITileEntityProvider {
+class BlockBugJar(private val maxBugs: Int) : Block(Material.GLASS) {
     // TODO: Fix the bounding box (it appears to move with the player, and the player doesn't collide with it)
 
     private val axisAlignedBB = AxisAlignedBB(6.0 / 16, 0.0, 6.0 / 16, 6.0 / 10, 6.0 / 16, 6.0 / 10)
@@ -95,7 +92,11 @@ class BlockBugJar(name: String, private val maxBugs: Int) : BlockBase(name, Mate
         return true
     }
 
-    override fun createNewTileEntity(worldIn: World?, meta: Int): TileEntity {
+    override fun hasTileEntity(state: IBlockState): Boolean {
+        return true
+    }
+
+    override fun createTileEntity(world: World?, state: IBlockState?): TileEntity? {
         return TileEntityBugJar(maxBugs)
     }
 }

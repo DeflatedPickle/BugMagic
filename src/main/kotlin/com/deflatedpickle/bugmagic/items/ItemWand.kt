@@ -1,12 +1,11 @@
 package com.deflatedpickle.bugmagic.items
 
 import com.deflatedpickle.bugmagic.util.SpellUtil
-import com.deflatedpickle.picklelib.item.ItemBase
-import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.EnumAction
+import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ActionResult
@@ -16,7 +15,7 @@ import net.minecraft.util.text.TextComponentString
 import net.minecraft.world.World
 import org.lwjgl.input.Mouse
 
-class ItemWand(name: String, stackSize: Int, creativeTab: CreativeTabs) : ItemBase(name, stackSize, creativeTab) {
+class ItemWand : Item() {
     // TODO: Allow the player to uncast their spells at will
     private var hasBeenScrolled = false
     private val playerSpells: MutableList<String> = mutableListOf()

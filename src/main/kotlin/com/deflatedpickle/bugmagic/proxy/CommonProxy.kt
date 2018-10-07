@@ -11,25 +11,23 @@ import net.minecraft.init.Blocks
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 import net.minecraftforge.common.MinecraftForge
-import net.minecraftforge.fml.common.event.FMLInitializationEvent
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import net.minecraftforge.fml.relauncher.Side
 
 open class CommonProxy {
-    val fireflyList = listOf(ModItems.spellEmpty, ModItems.partLeg, ModItems.partLeg, ModItems.partLeg, ModItems.partLeg,
-            ModItems.partWing, ModItems.partWing,
-            ModItems.partBody, ModItems.partHead,
+    val fireflyList = listOf(ModItems.SPELL_EMPTY, ModItems.BUG_PART_LEG, ModItems.BUG_PART_LEG, ModItems.BUG_PART_LEG, ModItems.BUG_PART_LEG,
+            ModItems.BUG_PART_WING, ModItems.BUG_PART_WING,
+            ModItems.BUG_PART_BODY, ModItems.BUG_PART_HEAD,
             Items.GLOWSTONE_DUST)
 
-    val bugpackList = listOf(ModItems.spellEmpty, ModItems.partLeg, ModItems.partLeg, ModItems.partLeg, ModItems.partLeg,
-            ModItems.partWing, ModItems.partWing,
-            ModItems.partBody, ModItems.partHead,
+    val bugpackList = listOf(ModItems.SPELL_EMPTY, ModItems.BUG_PART_LEG, ModItems.BUG_PART_LEG, ModItems.BUG_PART_LEG, ModItems.BUG_PART_LEG,
+            ModItems.BUG_PART_WING, ModItems.BUG_PART_WING,
+            ModItems.BUG_PART_BODY, ModItems.BUG_PART_HEAD,
             ItemStack(Blocks.CHEST).item)
 
-    val wurmList = listOf(ModItems.spellEmpty, ModItems.partBody, ModItems.partHead,
+    val wurmList = listOf(ModItems.SPELL_EMPTY, ModItems.BUG_PART_BODY, ModItems.BUG_PART_HEAD,
             Items.BONE, ItemStack(Blocks.DIRT).item, ItemStack(Blocks.DIRT).item, ItemStack(Blocks.DIRT).item)
 
-    fun preInit(event: FMLPreInitializationEvent) {
+    open fun preInit() {
         // BugMagic.networkWrapper.registerMessage(PacketBugPower::class.java, PacketBugPower::class.java, 0, Side.CLIENT)
         BugMagic.networkWrapper.registerMessage(PacketBugPower::class.java, PacketBugPower::class.java, 0, Side.SERVER)
         BugMagic.networkWrapper.registerMessage(PacketWand::class.java, PacketWand::class.java, 1, Side.SERVER)
@@ -40,15 +38,15 @@ open class CommonProxy {
         ModTileEntities
     }
 
-    open fun init(event: FMLInitializationEvent) {
+    open fun init() {
         MinecraftForge.EVENT_BUS.register(ForgeEventHandler())
         ModEntities
         ModCrafting
 
         // TODO: Move to an object
-        AltarUtil.addRecipe(ModItems.spellFirefly, fireflyList)
-        AltarUtil.addRecipe(ModItems.spellBugpack, bugpackList)
-        AltarUtil.addRecipe(ModItems.spellWurm, wurmList)
+        AltarUtil.addRecipe(ModItems.SPELL_FIREFLY, fireflyList)
+        AltarUtil.addRecipe(ModItems.SPELL_BUGPACK, bugpackList)
+        AltarUtil.addRecipe(ModItems.SPELL_WURM, wurmList)
     }
 
     open fun getPlayer(): EntityPlayer? {

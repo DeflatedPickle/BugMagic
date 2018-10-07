@@ -1,10 +1,9 @@
 package com.deflatedpickle.bugmagic.items
 
-import com.deflatedpickle.picklelib.item.ItemBase
-import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.EnumAction
+import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ActionResult
@@ -12,7 +11,11 @@ import net.minecraft.util.EnumActionResult
 import net.minecraft.util.EnumHand
 import net.minecraft.world.World
 
-class ItemBugNet(name: String, stackSize: Int, creativeTab: CreativeTabs, private val bugLimit: Int) : ItemBase(name, stackSize, creativeTab) {
+class ItemBugNet(stackSize: Int, private val bugLimit: Int) : Item() {
+    init {
+        setMaxStackSize(stackSize)
+    }
+
     override fun onItemUseFinish(stack: ItemStack, worldIn: World, entityLiving: EntityLivingBase): ItemStack {
         if (entityLiving is EntityPlayer) {
             if (!worldIn.isRemote) {

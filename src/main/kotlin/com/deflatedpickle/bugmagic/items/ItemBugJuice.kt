@@ -1,19 +1,22 @@
 package com.deflatedpickle.bugmagic.items
 
-import com.deflatedpickle.bugmagic.init.ModCreativeTabs
 import com.deflatedpickle.bugmagic.util.BugUtil
-import com.deflatedpickle.picklelib.item.ItemBase
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Items
 import net.minecraft.item.EnumAction
+import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ActionResult
 import net.minecraft.util.EnumActionResult
 import net.minecraft.util.EnumHand
 import net.minecraft.world.World
 
-class ItemBugJuice(name: String, private val amount: Int) : ItemBase(name, 1, ModCreativeTabs.tabGeneral) {
+class ItemBugJuice(private val amount: Int) : Item() {
+    init {
+        setMaxStackSize(1)
+    }
+
     override fun onItemUseFinish(stack: ItemStack, worldIn: World, entityLiving: EntityLivingBase): ItemStack {
         if (entityLiving is EntityPlayer) {
             if (worldIn.isRemote) {

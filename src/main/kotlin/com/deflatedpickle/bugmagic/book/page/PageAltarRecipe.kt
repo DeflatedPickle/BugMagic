@@ -35,7 +35,7 @@ class PageAltarRecipe(private val result: Item, private val ingredients: List<It
     override fun draw(book: Book, category: CategoryAbstract, entry: EntryAbstract, guiLeft: Int, guiTop: Int, mouseX: Int, mouseY: Int, guiBase: GuiBase, fontRendererObj: FontRenderer) {
         val centerX = guiLeft + 87
         val centerY = guiTop + 76
-        GuiHelper.drawScaledItemStack(ItemStack(ModBlocks.altar), centerX - 7, centerY - 6, 2f)
+        GuiHelper.drawScaledItemStack(ItemStack(ModBlocks.ALTAR), centerX - 7, centerY - 6, 2f)
         // GuiHelper.drawScaledItemStack(ItemStack(result), guiLeft + 75, guiTop + 115, 2.5f)
 
         // TODO: Split into an inner and outer circle for big recipes

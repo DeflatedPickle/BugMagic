@@ -1,8 +1,10 @@
 package com.deflatedpickle.bugmagic.items
 
-import com.deflatedpickle.bugmagic.init.ModCreativeTabs
-import com.deflatedpickle.picklelib.item.ItemBase
+import net.minecraft.item.Item
 
-class ItemBugPart(name: String, val partType: String) : ItemBase(name, 16, ModCreativeTabs.tabGeneral) {
+class ItemBugPart(val partType: String) : Item() {
+    init {
+        setMaxStackSize(16)
+    }
     // TODO: Change the partType to an Enum
 }

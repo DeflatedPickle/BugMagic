@@ -108,7 +108,7 @@ class ForgeEventHandler {
 
     @SubscribeEvent
     fun onMouseEvent(event: MouseEvent) {
-        val player = BugMagic.proxy?.getPlayer()!!
+        val player = BugMagic.proxy.getPlayer()!!
 
         if (player.isSneaking) {
             if (player.heldItemMainhand.item is ItemWand) {

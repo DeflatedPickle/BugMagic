@@ -1,11 +1,11 @@
 package com.deflatedpickle.bugmagic.items
 
-import com.deflatedpickle.bugmagic.init.ModCreativeTabs
-import com.deflatedpickle.picklelib.item.ItemBase
+import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 
-class ItemMagnifyingGlass(name: String) : ItemBase(name, 1, ModCreativeTabs.tabGeneral) {
+class ItemMagnifyingGlass : Item() {
     init {
+        setMaxStackSize(1)
         maxDamage = 64
     }
 

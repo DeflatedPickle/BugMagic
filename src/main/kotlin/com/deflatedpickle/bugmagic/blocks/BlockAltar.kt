@@ -1,10 +1,8 @@
 package com.deflatedpickle.bugmagic.blocks
 
-import com.deflatedpickle.bugmagic.init.ModCreativeTabs
 import com.deflatedpickle.bugmagic.tileentity.TileEntityAltar
 import com.deflatedpickle.bugmagic.util.AltarUtil
-import com.deflatedpickle.picklelib.block.BlockBase
-import net.minecraft.block.ITileEntityProvider
+import net.minecraft.block.Block
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.item.EntityItem
@@ -16,9 +14,8 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
-import org.apache.commons.lang3.tuple.ImmutablePair
 
-class BlockAltar(name: String) : BlockBase(name, Material.IRON, 2f, 10f, ImmutablePair("pickaxe", 0), ModCreativeTabs.tabGeneral), ITileEntityProvider {
+class BlockAltar : Block(Material.IRON){
     override fun isFullCube(state: IBlockState?): Boolean {
         return false
     }
@@ -66,7 +63,11 @@ class BlockAltar(name: String) : BlockBase(name, Material.IRON, 2f, 10f, Immutab
         return true
     }
 
-    override fun createNewTileEntity(worldIn: World?, meta: Int): TileEntity {
+    override fun hasTileEntity(state: IBlockState?): Boolean {
+        return true
+    }
+
+    override fun createTileEntity(world: World?, state: IBlockState?): TileEntity? {
         return TileEntityAltar(16)
     }
 }

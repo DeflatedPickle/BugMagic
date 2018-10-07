@@ -8,8 +8,8 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.text.TextComponentString
 
 abstract class SpellBase {
-    var caster: EntityPlayer? = null
-    var parchment: ItemStack? = null
+    lateinit var caster: EntityPlayer
+    lateinit var parchment: ItemStack
 
     // TODO: Localize spell names in the lang file
     // The name of the spell
@@ -36,46 +36,46 @@ abstract class SpellBase {
     }
 
     fun cast() {
-        val casted = caster!!.entityData.getTag("bugmagic.casted") as NBTTagCompound?
+        val casted = caster.entityData.getTag("bugmagic.casted") as NBTTagCompound
 
-        if (BugUtil.getBugPower(caster!!) - cost >= 0) {
-            caster!!.cooldownTracker.setCooldown(caster!!.heldItemMainhand.item, cooldownTime)
+        if (BugUtil.getBugPower(caster) - cost >= 0) {
+            caster.cooldownTracker.setCooldown(caster.heldItemMainhand.item, cooldownTime)
 
-            if (casted!!.getInteger(name) < castLimit) {
-                BugUtil.useCappedBugPower(caster!!, cost)
+            if (casted.getInteger(name) < castLimit) {
+                BugUtil.useCappedBugPower(caster, cost)
 
                 casted.setInteger(name, casted.getInteger(name) + 1)
-                if (!caster!!.world.isRemote) {
+                if (!caster.world.isRemote) {
                     limitedCast()
                 }
             }
             else if (castLimit == -1) {
-                BugUtil.useCappedBugPower(caster!!, cost)
+                BugUtil.useCappedBugPower(caster, cost)
 
                 casted.setInteger(name, casted.getInteger(name) + 1)
-                if (!caster!!.world.isRemote) {
+                if (!caster.world.isRemote) {
                     unlimitedCast()
                 }
             }
             else {
-                caster!!.cooldownTracker.setCooldown(caster!!.heldItemMainhand.item, 0)
+                caster.cooldownTracker.setCooldown(caster.heldItemMainhand.item, 0)
 
-                if (!caster!!.world.isRemote) {
-                    caster!!.sendStatusMessage(TextComponentString("Spell cast limit reached"), true)
+                if (!caster.world.isRemote) {
+                    caster.sendStatusMessage(TextComponentString("Spell cast limit reached"), true)
                 }
             }
         }
         else {
-            if (!caster!!.world.isRemote) {
-                caster!!.sendStatusMessage(TextComponentString("Not enough bug power"), true)
+            if (!caster.world.isRemote) {
+                caster.sendStatusMessage(TextComponentString("Not enough bug power"), true)
             }
         }
     }
 
     open fun uncast() {
-        val casted = caster!!.entityData.getTag("bugmagic.casted") as NBTTagCompound?
+        val casted = caster.entityData.getTag("bugmagic.casted") as NBTTagCompound
 
-        if (casted!!.getInteger(name) - 1 >= 0) {
+        if (casted.getInteger(name) - 1 >= 0) {
             casted.setInteger(name, casted.getInteger(name) - 1)
         }
     }
@@ -84,18 +84,18 @@ abstract class SpellBase {
     open fun unlimitedCast() {}
 
     open fun learn() {
-        val spells = caster!!.entityData.getTag("bugmagic.spells") as NBTTagCompound?
+        val spells = caster.entityData.getTag("bugmagic.spells") as NBTTagCompound
 
-        if (spells!!.getBoolean(name)) {
-            caster!!.sendStatusMessage(TextComponentString("You have already learnt that spell"), true)
+        if (spells.getBoolean(name)) {
+            caster.sendStatusMessage(TextComponentString("You have already learnt that spell"), true)
         }
         else {
             spells.setBoolean(name, true)
 
-            if (!caster!!.world.isRemote) {
-                caster!!.sendStatusMessage(TextComponentString("Learnt the $name spell"), true)
+            if (!caster.world.isRemote) {
+                caster.sendStatusMessage(TextComponentString("Learnt the $name spell"), true)
             }
-            parchment!!.shrink(1)
+            parchment.shrink(1)
         }
     }
 }

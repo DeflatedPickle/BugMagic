@@ -1,11 +1,9 @@
 package com.deflatedpickle.bugmagic.blocks
 
-import com.deflatedpickle.bugmagic.init.ModCreativeTabs
 import com.deflatedpickle.bugmagic.init.ModItems
 import com.deflatedpickle.bugmagic.items.ItemBugPart
 import com.deflatedpickle.bugmagic.tileentity.TileEntityCauldron
-import com.deflatedpickle.picklelib.block.BlockBase
-import net.minecraft.block.ITileEntityProvider
+import net.minecraft.block.Block
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
@@ -16,9 +14,8 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
-import org.apache.commons.lang3.tuple.ImmutablePair
 
-class BlockCauldron(name: String, private val stirsRequired: Int) : BlockBase(name, Material.IRON, 2f, 10f, ImmutablePair("pickaxe", 0), ModCreativeTabs.tabGeneral), ITileEntityProvider {
+class BlockCauldron(private val stirsRequired: Int) : Block(Material.IRON) {
     override fun isFullCube(state: IBlockState?): Boolean {
         return false
     }
@@ -81,7 +78,7 @@ class BlockCauldron(name: String, private val stirsRequired: Int) : BlockBase(na
                                 if (tileEntity.waterAmount > 0f) {
                                     if (tileEntity.fullyStirred) {
                                         itemStack.shrink(1)
-                                        playerIn.inventory.addItemStackToInventory(ItemStack(ModItems.bugJuice))
+                                        playerIn.inventory.addItemStackToInventory(ItemStack(ModItems.BUG_JUICE))
 
                                         tileEntity.waterAmount -= 1f
                                     }
@@ -103,7 +100,11 @@ class BlockCauldron(name: String, private val stirsRequired: Int) : BlockBase(na
         return true
     }
 
-    override fun createNewTileEntity(worldIn: World?, meta: Int): TileEntity {
+    override fun hasTileEntity(state: IBlockState?): Boolean {
+        return true
+    }
+
+    override fun createTileEntity(world: World?, state: IBlockState?): TileEntity? {
         return TileEntityCauldron(8)
     }
 }
