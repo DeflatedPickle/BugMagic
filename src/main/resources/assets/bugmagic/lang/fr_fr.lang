@@ -1,0 +1,77 @@
+# Tabs
+itemGroup.tab_bugmagic_general=BugMagic: General
+
+# Items
+## General
+item.bugmagic:wand_generic.name=Baguette du Boguonier
+item.bugmagic:bug_net.name=Filet à insecte
+item.bugmagic:magnifying_glass.name=Loupe
+## Spells
+item.bugmagic:spell_empty.name=Parchemin vierge
+item.bugmagic:spell_firefly.name=Parchemin de la Luciole
+item.bugmagic:spell_bugpack.name=Parchemin du Scarados
+item.bugmagic:spell_wurm.name=Parchemin du Vur
+## Bug Parts
+item.bugmagic:bug_part_leg.name=Patte d'insecte
+item.bugmagic:bug_part_wing.name=Aile d'insecte
+item.bugmagic:bug_part_body.name=Thorax d'insecte
+item.bugmagic:bug_part_head.name=Tête d'insecte
+## Other
+item.bugmagic:bug_juice.name=Jus d'insecte
+
+# Blocks
+tile.bugmagic:bug_jar.name=Petit bocal à insectes
+tile.bugmagic:cauldron.name=Chaudron
+tile.bugmagic:altar.name=Autel d'Insecte
+
+# Entities
+entity.firefly.name=Luciole
+entity.bugpack.name=Scarados
+entity.wurm.name=Vur
+
+# Guides
+bugmagic.buganomicon.title=Boguanomicon
+## Categories
+bugmagic.buganomicon.bugsics.title=Bugsics
+bugmagic.buganomicon.bugstiary.title=Bugstiaire
+## Pages
+### Bugsics
+#### Welcome
+bugmagic.buganomicon.bugsics.welcome.title=Bienvenue dans Bugmagic
+bugmagic.buganomicon.bugsics.welcome.description=Ce guide servira d'introduction à une certaine magie des insectes. Maintenant, attention, cette magie n'est pas pour le simple magicien ou sorcier, car, pour progresser, vous devrez participer à un culte des insectes, et sacrifier des insectes pour créer de nouveaux sorts.
+#### Book
+bugmagic.buganomicon.bugsics.book.title=Boguanomicon
+#### Wand
+bugmagic.buganomicon.bugsics.wand.title=Baguette du Boguonier
+bugmagic.buganomicon.bugsics.wand.description=Pour commencer dans la veine de la magie avec les soi-disant bugs, un magicien ou une sorcière doit trouver ou fabriquer eux-mêmes la baguette de base du Boguonier. Elle peut être fabriquée à une table avec une combinaison de bâtonnets suivant le motif page suivante.
+#### Net
+bugmagic.buganomicon.bugsics.net.title=Filet à insecte
+bugmagic.buganomicon.bugsics.net.description=Le filet à insecte est utilisé pour capturer des insectes. Il peut être réalisé grâce à la recette page suivante.
+#### Magnifying
+bugmagic.buganomicon.bugsics.magnifying.title=Loupe
+bugmagic.buganomicon.bugsics.magnifying.description=La loupe est utilisée pour examiner des bugs à l'intérieur d'un bocal à insecte, pour obtenir des parties d'insectes. Elle peut être fabriquée en suivant la recette page suivante.
+#### Part
+bugmagic.buganomicon.bugsics.part.title=Parties d'insectes
+bugmagic.buganomicon.bugsics.part.description=Les parties d'insectes sont utilisées pour former des parchemins sur l'autel, ils peuvent être acquis en examinant des insectes à l'intérieur de bocaux.\n\nIl existe quatre parties différentes; les pattes, les ailes, les corps et les têtes. Ceux-ci sont requis en quantités variables à un autel pour fabriquer des sorts.
+#### Jar
+bugmagic.buganomicon.bugsics.jar.title=Bocal à insectes
+bugmagic.buganomicon.bugsics.jar.description=Le bocal à insectes est utilisé pour contenir les insectes capturés avec le filet à insectes. Les insectes à l'intérieur peuvent être examinés à l'aide de la loupe. Il peut être fabriqué avec la recette page suivante.
+#### Cauldron
+bugmagic.buganomicon.bugsics.cauldron.title=Chaudron
+bugmagic.buganomicon.bugsics.cauldron.description=Le chaudron est utilisé pour faire bouillir les parties d'insecte en de la résonance d'insecte, qui peut être mise en bouteille et bue pour régénérer la puissance d'insecte. Elle peut être fabriquée avec la recette de la page suivante.
+#### Altar
+bugmagic.buganomicon.bugsics.altar.title=Autel
+bugmagic.buganomicon.bugsics.altar.description=L'autel est utilisé pour former des sorts à l'aide de parties d'insectes et d'autres objets. Les recettes qu'il contient doivent suivre un ordre spécifique qui sera affiché dans les pages des sorts. Il peut être fabriqué avec la recette de la page suivante.
+#### Spells
+bugmagic.buganomicon.bugsics.spell.title=Sorts
+bugmagic.buganomicon.bugsics.spell.description=Les sorts sont acquis sous forme de parchemins, trouvés dans des coffres, fabriqués ou donnés par votre chef de culte (si vous avez décidé d'en rejoindre un). Le parchemin peut être appris pour obtenir le sort et ensuite sélectionné avec votre baguette. Chaque sort a une classe, un coût, un coût de drainage, un intervalle de drainage, une limite de lancer et un temps de recharge différents. Le coût est simplement combien de puissance d'insecte il en coûtera pour lancer le sort, le coût de drain est combien de puissance d'insecte sera drainée à chaque intervalle de drain pendant que le sort est lancé, l'intervalle de drain est combien de temps il faudra pour drainer, la limite du lancer est combien de sorts peuvent être lancés à la fois, et le temps de recharge est combien de temps il faudra pour que la baguette se recharge après avoir lancé le sort.
+### Bugstiary
+#### Firefly
+bugmagic.buganomicon.bugstiary.firefly.title=Luciole
+bugmagic.buganomicon.bugstiary.firefly.description=Le sort Luciole produira une petite luciole qui vous suivra, planant dans les airs, qui illuminera la zone juste autour d'elle. Cependant, la Luciole n'est pas du tout intelligente, et peut se coincer dans des blocs ou même mourir toute seule.
+#### Bugpack
+bugmagic.buganomicon.bugstiary.bugpack.title=Scarados
+bugmagic.buganomicon.bugstiary.bugpack.description=Le sort Scarados produira un petit insecte qui vous suivra, planant dans les airs, et vous tiendra un seul stack d'items. Cependant le Scarados n'est pas du tout intelligent, et peut se coincer sur des blocs ou même se tuer.
+#### Wurm
+bugmagic.buganomicon.bugstiary.wurm.title=Vur
+bugmagic.buganomicon.bugstiary.wurm.description=Le sort de Vur engendrera un petit ver immobile qui mangera son chemin jusqu'à la bedrock, remettant les items à son propriétaire jusqu'à ce qu'il touche le fond, où il mourra instantanément de faim et commettra une non-existence.
