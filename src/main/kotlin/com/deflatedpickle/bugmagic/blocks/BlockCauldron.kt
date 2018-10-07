@@ -52,9 +52,9 @@ class BlockCauldron(name: String, private val stirsRequired: Int) : BlockBase(na
 
                     if (itemStack.isEmpty) {
                         // Stir the cauldron, if it has a stirring stick
+                        // TODO: Add sounds for stirring
                         if (tileEntity.hasStirrer) {
                             if (tileEntity.getPartAmount() > 0 && tileEntity.waterAmount > 0.0) {
-                                // TODO: Reduce the stirs required by a fraction when there's fire under the cauldron
                                 tileEntity.stirsRequired = stirsRequired / (tileEntity.getPartAmount() * tileEntity.waterAmount).toDouble()
 
                                 if (worldIn.getBlockState(pos.down()).block == Blocks.FIRE) {
@@ -82,6 +82,7 @@ class BlockCauldron(name: String, private val stirsRequired: Int) : BlockBase(na
                             }
                         }
                     }
+                    // TODO: Add sounds for adding water/items
                     else {
                         var splash = false
 
@@ -150,7 +151,6 @@ class BlockCauldron(name: String, private val stirsRequired: Int) : BlockBase(na
                                     }
                                     else {
                                         itemStack.shrink(1)
-                                        // TODO: Actually give a water bottle
                                         playerIn.inventory.addItemStackToInventory(PotionUtils.addPotionToItemStack(ItemStack(Items.POTIONITEM), PotionTypes.WATER))
 
                                         tileEntity.decreaseWater(0.1f)

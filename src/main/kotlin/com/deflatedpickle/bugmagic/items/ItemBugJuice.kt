@@ -14,6 +14,9 @@ import net.minecraft.util.EnumHand
 import net.minecraft.world.World
 
 class ItemBugJuice(name: String, private val amount: Int) : ItemBase(name, 1, ModCreativeTabs.tabGeneral) {
+    // TODO: Add a "purity" value that would diminish the less bug parts used
+    // TODO: Add a "watered down" value that would increase the more water and less parts used
+    // TODO: Add a "dryness" value that would increase the less water was used
     override fun onItemUseFinish(stack: ItemStack, worldIn: World, entityLiving: EntityLivingBase): ItemStack {
         if (entityLiving is EntityPlayer) {
             if (worldIn.isRemote) {

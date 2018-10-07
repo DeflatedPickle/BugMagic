@@ -2,6 +2,7 @@ package com.deflatedpickle.bugmagic.render.tileentity
 
 import com.deflatedpickle.bugmagic.entity.mob.EntityBugpack
 import com.deflatedpickle.bugmagic.init.ModItems
+import com.deflatedpickle.bugmagic.init.ModTextures
 import com.deflatedpickle.bugmagic.tileentity.TileEntityCauldron
 import com.deflatedpickle.bugmagic.util.TextureUtil
 import net.minecraft.client.Minecraft
@@ -21,13 +22,12 @@ import org.lwjgl.opengl.GL11
 class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
     private val textureWater = ResourceLocation("minecraft:textures/blocks/water_still.png")
     private val texturePlanks = ResourceLocation("minecraft:textures/blocks/planks_oak.png")
-    private val textureBugEssence = TextureUtil.recolourTexture(textureWater, textureWater.resourceDomain + "_recolour", "#BBFF70")
 
     private val tessellator = Tessellator.getInstance()
 
     val size = 0.03125
 
-    var waterHeight = 0.0
+    // private var waterHeight = 0.0
     // TODO: Move the animation variables to the TileEntity
     private var angle = 0f
 
@@ -37,7 +37,7 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
     private var stirRotationAmount = 0.0  // Speed
     // TODO: Apply more drag as it becomes more bug essence
     private val stirRotationDrag = 0.55
-    private val stirEmptyRotationDrag = 2.0
+    // private val stirEmptyRotationDrag = 2.0
     private val stirRotationMomentum = 0.1
 
     private var stirCurrentDrag = stirRotationDrag
@@ -54,7 +54,7 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
     override fun render(te: TileEntityCauldron, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float) {
         super.render(te, x, y, z, partialTicks, destroyStage, alpha)
 
-        waterHeight = 0.15 + (0.95 - 0.15) * te.waterAmount
+        val waterHeight = 0.15 + (0.95 - 0.15) * te.waterAmount
 
         for (i in 0 until te.getPartAmount()) {
             //if (i > 0) {
@@ -76,24 +76,22 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
                     partSizeList.add(RandomUtils.nextFloat(0.5f, 0.7f))
                 }
 
-                drawItem(x, y, z, ItemStack(ModItems.bugParts[te.getParts()[i]]), i, te.getPartAmount(), te.stirAmount, te.stirsRequired)
+                drawItem(x, y, z, waterHeight, ItemStack(ModItems.bugParts[te.getParts()[i]]), i, te.getPartAmount(), te.stirAmount)
             //}
         }
 
         if (te.hasStirrer) {
-            drawHandle(x, y, z, te.waterAmount, te.stirAmount)
+            drawHandle(x, y, z, waterHeight, te.stirAmount)
         }
 
         if (te.waterAmount >= 0.0f) {
             // drawFluidLayer(x, y, z, te.waterAmount, te.stirAmount)
-            drawFluid(x, y, z, te.waterAmount, te.stirAmount, te.stirsRequired)
+            drawFluid(x, y, z, waterHeight, te.stirAmount, te.stirsRequired)
         }
     }
 
-    private fun drawFluid(x: Double, y: Double, z: Double, fluidHeight: Float, stirAmount: Double, stirsRequired: Double) {
+    private fun drawFluid(x: Double, y: Double, z: Double, fluidHeight: Double, stirAmount: Double, stirsRequired: Double) {
         GlStateManager.pushMatrix()
-
-        // TODO: Check if the cauldron has bug parts, if so, do this
 
         val stirsNeeded = if (stirsRequired == 0.0 && stirAmount == 0.0) {
             15 / stirAmount.toFloat()
@@ -106,12 +104,12 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
         drawFluidLayer(x, y, z, textureWater, fluidHeight)
 
         GlStateManager.color(1f, 1f, 1f, (stirAmount / stirsRequired).toFloat())
-        drawFluidLayer(x, y, z, textureBugEssence, fluidHeight)
+        drawFluidLayer(x, y, z, ModTextures.bugEssenceStillLocation, fluidHeight)
 
         GlStateManager.popMatrix()
     }
 
-    private fun drawFluidLayer(x: Double, y: Double, z: Double, texture: ResourceLocation, fluidHeight: Float) {
+    private fun drawFluidLayer(x: Double, y: Double, z: Double, texture: ResourceLocation, fluidHeight: Double) {
         GlStateManager.pushMatrix()
         GlStateManager.enableBlend()
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
@@ -128,13 +126,13 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
         // TODO: Puff out particles when stirring
 
         // Bottom Left
-        tessellator.buffer.pos(0.9, waterHeight, 0.1).tex(0.0, 0.0).endVertex()
+        tessellator.buffer.pos(0.9, fluidHeight, 0.1).tex(0.0, 0.0).endVertex()
         // Bottom Right
-        tessellator.buffer.pos(0.1, waterHeight, 0.1).tex(0.0, size).endVertex()
+        tessellator.buffer.pos(0.1, fluidHeight, 0.1).tex(0.0, size).endVertex()
         // Top Right
-        tessellator.buffer.pos(0.1, waterHeight, 0.9).tex(1.0, size).endVertex()
+        tessellator.buffer.pos(0.1, fluidHeight, 0.9).tex(1.0, size).endVertex()
         // Top Left
-        tessellator.buffer.pos(0.9, waterHeight, 0.9).tex(1.0, 0.0).endVertex()
+        tessellator.buffer.pos(0.9, fluidHeight, 0.9).tex(1.0, 0.0).endVertex()
 
         tessellator.draw()
 
@@ -143,7 +141,7 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
         GlStateManager.popMatrix()
     }
 
-    private fun drawItem(x: Double, y: Double, z: Double, item: ItemStack, partOrder: Int, partCount: Int, stirAmount: Double, stirsRequired: Double) {
+    private fun drawItem(x: Double, y: Double, z: Double, fluidHeight: Double, item: ItemStack, partOrder: Int, partCount: Int, stirAmount: Double) {
         GlStateManager.pushMatrix()
 
         GlStateManager.translate(x, y, z)
@@ -155,7 +153,7 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
         GlStateManager.translate(-offset, 0.0, -offset)
 
         // TODO: Properly stack the items when there's not enough water to make them float
-        var height = (waterHeight - 0.001) - (0.05 * partOrder) * partCount
+        var height = (fluidHeight - 0.001) - (0.05 * partOrder) * partCount
 
         if (height < 0.2) {
             height = 0.2
@@ -179,7 +177,7 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
         GlStateManager.popMatrix()
     }
 
-    private fun drawHandle(x: Double, y: Double, z: Double, fluidHeight: Float, tileStirAmount: Double) {
+    private fun drawHandle(x: Double, y: Double, z: Double, fluidHeight: Double, tileStirAmount: Double) {
         // Check if it was stirred
         if (stirAmount < tileStirAmount) {
             wasStirred = true
