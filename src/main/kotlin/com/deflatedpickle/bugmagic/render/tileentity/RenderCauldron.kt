@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.texture.TextureMap
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.item.ItemStack
+import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.Tuple
 import net.minecraftforge.client.ForgeHooksClient
@@ -28,28 +29,6 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
     val size = 0.03125
 
     // private var waterHeight = 0.0
-    // TODO: Move the animation variables to the TileEntity
-    private var angle = 0f
-
-    private var stirAmount = 0.0
-
-    private var wasStirred = false
-    private var stirRotationAmount = 0.0  // Speed
-    // TODO: Apply more drag as it becomes more bug essence
-    private val stirRotationDrag = 0.55
-    // private val stirEmptyRotationDrag = 2.0
-    private val stirRotationMomentum = 0.1
-
-    private var stirCurrentDrag = stirRotationDrag
-
-    private var stirRotationMomentumTick = 0
-
-    private val stirRotationMin = 10
-    private val stirRotationMax = 13
-
-    private val partRotationList = mutableListOf<Float>()
-    private val partPositionList = mutableListOf<Tuple<Double, Double>>()
-    private val partSizeList = mutableListOf<Float>()
 
     override fun render(te: TileEntityCauldron, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float) {
         super.render(te, x, y, z, partialTicks, destroyStage, alpha)
@@ -61,27 +40,27 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
                 // TODO: Make items slowly bob up and down in the water
                 // TODO: Rotate the items locally based on a fraction of momentum gained from spinning the stick
 
-                if (partRotationList.getOrNull(i) == null) {
-                    partRotationList.add(RandomUtils.nextFloat(0f, 360f))
+                if (te.partRotationList.getOrNull(i) == null) {
+                    te.partRotationList.add(RandomUtils.nextFloat(0f, 360f))
                 }
 
-                if (partPositionList.getOrNull(i) == null) {
+                if (te.partPositionList.getOrNull(i) == null) {
                     val min = -0.1
                     val max = 0.1
 
-                    partPositionList.add(Tuple(Math.random() * (max - min) + min, Math.random() * (max - min) + min))
+                    te.partPositionList.add(Tuple(Math.random() * (max - min) + min, Math.random() * (max - min) + min))
                 }
 
-                if (partSizeList.getOrNull(i) == null) {
-                    partSizeList.add(RandomUtils.nextFloat(0.5f, 0.7f))
+                if (te.partSizeList.getOrNull(i) == null) {
+                    te.partSizeList.add(RandomUtils.nextFloat(0.5f, 0.7f))
                 }
 
-                drawItem(x, y, z, waterHeight, ItemStack(ModItems.bugParts[te.getParts()[i]]), i, te.getPartAmount(), te.stirAmount)
+                drawItem(x, y, z, waterHeight, ItemStack(ModItems.bugParts[te.getParts()[i]]), i, te)
             //}
         }
 
         if (te.hasStirrer) {
-            drawHandle(x, y, z, waterHeight, te.stirAmount)
+            drawHandle(x, y, z, te)
         }
 
         if (te.waterAmount >= 0.0f) {
@@ -141,7 +120,7 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
         GlStateManager.popMatrix()
     }
 
-    private fun drawItem(x: Double, y: Double, z: Double, fluidHeight: Double, item: ItemStack, partOrder: Int, partCount: Int, stirAmount: Double) {
+    private fun drawItem(x: Double, y: Double, z: Double, fluidHeight: Double, item: ItemStack, index: Int, te: TileEntityCauldron) {
         GlStateManager.pushMatrix()
 
         GlStateManager.translate(x, y, z)
@@ -149,19 +128,19 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
         val offset = 0.5
         GlStateManager.translate(offset, 0.0, offset)
         // TODO: Add an rotation handler (like the handle has) to apply more drag the lower the part is
-        GlStateManager.rotate(angle - partRotationList[partOrder] - ((partOrder - partCount) * 10), 0f, 1f, 0f)
+        GlStateManager.rotate(te.angle - te.partRotationList[index] - ((index - te.getPartAmount()) * 10), 0f, 1f, 0f)
         GlStateManager.translate(-offset, 0.0, -offset)
 
         // TODO: Properly stack the items when there's not enough water to make them float
-        var height = (fluidHeight - 0.001) - (0.05 * partOrder) * partCount
+        var height = (fluidHeight - 0.001) - (0.05 * index) * te.getPartAmount()
 
         if (height < 0.2) {
             height = 0.2
         }
 
-        GlStateManager.translate(0.36 - partPositionList[partOrder].first,
+        GlStateManager.translate(0.36 - te.partPositionList[index].first,
                 height,
-                0.36 - partPositionList[partOrder].second)
+                0.36 - te.partPositionList[index].second)
 
         GlStateManager.rotate(90f, 1f, 0f, 0f)
 
@@ -169,7 +148,7 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
         var model = Minecraft.getMinecraft().renderItem.getItemModelWithOverrides(item, Minecraft.getMinecraft().world, null)
         model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.GROUND, false)
 
-        GlStateManager.scale(partSizeList[partOrder], partSizeList[partOrder], partSizeList[partOrder])
+        GlStateManager.scale(te.partSizeList[index], te.partSizeList[index], te.partSizeList[index])
 
         Minecraft.getMinecraft().textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE)
         Minecraft.getMinecraft().renderItem.renderItem(item, model)
@@ -177,49 +156,49 @@ class RenderCauldron : TileEntitySpecialRenderer<TileEntityCauldron>() {
         GlStateManager.popMatrix()
     }
 
-    private fun drawHandle(x: Double, y: Double, z: Double, fluidHeight: Double, tileStirAmount: Double) {
+    private fun drawHandle(x: Double, y: Double, z: Double, te: TileEntityCauldron) {
         // Check if it was stirred
-        if (stirAmount < tileStirAmount) {
-            wasStirred = true
-            stirAmount = tileStirAmount
+        if (te.stirMaxAmount < te.stirAmount) {
+            te.wasStirred = true
+            te.stirMaxAmount = te.stirAmount
         }
 
-        if (fluidHeight < 0.5f) {
-            stirCurrentDrag = 0.25 / fluidHeight
+        if (te.waterAmount < 0.5f) {
+            te.stirCurrentDrag = 0.25 / te.waterAmount
         }
-        else if (fluidHeight > 0.5f) {
-            stirCurrentDrag = 0.25 * fluidHeight
+        else if (te.waterAmount > 0.5f) {
+            te.stirCurrentDrag = 0.25 * te.waterAmount
         }
 
         GlStateManager.pushMatrix()
         GlStateManager.translate(x, y, z)
 
         // Stir the stick
-        if (wasStirred) {
-            stirRotationAmount = RandomUtils.nextInt(stirRotationMin, stirRotationMax).toDouble()
+        if (te.wasStirred) {
+            te.stirRotationAmount = RandomUtils.nextInt(te.stirRotationMin, te.stirRotationMax).toDouble()
 
-            wasStirred = false
+            te.wasStirred = false
 
-            stirRotationMomentumTick = 4
+            te.stirRotationMomentumTick = 4
         }
 
-        if (stirRotationMomentumTick > 0) {
-            stirRotationMomentumTick -= 1
+        if (te.stirRotationMomentumTick > 0) {
+            te.stirRotationMomentumTick -= 1
 
-            stirRotationAmount += stirRotationMomentum
+            te.stirRotationAmount += te.stirRotationMomentum
         }
 
         GlStateManager.translate(0.5, 0.5, 0.5)
-        GlStateManager.rotate(angle, 0f, 1f, 0f)
+        GlStateManager.rotate(te.angle, 0f, 1f, 0f)
         GlStateManager.translate(-0.5, -0.5, -0.5)
 
-        if (stirRotationAmount > 0.1) {
-            stirRotationAmount -= stirCurrentDrag
+        if (te.stirRotationAmount > 0.1) {
+            te.stirRotationAmount -= te.stirCurrentDrag
         }
         else {
-            stirRotationAmount = 0.0
+            te.stirRotationAmount = 0.0
         }
-        angle += stirRotationAmount.toFloat()
+        te.angle += te.stirRotationAmount.toFloat()
 
         // Tilt the stick
         // TODO: Reset the stick to 25f when not stirred for awhile

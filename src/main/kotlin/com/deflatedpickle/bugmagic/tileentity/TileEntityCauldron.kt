@@ -4,10 +4,34 @@ import com.deflatedpickle.bugmagic.init.ModItems
 import com.deflatedpickle.bugmagic.items.ItemBugPart
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
+import net.minecraft.util.Tuple
 
 class TileEntityCauldron(val maxParts: Int, val maxWater: Float = 1f) : TileEntity() {
     private var partAmount = 0
     private var partList = IntArray(6)
+
+    // Render variables
+    var angle = 0f
+
+    var stirMaxAmount = 0.0
+
+    var wasStirred = false
+    var stirRotationAmount = 0.0  // Speed
+    // TODO: Apply more drag as it becomes more bug essence
+    val stirRotationDrag = 0.55
+    // private val stirEmptyRotationDrag = 2.0
+    val stirRotationMomentum = 0.1
+
+    var stirCurrentDrag = stirRotationDrag
+
+    var stirRotationMomentumTick = 0
+
+    val stirRotationMin = 10
+    val stirRotationMax = 13
+
+    val partRotationList = mutableListOf<Float>()
+    val partPositionList = mutableListOf<Tuple<Double, Double>>()
+    val partSizeList = mutableListOf<Float>()
 
     fun getPartAmount(): Int {
         return partAmount

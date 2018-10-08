@@ -43,7 +43,10 @@ open class CommonProxy {
     }
 
     open fun init(event: FMLInitializationEvent) {
+        ModTextures.createTextures()
+
         MinecraftForge.EVENT_BUS.register(ForgeEventHandler())
+        
         ModEntities
         ModCrafting
 
