@@ -9,7 +9,7 @@ import vazkii.arl.block.BlockMod
 
 object ModBlocks {
     val bugJar = BlockBugJar("bug_jar", 1)
-    val cauldron = BlockCauldron("cauldron", 15)
+    val cauldron = BlockCauldron("cauldron", 25)
     val altar = BlockAltar("altar")
 
     init {

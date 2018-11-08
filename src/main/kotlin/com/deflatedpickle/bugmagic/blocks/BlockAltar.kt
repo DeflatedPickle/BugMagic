@@ -19,6 +19,7 @@ import net.minecraft.world.World
 import org.apache.commons.lang3.tuple.ImmutablePair
 
 class BlockAltar(name: String) : BlockBase(name, Material.IRON, 2f, 10f, ImmutablePair("pickaxe", 0), ModCreativeTabs.tabGeneral), ITileEntityProvider {
+    // TODO: Add a custom bounding box
     override fun isFullCube(state: IBlockState?): Boolean {
         return false
     }

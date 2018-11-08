@@ -34,6 +34,8 @@ open class CommonProxy {
         BugMagic.networkWrapper.registerMessage(PacketBugPower::class.java, PacketBugPower::class.java, 0, Side.SERVER)
         BugMagic.networkWrapper.registerMessage(PacketWand::class.java, PacketWand::class.java, 1, Side.SERVER)
 
+        ModTextures
+
         ModCreativeTabs
         ModItems
         ModBlocks
@@ -41,7 +43,10 @@ open class CommonProxy {
     }
 
     open fun init(event: FMLInitializationEvent) {
+        ModTextures.createTextures()
+
         MinecraftForge.EVENT_BUS.register(ForgeEventHandler())
+        
         ModEntities
         ModCrafting
 
