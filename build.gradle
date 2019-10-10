@@ -48,6 +48,8 @@ dependencies {
     // implementation 'com.elytradev:mirage:2.0.3-rc3-SNAPSHOT'
     // implementation "net.ilexiconn:llibrary:1.7.19-1.12.2:dev"
     // implementation "guide-api:Guide-API-1.12:2.1.6:61"
+    implementation "glasspane:glasspane:1.12.2:1.0.1"
+    // implementation "ctm:CTM:MC1.12.2:0.3.3.22"
 
     // Tabula
     implementation "ichunutil:iChunUtil:1.12.2:7.2.2"

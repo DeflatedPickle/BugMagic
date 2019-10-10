@@ -15,7 +15,7 @@ import kotlin.math.max
 import kotlin.math.min
 
 object BugEssence {
-    val NAME = ResourceLocation(Reference.MOD_ID, "bugEssence")
+    val NAME = ResourceLocation(Reference.MOD_ID, "bug_essence")
 
     class Implementation : IBugEssence {
         private var max = 0

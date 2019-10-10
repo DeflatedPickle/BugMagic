@@ -4,6 +4,7 @@ import com.deflatedpickle.bugmagic.BugMagic
 import com.deflatedpickle.bugmagic.common.capability.BugEssence
 import com.deflatedpickle.bugmagic.common.event.FMLEventHandler
 import com.deflatedpickle.bugmagic.common.event.ForgeEventHandler
+import com.deflatedpickle.bugmagic.common.init.Recipe
 import com.deflatedpickle.bugmagic.common.networking.handler.HandlerBugEssence
 import com.deflatedpickle.bugmagic.common.networking.message.Message
 import com.deflatedpickle.bugmagic.common.networking.message.MessageBugEssence
@@ -15,6 +16,8 @@ import net.minecraftforge.fml.relauncher.Side
 
 open class Proxy {
     open fun preInit(event: FMLPreInitializationEvent) {
+        Recipe
+
         BugEssence.register()
 
         BugMagic.CHANNEL.registerMessage(HandlerBugEssence::class.java, MessageBugEssence::class.java, Message.BUG_ESSENCE.ordinal, Side.CLIENT)
