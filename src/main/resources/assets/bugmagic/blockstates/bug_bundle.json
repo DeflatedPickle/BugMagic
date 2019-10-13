@@ -1,0 +1,16 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "up": {
+      "true": {
+        "model": "bugmagic:bug_bundle",
+        "transform": {
+          "translation": [0, 0.3, 0]
+        }
+      },
+      "false": {
+        "model": "bugmagic:bug_bundle"
+      }
+    }
+  }
+}

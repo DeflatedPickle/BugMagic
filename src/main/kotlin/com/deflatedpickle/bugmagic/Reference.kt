@@ -10,6 +10,6 @@ object Reference {
     const val CLIENT_PROXY_CLASS = "com.deflatedpickle.bugmagic.client.Proxy"
     const val SERVER_PROXY_CLASS = "com.deflatedpickle.bugmagic.server.Proxy"
 
-    const val DEPENDENCIES = "required-after:forgelin;required-after:picklelib"
+    const val DEPENDENCIES = "required-after:forgelin;required-after:glasspane;required-after:picklelib"
     const val ADAPTER = "net.shadowfacts.forgelin.KotlinAdapter"
 }

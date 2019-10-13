@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "bsb",
+    "sbs",
+    "bsb"
+  ],
+  "key": {
+    "b": {
+      "item": "bugmagic:bug",
+      "data": 0
+    },
+    "s": {
+      "item": "minecraft:string",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "bugmagic:bug_bundle",
+    "count": 1,
+    "data": 0
+  }
+}
