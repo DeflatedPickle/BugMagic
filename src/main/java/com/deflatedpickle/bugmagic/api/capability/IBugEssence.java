@@ -1,4 +1,4 @@
-package com.deflatedpickle.bugmagic.api;
+package com.deflatedpickle.bugmagic.api.capability;
 
 public interface IBugEssence {
     void setMax(int value);

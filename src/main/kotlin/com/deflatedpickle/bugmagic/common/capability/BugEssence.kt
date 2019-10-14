@@ -1,7 +1,7 @@
 package com.deflatedpickle.bugmagic.common.capability
 
 import com.deflatedpickle.bugmagic.Reference
-import com.deflatedpickle.bugmagic.api.IBugEssence
+import com.deflatedpickle.bugmagic.api.capability.IBugEssence
 import net.minecraft.nbt.NBTBase
 import net.minecraft.nbt.NBTTagIntArray
 import net.minecraft.util.EnumFacing

@@ -1,7 +1,7 @@
 package com.deflatedpickle.bugmagic.common.event
 
 import com.deflatedpickle.bugmagic.BugMagic
-import com.deflatedpickle.bugmagic.api.IBugEssence
+import com.deflatedpickle.bugmagic.api.capability.IBugEssence
 import com.deflatedpickle.bugmagic.common.capability.BugEssence
 import com.deflatedpickle.bugmagic.common.networking.message.MessageBugEssence
 import net.minecraft.entity.player.EntityPlayerMP
