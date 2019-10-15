@@ -4,6 +4,7 @@ import com.deflatedpickle.bugmagic.Reference
 import com.deflatedpickle.bugmagic.api.ASpell
 import com.deflatedpickle.bugmagic.api.capability.ISpellLearner
 import com.deflatedpickle.bugmagic.common.init.Spell
+import net.minecraft.entity.EntityLivingBase
 import net.minecraft.nbt.NBTBase
 import net.minecraft.nbt.NBTTagIntArray
 import net.minecraft.nbt.NBTTagList
@@ -19,6 +20,15 @@ import java.util.concurrent.Callable
 
 object SpellLearner {
     val NAME = ResourceLocation(Reference.MOD_ID, "spell_learner")
+
+    fun isCapable(entity: EntityLivingBase): ISpellLearner? {
+        if (entity.hasCapability(Provider.CAPABILITY!!, null)) {
+            entity.getCapability(Provider.CAPABILITY!!, null)!!.also {
+                return it
+            }
+        }
+        return null
+    }
 
     class Implementation : ISpellLearner {
         private val spellList = mutableListOf<ASpell>(*Spell.DEBUG.toTypedArray())

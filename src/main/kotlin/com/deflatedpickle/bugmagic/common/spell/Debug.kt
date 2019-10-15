@@ -14,7 +14,7 @@ class Debug(val index: Int = 1) : ASpell() {
     }
 
     override fun getManaCost(): Int {
-        return Random.nextInt(4, 40)
+        return 4
     }
 
     override fun getTier(): Tier {
@@ -22,7 +22,7 @@ class Debug(val index: Int = 1) : ASpell() {
     }
 
     override fun getCastingShapePoints(): Int {
-        return Random.nextInt(3, 360)
+        return 8
     }
 
     override fun getCastingParticle(): EnumParticleTypes? {

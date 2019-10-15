@@ -77,15 +77,31 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
         return null;
     }
 
-    // TODO: Replace the AWT Shape usage with a custom class
-
     /**
      * The shape projected under the player during casting
      *
      * @return The casting shape
      */
     public int getCastingShapePoints() {
-        return 64;
+        return 8;
+    }
+
+    public float getRadius() {
+        return 1.2f;
+    }
+
+    // TODO: Change to a Pair of the smallest and largest then lerp between them
+    public Pair<@NotNull Float, @NotNull Float> getRadiusMultiplier() {
+        return Pair.of(1.6f, 1.8f);
+    }
+
+    /**
+     * The centred thickness of the casting shape
+     *
+     * @return The casting shape thickness
+     */
+    public float getCastingShapeThickness() {
+        return 8f;
     }
 
     /**

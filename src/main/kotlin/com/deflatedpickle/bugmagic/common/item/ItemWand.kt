@@ -1,7 +1,9 @@
 package com.deflatedpickle.bugmagic.common.item
 
 import com.deflatedpickle.bugmagic.BugMagic
+import com.deflatedpickle.bugmagic.common.capability.BugEssence
 import com.deflatedpickle.bugmagic.common.capability.SpellLearner
+import com.deflatedpickle.bugmagic.common.networking.message.MessageBugEssence
 import com.deflatedpickle.bugmagic.common.networking.message.MessageSelectedSpell
 import net.minecraft.client.Minecraft
 import net.minecraft.client.util.ITooltipFlag
@@ -9,6 +11,7 @@ import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.EnumAction
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
@@ -32,9 +35,15 @@ class ItemWand(name: String) : Generic(name, CreativeTabs.TOOLS) {
     override fun onItemUseFinish(stack: ItemStack, worldIn: World, entityLiving: EntityLivingBase): ItemStack {
         if (!worldIn.isRemote) {
             if (entityLiving is EntityPlayer) {
-                if (entityLiving.hasCapability(SpellLearner.Provider.CAPABILITY!!, null)) {
-                    entityLiving.getCapability(SpellLearner.Provider.CAPABILITY!!, null)!!.also {
-                        it.spellList[it.currentIndex].cast()
+                with(Pair(BugEssence.isCapable(entityLiving), SpellLearner.isCapable(entityLiving))) {
+                    if (this.first != null && this.second != null) {
+                        // TODO: Store the current count then compare it to the max count before casting it
+                        if (this.first!!.current - this.second!!.spellList[this.second!!.currentIndex].manaCost >= 0) {
+                            this.first!!.current -= this.second!!.spellList[this.second!!.currentIndex].manaCost
+                            BugMagic.CHANNEL.sendTo(MessageBugEssence(this.first!!.max, this.first!!.current), entityLiving as EntityPlayerMP?)
+
+                            this.second!!.spellList[this.second!!.currentIndex].cast()
+                        }
                     }
                 }
             }
@@ -122,8 +131,8 @@ class ItemWand(name: String) : Generic(name, CreativeTabs.TOOLS) {
         }
     }
 
-    override fun getMaxItemUseDuration(stack: ItemStack?): Int {
-        // TODO: Set the use duration with each spell
+    override fun getMaxItemUseDuration(stack: ItemStack): Int {
+        // TODO: Set the use duration with each spell, getting the player from the to-be-made SpellCaster capability
         return 32
     }
 

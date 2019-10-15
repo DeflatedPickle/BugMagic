@@ -2,6 +2,7 @@ package com.deflatedpickle.bugmagic.common.capability
 
 import com.deflatedpickle.bugmagic.Reference
 import com.deflatedpickle.bugmagic.api.capability.IBugEssence
+import net.minecraft.entity.EntityLivingBase
 import net.minecraft.nbt.NBTBase
 import net.minecraft.nbt.NBTTagIntArray
 import net.minecraft.util.EnumFacing
@@ -16,6 +17,15 @@ import kotlin.math.min
 
 object BugEssence {
     val NAME = ResourceLocation(Reference.MOD_ID, "bug_essence")
+
+    fun isCapable(entity: EntityLivingBase): IBugEssence? {
+        if (entity.hasCapability(Provider.CAPABILITY!!, null)) {
+            entity.getCapability(Provider.CAPABILITY!!, null)!!.also {
+                return it
+            }
+        }
+        return null
+    }
 
     class Implementation : IBugEssence {
         private var max = 0

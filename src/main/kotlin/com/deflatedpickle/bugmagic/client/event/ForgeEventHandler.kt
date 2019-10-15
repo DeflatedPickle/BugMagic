@@ -1,9 +1,11 @@
 package com.deflatedpickle.bugmagic.client.event
 
 import com.deflatedpickle.bugmagic.BugMagic
+import com.deflatedpickle.bugmagic.client.render.entity.layer.LayerCastingShape
 import com.deflatedpickle.bugmagic.common.capability.BugEssence
 import com.deflatedpickle.bugmagic.common.capability.SpellLearner
 import com.deflatedpickle.bugmagic.common.item.ItemWand
+import com.github.upcraftlp.glasspane.api.event.client.RegisterRenderLayerEvent
 import net.minecraft.client.Minecraft
 import net.minecraft.util.text.TextFormatting
 import net.minecraftforge.client.event.MouseEvent
@@ -72,5 +74,10 @@ class ForgeEventHandler {
             event.isCanceled = true
             // You thought it was a MouseEvent. But it was I, Dio!
         }
+    }
+
+    @SubscribeEvent
+    fun onRegisterRenderLayerEvent(event: RegisterRenderLayerEvent) {
+        event.addRenderLayer(LayerCastingShape())
     }
 }

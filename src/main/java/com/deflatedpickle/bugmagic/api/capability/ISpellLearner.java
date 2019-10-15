@@ -8,7 +8,7 @@ import java.util.List;
 public interface ISpellLearner {
     @NotNull List<ASpell> getSpellList();
 
-    // Note: Could be moved to the wand, as a spell ID, so you can set the wand to a spell and share it around
+    // TODO: Move to capability as well and add a map for spell IDs and the casted amount
     void setCurrentIndex(int value);
     int getCurrentIndex();
 
