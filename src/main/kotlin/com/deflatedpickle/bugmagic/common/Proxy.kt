@@ -7,8 +7,11 @@ import com.deflatedpickle.bugmagic.common.event.FMLEventHandler
 import com.deflatedpickle.bugmagic.common.event.ForgeEventHandler
 import com.deflatedpickle.bugmagic.common.init.FurnaceRecipe
 import com.deflatedpickle.bugmagic.common.networking.handler.HandlerBugEssence
+import com.deflatedpickle.bugmagic.common.networking.handler.HandlerSelectedSpell
 import com.deflatedpickle.bugmagic.common.networking.message.Message
 import com.deflatedpickle.bugmagic.common.networking.message.MessageBugEssence
+import com.deflatedpickle.bugmagic.common.networking.message.MessageSelectedSpell
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
@@ -23,6 +26,7 @@ open class Proxy {
         SpellLearner.register()
 
         BugMagic.CHANNEL.registerMessage(HandlerBugEssence::class.java, MessageBugEssence::class.java, Message.BUG_ESSENCE.ordinal, Side.CLIENT)
+        BugMagic.CHANNEL.registerMessage(HandlerSelectedSpell::class.java, MessageSelectedSpell::class.java, Message.SELECTED_SPELL.ordinal, Side.SERVER)
     }
 
     open fun init(event: FMLInitializationEvent) {
@@ -31,5 +35,9 @@ open class Proxy {
     }
 
     open fun postInit(event: FMLPostInitializationEvent) {
+    }
+
+    open fun getPlayer(): EntityPlayer? {
+        return null
     }
 }

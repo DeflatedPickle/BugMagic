@@ -1,5 +1,6 @@
 package com.deflatedpickle.bugmagic.common.networking.message
 
 enum class Message {
-    BUG_ESSENCE
+    BUG_ESSENCE,
+    SELECTED_SPELL
 }

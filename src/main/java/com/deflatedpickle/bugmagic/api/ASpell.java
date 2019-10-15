@@ -1,6 +1,6 @@
 package com.deflatedpickle.bugmagic.api;
 
-import com.deflatedpickle.bugmagic.common.item.GenericWand;
+import com.deflatedpickle.bugmagic.common.item.ItemWand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.apache.commons.lang3.tuple.Pair;
@@ -9,10 +9,8 @@ import org.jetbrains.annotations.Nullable;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.ReadableColor;
 
-import java.awt.*;
-
 /**
- * A spell that can be cast with the {@link GenericWand}
+ * A spell that can be cast with the {@link ItemWand}
  *
  * @author DeflatedPickle
  */
@@ -86,7 +84,9 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
      *
      * @return The casting shape
      */
-    public abstract @NotNull Shape getCastingShape();
+    public int getCastingShapePoints() {
+        return 64;
+    }
 
     /**
      * A range that's linearly interpolated between from when the casting begins to when it ends

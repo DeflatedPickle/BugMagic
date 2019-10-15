@@ -21,10 +21,19 @@ object SpellLearner {
     val NAME = ResourceLocation(Reference.MOD_ID, "spell_learner")
 
     class Implementation : ISpellLearner {
-        private val spellList = mutableListOf<ASpell>()
+        private val spellList = mutableListOf<ASpell>(*Spell.DEBUG.toTypedArray())
+        private var currentIndex = 0
 
         override fun getSpellList(): MutableList<ASpell> {
-            return  spellList
+            return spellList
+        }
+
+        override fun setCurrentIndex(value: Int) {
+            currentIndex = value
+        }
+
+        override fun getCurrentIndex(): Int {
+            return currentIndex
         }
 
         override fun learnSpell(spell: ASpell): ASpell {

@@ -2,28 +2,27 @@ package com.deflatedpickle.bugmagic.common.spell
 
 import com.deflatedpickle.bugmagic.api.ASpell
 import net.minecraft.util.EnumParticleTypes
-import java.awt.Shape
-import java.awt.geom.Ellipse2D
+import kotlin.random.Random
 
-object Debug : ASpell() {
+class Debug(val index: Int = 1) : ASpell() {
     init {
-        this.setRegistryName("spell_debug")
+        this.setRegistryName("spell_debug_$index")
     }
 
     override fun getName(): String {
-        return "Debug"
+        return "Debug $index"
     }
 
     override fun getManaCost(): Int {
-        return 10
+        return Random.nextInt(4, 40)
     }
 
     override fun getTier(): Tier {
         return Tier.DEBUG
     }
 
-    override fun getCastingShape(): Shape {
-        return Ellipse2D.Float(0f, 0f, 4f, 4f)
+    override fun getCastingShapePoints(): Int {
+        return Random.nextInt(3, 360)
     }
 
     override fun getCastingParticle(): EnumParticleTypes? {
@@ -34,7 +33,11 @@ object Debug : ASpell() {
         return EnumParticleTypes.EXPLOSION_NORMAL
     }
 
-    override fun cast() {}
+    override fun cast() {
+        println("Cast Debug $index!")
+    }
 
-    override fun uncast() {}
+    override fun uncast() {
+        println("Uncast Debug $index!")
+    }
 }

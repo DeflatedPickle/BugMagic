@@ -2,7 +2,7 @@ package com.deflatedpickle.bugmagic.common.init
 
 import com.deflatedpickle.bugmagic.Reference
 import com.deflatedpickle.bugmagic.common.item.Generic
-import com.deflatedpickle.bugmagic.common.item.GenericWand
+import com.deflatedpickle.bugmagic.common.item.ItemWand
 import com.github.upcraftlp.glasspane.api.registry.AutoRegistry
 import net.minecraft.creativetab.CreativeTabs
 
@@ -13,5 +13,5 @@ object Item {
     val BUG = Generic("bug", CreativeTabs.MISC)
 
     @JvmField
-    val BASIC_WAND = GenericWand("basic_wand")
+    val BASIC_WAND = ItemWand("basic_wand")
 }
