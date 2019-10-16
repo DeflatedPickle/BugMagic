@@ -90,7 +90,6 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
         return 1.2f;
     }
 
-    // TODO: Change to a Pair of the smallest and largest then lerp between them
     public Pair<@NotNull Float, @NotNull Float> getRadiusMultiplier() {
         return Pair.of(1.6f, 1.8f);
     }
@@ -101,7 +100,7 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
      * @return The casting shape thickness
      */
     public float getCastingShapeThickness() {
-        return 8f;
+        return 0.5f;
     }
 
     /**

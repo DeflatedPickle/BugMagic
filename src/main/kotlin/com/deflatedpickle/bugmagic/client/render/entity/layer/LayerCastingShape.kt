@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.entity.layers.LayerRenderer
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.entity.EntityLivingBase
 import org.lwjgl.opengl.GL11
+import java.awt.ComponentOrientation
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
@@ -31,12 +32,16 @@ class LayerCastingShape : LayerRenderer<EntityLivingBase> {
                         GlStateManager.bindTexture(0)
                         GlStateManager.color(this.glowColour.red.toFloat(), this.glowColour.green.toFloat(), this.glowColour.blue.toFloat())
 
-                        GlStateManager.translate(0f, entitylivingbaseIn.height - 0.5f, 0f)
-                        GlStateManager.rotate(90f, 1f, 0f, 0f)
+                        GlStateManager.translate(0f, entitylivingbaseIn.height - 0.4f, 0f)
 
-                        for (i in 1..this.tier.ordinal + 1) {
-                            // TODO: Rotate the shapes, reversing direction on even numbers
-                            drawCircle(this.castingShapePoints, this.radius * (i * Math.lerp(this.radiusMultiplier.left, this.radiusMultiplier.right, i.toFloat()) / 3))
+                        for (i in 1..this.tier.ordinal + 6) {
+                            // TODO: Make the shapes pulsate, getting more frantic as the spell completes
+                            drawCircle(
+                                    this.castingShapePoints,
+                                    this.radius * (i * Math.lerp(this.radiusMultiplier.left, this.radiusMultiplier.right, i.toFloat()) / 3),
+                                    this.castingShapeThickness,
+                                    (ageInTicks + partialTicks) * if (i % 2 == 0) -1f else 1f
+                            )
                         }
 
                         GlStateManager.popMatrix()
@@ -46,18 +51,27 @@ class LayerCastingShape : LayerRenderer<EntityLivingBase> {
         }
     }
 
-    private fun drawCircle(points: Int, radius: Float) {
-        tessellator.buffer.begin(GL11.GL_LINE_LOOP, DefaultVertexFormats.POSITION)
+    private fun drawCircle(points: Int, inner_radius: Float, outer_radius: Float, time: Float) {
+        GlStateManager.pushMatrix()
+        tessellator.buffer.begin(GL11.GL_TRIANGLE_STRIP, DefaultVertexFormats.POSITION)
 
         for (i in 0..points) {
             val theta = (PI * 2.0) * i / points
 
-            val x = radius * cos(theta)
-            val y = radius * sin(theta)
+            val x = inner_radius * cos(theta)
+            val y = inner_radius * sin(theta)
 
-            tessellator.buffer.pos(x, y, 0.0).endVertex()
+            val x2 = (inner_radius + outer_radius) * cos(theta)
+            val y2 = (inner_radius + outer_radius) * sin(theta)
+
+            // TODO: Make the points rotate between the spin speed ramp
+            GlStateManager.rotate(time / 14, 0f, 1f, 0f)
+            tessellator.buffer.pos(x, 0.0, y).endVertex()
+            tessellator.buffer.pos(x2, 0.1, y2).endVertex()
         }
 
         tessellator.draw()
+
+        GlStateManager.popMatrix()
     }
 }
