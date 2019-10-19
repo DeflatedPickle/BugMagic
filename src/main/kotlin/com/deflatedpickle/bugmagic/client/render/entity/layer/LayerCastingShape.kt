@@ -34,7 +34,7 @@ class LayerCastingShape : LayerRenderer<EntityLivingBase> {
 
                         GlStateManager.translate(0f, entitylivingbaseIn.height - 0.4f, 0f)
 
-                        for (i in 1..this.tier.ordinal + 6) {
+                        for (i in 1..this.tier.ordinal + 1) {
                             // TODO: Make the shapes pulsate, getting more frantic as the spell completes
                             drawCircle(
                                     this.castingShapePoints,
