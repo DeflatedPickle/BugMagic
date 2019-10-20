@@ -46,6 +46,8 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
      * An enum of the spell tiers
      */
     public enum Tier {
+        COMMON,
+        RARE,
         /**
          * A debug tier
          */

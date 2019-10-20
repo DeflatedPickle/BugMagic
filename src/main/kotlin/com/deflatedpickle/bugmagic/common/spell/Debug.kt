@@ -2,7 +2,6 @@ package com.deflatedpickle.bugmagic.common.spell
 
 import com.deflatedpickle.bugmagic.api.ASpell
 import net.minecraft.util.EnumParticleTypes
-import kotlin.random.Random
 
 class Debug(val index: Int = 1) : ASpell() {
     init {

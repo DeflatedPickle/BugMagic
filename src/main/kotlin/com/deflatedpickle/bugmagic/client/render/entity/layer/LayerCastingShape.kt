@@ -34,14 +34,54 @@ class LayerCastingShape : LayerRenderer<EntityLivingBase> {
 
                         GlStateManager.translate(0f, entitylivingbaseIn.height - 0.4f, 0f)
 
-                        for (i in 1..this.tier.ordinal + 1) {
+                        for (tier in 1..this.tier.ordinal + 1) {
                             // TODO: Make the shapes pulsate, getting more frantic as the spell completes
-                            drawCircle(
-                                    this.castingShapePoints,
-                                    this.radius * (i * Math.lerp(this.radiusMultiplier.left, this.radiusMultiplier.right, i.toFloat()) / 3),
-                                    this.castingShapeThickness,
-                                    (ageInTicks + partialTicks) * if (i % 2 == 0) -1f else 1f
-                            )
+                            val inner_radius = this.radius * (tier * Math.lerp(this.radiusMultiplier.left, this.radiusMultiplier.right, tier.toFloat()) / 3)
+                            val isOdd = tier % 2 == 0
+                            val time = (ageInTicks + partialTicks) * if (isOdd) -1f else 1f
+
+                            GlStateManager.pushMatrix()
+                            tessellator.buffer.begin(GL11.GL_TRIANGLE_STRIP, DefaultVertexFormats.POSITION)
+
+                            val size = sin(time / 8) * 0.1f
+                            GlStateManager.scale(1f + size, 1f, 1f + size)
+
+                            for (point in 0..this.castingShapePoints) {
+                                val theta = (PI * 2.0) * point / this.castingShapePoints
+
+                                val x = inner_radius * cos(theta)
+                                val y = inner_radius * sin(theta)
+
+                                val x2 = (inner_radius + this.castingShapeThickness) * cos(theta)
+                                val y2 = (inner_radius + this.castingShapeThickness) * sin(theta)
+
+                                // TODO: Make the points rotate between the spin speed ramp
+                                GlStateManager.rotate(time / 14, 0f, inner_radius * 0.4f, 0f)
+                                tessellator.buffer.pos(x, 0.0, y).endVertex()
+                                tessellator.buffer.pos(x2, 0.1, y2).endVertex()
+                            }
+
+                            tessellator.draw()
+
+                            GlStateManager.popMatrix()
+
+                            if (!isOdd) {
+                                for (i in listOf(-1, 1)) {
+                                    GlStateManager.pushMatrix()
+                                    tessellator.buffer.begin(GL11.GL_LINE_LOOP, DefaultVertexFormats.POSITION)
+                                    GlStateManager.rotate(time / 2 * tier * i, 0f, inner_radius * tier / 10, 0f)
+                                    GlStateManager.scale(1f + size, 1f, 1f + size)
+
+                                    val halfRadius = inner_radius / 2.6
+                                    tessellator.buffer.pos(-halfRadius * 1.9, 0.0, -halfRadius * 1.9).endVertex()
+                                    tessellator.buffer.pos(halfRadius * 1.9, 0.0, -halfRadius * 1.9).endVertex()
+                                    tessellator.buffer.pos(0.0, 0.0, halfRadius * 2.8).endVertex()
+
+                                    tessellator.draw()
+
+                                    GlStateManager.popMatrix()
+                                }
+                            }
                         }
 
                         GlStateManager.popMatrix()
@@ -55,6 +95,9 @@ class LayerCastingShape : LayerRenderer<EntityLivingBase> {
         GlStateManager.pushMatrix()
         tessellator.buffer.begin(GL11.GL_TRIANGLE_STRIP, DefaultVertexFormats.POSITION)
 
+        val size = sin(time / 8) * 0.1f
+        GlStateManager.scale(1f + size, 1f, 1f + size)
+
         for (i in 0..points) {
             val theta = (PI * 2.0) * i / points
 
@@ -65,7 +108,7 @@ class LayerCastingShape : LayerRenderer<EntityLivingBase> {
             val y2 = (inner_radius + outer_radius) * sin(theta)
 
             // TODO: Make the points rotate between the spin speed ramp
-            GlStateManager.rotate(time / 14, 0f, 1f, 0f)
+            GlStateManager.rotate(time / 14, 0f, inner_radius * 0.4f, 0f)
             tessellator.buffer.pos(x, 0.0, y).endVertex()
             tessellator.buffer.pos(x2, 0.1, y2).endVertex()
         }
