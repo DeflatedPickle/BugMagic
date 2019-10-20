@@ -8,7 +8,6 @@ import java.util.List;
 public interface ISpellLearner {
     @NotNull List<ASpell> getSpellList();
 
-    // TODO: Move to capability as well and add a map for spell IDs and the casted amount
     void setCurrentIndex(int value);
     int getCurrentIndex();
 

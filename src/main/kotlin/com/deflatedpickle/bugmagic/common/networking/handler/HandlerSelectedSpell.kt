@@ -11,10 +11,10 @@ class HandlerSelectedSpell : IMessageHandler<MessageSelectedSpell, IMessage> {
     override fun onMessage(message: MessageSelectedSpell, ctx: MessageContext): IMessage? {
         if (SpellLearner.Provider.CAPABILITY != null) {
             with(ctx.serverHandler.player) {
-                if (this.hasCapability(SpellLearner.Provider.CAPABILITY!!, null)) {
-                    this.getCapability(SpellLearner.Provider.CAPABILITY!!, null)?.apply {
-                        this.currentIndex = message.index
-                    }
+                val spellLearner = SpellLearner.isCapable(this)
+
+                if (spellLearner != null) {
+                    spellLearner.currentIndex = message.index
                 }
             }
         }

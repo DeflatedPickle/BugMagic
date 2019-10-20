@@ -2,6 +2,7 @@ package com.deflatedpickle.bugmagic.common
 
 import com.deflatedpickle.bugmagic.BugMagic
 import com.deflatedpickle.bugmagic.common.capability.BugEssence
+import com.deflatedpickle.bugmagic.common.capability.SpellCaster
 import com.deflatedpickle.bugmagic.common.capability.SpellLearner
 import com.deflatedpickle.bugmagic.common.event.FMLEventHandler
 import com.deflatedpickle.bugmagic.common.event.ForgeEventHandler
@@ -24,6 +25,7 @@ open class Proxy {
 
         BugEssence.register()
         SpellLearner.register()
+        SpellCaster.register()
 
         BugMagic.CHANNEL.registerMessage(HandlerBugEssence::class.java, MessageBugEssence::class.java, Message.BUG_ESSENCE.ordinal, Side.CLIENT)
         BugMagic.CHANNEL.registerMessage(HandlerSelectedSpell::class.java, MessageSelectedSpell::class.java, Message.SELECTED_SPELL.ordinal, Side.SERVER)

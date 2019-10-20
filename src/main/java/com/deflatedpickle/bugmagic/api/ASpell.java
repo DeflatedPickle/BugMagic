@@ -43,6 +43,15 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
     }
 
     /**
+     * The amount of time in between being able to cast this spell
+     *
+     * @return The time before this spell can be cast again
+     */
+    public float getMaxCooldown() {
+        return 1f;
+    }
+
+    /**
      * An enum of the spell tiers
      */
     public enum Tier {
@@ -97,7 +106,7 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
     }
 
     /**
-     * The centred thickness of the casting shape
+     * The thickness of the casting shape
      *
      * @return The casting shape thickness
      */

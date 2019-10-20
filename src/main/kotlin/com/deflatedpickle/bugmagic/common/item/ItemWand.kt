@@ -1,7 +1,10 @@
 package com.deflatedpickle.bugmagic.common.item
 
 import com.deflatedpickle.bugmagic.BugMagic
+import com.deflatedpickle.bugmagic.client.Proxy as ClientProxy
+import com.deflatedpickle.bugmagic.server.Proxy as ServerProxy
 import com.deflatedpickle.bugmagic.common.capability.BugEssence
+import com.deflatedpickle.bugmagic.common.capability.SpellCaster
 import com.deflatedpickle.bugmagic.common.capability.SpellLearner
 import com.deflatedpickle.bugmagic.common.networking.message.MessageBugEssence
 import com.deflatedpickle.bugmagic.common.networking.message.MessageSelectedSpell
@@ -15,6 +18,8 @@ import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.EnumAction
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.server.dedicated.DedicatedPlayerList
+import net.minecraft.server.management.PlayerList
 import net.minecraft.util.ActionResult
 import net.minecraft.util.EnumActionResult
 import net.minecraft.util.EnumFacing
@@ -23,6 +28,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.text.TextComponentString
 import net.minecraft.util.text.TextFormatting
 import net.minecraft.world.World
+import net.minecraftforge.fml.common.FMLCommonHandler
 import org.lwjgl.input.Mouse
 
 class ItemWand(name: String) : Generic(name, CreativeTabs.TOOLS) {
@@ -35,21 +41,48 @@ class ItemWand(name: String) : Generic(name, CreativeTabs.TOOLS) {
     override fun onItemUseFinish(stack: ItemStack, worldIn: World, entityLiving: EntityLivingBase): ItemStack {
         if (!worldIn.isRemote) {
             if (entityLiving is EntityPlayer) {
-                with(Pair(BugEssence.isCapable(entityLiving), SpellLearner.isCapable(entityLiving))) {
-                    if (this.first != null && this.second != null) {
-                        // TODO: Store the current count then compare it to the max count before casting it
-                        if (this.first!!.current - this.second!!.spellList[this.second!!.currentIndex].manaCost >= 0) {
-                            this.first!!.current -= this.second!!.spellList[this.second!!.currentIndex].manaCost
-                            BugMagic.CHANNEL.sendTo(MessageBugEssence(this.first!!.max, this.first!!.current), entityLiving as EntityPlayerMP?)
+                val bugEssence = BugEssence.isCapable(entityLiving)
+                val spellLearner = SpellLearner.isCapable(entityLiving)
+                val spellCaster = SpellCaster.isCapable(entityLiving.heldItemMainhand)
 
-                            this.second!!.spellList[this.second!!.currentIndex].cast()
-                        }
+                if (bugEssence != null && spellLearner != null && spellCaster != null) {
+                    val manaCost = spellLearner.spellList[spellLearner.currentIndex].manaCost
+
+                    if (bugEssence.current - manaCost >= 0) {
+                        bugEssence.current -= manaCost
+                        BugMagic.CHANNEL.sendTo(MessageBugEssence(bugEssence.max, bugEssence.current), entityLiving as EntityPlayerMP?)
+
+                        spellLearner.spellList[spellLearner.currentIndex].cast()
+
+                        spellCaster.isCasting = false
                     }
                 }
             }
         }
 
         return stack
+    }
+
+    // This happens on both sides
+    override fun onPlayerStoppedUsing(stack: ItemStack, worldIn: World, entityLiving: EntityLivingBase, timeLeft: Int) {
+        if (entityLiving is EntityPlayer) {
+            val spellCaster = SpellCaster.isCapable(entityLiving.heldItemMainhand)
+
+            if (spellCaster != null) {
+                spellCaster.isCasting = false
+            }
+        }
+    }
+
+    override fun onDroppedByPlayer(item: ItemStack, player: EntityPlayer): Boolean {
+        val spellCaster = SpellCaster.isCapable(player.heldItemMainhand)
+
+        if (spellCaster != null) {
+            spellCaster.isCasting = false
+            spellCaster.owner = null
+        }
+
+        return true
     }
 
     fun onMouseEvent() {
@@ -118,31 +151,65 @@ class ItemWand(name: String) : Generic(name, CreativeTabs.TOOLS) {
 
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         if (stack.hasTagCompound() && worldIn!!.isRemote) {
-            with(BugMagic.proxy!!.getPlayer()!!) {
-                if (this.hasCapability(SpellLearner.Provider.CAPABILITY!!, null)) {
-                    this.getCapability(SpellLearner.Provider.CAPABILITY!!, null).also {
-                        return@with tooltip.add("Spell: ${it!!.spellList[stack.tagCompound!!.getInteger(SPELL_INDEX)].name}")
-                    }
-                }
-                else {
-                    return@with stack.tagCompound!!.getInteger(SPELL_INDEX)
-                }
+            val spellLearner = SpellLearner.isCapable(BugMagic.proxy!!.getPlayer()!!)
+
+            if (spellLearner != null) {
+                tooltip.add("Spell: ${spellLearner.spellList[stack.tagCompound!!.getInteger(SPELL_INDEX)].name}")
             }
         }
     }
 
+    // TODO: Fix this, I'm not completely sure this works, plus it's messy
     override fun getMaxItemUseDuration(stack: ItemStack): Int {
-        // TODO: Set the use duration with each spell, getting the player from the to-be-made SpellCaster capability
-        return 32
+        val spellCaster = SpellCaster.isCapable(stack)
+
+        return when (BugMagic.proxy) {
+            is ClientProxy -> {
+                val player = Minecraft.getMinecraft().player
+                val spellLearner = SpellLearner.isCapable(player)
+
+                if (spellLearner != null) {
+                    spellLearner.spellList[spellLearner.currentIndex].castingTime
+                }
+                else {
+                    0
+                }
+            }
+            is ServerProxy -> {
+                if (spellCaster != null && spellCaster.owner != null) {
+                    val player = FMLCommonHandler.instance().minecraftServerInstance.playerList.getPlayerByUUID(spellCaster.owner!!)
+                    val spellLearner = SpellLearner.isCapable(player)
+
+                    if (spellLearner != null) {
+                        spellLearner.spellList[spellLearner.currentIndex].castingTime
+                    }
+                    else {
+                        0
+                    }
+                }
+                else {
+                    0
+                }
+            }
+            else -> 0
+        }
     }
 
     override fun getItemUseAction(stack: ItemStack?): EnumAction {
         return EnumAction.BOW
     }
 
-    override fun onItemRightClick(worldIn: World?, playerIn: EntityPlayer?, handIn: EnumHand?): ActionResult<ItemStack> {
-        playerIn!!.activeHand = handIn!!
-        return ActionResult(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn))
+    override fun onItemRightClick(worldIn: World?, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack> {
+        playerIn.activeHand = handIn
+        val spellCaster = SpellCaster.isCapable(playerIn.getHeldItem(playerIn.activeHand))
+
+        return if (spellCaster != null) {
+            spellCaster.isCasting = true
+            ActionResult(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn))
+        }
+        else {
+            ActionResult(EnumActionResult.FAIL, playerIn.getHeldItem(handIn))
+        }
     }
 
     override fun isDamageable(): Boolean {
