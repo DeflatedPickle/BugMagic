@@ -8,6 +8,7 @@ import com.deflatedpickle.bugmagic.common.capability.SpellCaster
 import com.deflatedpickle.bugmagic.common.capability.SpellLearner
 import com.deflatedpickle.bugmagic.common.networking.message.MessageBugEssence
 import com.deflatedpickle.bugmagic.common.networking.message.MessageSelectedSpell
+import com.deflatedpickle.bugmagic.common.networking.message.MessageSpellCaster
 import net.minecraft.client.Minecraft
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.creativetab.CreativeTabs
@@ -53,8 +54,11 @@ class ItemWand(name: String) : Generic(name, CreativeTabs.TOOLS) {
                         BugMagic.CHANNEL.sendTo(MessageBugEssence(bugEssence.max, bugEssence.current), entityLiving as EntityPlayerMP?)
 
                         spellLearner.spellList[spellLearner.currentIndex].cast()
+                        entityLiving.cooldownTracker.setCooldown(this, spellLearner.spellList[spellLearner.currentIndex].maxCooldown)
 
                         spellCaster.isCasting = false
+
+                        BugMagic.CHANNEL.sendTo(MessageSpellCaster(spellCaster.isCasting, spellCaster.castingCurrent), entityLiving as EntityPlayerMP?)
                     }
                 }
             }
@@ -96,53 +100,58 @@ class ItemWand(name: String) : Generic(name, CreativeTabs.TOOLS) {
                 stack.tagCompound = NBTTagCompound()
             }
 
-            if (isSelected && entityIn is EntityPlayer && entityIn.isSneaking) {
-                if (entityIn.hasCapability(SpellLearner.Provider.CAPABILITY!!, null)) {
-                    entityIn.getCapability(SpellLearner.Provider.CAPABILITY!!, null)!!.also {
-                        // TODO: Sync the selected spell with the server
-                        if (it.spellList.size > 0) {
-                            with(hasBeenScrolled) {
-                                if (this) {
-                                    with(stack.tagCompound!!.getInteger(SPELL_INDEX)) {
-                                        when (Mouse.getEventDWheel()) {
-                                            // Forward
-                                            -120 -> {
-                                                stack.tagCompound!!.setInteger(SPELL_INDEX,
-                                                        if (this < it.spellList.lastIndex) this + 1 else 0)
-                                            }
-                                            // Backwards
-                                            120 -> {
-                                                stack.tagCompound!!.setInteger(SPELL_INDEX,
-                                                        if (this > 0) this - 1 else it.spellList.lastIndex)
-                                            }
+            if (isSelected && entityIn is EntityPlayer) {
+                val spellLearner = SpellLearner.isCapable(entityIn)
+                val spellCaster = SpellCaster.isCapable(entityIn.heldItemMainhand)
+
+                if (entityIn.isSneaking) {
+                    if (spellLearner != null) {
+                        if (spellLearner.spellList.size > 0) {
+                            if (hasBeenScrolled) {
+                                with(stack.tagCompound!!.getInteger(SPELL_INDEX)) {
+                                    when (Mouse.getEventDWheel()) {
+                                        // Forward
+                                        -120 -> {
+                                            stack.tagCompound!!.setInteger(SPELL_INDEX,
+                                                    if (this < spellLearner.spellList.lastIndex) this + 1 else 0)
+                                        }
+                                        // Backwards
+                                        120 -> {
+                                            stack.tagCompound!!.setInteger(SPELL_INDEX,
+                                                    if (this > 0) this - 1 else spellLearner.spellList.lastIndex)
                                         }
                                     }
-
-                                    Minecraft.getMinecraft().ingameGUI.setOverlayMessage(TextComponentString("" +
-                                            // The last spell
-                                            "${TextFormatting.GRAY}${it.spellList[
-                                                    if (stack.tagCompound!!.getInteger(SPELL_INDEX) - 1 < 0)
-                                                        it.spellList.lastIndex
-                                                    else
-                                                        stack.tagCompound!!.getInteger(SPELL_INDEX) - 1].name} < "
-
-                                            // This spell
-                                            + "${TextFormatting.WHITE}${it.spellList[stack.tagCompound!!.getInteger(SPELL_INDEX)].name}"
-
-                                            // The next spell
-                                            + "${TextFormatting.GRAY} > ${it.spellList[
-                                            if (stack.tagCompound!!.getInteger(SPELL_INDEX) + 1 > it.spellList.lastIndex)
-                                                0
-                                            else
-                                                stack.tagCompound!!.getInteger(SPELL_INDEX) + 1].name}"
-                                    ), true)
-
-                                    BugMagic.CHANNEL.sendToServer(MessageSelectedSpell(stack.tagCompound!!.getInteger(SPELL_INDEX)))
-
-                                    hasBeenScrolled = false
                                 }
+
+                                Minecraft.getMinecraft().ingameGUI.setOverlayMessage(TextComponentString("" +
+                                        // The last spell
+                                        "${TextFormatting.GRAY}${spellLearner.spellList[
+                                                if (stack.tagCompound!!.getInteger(SPELL_INDEX) - 1 < 0)
+                                                    spellLearner.spellList.lastIndex
+                                                else
+                                                    stack.tagCompound!!.getInteger(SPELL_INDEX) - 1].name} < "
+
+                                        // This spell
+                                        + "${TextFormatting.WHITE}${spellLearner.spellList[stack.tagCompound!!.getInteger(SPELL_INDEX)].name}"
+
+                                        // The next spell
+                                        + "${TextFormatting.GRAY} > ${spellLearner.spellList[
+                                        if (stack.tagCompound!!.getInteger(SPELL_INDEX) + 1 > spellLearner.spellList.lastIndex)
+                                            0
+                                        else
+                                            stack.tagCompound!!.getInteger(SPELL_INDEX) + 1].name}"
+                                ), true)
+
+                                BugMagic.CHANNEL.sendToServer(MessageSelectedSpell(stack.tagCompound!!.getInteger(SPELL_INDEX)))
+
+                                hasBeenScrolled = false
                             }
                         }
+                    }
+                }
+                else {
+                    if (spellCaster != null && spellCaster.isCasting) {
+                        spellCaster.castingCurrent++
                     }
                 }
             }

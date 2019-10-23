@@ -35,40 +35,26 @@ object SpellCaster {
     class Implementation : ISpellCaster {
         private var owner: UUID? = null
         private var isCasting = false
-        private var currentCooldown = 0f
         private var castingFor = 0f
 
         override fun setOwner(value: UUID?) {
             owner = value
         }
 
-        override fun getOwner(): UUID? {
-            return owner
-        }
+        override fun getOwner(): UUID? = owner
 
         override fun setCasting(value: Boolean) {
+            if (!value) castingFor = 0f
             isCasting = value
         }
 
-        override fun isCasting(): Boolean {
-            return isCasting
-        }
+        override fun isCasting(): Boolean = isCasting
 
-        override fun setCurrentCooldown(value: Float) {
-            currentCooldown = value
-        }
-
-        override fun getCurrentCooldown(): Float {
-            return currentCooldown
-        }
-
-        override fun setCastingLength(value: Float) {
+        override fun setCastingCurrent(value: Float) {
             castingFor = value
         }
 
-        override fun getCastingLength(): Float {
-            return castingFor
-        }
+        override fun getCastingCurrent(): Float = castingFor
     }
 
     class Storage : Capability.IStorage<ISpellCaster> {
@@ -76,6 +62,7 @@ object SpellCaster {
             if (instance is Implementation) {
                 with(nbt as NBTTagCompound) {
                     instance.isCasting = this.getBoolean("isCasting")
+                    instance.castingCurrent = this.getFloat("castingCurrent")
                 }
             }
             else {
@@ -87,6 +74,7 @@ object SpellCaster {
             if (instance != null) {
                 return NBTTagCompound().apply {
                     setBoolean("isCasting", instance.isCasting)
+                    setFloat("castingCurrent", instance.castingCurrent)
                 }
             }
             return null

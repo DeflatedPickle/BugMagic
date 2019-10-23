@@ -16,6 +16,10 @@ class Debug(val index: Int = 1) : ASpell() {
         return 4
     }
 
+    override fun getMaxCooldown(): Int {
+        return 30
+    }
+
     override fun getTier(): Tier {
         return Tier.DEBUG
     }

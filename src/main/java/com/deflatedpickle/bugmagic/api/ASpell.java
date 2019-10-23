@@ -38,6 +38,7 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
      *
      * @return The max count
      */
+    // TODO: Make use of this
     public int getMaxCount() {
         return 1;
     }
@@ -47,8 +48,8 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
      *
      * @return The time before this spell can be cast again
      */
-    public float getMaxCooldown() {
-        return 1f;
+    public int getMaxCooldown() {
+        return 1;
     }
 
     /**

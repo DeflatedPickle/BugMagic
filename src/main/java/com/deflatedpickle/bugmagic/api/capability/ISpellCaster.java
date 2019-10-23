@@ -13,9 +13,6 @@ public interface ISpellCaster {
     void setCasting(boolean value);
     boolean isCasting();
 
-    void setCurrentCooldown(float value);
-    float getCurrentCooldown();
-
-    void setCastingLength(float value);
-    float getCastingLength();
+    void setCastingCurrent(float value);
+    float getCastingCurrent();
 }
