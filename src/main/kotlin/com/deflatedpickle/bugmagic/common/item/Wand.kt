@@ -31,34 +31,77 @@ import net.minecraft.util.text.TextFormatting
 import net.minecraft.world.World
 import net.minecraftforge.fml.common.FMLCommonHandler
 import org.lwjgl.input.Mouse
+import java.util.concurrent.ThreadLocalRandom
 
-class ItemWand(name: String) : Generic(name, CreativeTabs.TOOLS) {
+class Wand(name: String) : Generic(name, CreativeTabs.TOOLS) {
     companion object {
         const val SPELL_INDEX = "spell_index"
     }
 
     var hasBeenScrolled = false
 
+    override fun onEntitySwing(entityLiving: EntityLivingBase, stack: ItemStack): Boolean {
+        if (entityLiving is EntityPlayer && !entityLiving.world.isRemote) {
+            val spellLearner = SpellLearner.isCapable(entityLiving)
+            val spellCaster = SpellCaster.isCapable(entityLiving.heldItemMainhand)
+
+            if (spellLearner != null && spellCaster != null) {
+                if (spellCaster.castSpellMap.containsKey(spellLearner.currentSpell)) {
+                    if (spellCaster.castSpellMap[spellLearner.currentSpell]!! > 0) {
+                        spellLearner.currentSpell.uncast()
+                        spellCaster.castSpellMap[spellLearner.currentSpell] = spellCaster.castSpellMap[spellLearner.currentSpell]!! - 1
+                    }
+                    else {
+                        spellLearner.currentSpell.uncast()
+                        spellCaster.castSpellMap.remove(spellLearner.currentSpell)
+                    }
+                }
+
+                return false
+            }
+        }
+        return true
+    }
+
     override fun onItemUseFinish(stack: ItemStack, worldIn: World, entityLiving: EntityLivingBase): ItemStack {
-        if (!worldIn.isRemote) {
-            if (entityLiving is EntityPlayer) {
-                val bugEssence = BugEssence.isCapable(entityLiving)
-                val spellLearner = SpellLearner.isCapable(entityLiving)
-                val spellCaster = SpellCaster.isCapable(entityLiving.heldItemMainhand)
+        if (entityLiving is EntityPlayer) {
+            val bugEssence = BugEssence.isCapable(entityLiving)
+            val spellLearner = SpellLearner.isCapable(entityLiving)
+            val spellCaster = SpellCaster.isCapable(entityLiving.heldItemMainhand)
 
-                if (bugEssence != null && spellLearner != null && spellCaster != null) {
-                    val manaCost = spellLearner.spellList[spellLearner.currentIndex].manaCost
+            if (bugEssence != null && spellLearner != null && spellCaster != null) {
+                val manaCost = spellLearner.currentSpell.manaCost
 
-                    if (bugEssence.current - manaCost >= 0) {
+                if (bugEssence.current - manaCost >= 0) {
+                    if (!worldIn.isRemote) {
                         bugEssence.current -= manaCost
                         BugMagic.CHANNEL.sendTo(MessageBugEssence(bugEssence.max, bugEssence.current), entityLiving as EntityPlayerMP?)
 
-                        spellLearner.spellList[spellLearner.currentIndex].cast()
-                        entityLiving.cooldownTracker.setCooldown(this, spellLearner.spellList[spellLearner.currentIndex].maxCooldown)
+                        if (!spellCaster.castSpellMap.containsKey(spellLearner.currentSpell)) {
+                            spellLearner.currentSpell.cast()
+                            spellCaster.castSpellMap[spellLearner.currentSpell] = 0
+                        }
+                        else {
+                            if (spellCaster.castSpellMap[spellLearner.currentSpell] != spellLearner.currentSpell.maxCount) {
+                                spellLearner.currentSpell.cast()
+                                spellCaster.castSpellMap[spellLearner.currentSpell] = spellCaster.castSpellMap[spellLearner.currentSpell]!! + 1
+                            }
+                        }
+
+                        entityLiving.cooldownTracker.setCooldown(this, spellLearner.currentSpell.maxCooldown)
 
                         spellCaster.isCasting = false
 
                         BugMagic.CHANNEL.sendTo(MessageSpellCaster(spellCaster.isCasting, spellCaster.castingCurrent), entityLiving as EntityPlayerMP?)
+                    }
+                    else {
+                        if (spellLearner.currentSpell.finishingParticle != null) {
+                            entityLiving.world.spawnParticle(spellLearner.currentSpell.finishingParticle!!,
+                                    entityLiving.posX,
+                                    entityLiving.posY + entityLiving.eyeHeight,
+                                    entityLiving.posZ,
+                                    0.0, 0.0, 0.0)
+                        }
                     }
                 }
             }
@@ -67,13 +110,40 @@ class ItemWand(name: String) : Generic(name, CreativeTabs.TOOLS) {
         return stack
     }
 
+    override fun onUsingTick(stack: ItemStack, player: EntityLivingBase, count: Int) {
+        if (player.world.isRemote) {
+            val spellLearner = SpellLearner.isCapable(player)
+
+            if (spellLearner != null && spellLearner.currentSpell.castingParticle != null) {
+                val size = (spellLearner.currentSpell.radius + spellLearner.currentSpell.castingShapeThickness) * spellLearner.currentSpell.tier.ordinal.toDouble()
+
+                player.world.spawnParticle(spellLearner.currentSpell.castingParticle!!,
+                        player.posX + ThreadLocalRandom.current().nextDouble(-size, size),
+                        player.posY + ThreadLocalRandom.current().nextDouble(-size, size),
+                        player.posZ + ThreadLocalRandom.current().nextDouble(-size, size),
+                        0.0, 0.0, 0.0)
+            }
+        }
+    }
+
     // This happens on both sides
     override fun onPlayerStoppedUsing(stack: ItemStack, worldIn: World, entityLiving: EntityLivingBase, timeLeft: Int) {
         if (entityLiving is EntityPlayer) {
+            val spellLearner = SpellLearner.isCapable(entityLiving)
             val spellCaster = SpellCaster.isCapable(entityLiving.heldItemMainhand)
 
-            if (spellCaster != null) {
+            if (spellLearner != null && spellCaster != null) {
                 spellCaster.isCasting = false
+
+                if (worldIn.isRemote) {
+                    if (spellLearner.currentSpell.cancelingParticle != null) {
+                        entityLiving.world.spawnParticle(spellLearner.currentSpell.cancelingParticle!!,
+                                entityLiving.posX,
+                                entityLiving.posY,
+                                entityLiving.posZ,
+                                0.0, 0.0, 0.0)
+                    }
+                }
             }
         }
     }
@@ -163,7 +233,8 @@ class ItemWand(name: String) : Generic(name, CreativeTabs.TOOLS) {
             val spellLearner = SpellLearner.isCapable(BugMagic.proxy!!.getPlayer()!!)
 
             if (spellLearner != null) {
-                tooltip.add("Spell: ${spellLearner.spellList[stack.tagCompound!!.getInteger(SPELL_INDEX)].name}")
+                val currentSpell = spellLearner.spellList[stack.tagCompound!!.getInteger(SPELL_INDEX)]
+                tooltip.add("Spell: ${currentSpell.name} (${currentSpell.cult.colour}${currentSpell.cult}${TextFormatting.GRAY})")
             }
         }
     }
@@ -177,24 +248,14 @@ class ItemWand(name: String) : Generic(name, CreativeTabs.TOOLS) {
                 val player = Minecraft.getMinecraft().player
                 val spellLearner = SpellLearner.isCapable(player)
 
-                if (spellLearner != null) {
-                    spellLearner.spellList[spellLearner.currentIndex].castingTime
-                }
-                else {
-                    0
-                }
+                spellLearner?.currentSpell?.castingTime ?: 0
             }
             is ServerProxy -> {
                 if (spellCaster != null && spellCaster.owner != null) {
                     val player = FMLCommonHandler.instance().minecraftServerInstance.playerList.getPlayerByUUID(spellCaster.owner!!)
                     val spellLearner = SpellLearner.isCapable(player)
 
-                    if (spellLearner != null) {
-                        spellLearner.spellList[spellLearner.currentIndex].castingTime
-                    }
-                    else {
-                        0
-                    }
+                    spellLearner?.currentSpell?.castingTime ?: 0
                 }
                 else {
                     0

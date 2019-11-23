@@ -2,7 +2,7 @@ package com.deflatedpickle.bugmagic.client.render.entity.layer
 
 import com.deflatedpickle.bugmagic.common.capability.SpellCaster
 import com.deflatedpickle.bugmagic.common.capability.SpellLearner
-import com.deflatedpickle.bugmagic.common.item.ItemWand
+import com.deflatedpickle.bugmagic.common.item.Wand
 import com.deflatedpickle.bugmagic.common.util.Math
 import net.minecraft.client.entity.EntityPlayerSP
 import net.minecraft.client.renderer.GlStateManager
@@ -23,7 +23,7 @@ class LayerCastingShape : LayerRenderer<EntityLivingBase> {
     }
 
     override fun doRenderLayer(entitylivingbaseIn: EntityLivingBase, limbSwing: Float, limbSwingAmount: Float, partialTicks: Float, ageInTicks: Float, netHeadYaw: Float, headPitch: Float, scale: Float) {
-        if (entitylivingbaseIn is EntityPlayerSP && entitylivingbaseIn.heldItemMainhand.item is ItemWand) {
+        if (entitylivingbaseIn is EntityPlayerSP && entitylivingbaseIn.heldItemMainhand.item is Wand) {
             val spellLearner = SpellLearner.isCapable(entitylivingbaseIn)
             val spellCaster = SpellCaster.isCapable(entitylivingbaseIn.heldItemMainhand)
 

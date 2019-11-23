@@ -34,17 +34,13 @@ object SpellLearner {
         private val spellList = mutableListOf<ASpell>(*Spell.DEBUG.toTypedArray())
         private var currentIndex = 0
 
-        override fun getSpellList(): MutableList<ASpell> {
-            return spellList
-        }
+        override fun getSpellList(): MutableList<ASpell> = spellList
 
         override fun setCurrentIndex(value: Int) {
             currentIndex = value
         }
 
-        override fun getCurrentIndex(): Int {
-            return currentIndex
-        }
+        override fun getCurrentIndex(): Int = currentIndex
 
         override fun learnSpell(spell: ASpell): ASpell {
             with(spell) {
@@ -89,9 +85,7 @@ object SpellLearner {
     }
 
     class Factory : Callable<ISpellLearner> {
-        override fun call(): ISpellLearner {
-            return Implementation()
-        }
+        override fun call(): ISpellLearner = Implementation()
     }
 
     class Provider : ICapabilitySerializable<NBTBase> {
@@ -103,18 +97,12 @@ object SpellLearner {
 
         val INSTANCE = CAPABILITY?.defaultInstance
 
-        override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean {
-            return capability == CAPABILITY
-        }
-
+        override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean = capability == CAPABILITY
         override fun <T : Any> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
             return if (capability == CAPABILITY) CAPABILITY!!.cast(this.INSTANCE) else null
         }
 
-        override fun serializeNBT(): NBTBase {
-            return CAPABILITY!!.storage.writeNBT(CAPABILITY, this.INSTANCE, null)!!
-        }
-
+        override fun serializeNBT(): NBTBase = CAPABILITY!!.storage.writeNBT(CAPABILITY, this.INSTANCE, null)!!
         override fun deserializeNBT(nbt: NBTBase) {
             CAPABILITY!!.storage.readNBT(CAPABILITY, this.INSTANCE, null, nbt)
         }

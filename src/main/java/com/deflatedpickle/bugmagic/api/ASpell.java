@@ -1,7 +1,12 @@
 package com.deflatedpickle.bugmagic.api;
 
-import com.deflatedpickle.bugmagic.common.item.ItemWand;
+import com.deflatedpickle.bugmagic.common.item.Wand;
+import net.minecraft.item.Item;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.RegistryNamespaced;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.registries.GameData;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -10,7 +15,7 @@ import org.lwjgl.util.Color;
 import org.lwjgl.util.ReadableColor;
 
 /**
- * A spell that can be cast with the {@link ItemWand}
+ * A spell that can be cast with the {@link Wand}
  *
  * @author DeflatedPickle
  */
@@ -72,11 +77,82 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
     public abstract @NotNull Tier getTier();
 
     /**
+     * An enum of the spell types
+     */
+    public enum Type {
+        /**
+         * Spawns a mob
+         */
+        CONJURE,
+        /**
+         * Changes the player
+         */
+        AUGMENT
+    }
+
+    /**
+     * The type of spell
+     *
+     * @return The spell type
+     */
+    public @NotNull Type getType() {
+        return Type.CONJURE;
+    }
+
+    public enum Cult {
+        ANY(TextFormatting.WHITE),
+        /**
+         * Spiders, etc
+         */
+        ARACHNID(TextFormatting.RED),
+        /**
+         * Snails, etc
+         */
+        GASTROPOD(TextFormatting.BLUE),
+        /**
+         * Bees, Wasps, etc
+         */
+        APOIDEA(TextFormatting.YELLOW),
+        /**
+         * Beetles, etc
+         */
+        INSECT(TextFormatting.DARK_AQUA),
+        /**
+         * Mushrooms, mob controller, etc
+         */
+        FUNGAL(TextFormatting.DARK_PURPLE);
+
+        public final TextFormatting colour;
+
+        Cult(TextFormatting colour) {
+            this.colour = colour;
+        }
+    }
+
+    /**
+     * Spells can only be successful if the caster belongs to the cult, otherwise the spell is messed up
+     *
+     * @return The cult type
+     */
+    public @NotNull Cult getCult() {
+        return Cult.ANY;
+    }
+
+    /**
      * The particle spouted from end of the wand whilst this spell is being cast
      *
      * @return The casting particle
      */
     public @Nullable EnumParticleTypes getCastingParticle() {
+        return null;
+    }
+
+    /**
+     * The particle emitted from the players location if the casting is canceled
+     *
+     * @return The canceling particle
+     */
+    public @Nullable EnumParticleTypes getCancelingParticle() {
         return null;
     }
 
@@ -116,17 +192,6 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
     }
 
     /**
-     * A range that's linearly interpolated between from when the casting begins to when it ends
-     *
-     * @return The spin speed ramp
-     */
-    public @NotNull Pair<@NotNull Float, @NotNull Float> getSpinSpeedRamp() {
-        return Pair.of(1f, 1f);
-    }
-
-    // TODO: Add a method for a pulsating effect that takes a Pair specifying the small and big speeds
-
-    /**
      * The intensity of the casting shapes glow
      *
      * @return The glow intensity
@@ -143,6 +208,8 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
     public @NotNull ReadableColor getGlowColour() {
         return Color.WHITE;
     }
+
+    // TODO: Separate cast/uncast methods for the client and server
 
     /**
      * Casts this spell

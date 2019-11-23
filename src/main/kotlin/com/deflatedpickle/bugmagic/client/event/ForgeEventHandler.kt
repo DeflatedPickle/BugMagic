@@ -4,7 +4,7 @@ import com.deflatedpickle.bugmagic.BugMagic
 import com.deflatedpickle.bugmagic.client.render.entity.layer.LayerCastingShape
 import com.deflatedpickle.bugmagic.common.capability.BugEssence
 import com.deflatedpickle.bugmagic.common.capability.SpellLearner
-import com.deflatedpickle.bugmagic.common.item.ItemWand
+import com.deflatedpickle.bugmagic.common.item.Wand
 import com.github.upcraftlp.glasspane.api.event.client.RegisterRenderLayerEvent
 import net.minecraft.client.Minecraft
 import net.minecraft.util.text.TextFormatting
@@ -64,12 +64,12 @@ class ForgeEventHandler {
     fun onMouseEvent(event: MouseEvent) {
         val player = BugMagic.proxy!!.getPlayer()!!
 
-        if (player.heldItemMainhand.item is ItemWand && player.isSneaking
+        if (player.heldItemMainhand.item is Wand && player.isSneaking
                 && (event.dwheel == -120 || event.dwheel == 120)) {
             // FIXME: If you scroll too quickly, it can still sometimes move the selected slot
             // Maybe don't actually fix this, because it's fine if you scroll slowly
             // Anyone who reports this was rapidly scrolling through their spells like an idiot
-            (player.heldItemMainhand.item as ItemWand).onMouseEvent()
+            (player.heldItemMainhand.item as Wand).onMouseEvent()
 
             event.isCanceled = true
             // You thought it was a MouseEvent. But it was I, Dio!

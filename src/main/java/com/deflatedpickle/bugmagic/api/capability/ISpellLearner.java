@@ -11,5 +11,9 @@ public interface ISpellLearner {
     void setCurrentIndex(int value);
     int getCurrentIndex();
 
+    default ASpell getCurrentSpell() {
+        return getSpellList().get(getCurrentIndex());
+    }
+
     ASpell learnSpell(@NotNull ASpell spell);
 }

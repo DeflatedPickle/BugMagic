@@ -1,6 +1,7 @@
 package com.deflatedpickle.bugmagic.common.capability
 
 import com.deflatedpickle.bugmagic.Reference
+import com.deflatedpickle.bugmagic.api.ASpell
 import com.deflatedpickle.bugmagic.api.capability.IBugEssence
 import com.deflatedpickle.bugmagic.api.capability.ISpellCaster
 import com.deflatedpickle.bugmagic.api.capability.ISpellLearner
@@ -33,9 +34,12 @@ object SpellCaster {
     }
 
     class Implementation : ISpellCaster {
+        private val castSpellMap = hashMapOf<ASpell, Int>()
         private var owner: UUID? = null
         private var isCasting = false
         private var castingFor = 0f
+
+        override fun getCastSpellMap(): HashMap<ASpell, Int> = castSpellMap
 
         override fun setOwner(value: UUID?) {
             owner = value
