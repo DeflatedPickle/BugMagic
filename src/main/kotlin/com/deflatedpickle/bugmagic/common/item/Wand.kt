@@ -1,8 +1,6 @@
 package com.deflatedpickle.bugmagic.common.item
 
 import com.deflatedpickle.bugmagic.BugMagic
-import com.deflatedpickle.bugmagic.client.Proxy as ClientProxy
-import com.deflatedpickle.bugmagic.server.Proxy as ServerProxy
 import com.deflatedpickle.bugmagic.common.capability.BugEssence
 import com.deflatedpickle.bugmagic.common.capability.SpellCaster
 import com.deflatedpickle.bugmagic.common.capability.SpellLearner
@@ -19,8 +17,7 @@ import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.EnumAction
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.server.dedicated.DedicatedPlayerList
-import net.minecraft.server.management.PlayerList
+import net.minecraft.nbt.NBTUtil
 import net.minecraft.util.ActionResult
 import net.minecraft.util.EnumActionResult
 import net.minecraft.util.EnumFacing
@@ -32,6 +29,8 @@ import net.minecraft.world.World
 import net.minecraftforge.fml.common.FMLCommonHandler
 import org.lwjgl.input.Mouse
 import java.util.concurrent.ThreadLocalRandom
+import com.deflatedpickle.bugmagic.client.Proxy as ClientProxy
+import com.deflatedpickle.bugmagic.server.Proxy as ServerProxy
 
 class Wand(name: String) : Generic(name, CreativeTabs.TOOLS) {
     companion object {
@@ -40,19 +39,27 @@ class Wand(name: String) : Generic(name, CreativeTabs.TOOLS) {
 
     var hasBeenScrolled = false
 
+    override fun onItemUse(player: EntityPlayer, worldIn: World, pos: BlockPos, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): EnumActionResult {
+        if (worldIn.getTileEntity(pos) != null) {
+            player.getHeldItem(player.activeHand).tagCompound = NBTUtil.createPosTag(pos)
+            return EnumActionResult.SUCCESS
+        }
+        return EnumActionResult.PASS
+    }
+
     override fun onEntitySwing(entityLiving: EntityLivingBase, stack: ItemStack): Boolean {
         if (entityLiving is EntityPlayer && !entityLiving.world.isRemote) {
             val spellLearner = SpellLearner.isCapable(entityLiving)
-            val spellCaster = SpellCaster.isCapable(entityLiving.heldItemMainhand)
+            val spellCaster = SpellCaster.isCapable(stack)
 
             if (spellLearner != null && spellCaster != null) {
                 if (spellCaster.castSpellMap.containsKey(spellLearner.currentSpell)) {
                     if (spellCaster.castSpellMap[spellLearner.currentSpell]!! > 0) {
-                        spellLearner.currentSpell.uncast()
+                        spellLearner.currentSpell.uncast(entityLiving)
                         spellCaster.castSpellMap[spellLearner.currentSpell] = spellCaster.castSpellMap[spellLearner.currentSpell]!! - 1
                     }
                     else {
-                        spellLearner.currentSpell.uncast()
+                        spellLearner.currentSpell.uncast(entityLiving)
                         spellCaster.castSpellMap.remove(spellLearner.currentSpell)
                     }
                 }
@@ -67,7 +74,7 @@ class Wand(name: String) : Generic(name, CreativeTabs.TOOLS) {
         if (entityLiving is EntityPlayer) {
             val bugEssence = BugEssence.isCapable(entityLiving)
             val spellLearner = SpellLearner.isCapable(entityLiving)
-            val spellCaster = SpellCaster.isCapable(entityLiving.heldItemMainhand)
+            val spellCaster = SpellCaster.isCapable(stack)
 
             if (bugEssence != null && spellLearner != null && spellCaster != null) {
                 val manaCost = spellLearner.currentSpell.manaCost
@@ -78,12 +85,12 @@ class Wand(name: String) : Generic(name, CreativeTabs.TOOLS) {
                         BugMagic.CHANNEL.sendTo(MessageBugEssence(bugEssence.max, bugEssence.current), entityLiving as EntityPlayerMP?)
 
                         if (!spellCaster.castSpellMap.containsKey(spellLearner.currentSpell)) {
-                            spellLearner.currentSpell.cast()
+                            spellLearner.currentSpell.cast(entityLiving)
                             spellCaster.castSpellMap[spellLearner.currentSpell] = 0
                         }
                         else {
                             if (spellCaster.castSpellMap[spellLearner.currentSpell] != spellLearner.currentSpell.maxCount) {
-                                spellLearner.currentSpell.cast()
+                                spellLearner.currentSpell.cast(entityLiving)
                                 spellCaster.castSpellMap[spellLearner.currentSpell] = spellCaster.castSpellMap[spellLearner.currentSpell]!! + 1
                             }
                         }
@@ -115,7 +122,7 @@ class Wand(name: String) : Generic(name, CreativeTabs.TOOLS) {
             val spellLearner = SpellLearner.isCapable(player)
 
             if (spellLearner != null && spellLearner.currentSpell.castingParticle != null) {
-                val size = (spellLearner.currentSpell.radius + spellLearner.currentSpell.castingShapeThickness) * spellLearner.currentSpell.tier.ordinal.toDouble()
+                val size = (spellLearner.currentSpell.radius + spellLearner.currentSpell.castingShapeThickness) * (spellLearner.currentSpell.tier.ordinal.toDouble() + 1)
 
                 player.world.spawnParticle(spellLearner.currentSpell.castingParticle!!,
                         player.posX + ThreadLocalRandom.current().nextDouble(-size, size),
@@ -130,7 +137,7 @@ class Wand(name: String) : Generic(name, CreativeTabs.TOOLS) {
     override fun onPlayerStoppedUsing(stack: ItemStack, worldIn: World, entityLiving: EntityLivingBase, timeLeft: Int) {
         if (entityLiving is EntityPlayer) {
             val spellLearner = SpellLearner.isCapable(entityLiving)
-            val spellCaster = SpellCaster.isCapable(entityLiving.heldItemMainhand)
+            val spellCaster = SpellCaster.isCapable(stack)
 
             if (spellLearner != null && spellCaster != null) {
                 spellCaster.isCasting = false
@@ -172,7 +179,7 @@ class Wand(name: String) : Generic(name, CreativeTabs.TOOLS) {
 
             if (isSelected && entityIn is EntityPlayer) {
                 val spellLearner = SpellLearner.isCapable(entityIn)
-                val spellCaster = SpellCaster.isCapable(entityIn.heldItemMainhand)
+                val spellCaster = SpellCaster.isCapable(stack)
 
                 if (entityIn.isSneaking) {
                     if (spellLearner != null) {

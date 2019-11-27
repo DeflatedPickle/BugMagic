@@ -1,12 +1,9 @@
 package com.deflatedpickle.bugmagic.api;
 
 import com.deflatedpickle.bugmagic.common.item.Wand;
-import net.minecraft.item.Item;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.RegistryNamespaced;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.registries.GameData;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -54,7 +51,7 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
      * @return The time before this spell can be cast again
      */
     public int getMaxCooldown() {
-        return 1;
+        return 32;
     }
 
     /**
@@ -144,7 +141,7 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
      * @return The casting particle
      */
     public @Nullable EnumParticleTypes getCastingParticle() {
-        return null;
+        return EnumParticleTypes.CRIT_MAGIC;
     }
 
     /**
@@ -153,7 +150,7 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
      * @return The canceling particle
      */
     public @Nullable EnumParticleTypes getCancelingParticle() {
-        return null;
+        return EnumParticleTypes.EXPLOSION_HUGE;
     }
 
     /**
@@ -162,7 +159,7 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
      * @return The finishing particle
      */
     public @Nullable EnumParticleTypes getFinishingParticle() {
-        return null;
+        return EnumParticleTypes.DRAGON_BREATH;
     }
 
     /**
@@ -214,10 +211,10 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
     /**
      * Casts this spell
      */
-    public abstract void cast();
+    public abstract void cast(EntityPlayer entityPlayer);
 
     /**
      * Uncasts this spell
      */
-    public abstract void uncast();
+    public abstract void uncast(EntityPlayer entityPlayer);
 }

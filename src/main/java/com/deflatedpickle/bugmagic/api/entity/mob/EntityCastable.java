@@ -12,7 +12,8 @@ public class EntityCastable extends EntityTameable {
     public EntityCastable(World worldIn) {
         super(worldIn);
 
-        this.isImmuneToFire = false;
+        this.isImmuneToFire = true;
+
         this.enablePersistence();
     }
 

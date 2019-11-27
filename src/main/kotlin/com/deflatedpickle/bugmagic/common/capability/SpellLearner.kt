@@ -31,7 +31,7 @@ object SpellLearner {
     }
 
     class Implementation : ISpellLearner {
-        private val spellList = mutableListOf<ASpell>(*Spell.DEBUG.toTypedArray())
+        private val spellList = mutableListOf<ASpell>(Spell.ITEM_COLLECTOR)
         private var currentIndex = 0
 
         override fun getSpellList(): MutableList<ASpell> = spellList

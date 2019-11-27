@@ -1,6 +1,7 @@
 package com.deflatedpickle.bugmagic.common.spell
 
 import com.deflatedpickle.bugmagic.api.ASpell
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.EnumParticleTypes
 
 class Debug(val index: Int = 1) : ASpell() {
@@ -11,19 +12,14 @@ class Debug(val index: Int = 1) : ASpell() {
     override fun getName(): String = "Debug $index"
     override fun getManaCost(): Int = 4
     override fun getCastingTime(): Int = 64
-    override fun getMaxCooldown(): Int = 30
 
     override fun getTier(): Tier = Tier.DEBUG
-    override fun getCastingShapePoints(): Int = 8
-    override fun getCastingParticle(): EnumParticleTypes? = EnumParticleTypes.CRIT_MAGIC
-    override fun getCancelingParticle(): EnumParticleTypes? = EnumParticleTypes.EXPLOSION_HUGE
-    override fun getFinishingParticle(): EnumParticleTypes? = EnumParticleTypes.SWEEP_ATTACK
 
-    override fun cast() {
+    override fun cast(entityPlayer: EntityPlayer) {
         println("Cast Debug $index!")
     }
 
-    override fun uncast() {
+    override fun uncast(entityPlayer: EntityPlayer) {
         println("Uncast Debug $index!")
     }
 }

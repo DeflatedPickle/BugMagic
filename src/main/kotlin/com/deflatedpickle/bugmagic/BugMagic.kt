@@ -1,5 +1,6 @@
 package com.deflatedpickle.bugmagic
 
+import com.cout970.modelloader.api.ModelLoaderApi
 import com.deflatedpickle.bugmagic.common.Proxy
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.Mod.EventHandler
@@ -10,7 +11,14 @@ import net.minecraftforge.fml.common.network.NetworkRegistry
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
-@Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION, acceptedMinecraftVersions = Reference.ACCEPTED_VERSIONS, dependencies = Reference.DEPENDENCIES, modLanguageAdapter = Reference.ADAPTER)
+@Mod(
+        modid = Reference.MOD_ID,
+        name = Reference.NAME,
+        version = Reference.VERSION,
+        acceptedMinecraftVersions = Reference.ACCEPTED_VERSIONS,
+        dependencies = Reference.DEPENDENCIES,
+        modLanguageAdapter = Reference.ADAPTER
+)
 object BugMagic {
     @SidedProxy(clientSide = Reference.CLIENT_PROXY_CLASS, serverSide = Reference.SERVER_PROXY_CLASS)
     var proxy: Proxy? = null
@@ -22,6 +30,7 @@ object BugMagic {
     @EventHandler
     fun preInit(event: FMLPreInitializationEvent) {
         logger.info("Starting preInit.")
+        ModelLoaderApi.registerDomain(Reference.MOD_ID)
         proxy!!.preInit(event)
         logger.info("Finished preInit.")
     }
