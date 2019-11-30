@@ -21,14 +21,7 @@ import java.util.concurrent.Callable
 object SpellLearner {
     val NAME = ResourceLocation(Reference.MOD_ID, "spell_learner")
 
-    fun isCapable(entity: EntityLivingBase): ISpellLearner? {
-        if (entity.hasCapability(Provider.CAPABILITY!!, null)) {
-            entity.getCapability(Provider.CAPABILITY!!, null)!!.also {
-                return it
-            }
-        }
-        return null
-    }
+    fun isCapable(entity: EntityLivingBase): ISpellLearner? = entity.getCapability(Provider.CAPABILITY!!, null)
 
     class Implementation : ISpellLearner {
         private val spellList = mutableListOf<ASpell>(Spell.ITEM_COLLECTOR)
@@ -92,20 +85,16 @@ object SpellLearner {
         companion object {
             @JvmStatic
             @CapabilityInject(ISpellLearner::class)
-            var CAPABILITY: Capability<ISpellLearner>? = null
+            lateinit var CAPABILITY: Capability<ISpellLearner>
         }
 
-        val INSTANCE = CAPABILITY?.defaultInstance
+        val INSTANCE = CAPABILITY.defaultInstance
 
         override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean = capability == CAPABILITY
-        override fun <T : Any> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
-            return if (capability == CAPABILITY) CAPABILITY!!.cast(this.INSTANCE) else null
-        }
+        override fun <T : Any> getCapability(capability: Capability<T>, facing: EnumFacing?): T? = if (capability == CAPABILITY) CAPABILITY.cast(this.INSTANCE) else null
 
-        override fun serializeNBT(): NBTBase = CAPABILITY!!.storage.writeNBT(CAPABILITY, this.INSTANCE, null)!!
-        override fun deserializeNBT(nbt: NBTBase) {
-            CAPABILITY!!.storage.readNBT(CAPABILITY, this.INSTANCE, null, nbt)
-        }
+        override fun serializeNBT(): NBTBase = CAPABILITY.storage.writeNBT(CAPABILITY, this.INSTANCE, null)!!
+        override fun deserializeNBT(nbt: NBTBase) = CAPABILITY.storage.readNBT(CAPABILITY, this.INSTANCE, null, nbt)
     }
 
     fun register() {

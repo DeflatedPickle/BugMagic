@@ -53,7 +53,7 @@ class ItemCollector(renderManager: RenderManager) : RenderLiving<ItemCollectorMo
 
     val tessellator = Tessellator.getInstance()
 
-    override fun getEntityTexture(entity: com.deflatedpickle.bugmagic.common.entity.mob.ItemCollector): ResourceLocation? {
+    override fun getEntityTexture(entity: ItemCollectorMob): ResourceLocation? {
         return null
     }
 

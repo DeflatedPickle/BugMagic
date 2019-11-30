@@ -12,12 +12,16 @@ class CollectItem(private val entityIn: EntityLiving) : EntityAIBase() {
     }
 
     override fun updateTask() {
-        val item = entityIn.world.findNearestEntityWithinAABB(EntityItem::class.java,
-                entityIn.entityBoundingBox, this.entityIn)
+        val item = (entityIn.tasks.taskEntries.filter { it.action is FindItem }[0].action as FindItem).entity
 
-        if (item != null && item is EntityItem) {
-            entityIn.dataManager.set(ItemCollector.dataItemStack, item.item)
-            item.setDead()
+        if (item != null) {
+            if (entityIn.entityBoundingBox.grow(0.4).intersects(item.entityBoundingBox)) {
+                entityIn.dataManager.set(ItemCollector.dataItemStack, item.item.splitStack(1))
+
+                if (item.item.count < 0) {
+                    item.setDead()
+                }
+            }
         }
     }
 }

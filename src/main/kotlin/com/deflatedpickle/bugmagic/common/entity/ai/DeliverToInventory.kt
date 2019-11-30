@@ -6,6 +6,8 @@ import net.minecraft.entity.ai.EntityAIBase
 import net.minecraft.item.ItemStack
 import net.minecraft.util.math.BlockPos
 import net.minecraftforge.items.CapabilityItemHandler
+import net.minecraftforge.items.IItemHandlerModifiable
+import net.minecraftforge.items.ItemHandlerHelper
 
 class DeliverToInventory(private val entityIn: EntityLiving) : EntityAIBase() {
     override fun shouldExecute(): Boolean {
@@ -21,14 +23,11 @@ class DeliverToInventory(private val entityIn: EntityLiving) : EntityAIBase() {
         val tileEntity = this.entityIn.world.getTileEntity(this.entityIn.dataManager.get(ItemCollector.dataInventoryPosition))
         if (tileEntity != null) {
             val itemHandler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)
-            if (itemHandler != null) {
-                for (i in 0..itemHandler.slots) {
-                    if (itemHandler.getStackInSlot(i) == ItemStack.EMPTY) {
-                        itemHandler.insertItem(i, this.entityIn.dataManager.get(ItemCollector.dataItemStack), false)
-                        this.entityIn.dataManager.set(ItemCollector.dataItemStack, ItemStack.EMPTY)
-                        break
-                    }
-                }
+
+            if (itemHandler is IItemHandlerModifiable) {
+                val insertStack = this.entityIn.dataManager.get(ItemCollector.dataItemStack)
+
+                entityIn.dataManager.set(ItemCollector.dataItemStack, ItemHandlerHelper.insertItem(itemHandler, insertStack, false))
             }
         }
     }

@@ -8,6 +8,7 @@ import com.deflatedpickle.bugmagic.common.networking.message.MessageBugEssence
 import com.deflatedpickle.bugmagic.common.networking.message.MessageSelectedSpell
 import com.deflatedpickle.bugmagic.common.networking.message.MessageSpellCaster
 import net.minecraft.client.Minecraft
+import net.minecraft.client.multiplayer.WorldClient
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.Entity
@@ -26,7 +27,9 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.text.TextComponentString
 import net.minecraft.util.text.TextFormatting
 import net.minecraft.world.World
+import net.minecraft.world.WorldServer
 import net.minecraftforge.fml.common.FMLCommonHandler
+import org.lwjgl.input.Keyboard
 import org.lwjgl.input.Mouse
 import java.util.concurrent.ThreadLocalRandom
 import com.deflatedpickle.bugmagic.client.Proxy as ClientProxy
@@ -41,33 +44,55 @@ class Wand(name: String) : Generic(name, CreativeTabs.TOOLS) {
 
     override fun onItemUse(player: EntityPlayer, worldIn: World, pos: BlockPos, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): EnumActionResult {
         if (worldIn.getTileEntity(pos) != null) {
-            player.getHeldItem(player.activeHand).tagCompound = NBTUtil.createPosTag(pos)
+            player.getHeldItem(EnumHand.MAIN_HAND).tagCompound = NBTUtil.createPosTag(pos)
             return EnumActionResult.SUCCESS
         }
         return EnumActionResult.PASS
     }
 
     override fun onEntitySwing(entityLiving: EntityLivingBase, stack: ItemStack): Boolean {
-        if (entityLiving is EntityPlayer && !entityLiving.world.isRemote) {
+        if (entityLiving is EntityPlayer) {
+            val bugEssence = BugEssence.isCapable(entityLiving)
             val spellLearner = SpellLearner.isCapable(entityLiving)
             val spellCaster = SpellCaster.isCapable(stack)
 
-            if (spellLearner != null && spellCaster != null) {
-                if (spellCaster.castSpellMap.containsKey(spellLearner.currentSpell)) {
-                    if (spellCaster.castSpellMap[spellLearner.currentSpell]!! > 0) {
-                        spellLearner.currentSpell.uncast(entityLiving)
-                        spellCaster.castSpellMap[spellLearner.currentSpell] = spellCaster.castSpellMap[spellLearner.currentSpell]!! - 1
+            if (bugEssence != null && spellLearner != null && spellCaster != null) {
+                if (!entityLiving.world.isRemote) {
+                    if (spellCaster.castSpellMap.containsKey(spellLearner.currentSpell)) {
+                        if (bugEssence.current + spellLearner.currentSpell.manaGain < bugEssence.max) {
+                            bugEssence.current += spellLearner.currentSpell.manaGain
+                            BugMagic.CHANNEL.sendTo(MessageBugEssence(entityLiving.entityId, bugEssence.max, bugEssence.current), entityLiving as EntityPlayerMP)
+                        }
+                        else {
+                            bugEssence.current = bugEssence.max
+                            BugMagic.CHANNEL.sendTo(MessageBugEssence(entityLiving.entityId, bugEssence.max, bugEssence.current), entityLiving as EntityPlayerMP)
+                        }
+
+                        if (spellCaster.castSpellMap[spellLearner.currentSpell]!! <= 0) {
+                            spellLearner.currentSpell.uncast(entityLiving, stack)
+                            spellCaster.castSpellMap.remove(spellLearner.currentSpell)
+                        }
+                        else {
+                            spellLearner.currentSpell.uncast(entityLiving, stack)
+                            spellCaster.castSpellMap[spellLearner.currentSpell] = spellCaster.castSpellMap[spellLearner.currentSpell]!! - 1
+                        }
                     }
-                    else {
-                        spellLearner.currentSpell.uncast(entityLiving)
-                        spellCaster.castSpellMap.remove(spellLearner.currentSpell)
+
+                    return true
+                }
+                else {
+                    if (spellLearner.currentSpell.uncastingParticle != null) {
+                        entityLiving.world.spawnParticle(spellLearner.currentSpell.uncastingParticle!!,
+                                entityLiving.posX,
+                                entityLiving.posY,
+                                entityLiving.posZ,
+                                0.0, 0.0, 0.0)
                     }
                 }
-
-                return false
             }
         }
-        return true
+
+        return false
     }
 
     override fun onItemUseFinish(stack: ItemStack, worldIn: World, entityLiving: EntityLivingBase): ItemStack {
@@ -77,29 +102,27 @@ class Wand(name: String) : Generic(name, CreativeTabs.TOOLS) {
             val spellCaster = SpellCaster.isCapable(stack)
 
             if (bugEssence != null && spellLearner != null && spellCaster != null) {
-                val manaCost = spellLearner.currentSpell.manaCost
+                val manaCost = spellLearner.currentSpell.manaLoss
 
                 if (bugEssence.current - manaCost >= 0) {
                     if (!worldIn.isRemote) {
                         bugEssence.current -= manaCost
-                        BugMagic.CHANNEL.sendTo(MessageBugEssence(bugEssence.max, bugEssence.current), entityLiving as EntityPlayerMP?)
+                        BugMagic.CHANNEL.sendTo(MessageBugEssence(entityLiving.entityId, bugEssence.max, bugEssence.current), entityLiving as EntityPlayerMP)
 
                         if (!spellCaster.castSpellMap.containsKey(spellLearner.currentSpell)) {
-                            spellLearner.currentSpell.cast(entityLiving)
-                            spellCaster.castSpellMap[spellLearner.currentSpell] = 0
+                            spellLearner.currentSpell.cast(entityLiving, stack)
+                            spellCaster.castSpellMap[spellLearner.currentSpell] = 1
                         }
-                        else {
-                            if (spellCaster.castSpellMap[spellLearner.currentSpell] != spellLearner.currentSpell.maxCount) {
-                                spellLearner.currentSpell.cast(entityLiving)
-                                spellCaster.castSpellMap[spellLearner.currentSpell] = spellCaster.castSpellMap[spellLearner.currentSpell]!! + 1
-                            }
+                        else if (spellCaster.castSpellMap[spellLearner.currentSpell]!! < spellLearner.currentSpell.maxCount) {
+                            spellLearner.currentSpell.cast(entityLiving, stack)
+                            spellCaster.castSpellMap[spellLearner.currentSpell] = spellCaster.castSpellMap[spellLearner.currentSpell]!! + 1
                         }
 
                         entityLiving.cooldownTracker.setCooldown(this, spellLearner.currentSpell.maxCooldown)
 
                         spellCaster.isCasting = false
 
-                        BugMagic.CHANNEL.sendTo(MessageSpellCaster(spellCaster.isCasting, spellCaster.castingCurrent), entityLiving as EntityPlayerMP?)
+                        BugMagic.CHANNEL.sendTo(MessageSpellCaster(entityLiving.entityId, spellCaster.isCasting, spellCaster.castingCurrent), entityLiving as EntityPlayerMP?)
                     }
                     else {
                         if (spellLearner.currentSpell.finishingParticle != null) {

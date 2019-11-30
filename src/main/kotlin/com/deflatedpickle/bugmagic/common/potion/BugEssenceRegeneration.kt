@@ -17,11 +17,11 @@ class BugEssenceRegeneration : Potion(false, 0xBBFF70) {
 
     override fun performEffect(entityLivingBaseIn: EntityLivingBase, amplifier: Int) {
         if (!entityLivingBaseIn.world.isRemote) {
-            if (entityLivingBaseIn.hasCapability(BugEssence.Provider.CAPABILITY!!, null)) {
-                with(entityLivingBaseIn.getCapability(BugEssence.Provider.CAPABILITY!!, null)!!) {
+            if (entityLivingBaseIn.hasCapability(BugEssence.Provider.CAPABILITY, null)) {
+                with(entityLivingBaseIn.getCapability(BugEssence.Provider.CAPABILITY, null)!!) {
                     this.current = min(this.current + 1, this.max)
 
-                    BugMagic.CHANNEL.sendTo(MessageBugEssence(this.max, this.current), entityLivingBaseIn as EntityPlayerMP)
+                    BugMagic.CHANNEL.sendTo(MessageBugEssence(entityLivingBaseIn.entityId, this.max, this.current), entityLivingBaseIn as EntityPlayerMP)
                 }
             }
         }

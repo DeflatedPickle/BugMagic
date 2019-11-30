@@ -18,14 +18,7 @@ import kotlin.math.min
 object BugEssence {
     val NAME = ResourceLocation(Reference.MOD_ID, "bug_essence")
 
-    fun isCapable(entity: EntityLivingBase): IBugEssence? {
-        if (entity.hasCapability(Provider.CAPABILITY!!, null)) {
-            entity.getCapability(Provider.CAPABILITY!!, null)!!.also {
-                return it
-            }
-        }
-        return null
-    }
+    fun isCapable(entity: EntityLivingBase): IBugEssence? = entity.getCapability(Provider.CAPABILITY, null)
 
     class Implementation : IBugEssence {
         private var max = 0
@@ -69,26 +62,16 @@ object BugEssence {
         companion object {
             @JvmStatic
             @CapabilityInject(IBugEssence::class)
-            var CAPABILITY: Capability<IBugEssence>? = null
+            lateinit var CAPABILITY: Capability<IBugEssence>
         }
 
-        val INSTANCE = CAPABILITY?.defaultInstance
+        val INSTANCE = CAPABILITY.defaultInstance
 
-        override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean {
-            return capability == CAPABILITY
-        }
+        override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean = capability == CAPABILITY
+        override fun <T : Any> getCapability(capability: Capability<T>, facing: EnumFacing?): T? = if (capability == CAPABILITY) CAPABILITY.cast(this.INSTANCE) else null
 
-        override fun <T : Any> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
-            return if (capability == CAPABILITY) CAPABILITY!!.cast(this.INSTANCE) else null
-        }
-
-        override fun serializeNBT(): NBTBase {
-            return CAPABILITY!!.storage.writeNBT(CAPABILITY, this.INSTANCE, null)!!
-        }
-
-        override fun deserializeNBT(nbt: NBTBase) {
-            CAPABILITY!!.storage.readNBT(CAPABILITY, this.INSTANCE, null, nbt)
-        }
+        override fun serializeNBT(): NBTBase = CAPABILITY.storage.writeNBT(CAPABILITY, this.INSTANCE, null)!!
+        override fun deserializeNBT(nbt: NBTBase) = CAPABILITY.storage.readNBT(CAPABILITY, this.INSTANCE, null, nbt)
     }
 
     fun register() {

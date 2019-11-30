@@ -7,6 +7,9 @@ import com.deflatedpickle.bugmagic.common.capability.SpellLearner
 import com.deflatedpickle.bugmagic.common.item.Wand
 import com.github.upcraftlp.glasspane.api.event.client.RegisterRenderLayerEvent
 import net.minecraft.client.Minecraft
+import net.minecraft.client.gui.Gui
+import net.minecraft.client.renderer.GlStateManager
+import net.minecraft.util.ResourceLocation
 import net.minecraft.util.text.TextFormatting
 import net.minecraftforge.client.event.MouseEvent
 import net.minecraftforge.client.event.RenderGameOverlayEvent
@@ -57,6 +60,8 @@ class ForgeEventHandler {
                     }
                 }
             }
+
+            Minecraft.getMinecraft().textureManager.bindTexture(Gui.ICONS)
         }
     }
 

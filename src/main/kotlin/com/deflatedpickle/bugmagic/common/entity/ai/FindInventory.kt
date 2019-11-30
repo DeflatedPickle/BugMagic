@@ -10,7 +10,8 @@ import net.minecraft.util.math.Vec3i
 
 class FindInventory(private val entityIn: EntityLiving) : EntityAIBase() {
     override fun shouldExecute(): Boolean {
-        return entityIn.dataManager.get(ItemCollector.dataInventoryPosition) == BlockPos.ORIGIN || entityIn.world.getTileEntity(entityIn.dataManager.get(ItemCollector.dataInventoryPosition)) == null
+        return entityIn.dataManager.get(ItemCollector.dataInventoryPosition) == BlockPos.ORIGIN
+                || entityIn.world.getTileEntity(entityIn.dataManager.get(ItemCollector.dataInventoryPosition)) == null
     }
 
     override fun updateTask() {
@@ -33,6 +34,8 @@ class FindInventory(private val entityIn: EntityLiving) : EntityAIBase() {
             }
         }
 
-        entityIn.dataManager.set(ItemCollector.dataInventoryPosition, closest!!.pos)
+        if (closest != null) {
+            entityIn.dataManager.set(ItemCollector.dataInventoryPosition, closest.pos)
+        }
     }
 }

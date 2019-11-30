@@ -24,14 +24,7 @@ import kotlin.math.min
 object SpellCaster {
     val NAME = ResourceLocation(Reference.MOD_ID, "spell_caster")
 
-    fun isCapable(stack: ItemStack): ISpellCaster? {
-        if (stack.hasCapability(Provider.CAPABILITY!!, null)) {
-            stack.getCapability(Provider.CAPABILITY!!, null)!!.also {
-                return it
-            }
-        }
-        return null
-    }
+    fun isCapable(stack: ItemStack): ISpellCaster? = stack.getCapability(Provider.CAPABILITY!!, null)
 
     class Implementation : ISpellCaster {
         private val castSpellMap = hashMapOf<ASpell, Int>()
@@ -95,26 +88,16 @@ object SpellCaster {
         companion object {
             @JvmStatic
             @CapabilityInject(ISpellCaster::class)
-            var CAPABILITY: Capability<ISpellCaster>? = null
+            lateinit var CAPABILITY: Capability<ISpellCaster>
         }
 
-        val INSTANCE = CAPABILITY?.defaultInstance
+        val INSTANCE = CAPABILITY.defaultInstance
 
-        override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean {
-            return capability == CAPABILITY
-        }
+        override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean = capability == CAPABILITY
+        override fun <T : Any> getCapability(capability: Capability<T>, facing: EnumFacing?): T? = if (capability == CAPABILITY) CAPABILITY.cast(this.INSTANCE) else null
 
-        override fun <T : Any> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
-            return if (capability == CAPABILITY) CAPABILITY!!.cast(this.INSTANCE) else null
-        }
-
-        override fun serializeNBT(): NBTBase {
-            return CAPABILITY!!.storage.writeNBT(CAPABILITY, this.INSTANCE, null)!!
-        }
-
-        override fun deserializeNBT(nbt: NBTBase) {
-            CAPABILITY!!.storage.readNBT(CAPABILITY, this.INSTANCE, null, nbt)
-        }
+        override fun serializeNBT(): NBTBase = CAPABILITY.storage.writeNBT(CAPABILITY, this.INSTANCE, null)!!
+        override fun deserializeNBT(nbt: NBTBase) = CAPABILITY.storage.readNBT(CAPABILITY, this.INSTANCE, null, nbt)
     }
 
     fun register() {

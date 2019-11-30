@@ -18,7 +18,7 @@ class WalkToBlock(private val entityIn: EntityLiving) : EntityAIBase() {
         val path = this.entityIn.navigator.getPathToPos(entityIn.dataManager.get(ItemCollector.dataInventoryPosition))
 
         if (path != null) {
-            this.entityIn.navigator.setPath(path, 0.2)
+            this.entityIn.navigator.setPath(path, entityIn.aiMoveSpeed.toDouble())
         }
     }
 }

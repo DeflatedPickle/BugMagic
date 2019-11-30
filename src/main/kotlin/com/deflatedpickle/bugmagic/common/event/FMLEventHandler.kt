@@ -21,7 +21,7 @@ class FMLEventHandler {
                 bugEssence.max = 128
                 bugEssence.current = 64
 
-                BugMagic.CHANNEL.sendTo(MessageBugEssence(bugEssence.max, bugEssence.current), event.player as EntityPlayerMP)
+                BugMagic.CHANNEL.sendTo(MessageBugEssence(event.player.entityId, bugEssence.max, bugEssence.current), event.player as EntityPlayerMP)
             }
         }
     }
