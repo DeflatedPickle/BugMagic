@@ -8,7 +8,7 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3i
 
-class FindInventory(private val entityIn: EntityLiving) : EntityAIBase() {
+class FindClosestTileEntity(private val entityIn: EntityLiving, private val filter: (TileEntity) -> Boolean, private val withTileEntity: (TileEntity?) -> Unit) : EntityAIBase() {
     override fun shouldExecute(): Boolean {
         return entityIn.dataManager.get(ItemCollector.dataInventoryPosition) == BlockPos.ORIGIN
                 || entityIn.world.getTileEntity(entityIn.dataManager.get(ItemCollector.dataInventoryPosition)) == null
@@ -22,7 +22,7 @@ class FindInventory(private val entityIn: EntityLiving) : EntityAIBase() {
                     it.pos.getDistance(x, y, z) > 10
                 }
             }
-            it is IInventory
+            filter(it)
         }) {
             if (closest == null) {
                 closest = tileEntity
@@ -34,8 +34,6 @@ class FindInventory(private val entityIn: EntityLiving) : EntityAIBase() {
             }
         }
 
-        if (closest != null) {
-            entityIn.dataManager.set(ItemCollector.dataInventoryPosition, closest.pos)
-        }
+        withTileEntity(closest)
     }
 }

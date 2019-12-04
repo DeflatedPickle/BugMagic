@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
-import com.deflatedpickle.bugmagic.common.entity.mob.ItemCollector as ItemCollectorMob
+import com.deflatedpickle.bugmagic.common.entity.mob.ItemCollector as Mob
 import net.minecraft.client.renderer.entity.RenderLiving
 import net.minecraft.client.renderer.entity.RenderManager
 import net.minecraft.client.renderer.texture.TextureMap
@@ -23,13 +23,13 @@ import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.ForgeHooksClient
 import org.lwjgl.opengl.GL11
 
-class ItemCollector(renderManager: RenderManager) : RenderLiving<ItemCollectorMob>(renderManager, object : ModelBase() {}, 0f) {
+class ItemCollector(renderManager: RenderManager) : RenderLiving<Mob>(renderManager, object : ModelBase() {}, 0f) {
     companion object : IModelRegisterer, IModelReloadListener {
         var models: HashMap<String, IAnimatedModel> = HashMap()
 
         override fun registerModels() {
             val modelID = ModelResourceLocation(ResourceLocation(Reference.MOD_ID, "item_collector"), "")
-            val modelLocation = ResourceLocation(Reference.MOD_ID, "models/entity/item_collector.gltf")
+            val modelLocation = ResourceLocation(Reference.MOD_ID, "models/entity/item collector/item_collector.gltf")
 
             ModelLoaderApi.registerModel(modelID, modelLocation, false)
         }
@@ -51,41 +51,39 @@ class ItemCollector(renderManager: RenderManager) : RenderLiving<ItemCollectorMo
         }
     }
 
-    val tessellator = Tessellator.getInstance()
+    private val tessellator = Tessellator.getInstance()
 
-    override fun getEntityTexture(entity: ItemCollectorMob): ResourceLocation? {
+    override fun getEntityTexture(entity: Mob): ResourceLocation? {
         return null
     }
 
-    override fun doRender(entity: ItemCollectorMob, x: Double, y: Double, z: Double, entityYaw: Float, partialTicks: Float) {
+    override fun doRender(entity: Mob, x: Double, y: Double, z: Double, entityYaw: Float, partialTicks: Float) {
         super.doRender(entity, x, y, z, entityYaw, partialTicks)
 
         GlStateManager.pushMatrix()
         GlStateManager.translate(x , y, z)
 
-        if (!entity.isDead) {
-            if (entity.owner?.heldItemMainhand?.item is Wand) {
-                drawInventoryLine(entity)
-            }
-
-            GlStateManager.rotate(entityYaw, 0f, 1f, 0f)
-
-            drawItem(entity)
-
-            val time = (entity.ticksExisted and 0xFFFFFF).toDouble() + partialTicks
-            models["Idle"]!!.render(time)
+        if (entity.owner?.heldItemMainhand?.item is Wand) {
+            drawInventoryLine(entity)
         }
+
+        GlStateManager.rotate(entityYaw, 0f, 1f, 0f)
+
+        drawItem(entity)
+
+        val time = (entity.ticksExisted and 0xFFFFFF).toDouble() + partialTicks
+        models["Idle"]!!.render(time)
 
         GlStateManager.popMatrix()
     }
 
-    fun drawInventoryLine(entity: ItemCollectorMob) {
+    private fun drawInventoryLine(entity: Mob) {
         GL11.glPushAttrib(GL11.GL_CURRENT_BIT)
         GlStateManager.disableTexture2D()
         GlStateManager.color(1f, 0f, 0f, 1f)
         tessellator.buffer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION)
         tessellator.buffer.pos(0.0, 0.0, 0.0).endVertex()
-        entity.dataManager.get(ItemCollectorMob.dataInventoryPosition).also {
+        entity.dataManager.get(Mob.dataInventoryPosition).also {
             tessellator.buffer.pos(it.x - entity.posX + 0.5, it.y - entity.posY + 0.5, it.z - entity.posZ + 0.5).endVertex()
         }
         tessellator.draw()
@@ -93,12 +91,12 @@ class ItemCollector(renderManager: RenderManager) : RenderLiving<ItemCollectorMo
         GL11.glPopAttrib()
     }
 
-    fun drawItem(entity: ItemCollectorMob) {
+    fun drawItem(entity: Mob) {
         GlStateManager.pushMatrix()
 
         GlStateManager.translate(0f, 0.2f, 0f)
 
-        val stack = entity.dataManager.get(ItemCollectorMob.dataItemStack)
+        val stack = entity.dataManager.get(Mob.dataItemStack)
 
         var model = Minecraft.getMinecraft().renderItem.getItemModelWithOverrides(stack, entity.world, null)
         model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.GROUND, false)

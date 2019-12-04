@@ -24,7 +24,10 @@ object SpellLearner {
     fun isCapable(entity: EntityLivingBase): ISpellLearner? = entity.getCapability(Provider.CAPABILITY!!, null)
 
     class Implementation : ISpellLearner {
-        private val spellList = mutableListOf<ASpell>(Spell.ITEM_COLLECTOR)
+        private val spellList = mutableListOf(
+                Spell.ITEM_COLLECTOR,
+                Spell.ESSENCE_COLLECTOR
+        )
         private var currentIndex = 0
 
         override fun getSpellList(): MutableList<ASpell> = spellList

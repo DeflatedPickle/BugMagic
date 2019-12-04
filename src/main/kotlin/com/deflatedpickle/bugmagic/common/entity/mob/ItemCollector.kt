@@ -4,6 +4,7 @@ import com.deflatedpickle.bugmagic.api.entity.mob.EntityCastable
 import com.deflatedpickle.bugmagic.common.entity.ai.*
 import com.deflatedpickle.bugmagic.common.item.Wand
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.inventory.IInventory
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTUtil
 import net.minecraft.network.datasync.DataParameter
@@ -35,12 +36,20 @@ class ItemCollector(worldIn: World) : EntityCastable(worldIn) {
     }
 
     override fun initEntityAI() {
-        this.tasks.addTask(1, FindInventory(this))
-        this.tasks.addTask(1, CollectItem(this))
-        this.tasks.addTask(2, WalkToBlock(this))
+        val findItem = FindItem(this)
+
+        this.tasks.addTask(1, FindClosestTileEntity(this, {
+            it is IInventory
+        }, {
+            if (it != null) {
+                this.dataManager.set(dataInventoryPosition, it.pos)
+            }
+        }))
+        this.tasks.addTask(1, CollectItem(findItem, this))
+        this.tasks.addTask(2, WalkToInventory(this))
         this.tasks.addTask(3, DeliverToInventory(this))
-        this.tasks.addTask(4, FindItem(this))
-        this.tasks.addTask(4, WalkToItem(this))
+        this.tasks.addTask(4, findItem)
+        this.tasks.addTask(4, WalkToItem(findItem, this))
     }
 
     override fun processInteract(player: EntityPlayer, hand: EnumHand): Boolean {

@@ -24,10 +24,10 @@ class ForgeEventHandler {
         with(Minecraft.getMinecraft().player) {
             var y = 2f
 
-            if (this.hasCapability(BugEssence.Provider.CAPABILITY!!, null)) {
-                this.getCapability(BugEssence.Provider.CAPABILITY!!, null)!!.also {
+            if (this.hasCapability(BugEssence.Provider.CAPABILITY, null)) {
+                this.getCapability(BugEssence.Provider.CAPABILITY, null).also {
                     Minecraft.getMinecraft().fontRenderer.drawString(
-                            "${TextFormatting.WHITE}Bug Essence: ${it.current}/${it.max}",
+                            "${TextFormatting.WHITE}Bug Essence: ${it!!.current}/${it!!.max}",
                             2f, y, 0, true
                     )
                 }
@@ -35,8 +35,8 @@ class ForgeEventHandler {
 
             y += textHeight * 1.4f
 
-            if (this.hasCapability(SpellLearner.Provider.CAPABILITY!!, null)) {
-                this.getCapability(SpellLearner.Provider.CAPABILITY!!, null)!!.also {
+            if (this.hasCapability(SpellLearner.Provider.CAPABILITY, null)) {
+                this.getCapability(SpellLearner.Provider.CAPABILITY, null).also {
                     Minecraft.getMinecraft().fontRenderer.drawString(
                             "${TextFormatting.WHITE}${TextFormatting.UNDERLINE}Spell Library:",
                             2f, y, 0, true
@@ -44,10 +44,10 @@ class ForgeEventHandler {
 
                     y += textHeight
 
-                    if (it.spellList.size > 0) {
+                    if (it!!.spellList.size > 0) {
                         for ((index, spell) in it.spellList.withIndex()) {
                             Minecraft.getMinecraft().fontRenderer.drawString(
-                                    "${TextFormatting.WHITE}${spell.name}",
+                                    "${TextFormatting.GOLD}[${spell.type.name.toLowerCase().capitalize()}] ${TextFormatting.WHITE}${spell.name} ${TextFormatting.ITALIC}(Costs: ${spell.manaLoss}, Summons: ${spell.castCount})",
                                     2f, y + index * textHeightPadding, 0, true
                             )
                         }
@@ -67,9 +67,8 @@ class ForgeEventHandler {
 
     @SubscribeEvent
     fun onMouseEvent(event: MouseEvent) {
-        val player = BugMagic.proxy!!.getPlayer()!!
-
-        if (player.heldItemMainhand.item is Wand && player.isSneaking
+        val player = BugMagic.proxy!!.getPlayer()
+        if (player!!.heldItemMainhand.item is Wand && player.isSneaking
                 && (event.dwheel == -120 || event.dwheel == 120)) {
             // FIXME: If you scroll too quickly, it can still sometimes move the selected slot
             // Maybe don't actually fix this, because it's fine if you scroll slowly

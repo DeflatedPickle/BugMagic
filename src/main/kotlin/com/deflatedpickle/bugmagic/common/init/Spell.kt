@@ -3,6 +3,7 @@ package com.deflatedpickle.bugmagic.common.init
 import com.deflatedpickle.bugmagic.Reference
 import com.deflatedpickle.bugmagic.api.ASpell
 import com.deflatedpickle.bugmagic.common.spell.Debug
+import com.deflatedpickle.bugmagic.common.spell.EssenceCollector
 import com.deflatedpickle.bugmagic.common.spell.ItemCollector
 import net.minecraft.launchwrapper.Launch
 import net.minecraft.util.ResourceLocation
@@ -15,6 +16,7 @@ object Spell {
     val DEBUG = mutableListOf<Debug>()
 
     val ITEM_COLLECTOR = ItemCollector()
+    val ESSENCE_COLLECTOR = EssenceCollector()
 
     init {
         if (Launch.blackboard["fml.deobfuscatedEnvironment"] as Boolean) {
@@ -23,5 +25,6 @@ object Spell {
         registry.registerAll(*DEBUG.toTypedArray())
 
         registry.register(ITEM_COLLECTOR)
+        registry.register(ESSENCE_COLLECTOR)
     }
 }

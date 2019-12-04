@@ -9,7 +9,7 @@ import net.minecraft.entity.passive.EntityTameable
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 
-class WalkToItem(private val entityIn: EntityLiving) : EntityAIBase() {
+class WalkToItem(private val findItem: FindItem, private val entityIn: EntityLiving) : EntityAIBase() {
     override fun shouldExecute(): Boolean {
         if (entityIn is EntityTameable) {
             if (entityIn.owner == null) {
@@ -26,7 +26,7 @@ class WalkToItem(private val entityIn: EntityLiving) : EntityAIBase() {
     }
 
     override fun updateTask() {
-        val item = (entityIn.tasks.taskEntries.filter { it.action is FindItem }[0].action as FindItem).entity
+        val item = findItem.entity
 
         if (item != null) {
             val path = this.entityIn.navigator.getPathToEntityLiving(item)

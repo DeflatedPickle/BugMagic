@@ -1,7 +1,6 @@
 package com.deflatedpickle.bugmagic.api;
 
 import com.deflatedpickle.bugmagic.common.item.Wand;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -23,7 +22,6 @@ import org.lwjgl.util.ReadableColor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -64,6 +62,15 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
     }
 
     /**
+     * The amount of mobs this spell will summon
+     *
+     * @return The amount casted
+     */
+    public int getCastCount() {
+        return 1;
+    }
+
+    /**
      * The maximum amount of times this spell can be simultaneously cast
      *
      * @return The max count
@@ -86,7 +93,9 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
      */
     public enum Tier {
         COMMON,
+        UNCOMMON,
         RARE,
+        LEGENDARY,
         /**
          * A debug tier
          */
@@ -260,18 +269,17 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
      * @param entityClass  The class of the entity
      * @param entityPlayer The player
      * @param wandIn       The wand
-     * @param count        The amount of entities that will be spawned
      * @param <T>          The type of entity
      * @return A list of the summoned entities
      */
-    public <T extends EntityTameable> List<T> summonEntity(Class<T> entityClass, EntityPlayer entityPlayer, ItemStack wandIn, Integer count) {
+    public <T extends EntityTameable> List<T> summonEntity(Class<T> entityClass, EntityPlayer entityPlayer, ItemStack wandIn) {
         if (!wandIn.hasTagCompound()) {
             wandIn.setTagCompound(new NBTTagCompound());
         }
 
         List<T> list = new ArrayList<>();
 
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < this.getCastCount(); i++) {
             T entity = null;
             try {
                 entity = entityClass.getConstructor(World.class).newInstance(entityPlayer.world);
@@ -290,6 +298,7 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
 
             NBTTagCompound compound = wandIn.getTagCompound();
             NBTTagCompound uuid = NBTUtil.createUUIDTag(entity.getUniqueID());
+            assert compound != null;
             NBTTagList listTag = compound.getTagList("uuidList", Constants.NBT.TAG_COMPOUND);
             listTag.appendTag(uuid);
             compound.setTag("uuidList", listTag);

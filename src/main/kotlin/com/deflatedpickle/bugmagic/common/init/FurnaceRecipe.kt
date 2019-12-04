@@ -5,6 +5,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry
 
 object FurnaceRecipe {
     init {
-        GameRegistry.addSmelting(ItemStack(Block.BUG_BUNDLE), ItemStack(Food.PETRIFIED_BUG_BUNDLE), 4f)
+        GameRegistry.addSmelting(Block.BUG_BUNDLE, ItemStack(Food.PETRIFIED_BUG_BUNDLE), 4f)
     }
 }

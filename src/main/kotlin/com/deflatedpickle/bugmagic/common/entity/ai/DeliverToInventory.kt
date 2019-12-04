@@ -21,6 +21,7 @@ class DeliverToInventory(private val entityIn: EntityLiving) : EntityAIBase() {
 
     override fun updateTask() {
         val tileEntity = this.entityIn.world.getTileEntity(this.entityIn.dataManager.get(ItemCollector.dataInventoryPosition))
+
         if (tileEntity != null) {
             val itemHandler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)
 

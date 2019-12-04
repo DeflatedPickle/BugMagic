@@ -1,24 +1,23 @@
 package com.deflatedpickle.bugmagic.common.entity.ai
 
-import com.deflatedpickle.bugmagic.common.entity.mob.ItemCollector
 import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.ai.EntityAIBase
-import net.minecraft.util.math.BlockPos
 
-class WalkToBlock(private val entityIn: EntityLiving) : EntityAIBase() {
+class WalkToBlock(private val findBlock: FindBlock, private val entityIn: EntityLiving) : EntityAIBase() {
     override fun shouldExecute(): Boolean {
-        if (!entityIn.dataManager.get(ItemCollector.dataItemStack).isEmpty
-                && entityIn.dataManager.get(ItemCollector.dataInventoryPosition) != BlockPos.ORIGIN) {
-            return true
-        }
-        return false
+        val blockPos = (entityIn.tasks.taskEntries.filter { it.action is FindBlock }[0].action as FindBlock).blockPos
+        return blockPos != null && !entityIn.world.isAirBlock(blockPos)
     }
 
     override fun updateTask() {
-        val path = this.entityIn.navigator.getPathToPos(entityIn.dataManager.get(ItemCollector.dataInventoryPosition))
+        val blockPos = findBlock.blockPos
 
-        if (path != null) {
-            this.entityIn.navigator.setPath(path, entityIn.aiMoveSpeed.toDouble())
+        blockPos?.let {
+            val path = this.entityIn.navigator.getPathToPos(blockPos)
+
+            path?.let {
+                this.entityIn.navigator.setPath(path, entityIn.aiMoveSpeed.toDouble())
+            }
         }
     }
 }

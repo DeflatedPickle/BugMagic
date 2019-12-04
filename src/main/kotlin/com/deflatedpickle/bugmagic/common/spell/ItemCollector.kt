@@ -11,11 +11,12 @@ import net.minecraft.world.WorldServer
 class ItemCollector : ASpell() {
     override fun getName(): String = "Item Collector"
     override fun getManaLoss(): Int = 22
+    override fun getCastCount(): Int = 1
     override fun getMaxCount(): Int = 3
     override fun getTier(): Tier = Tier.COMMON
 
     override fun cast(entityPlayer: EntityPlayer, itemWand: ItemStack) {
-        this.summonEntity(ItemCollectorMob::class.java, entityPlayer, itemWand, 1)
+        this.summonEntity(ItemCollectorMob::class.java, entityPlayer, itemWand)
     }
 
     override fun uncast(entityPlayer: EntityPlayer, itemWand: ItemStack) {

@@ -6,13 +6,13 @@ import net.minecraft.entity.ai.EntityAIBase
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.item.ItemStack
 
-class CollectItem(private val entityIn: EntityLiving) : EntityAIBase() {
+class CollectItem(private val findItem: FindItem, private val entityIn: EntityLiving) : EntityAIBase() {
     override fun shouldExecute(): Boolean {
         return !entityIn.navigator.noPath() && entityIn.dataManager.get(ItemCollector.dataItemStack) == ItemStack.EMPTY
     }
 
     override fun updateTask() {
-        val item = (entityIn.tasks.taskEntries.filter { it.action is FindItem }[0].action as FindItem).entity
+        val item = findItem.entity
 
         if (item != null) {
             if (entityIn.entityBoundingBox.grow(0.4).intersects(item.entityBoundingBox)) {
