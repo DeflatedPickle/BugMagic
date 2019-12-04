@@ -1,12 +1,14 @@
+/* Copyright (c) 2019 DeflatedPickle under the MIT license */
+
 package com.deflatedpickle.bugmagic.common.capability
 
 import com.deflatedpickle.bugmagic.Reference
 import com.deflatedpickle.bugmagic.api.ASpell
 import com.deflatedpickle.bugmagic.api.capability.ISpellLearner
 import com.deflatedpickle.bugmagic.common.init.Spell
+import java.util.concurrent.Callable
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.nbt.NBTBase
-import net.minecraft.nbt.NBTTagIntArray
 import net.minecraft.nbt.NBTTagList
 import net.minecraft.nbt.NBTTagString
 import net.minecraft.util.EnumFacing
@@ -16,7 +18,6 @@ import net.minecraftforge.common.capabilities.CapabilityInject
 import net.minecraftforge.common.capabilities.CapabilityManager
 import net.minecraftforge.common.capabilities.ICapabilitySerializable
 import net.minecraftforge.fml.common.registry.GameRegistry
-import java.util.concurrent.Callable
 
 object SpellLearner {
     val NAME = ResourceLocation(Reference.MOD_ID, "spell_learner")
@@ -46,7 +47,6 @@ object SpellLearner {
                 return this
             }
         }
-
     }
 
     class Storage : Capability.IStorage<ISpellLearner> {
@@ -61,8 +61,7 @@ object SpellLearner {
                         }
                     }
                 }
-            }
-            else {
+            } else {
                 throw IllegalArgumentException("Can not deserialize to an instance that isn't the default implementation")
             }
         }

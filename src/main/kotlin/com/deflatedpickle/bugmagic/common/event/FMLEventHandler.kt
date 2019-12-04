@@ -1,13 +1,13 @@
+/* Copyright (c) 2019 DeflatedPickle under the MIT license */
+
 package com.deflatedpickle.bugmagic.common.event
 
 import com.deflatedpickle.bugmagic.BugMagic
-import com.deflatedpickle.bugmagic.api.capability.IBugEssence
 import com.deflatedpickle.bugmagic.common.capability.BugEssence
 import com.deflatedpickle.bugmagic.common.capability.SpellCaster
 import com.deflatedpickle.bugmagic.common.capability.SpellLearner
 import com.deflatedpickle.bugmagic.common.networking.message.MessageBugEssence
 import net.minecraft.entity.player.EntityPlayerMP
-import net.minecraftforge.event.entity.player.EntityItemPickupEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.gameevent.PlayerEvent
 

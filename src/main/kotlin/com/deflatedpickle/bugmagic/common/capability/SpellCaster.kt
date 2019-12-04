@@ -1,30 +1,27 @@
+/* Copyright (c) 2019 DeflatedPickle under the MIT license */
+
 package com.deflatedpickle.bugmagic.common.capability
 
 import com.deflatedpickle.bugmagic.Reference
 import com.deflatedpickle.bugmagic.api.ASpell
-import com.deflatedpickle.bugmagic.api.capability.IBugEssence
 import com.deflatedpickle.bugmagic.api.capability.ISpellCaster
-import com.deflatedpickle.bugmagic.api.capability.ISpellLearner
-import net.minecraft.entity.EntityLivingBase
+import java.util.UUID
+import java.util.concurrent.Callable
+import kotlin.collections.HashMap
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTBase
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.nbt.NBTTagIntArray
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.capabilities.CapabilityInject
 import net.minecraftforge.common.capabilities.CapabilityManager
 import net.minecraftforge.common.capabilities.ICapabilitySerializable
-import java.util.*
-import java.util.concurrent.Callable
-import kotlin.math.max
-import kotlin.math.min
 
 object SpellCaster {
     val NAME = ResourceLocation(Reference.MOD_ID, "spell_caster")
 
-    fun isCapable(stack: ItemStack): ISpellCaster? = stack.getCapability(Provider.CAPABILITY!!, null)
+    fun isCapable(stack: ItemStack): ISpellCaster? = stack.getCapability(Provider.CAPABILITY, null)
 
     class Implementation : ISpellCaster {
         private val castSpellMap = hashMapOf<ASpell, Int>()
@@ -61,8 +58,7 @@ object SpellCaster {
                     instance.isCasting = this.getBoolean("isCasting")
                     instance.castingCurrent = this.getFloat("castingCurrent")
                 }
-            }
-            else {
+            } else {
                 throw IllegalArgumentException("Can not deserialize to an instance that isn't the default implementation")
             }
         }

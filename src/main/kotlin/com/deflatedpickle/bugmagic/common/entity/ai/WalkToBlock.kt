@@ -1,3 +1,5 @@
+/* Copyright (c) 2019 DeflatedPickle under the MIT license */
+
 package com.deflatedpickle.bugmagic.common.entity.ai
 
 import net.minecraft.entity.EntityLiving

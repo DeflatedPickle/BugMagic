@@ -1,12 +1,14 @@
+/* Copyright (c) 2019 DeflatedPickle under the MIT license */
+
 package com.deflatedpickle.bugmagic.common.potion
 
 import com.deflatedpickle.bugmagic.BugMagic
 import com.deflatedpickle.bugmagic.common.capability.BugEssence
 import com.deflatedpickle.bugmagic.common.networking.message.MessageBugEssence
+import kotlin.math.min
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.potion.Potion
-import kotlin.math.min
 
 class BugEssenceRegeneration : Potion(false, 0xBBFF70) {
     init {
@@ -31,8 +33,7 @@ class BugEssenceRegeneration : Potion(false, 0xBBFF70) {
         with(18 shr amplifier) {
             return if (this > 0) {
                 duration % this == 0
-            }
-            else {
+            } else {
                 true
             }
         }

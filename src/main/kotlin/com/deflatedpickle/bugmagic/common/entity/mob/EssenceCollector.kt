@@ -1,9 +1,12 @@
+/* Copyright (c) 2019 DeflatedPickle under the MIT license */
+
 package com.deflatedpickle.bugmagic.common.entity.mob
 
 import com.deflatedpickle.bugmagic.api.entity.mob.EntityCastable
 import com.deflatedpickle.bugmagic.common.entity.ai.FindBlock
 import com.deflatedpickle.bugmagic.common.entity.ai.RemoveBlock
 import com.deflatedpickle.bugmagic.common.entity.ai.WalkToBlock
+import java.util.concurrent.ThreadLocalRandom
 import net.minecraft.block.BlockFlower
 import net.minecraft.entity.EntityLiving
 import net.minecraft.network.datasync.DataParameter
@@ -11,7 +14,6 @@ import net.minecraft.network.datasync.DataSerializers
 import net.minecraft.network.datasync.EntityDataManager
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
-import java.util.concurrent.ThreadLocalRandom
 
 class EssenceCollector(worldIn: World) : EntityCastable(worldIn) {
     companion object {

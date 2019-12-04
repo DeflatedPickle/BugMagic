@@ -1,3 +1,5 @@
+/* Copyright (c) 2019 DeflatedPickle under the MIT license */
+
 package com.deflatedpickle.bugmagic.common.init
 
 import com.deflatedpickle.bugmagic.BugMagic
@@ -5,9 +7,9 @@ import com.deflatedpickle.bugmagic.Reference
 import com.deflatedpickle.bugmagic.api.entity.mob.EntityCastable
 import com.deflatedpickle.bugmagic.common.entity.mob.EssenceCollector
 import com.deflatedpickle.bugmagic.common.entity.mob.ItemCollector
+import kotlin.reflect.KClass
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fml.common.registry.EntityRegistry
-import kotlin.reflect.KClass
 
 object Entities {
     var id = 0

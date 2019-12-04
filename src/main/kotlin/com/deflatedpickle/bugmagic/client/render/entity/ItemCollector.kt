@@ -1,3 +1,5 @@
+/* Copyright (c) 2019 DeflatedPickle under the MIT license */
+
 package com.deflatedpickle.bugmagic.client.render.entity
 
 import com.cout970.modelloader.api.Model
@@ -7,6 +9,7 @@ import com.cout970.modelloader.api.formats.gltf.GltfAnimationBuilder
 import com.deflatedpickle.bugmagic.Reference
 import com.deflatedpickle.bugmagic.api.IModelRegisterer
 import com.deflatedpickle.bugmagic.api.IModelReloadListener
+import com.deflatedpickle.bugmagic.common.entity.mob.ItemCollector as Mob
 import com.deflatedpickle.bugmagic.common.item.Wand
 import net.minecraft.client.Minecraft
 import net.minecraft.client.model.ModelBase
@@ -14,7 +17,6 @@ import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
-import com.deflatedpickle.bugmagic.common.entity.mob.ItemCollector as Mob
 import net.minecraft.client.renderer.entity.RenderLiving
 import net.minecraft.client.renderer.entity.RenderManager
 import net.minecraft.client.renderer.texture.TextureMap
@@ -61,7 +63,7 @@ class ItemCollector(renderManager: RenderManager) : RenderLiving<Mob>(renderMana
         super.doRender(entity, x, y, z, entityYaw, partialTicks)
 
         GlStateManager.pushMatrix()
-        GlStateManager.translate(x , y, z)
+        GlStateManager.translate(x, y, z)
 
         if (entity.owner?.heldItemMainhand?.item is Wand) {
             drawInventoryLine(entity)

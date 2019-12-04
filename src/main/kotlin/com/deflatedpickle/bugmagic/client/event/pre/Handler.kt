@@ -1,3 +1,5 @@
+/* Copyright (c) 2019 DeflatedPickle under the MIT license */
+
 package com.deflatedpickle.bugmagic.client.event.pre
 
 import com.deflatedpickle.bugmagic.client.render.entity.EssenceCollector

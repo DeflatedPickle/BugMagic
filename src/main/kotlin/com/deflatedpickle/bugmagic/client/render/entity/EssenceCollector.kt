@@ -1,3 +1,5 @@
+/* Copyright (c) 2019 DeflatedPickle under the MIT license */
+
 package com.deflatedpickle.bugmagic.client.render.entity
 
 import com.cout970.modelloader.api.Model
@@ -7,13 +9,13 @@ import com.cout970.modelloader.api.formats.gltf.GltfAnimationBuilder
 import com.deflatedpickle.bugmagic.Reference
 import com.deflatedpickle.bugmagic.api.IModelRegisterer
 import com.deflatedpickle.bugmagic.api.IModelReloadListener
+import com.deflatedpickle.bugmagic.common.entity.mob.EssenceCollector as Mob
 import net.minecraft.client.model.ModelBase
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.entity.RenderLiving
 import net.minecraft.client.renderer.entity.RenderManager
 import net.minecraft.util.ResourceLocation
-import com.deflatedpickle.bugmagic.common.entity.mob.EssenceCollector as Mob
 
 class EssenceCollector(renderManager: RenderManager) : RenderLiving<Mob>(renderManager, object : ModelBase() {}, 0.5f) {
     companion object : IModelRegisterer, IModelReloadListener {
@@ -51,7 +53,7 @@ class EssenceCollector(renderManager: RenderManager) : RenderLiving<Mob>(renderM
         super.doRender(entity, x, y, z, entityYaw, partialTicks)
 
         GlStateManager.pushMatrix()
-        GlStateManager.translate(x , y, z)
+        GlStateManager.translate(x, y, z)
         GlStateManager.rotate(entityYaw, 0f, 1f, 0f)
 
         val time = (entity.ticksExisted and 0xFFFFFF).toDouble() + partialTicks

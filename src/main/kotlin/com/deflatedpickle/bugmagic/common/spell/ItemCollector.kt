@@ -1,11 +1,11 @@
+/* Copyright (c) 2019 DeflatedPickle under the MIT license */
+
 package com.deflatedpickle.bugmagic.common.spell
 
 import com.deflatedpickle.bugmagic.api.ASpell
-import com.deflatedpickle.bugmagic.common.item.Wand
 import com.deflatedpickle.bugmagic.common.entity.mob.ItemCollector as ItemCollectorMob
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
-import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.world.WorldServer
 
 class ItemCollector : ASpell() {

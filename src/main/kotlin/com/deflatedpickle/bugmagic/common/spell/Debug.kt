@@ -1,10 +1,10 @@
+/* Copyright (c) 2019 DeflatedPickle under the MIT license */
+
 package com.deflatedpickle.bugmagic.common.spell
 
 import com.deflatedpickle.bugmagic.api.ASpell
-import com.deflatedpickle.bugmagic.common.item.Wand
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
-import net.minecraft.util.EnumParticleTypes
 
 class Debug(val index: Int = 1) : ASpell() {
     override fun getName(): String = "Debug $index"

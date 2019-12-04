@@ -1,7 +1,14 @@
+/* Copyright (c) 2019 DeflatedPickle under the MIT license */
+
 package com.deflatedpickle.bugmagic.common.entity.mob
 
 import com.deflatedpickle.bugmagic.api.entity.mob.EntityCastable
-import com.deflatedpickle.bugmagic.common.entity.ai.*
+import com.deflatedpickle.bugmagic.common.entity.ai.CollectItem
+import com.deflatedpickle.bugmagic.common.entity.ai.DeliverToInventory
+import com.deflatedpickle.bugmagic.common.entity.ai.FindClosestTileEntity
+import com.deflatedpickle.bugmagic.common.entity.ai.FindItem
+import com.deflatedpickle.bugmagic.common.entity.ai.WalkToInventory
+import com.deflatedpickle.bugmagic.common.entity.ai.WalkToItem
 import com.deflatedpickle.bugmagic.common.item.Wand
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.IInventory

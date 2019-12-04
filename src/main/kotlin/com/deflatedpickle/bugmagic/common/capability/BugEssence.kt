@@ -1,7 +1,12 @@
+/* Copyright (c) 2019 DeflatedPickle under the MIT license */
+
 package com.deflatedpickle.bugmagic.common.capability
 
 import com.deflatedpickle.bugmagic.Reference
 import com.deflatedpickle.bugmagic.api.capability.IBugEssence
+import java.util.concurrent.Callable
+import kotlin.math.max
+import kotlin.math.min
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.nbt.NBTBase
 import net.minecraft.nbt.NBTTagIntArray
@@ -11,9 +16,6 @@ import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.capabilities.CapabilityInject
 import net.minecraftforge.common.capabilities.CapabilityManager
 import net.minecraftforge.common.capabilities.ICapabilitySerializable
-import java.util.concurrent.Callable
-import kotlin.math.max
-import kotlin.math.min
 
 object BugEssence {
     val NAME = ResourceLocation(Reference.MOD_ID, "bug_essence")
@@ -38,8 +40,7 @@ object BugEssence {
                     instance.max = this.intArray[0]
                     instance.current = this.intArray[1]
                 }
-            }
-            else {
+            } else {
                 throw IllegalArgumentException("Can not deserialize to an instance that isn't the default implementation")
             }
         }

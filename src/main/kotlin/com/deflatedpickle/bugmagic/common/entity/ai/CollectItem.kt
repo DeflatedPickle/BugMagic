@@ -1,9 +1,10 @@
+/* Copyright (c) 2019 DeflatedPickle under the MIT license */
+
 package com.deflatedpickle.bugmagic.common.entity.ai
 
 import com.deflatedpickle.bugmagic.common.entity.mob.ItemCollector
 import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.ai.EntityAIBase
-import net.minecraft.entity.item.EntityItem
 import net.minecraft.item.ItemStack
 
 class CollectItem(private val findItem: FindItem, private val entityIn: EntityLiving) : EntityAIBase() {

@@ -1,16 +1,23 @@
 buildscript {
     ext.kotlin_version = '1.3.50'
+
     repositories {
         jcenter()
         maven { url = "http://files.minecraftforge.net/maven" }
+        maven { url = "https://plugins.gradle.org/m2/" }
     }
+
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.diffplug.spotless:spotless-plugin-gradle:3.26.1"
+        classpath 'org.ysb33r.gradle:doxygen:0.3.2'
     }
 }
 
 apply plugin: 'kotlin'
+apply plugin: "com.diffplug.gradle.spotless"
+apply plugin: 'org.ysb33r.doxygen'
 apply plugin: 'net.minecraftforge.gradle.forge'
 
 // Versions follow this format: MCVERSION-MAJORMOD.MAJORAPI.MINOR.PATCH.
@@ -78,4 +85,16 @@ compileTestKotlin {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+}
+
+spotless {
+    kotlin {
+        ktlint()
+
+        licenseHeader '/* Copyright (c) $YEAR DeflatedPickle under the MIT license */\n\n'
+    }
+}
+
+doxygen {
+    source 'src/main/java'
 }

@@ -1,14 +1,18 @@
+/* Copyright (c) 2019 DeflatedPickle under the MIT license */
+
 package com.deflatedpickle.bugmagic.common.item
 
 import com.deflatedpickle.bugmagic.BugMagic
+import com.deflatedpickle.bugmagic.client.Proxy as ClientProxy
 import com.deflatedpickle.bugmagic.common.capability.BugEssence
 import com.deflatedpickle.bugmagic.common.capability.SpellCaster
 import com.deflatedpickle.bugmagic.common.capability.SpellLearner
 import com.deflatedpickle.bugmagic.common.networking.message.MessageBugEssence
 import com.deflatedpickle.bugmagic.common.networking.message.MessageSelectedSpell
 import com.deflatedpickle.bugmagic.common.networking.message.MessageSpellCaster
+import com.deflatedpickle.bugmagic.server.Proxy as ServerProxy
+import java.util.concurrent.ThreadLocalRandom
 import net.minecraft.client.Minecraft
-import net.minecraft.client.multiplayer.WorldClient
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.Entity
@@ -27,13 +31,8 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.text.TextComponentString
 import net.minecraft.util.text.TextFormatting
 import net.minecraft.world.World
-import net.minecraft.world.WorldServer
 import net.minecraftforge.fml.common.FMLCommonHandler
-import org.lwjgl.input.Keyboard
 import org.lwjgl.input.Mouse
-import java.util.concurrent.ThreadLocalRandom
-import com.deflatedpickle.bugmagic.client.Proxy as ClientProxy
-import com.deflatedpickle.bugmagic.server.Proxy as ServerProxy
 
 class Wand(name: String) : Generic(name, CreativeTabs.TOOLS) {
     companion object {
@@ -62,8 +61,7 @@ class Wand(name: String) : Generic(name, CreativeTabs.TOOLS) {
                         if (bugEssence.current + spellLearner.currentSpell.manaGain < bugEssence.max) {
                             bugEssence.current += spellLearner.currentSpell.manaGain
                             BugMagic.CHANNEL.sendTo(MessageBugEssence(entityLiving.entityId, bugEssence.max, bugEssence.current), entityLiving as EntityPlayerMP)
-                        }
-                        else {
+                        } else {
                             bugEssence.current = bugEssence.max
                             BugMagic.CHANNEL.sendTo(MessageBugEssence(entityLiving.entityId, bugEssence.max, bugEssence.current), entityLiving as EntityPlayerMP)
                         }
@@ -71,16 +69,14 @@ class Wand(name: String) : Generic(name, CreativeTabs.TOOLS) {
                         if (spellCaster.castSpellMap[spellLearner.currentSpell]!! <= 0) {
                             spellLearner.currentSpell.uncast(entityLiving, stack)
                             spellCaster.castSpellMap.remove(spellLearner.currentSpell)
-                        }
-                        else {
+                        } else {
                             spellLearner.currentSpell.uncast(entityLiving, stack)
                             spellCaster.castSpellMap[spellLearner.currentSpell] = spellCaster.castSpellMap[spellLearner.currentSpell]!! - 1
                         }
                     }
 
                     return true
-                }
-                else {
+                } else {
                     if (spellLearner.currentSpell.uncastingParticle != null) {
                         entityLiving.world.spawnParticle(spellLearner.currentSpell.uncastingParticle!!,
                                 entityLiving.posX,
@@ -112,8 +108,7 @@ class Wand(name: String) : Generic(name, CreativeTabs.TOOLS) {
                         if (!spellCaster.castSpellMap.containsKey(spellLearner.currentSpell)) {
                             spellLearner.currentSpell.cast(entityLiving, stack)
                             spellCaster.castSpellMap[spellLearner.currentSpell] = 1
-                        }
-                        else if (spellCaster.castSpellMap[spellLearner.currentSpell]!! < spellLearner.currentSpell.maxCount) {
+                        } else if (spellCaster.castSpellMap[spellLearner.currentSpell]!! < spellLearner.currentSpell.maxCount) {
                             spellLearner.currentSpell.cast(entityLiving, stack)
                             spellCaster.castSpellMap[spellLearner.currentSpell] = spellCaster.castSpellMap[spellLearner.currentSpell]!! + 1
                         }
@@ -123,8 +118,7 @@ class Wand(name: String) : Generic(name, CreativeTabs.TOOLS) {
                         spellCaster.isCasting = false
 
                         BugMagic.CHANNEL.sendTo(MessageSpellCaster(entityLiving.entityId, spellCaster.isCasting, spellCaster.castingCurrent), entityLiving as EntityPlayerMP?)
-                    }
-                    else {
+                    } else {
                         if (spellLearner.currentSpell.finishingParticle != null) {
                             entityLiving.world.spawnParticle(spellLearner.currentSpell.finishingParticle!!,
                                     entityLiving.posX,
@@ -229,13 +223,13 @@ class Wand(name: String) : Generic(name, CreativeTabs.TOOLS) {
                                                 if (stack.tagCompound!!.getInteger(SPELL_INDEX) - 1 < 0)
                                                     spellLearner.spellList.lastIndex
                                                 else
-                                                    stack.tagCompound!!.getInteger(SPELL_INDEX) - 1].name} < "
+                                                    stack.tagCompound!!.getInteger(SPELL_INDEX) - 1].name} < " +
 
                                         // This spell
-                                        + "${TextFormatting.WHITE}${spellLearner.spellList[stack.tagCompound!!.getInteger(SPELL_INDEX)].name}"
+                                        "${TextFormatting.WHITE}${spellLearner.spellList[stack.tagCompound!!.getInteger(SPELL_INDEX)].name}" +
 
                                         // The next spell
-                                        + "${TextFormatting.GRAY} > ${spellLearner.spellList[
+                                        "${TextFormatting.GRAY} > ${spellLearner.spellList[
                                         if (stack.tagCompound!!.getInteger(SPELL_INDEX) + 1 > spellLearner.spellList.lastIndex)
                                             0
                                         else
@@ -248,8 +242,7 @@ class Wand(name: String) : Generic(name, CreativeTabs.TOOLS) {
                             }
                         }
                     }
-                }
-                else {
+                } else {
                     if (spellCaster != null && spellCaster.isCasting) {
                         spellCaster.castingCurrent++
                     }
@@ -286,8 +279,7 @@ class Wand(name: String) : Generic(name, CreativeTabs.TOOLS) {
                     val spellLearner = SpellLearner.isCapable(player)
 
                     spellLearner?.currentSpell?.castingTime ?: 0
-                }
-                else {
+                } else {
                     0
                 }
             }
@@ -306,8 +298,7 @@ class Wand(name: String) : Generic(name, CreativeTabs.TOOLS) {
         return if (spellCaster != null) {
             spellCaster.isCasting = true
             ActionResult(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn))
-        }
-        else {
+        } else {
             ActionResult(EnumActionResult.FAIL, playerIn.getHeldItem(handIn))
         }
     }

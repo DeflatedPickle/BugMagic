@@ -1,3 +1,5 @@
+/* Copyright (c) 2019 DeflatedPickle under the MIT license */
+
 package com.deflatedpickle.bugmagic.client
 
 import com.deflatedpickle.bugmagic.client.event.ForgeEventHandler

@@ -1,3 +1,5 @@
+/* Copyright (c) 2019 DeflatedPickle under the MIT license */
+
 package com.deflatedpickle.bugmagic.common.entity.ai
 
 import net.minecraft.entity.EntityLiving
@@ -17,11 +19,10 @@ class RemoveBlock(private val findBlock: FindBlock, private val entityIn: Entity
         findBlock.blockPos?.let {
             val breakSpeed = if (breakWith.getDestroySpeed(entityIn.world.getBlockState(it)) > 32f) {
                 breakWith.getDestroySpeed(entityIn.world.getBlockState(it))
-            }
-            else {
+            } else {
                 32f
             }
-            
+
             if (waitCurrent == breakSpeed) {
                 waitCurrent = 0f
 
@@ -29,8 +30,7 @@ class RemoveBlock(private val findBlock: FindBlock, private val entityIn: Entity
                 findBlock.blockPos = null
 
                 postBreak(entityIn)
-            }
-            else {
+            } else {
                 waitCurrent++
             }
         }

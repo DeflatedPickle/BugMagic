@@ -1,10 +1,12 @@
+/* Copyright (c) 2019 DeflatedPickle under the MIT license */
+
 package com.deflatedpickle.bugmagic.common.spell
 
 import com.deflatedpickle.bugmagic.api.ASpell
+import com.deflatedpickle.bugmagic.common.entity.mob.EssenceCollector as EssenceCollectorMob
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.world.WorldServer
-import com.deflatedpickle.bugmagic.common.entity.mob.EssenceCollector as EssenceCollectorMob
 
 class EssenceCollector : ASpell() {
     override fun getName(): String = "Essence Collector"
