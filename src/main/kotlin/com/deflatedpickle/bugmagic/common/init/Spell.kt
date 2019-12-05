@@ -4,6 +4,7 @@ package com.deflatedpickle.bugmagic.common.init
 
 import com.deflatedpickle.bugmagic.Reference
 import com.deflatedpickle.bugmagic.api.ASpell
+import com.deflatedpickle.bugmagic.common.spell.AutoHoe
 import com.deflatedpickle.bugmagic.common.spell.Debug
 import com.deflatedpickle.bugmagic.common.spell.EssenceCollector
 import com.deflatedpickle.bugmagic.common.spell.ItemCollector
@@ -13,12 +14,16 @@ import net.minecraftforge.registries.IForgeRegistry
 import net.minecraftforge.registries.RegistryBuilder
 
 object Spell {
-    val registry: IForgeRegistry<ASpell> = RegistryBuilder<ASpell>().setName(ResourceLocation(Reference.MOD_ID, "spell_registry")).setType(ASpell::class.java).create()
+    val registry: IForgeRegistry<ASpell> = RegistryBuilder<ASpell>().setName(
+            ResourceLocation(Reference.MOD_ID,
+                    "spell_registry")
+    ).setType(ASpell::class.java).create()
 
     val DEBUG = mutableListOf<Debug>()
 
     val ITEM_COLLECTOR = ItemCollector()
     val ESSENCE_COLLECTOR = EssenceCollector()
+    val AUTO_HOE = AutoHoe()
 
     init {
         if (Launch.blackboard["fml.deobfuscatedEnvironment"] as Boolean) {
@@ -28,5 +33,6 @@ object Spell {
 
         registry.register(ITEM_COLLECTOR)
         registry.register(ESSENCE_COLLECTOR)
+        registry.register(AUTO_HOE)
     }
 }

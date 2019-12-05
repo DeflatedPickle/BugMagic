@@ -45,7 +45,7 @@ class ItemCollector(worldIn: World) : EntityCastable(worldIn) {
     override fun initEntityAI() {
         val findItem = FindItem(this)
 
-        this.tasks.addTask(1, FindClosestTileEntity(this, {
+        this.tasks.addTask(1, FindClosestTileEntity(this, dataInventoryPosition, {
             it is IInventory
         }, {
             if (it != null) {

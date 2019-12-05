@@ -6,7 +6,6 @@ import com.deflatedpickle.bugmagic.api.ASpell
 import com.deflatedpickle.bugmagic.common.entity.mob.EssenceCollector as EssenceCollectorMob
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
-import net.minecraft.world.WorldServer
 
 class EssenceCollector : ASpell() {
     override fun getName(): String = "Essence Collector"
@@ -20,6 +19,6 @@ class EssenceCollector : ASpell() {
     }
 
     override fun uncast(entityPlayer: EntityPlayer, itemWand: ItemStack) {
-        this.killAllEntities(itemWand, entityPlayer.world as WorldServer)
+        this.killAllEntities(EssenceCollectorMob::class.java, entityPlayer, itemWand)
     }
 }

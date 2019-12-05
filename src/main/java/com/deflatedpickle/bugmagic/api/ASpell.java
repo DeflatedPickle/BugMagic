@@ -312,11 +312,12 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
     /**
      * Kills all entities that are currently summoned
      *
+     * @param entityClass  The class of the entity
+     * @param entityPlayer The player
      * @param wand  The wand
-     * @param world The world
      * @return A list of killed entities
      */
-    public List<EntityTameable> killAllEntities(ItemStack wand, WorldServer world) {
+    public <T extends EntityTameable> List<EntityTameable> killAllEntities(Class<T> entityClass, EntityPlayer entityPlayer, ItemStack wand) {
         assert wand.getTagCompound() != null;
         NBTTagList uuidList = wand.getTagCompound().getTagList("uuidList", Constants.NBT.TAG_COMPOUND);
 
@@ -325,9 +326,9 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
         EntityTameable entity;
         for (int i = 0; i < uuidList.tagCount(); i++) {
             UUID uuid = NBTUtil.getUUIDFromTag(uuidList.getCompoundTagAt(i));
-            entity = (EntityTameable) world.getEntityFromUuid(uuid);
+            entity = (EntityTameable) ((WorldServer) entityPlayer.world).getEntityFromUuid(uuid);
 
-            if (entity != null) {
+            if (entityClass.isInstance(entity) && entity.isOwner(entityPlayer)) {
                 list.add(entity);
                 entity.setDead();
             }

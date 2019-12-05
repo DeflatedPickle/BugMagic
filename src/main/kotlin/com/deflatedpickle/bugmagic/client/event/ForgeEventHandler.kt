@@ -27,7 +27,7 @@ class ForgeEventHandler {
             if (this.hasCapability(BugEssence.Provider.CAPABILITY, null)) {
                 this.getCapability(BugEssence.Provider.CAPABILITY, null).also {
                     Minecraft.getMinecraft().fontRenderer.drawString(
-                            "${TextFormatting.WHITE}Bug Essence: ${it!!.current}/${it!!.max}",
+                            "${TextFormatting.WHITE}Bug Essence: ${it!!.current}/${it.max}",
                             2f, y, 0, true
                     )
                 }

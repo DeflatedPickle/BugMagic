@@ -5,6 +5,7 @@ package com.deflatedpickle.bugmagic.common.init
 import com.deflatedpickle.bugmagic.BugMagic
 import com.deflatedpickle.bugmagic.Reference
 import com.deflatedpickle.bugmagic.api.entity.mob.EntityCastable
+import com.deflatedpickle.bugmagic.common.entity.mob.AutoHoe
 import com.deflatedpickle.bugmagic.common.entity.mob.EssenceCollector
 import com.deflatedpickle.bugmagic.common.entity.mob.ItemCollector
 import kotlin.reflect.KClass
@@ -17,6 +18,7 @@ object Entities {
     init {
         register("item_collector", ItemCollector::class, Pair(0x40362A, 0xFFEB66))
         register("essence_collector", EssenceCollector::class, Pair(0x40362A, 0xFFEB66))
+        register("auto_hoe", AutoHoe::class, Pair(0x40362A, 0xFFEB66))
     }
 
     fun register(name: String, clazz: KClass<out EntityCastable>, eggColour: Pair<Int, Int>) {

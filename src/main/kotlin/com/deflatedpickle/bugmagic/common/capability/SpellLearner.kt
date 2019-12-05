@@ -22,12 +22,13 @@ import net.minecraftforge.fml.common.registry.GameRegistry
 object SpellLearner {
     val NAME = ResourceLocation(Reference.MOD_ID, "spell_learner")
 
-    fun isCapable(entity: EntityLivingBase): ISpellLearner? = entity.getCapability(Provider.CAPABILITY!!, null)
+    fun isCapable(entity: EntityLivingBase): ISpellLearner? = entity.getCapability(Provider.CAPABILITY, null)
 
     class Implementation : ISpellLearner {
         private val spellList = mutableListOf(
                 Spell.ITEM_COLLECTOR,
-                Spell.ESSENCE_COLLECTOR
+                Spell.ESSENCE_COLLECTOR,
+                Spell.AUTO_HOE
         )
         private var currentIndex = 0
 

@@ -2,25 +2,26 @@
 
 package com.deflatedpickle.bugmagic.common.entity.ai
 
-import com.deflatedpickle.bugmagic.common.entity.mob.ItemCollector
 import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.ai.EntityAIBase
+import net.minecraft.network.datasync.DataParameter
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3i
 
-class FindClosestTileEntity(private val entityIn: EntityLiving, private val filter: (TileEntity) -> Boolean, private val withTileEntity: (TileEntity?) -> Unit) : EntityAIBase() {
+class FindClosestTileEntity(private val entityIn: EntityLiving, private val key: DataParameter<*>, private val filter: (TileEntity) -> Boolean, private val withTileEntity: (TileEntity?) -> Unit) : EntityAIBase() {
     override fun shouldExecute(): Boolean {
-        return entityIn.dataManager.get(ItemCollector.dataInventoryPosition) == BlockPos.ORIGIN ||
-                entityIn.world.getTileEntity(entityIn.dataManager.get(ItemCollector.dataInventoryPosition)) == null
+        return entityIn.dataManager.get(key) == BlockPos.ORIGIN ||
+                entityIn.world.getTileEntity(entityIn.dataManager.get(key) as BlockPos) == null
     }
 
     override fun updateTask() {
+        println("$entityIn FindClosestTileEntity")
         var closest: TileEntity? = null
         for (tileEntity in entityIn.world.loadedTileEntityList.filter {
             if (closest != null) {
                 with(closest!!.pos) {
-                    it.pos.getDistance(x, y, z) > 10
+                    it.pos.getDistance(x, y, z) > 10.0
                 }
             }
             filter(it)
