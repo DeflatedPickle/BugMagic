@@ -2,6 +2,7 @@
 
 package com.deflatedpickle.bugmagic.common.entity.ai
 
+import com.deflatedpickle.bugmagic.BugMagic
 import com.deflatedpickle.bugmagic.common.entity.mob.ItemCollector
 import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.ai.EntityAIBase
@@ -10,6 +11,7 @@ import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.ItemHandlerHelper
 
+// TODO: Make this not dependant on ItemCollector
 class DeliverToInventory(private val entityIn: EntityLiving) : EntityAIBase() {
     override fun shouldExecute(): Boolean {
         val blockPos = this.entityIn.dataManager.get(ItemCollector.dataInventoryPosition)
@@ -21,6 +23,7 @@ class DeliverToInventory(private val entityIn: EntityLiving) : EntityAIBase() {
     }
 
     override fun updateTask() {
+        BugMagic.logger.debug("$entityIn delivered ${this.entityIn.dataManager.get(ItemCollector.dataInventoryPosition)} to ${this.entityIn.dataManager.get(ItemCollector.dataInventoryPosition)}")
         val tileEntity = this.entityIn.world.getTileEntity(this.entityIn.dataManager.get(ItemCollector.dataInventoryPosition))
 
         if (tileEntity != null) {

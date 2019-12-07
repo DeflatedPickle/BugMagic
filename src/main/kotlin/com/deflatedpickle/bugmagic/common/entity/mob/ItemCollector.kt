@@ -7,8 +7,8 @@ import com.deflatedpickle.bugmagic.common.entity.ai.CollectItem
 import com.deflatedpickle.bugmagic.common.entity.ai.DeliverToInventory
 import com.deflatedpickle.bugmagic.common.entity.ai.FindClosestTileEntity
 import com.deflatedpickle.bugmagic.common.entity.ai.FindItem
-import com.deflatedpickle.bugmagic.common.entity.ai.WalkToInventory
 import com.deflatedpickle.bugmagic.common.entity.ai.WalkToItem
+import com.deflatedpickle.bugmagic.common.entity.ai.WalkToTileEntity
 import com.deflatedpickle.bugmagic.common.item.Wand
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.IInventory
@@ -53,7 +53,7 @@ class ItemCollector(worldIn: World) : EntityCastable(worldIn) {
             }
         }))
         this.tasks.addTask(1, CollectItem(findItem, this))
-        this.tasks.addTask(2, WalkToInventory(this))
+        this.tasks.addTask(2, WalkToTileEntity(this, { !this.dataManager.get(dataItemStack).isEmpty }, dataInventoryPosition))
         this.tasks.addTask(3, DeliverToInventory(this))
         this.tasks.addTask(4, findItem)
         this.tasks.addTask(4, WalkToItem(findItem, this))

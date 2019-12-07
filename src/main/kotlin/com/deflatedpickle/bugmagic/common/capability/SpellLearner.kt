@@ -28,7 +28,8 @@ object SpellLearner {
         private val spellList = mutableListOf(
                 Spell.ITEM_COLLECTOR,
                 Spell.ESSENCE_COLLECTOR,
-                Spell.AUTO_HOE
+                Spell.AUTO_HOE,
+                Spell.AUTO_PLANTER
         )
         private var currentIndex = 0
 

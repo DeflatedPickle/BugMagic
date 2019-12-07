@@ -13,6 +13,7 @@ class EssenceCollector : ASpell() {
     override fun getCastCount(): Int = 2
     override fun getMaxCount(): Int = 2
     override fun getTier(): Tier = Tier.RARE
+    override fun getCult(): Cult = Cult.APOIDEA
 
     override fun cast(entityPlayer: EntityPlayer, itemWand: ItemStack) {
         this.summonEntity(EssenceCollectorMob::class.java, entityPlayer, itemWand)

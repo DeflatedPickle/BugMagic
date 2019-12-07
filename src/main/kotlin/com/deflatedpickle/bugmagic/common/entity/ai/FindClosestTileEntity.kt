@@ -16,7 +16,6 @@ class FindClosestTileEntity(private val entityIn: EntityLiving, private val key:
     }
 
     override fun updateTask() {
-        println("$entityIn FindClosestTileEntity")
         var closest: TileEntity? = null
         for (tileEntity in entityIn.world.loadedTileEntityList.filter {
             if (closest != null) {

@@ -6,7 +6,7 @@ import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.ai.EntityAIBase
 import net.minecraft.pathfinding.Path
 
-class WalkToBlock(private val findBlock: FindBlock, private val entityIn: EntityLiving) : EntityAIBase() {
+class WalkToBlock(private val findBlock: FindBlock, private val entityIn: EntityLiving, private val check: () -> Boolean) : EntityAIBase() {
     var path: Path? = null
 
     override fun shouldExecute(): Boolean {
@@ -14,11 +14,11 @@ class WalkToBlock(private val findBlock: FindBlock, private val entityIn: Entity
 
         return blockPos != null &&
                 !entityIn.world.isAirBlock(blockPos) &&
-                entityIn.position.getDistance(blockPos.x, blockPos.y, blockPos.z) > 1.0
+                entityIn.position.getDistance(blockPos.x, blockPos.y, blockPos.z) > 1.0 &&
+                this.check()
     }
 
     override fun updateTask() {
-        println("$entityIn WalkToBlock")
         val blockPos = findBlock.blockPos
 
         blockPos?.let {

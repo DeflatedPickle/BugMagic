@@ -7,6 +7,7 @@ import com.deflatedpickle.bugmagic.common.entity.ai.FindBlock
 import com.deflatedpickle.bugmagic.common.entity.ai.WaitWithBlock
 import com.deflatedpickle.bugmagic.common.entity.ai.WalkToBlock
 import java.util.concurrent.ThreadLocalRandom
+import kotlin.math.min
 import net.minecraft.block.BlockFlower
 import net.minecraft.entity.EntityLiving
 import net.minecraft.network.datasync.DataParameter
@@ -32,19 +33,27 @@ class EssenceCollector(worldIn: World) : EntityCastable(worldIn) {
     }
 
     override fun initEntityAI() {
-        val findBlock = FindBlock(this, { !this.world.isAirBlock(this.position) }, { this.position }, Vec3i(15, 7, 15), { entityIn: EntityLiving, blockPos: BlockPos ->
-            entityIn.world.getBlockState(blockPos).block is BlockFlower
-        }) {}
+        val findBlock = FindBlock(entityIn = this,
+                check = { blockPos: BlockPos, vec3i: Vec3i ->
+                    !this.world.isAirBlock(this.position)
+                },
+                origin = { this.position },
+                radius = Vec3i(15, 7, 15),
+                findFunc = { entityIn: EntityLiving, blockPos: BlockPos ->
+                    entityIn.world.getBlockState(blockPos).block is BlockFlower
+                }) {}
 
         this.tasks.addTask(1, findBlock)
-        this.tasks.addTask(2, WalkToBlock(findBlock, this))
+        this.tasks.addTask(2, WalkToBlock(findBlock, this) { dataManager.get(dataEssence) < 100 })
         this.tasks.addTask(3, WaitWithBlock(findBlock, this,
                 { entityLiving: EntityLiving, blockPos: BlockPos -> true },
                 32) { blockPosIn, entityIn ->
             entityIn.world.setBlockToAir(blockPosIn)
             findBlock.blockPos = null
 
-            entityIn.dataManager.set(dataEssence, entityIn.dataManager.get(dataEssence) + ThreadLocalRandom.current().nextInt(18, 34))
+            entityIn.dataManager.set(dataEssence,
+                    min(entityIn.dataManager.get(dataEssence) +
+                            ThreadLocalRandom.current().nextInt(18, 34), 100f))
         })
     }
 

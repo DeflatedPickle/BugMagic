@@ -2,6 +2,7 @@
 
 package com.deflatedpickle.bugmagic.common.entity.ai
 
+import com.deflatedpickle.bugmagic.BugMagic
 import com.deflatedpickle.bugmagic.common.entity.mob.ItemCollector
 import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.ai.EntityAIBase
@@ -21,5 +22,6 @@ class FindItem(private val entityIn: EntityLiving) : EntityAIBase() {
                         .add(0.5, 0.0, 0.5))
                         .grow(5.0),
                 this.entityIn) as EntityItem?
+        entity?.let { BugMagic.logger.debug("$entityIn found $entity") }
     }
 }

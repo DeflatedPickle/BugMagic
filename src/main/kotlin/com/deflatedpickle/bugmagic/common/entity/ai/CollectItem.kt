@@ -2,6 +2,7 @@
 
 package com.deflatedpickle.bugmagic.common.entity.ai
 
+import com.deflatedpickle.bugmagic.BugMagic
 import com.deflatedpickle.bugmagic.common.entity.mob.ItemCollector
 import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.ai.EntityAIBase
@@ -13,6 +14,7 @@ class CollectItem(private val findItem: FindItem, private val entityIn: EntityLi
     }
 
     override fun updateTask() {
+        BugMagic.logger.debug("$entityIn picked up $findItem")
         val item = findItem.entity
 
         if (item != null) {

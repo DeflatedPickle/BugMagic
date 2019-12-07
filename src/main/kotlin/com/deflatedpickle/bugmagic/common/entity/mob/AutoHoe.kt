@@ -44,7 +44,14 @@ class AutoHoe(worldIn: World) : EntityCastable(worldIn) {
 
         val findBlock = FindBlock(
                 entityIn = this,
-                state = { this.world.getBlockState(it.offset(EnumFacing.DOWN)).block != Blocks.FARMLAND },
+                check = { blockPos: BlockPos, vec3i: Vec3i ->
+                    BlockPos.getAllInBox(
+                            blockPos.x - vec3i.x, blockPos.y - vec3i.y, blockPos.z - vec3i.z,
+                            blockPos.x + vec3i.x, blockPos.y + vec3i.y, blockPos.z + vec3i.z
+                    ).find {
+                        this.world.getBlockState(it).block != Blocks.FARMLAND
+                    } != null
+                },
                 origin = { this.dataManager.get(dataHomePosition) },
                 radius = Vec3i(3, 1, 3),
                 findFunc = { entityIn: EntityLiving, blockPos: BlockPos ->
@@ -56,7 +63,7 @@ class AutoHoe(worldIn: World) : EntityCastable(worldIn) {
         ) {}
 
         this.tasks.addTask(1, findBlock)
-        this.tasks.addTask(2, WalkToBlock(findBlock, this))
+        this.tasks.addTask(2, WalkToBlock(findBlock, this) { true })
         this.tasks.addTask(3, WaitWithBlock(findBlock = findBlock, entityIn = this,
                 executeCheck = { entityLiving, blockPos ->
                     !entityLiving.world.isAirBlock(blockPos) &&
@@ -67,6 +74,7 @@ class AutoHoe(worldIn: World) : EntityCastable(worldIn) {
             if (!entityLiving.world.isAirBlock(blockPos)) {
                 entityLiving.world.setBlockState(blockPos, Blocks.FARMLAND.defaultState)
                 findBlock.blockPos = null
+                FindBlock.map[entityLiving.world]!!.remove(blockPos)
             }
         })
     }
