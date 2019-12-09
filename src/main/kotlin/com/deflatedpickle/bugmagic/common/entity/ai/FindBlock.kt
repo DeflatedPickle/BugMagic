@@ -10,7 +10,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3i
 import net.minecraft.world.World
 
-class FindBlock(private val entityIn: EntityLiving, private val check: (BlockPos, Vec3i) -> Boolean, private val origin: () -> BlockPos, private val radius: Vec3i, private val findFunc: (EntityLiving, BlockPos) -> Boolean, private val afterFound: (BlockPos) -> Unit) : EntityAIBase() {
+class FindBlock(private val entityIn: EntityLiving, private val check: (BlockPos, Vec3i, BlockPos?) -> Boolean, private val origin: () -> BlockPos, private val radius: Vec3i, private val findFunc: (EntityLiving, BlockPos) -> Boolean, private val afterFound: (BlockPos) -> Unit) : EntityAIBase() {
     companion object {
         val map = WeakHashMap<World, MutableSet<BlockPos>>()
     }
@@ -18,7 +18,7 @@ class FindBlock(private val entityIn: EntityLiving, private val check: (BlockPos
     var blockPos: BlockPos? = null
 
     override fun shouldExecute(): Boolean {
-        return blockPos == null && this.check(this.origin(), this.radius)
+        return blockPos == null && this.check(this.origin(), this.radius, this.blockPos)
     }
 
     override fun updateTask() {

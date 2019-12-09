@@ -11,7 +11,7 @@ import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.ItemHandlerHelper
 
-// TODO: Make this not dependant on ItemCollector
+// TODO: Make this not dependent on ItemCollector
 class DeliverToInventory(private val entityIn: EntityLiving) : EntityAIBase() {
     override fun shouldExecute(): Boolean {
         val blockPos = this.entityIn.dataManager.get(ItemCollector.dataInventoryPosition)

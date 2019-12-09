@@ -43,6 +43,16 @@ class ItemCollector(worldIn: World) : EntityCastable(worldIn) {
     }
 
     override fun initEntityAI() {
+        /*
+            AI Steps:
+            - Finds an inventory
+            - Collects an item (if near one)
+            - Walks to the inventory (if it found one)
+            - Delivers the item to the inventory (if it found one)
+            - Looks for an item
+            - Walks to an item (if it found one)
+         */
+
         val findItem = FindItem(this)
 
         this.tasks.addTask(1, FindClosestTileEntity(this, dataInventoryPosition, {

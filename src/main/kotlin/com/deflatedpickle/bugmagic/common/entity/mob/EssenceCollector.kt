@@ -33,8 +33,15 @@ class EssenceCollector(worldIn: World) : EntityCastable(worldIn) {
     }
 
     override fun initEntityAI() {
+        /*
+            AI Steps:
+            - Finds a flower
+            - Walks to the flower
+            - Eats the flower
+         */
+
         val findBlock = FindBlock(entityIn = this,
-                check = { blockPos: BlockPos, vec3i: Vec3i ->
+                check = { blockPos: BlockPos, vec3i: Vec3i, _: BlockPos? ->
                     !this.world.isAirBlock(this.position)
                 },
                 origin = { this.position },

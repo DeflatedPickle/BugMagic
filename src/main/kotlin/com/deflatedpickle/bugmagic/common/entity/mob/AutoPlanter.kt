@@ -58,7 +58,7 @@ class AutoPlanter(worldIn: World) : EntityCastable(worldIn) {
         }))
 
         val findBlock = FindBlock(entityIn = this,
-                check = { blockPos: BlockPos, vec3i: Vec3i ->
+                check = { blockPos: BlockPos, vec3i: Vec3i, _: BlockPos? ->
                     BlockPos.getAllInBox(
                             blockPos.x - vec3i.x, blockPos.y - vec3i.y, blockPos.z - vec3i.z,
                             blockPos.x + vec3i.x, blockPos.y + vec3i.y, blockPos.z + vec3i.z

@@ -29,7 +29,8 @@ object SpellLearner {
                 Spell.ITEM_COLLECTOR,
                 Spell.ESSENCE_COLLECTOR,
                 Spell.AUTO_HOE,
-                Spell.AUTO_PLANTER
+                Spell.AUTO_PLANTER,
+                Spell.AUTO_FERTILIZER
         )
         private var currentIndex = 0
 

@@ -7,6 +7,9 @@ import com.deflatedpickle.bugmagic.common.entity.ai.FindBlock
 import com.deflatedpickle.bugmagic.common.entity.ai.FindClosestTileEntity
 import com.deflatedpickle.bugmagic.common.entity.ai.WaitWithBlock
 import com.deflatedpickle.bugmagic.common.entity.ai.WalkToBlock
+import net.minecraft.block.BlockCrops
+import net.minecraft.block.IGrowable
+import net.minecraft.block.properties.IProperty
 import net.minecraft.entity.EntityLiving
 import net.minecraft.init.Blocks
 import net.minecraft.inventory.IInventory
@@ -17,10 +20,15 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3i
 import net.minecraft.world.World
+import net.minecraftforge.common.IPlantable
+import java.util.*
+import java.util.concurrent.ThreadLocalRandom
+import kotlin.math.min
 
-class AutoHoe(worldIn: World) : EntityCastable(worldIn) {
+class AutoFertilizer(worldIn: World) : EntityCastable(worldIn) {
     companion object {
-        val dataHomePosition: DataParameter<BlockPos> = EntityDataManager.createKey(AutoHoe::class.java, DataSerializers.BLOCK_POS)
+        val dataHomePosition: DataParameter<BlockPos> = EntityDataManager.createKey(AutoFertilizer::class.java, DataSerializers.BLOCK_POS)
+        val random = Random()
     }
 
     init {
@@ -37,9 +45,10 @@ class AutoHoe(worldIn: World) : EntityCastable(worldIn) {
         /*
             AI Steps:
             - Finds an inventory
-            - Finds a grass, dirt or path block
+            - Finds a plant-able block
             - Walks to the block
-            - Tills the soil
+            - Grow the plant
+            - Wait 40-60 seconds
          */
 
         this.tasks.addTask(1, FindClosestTileEntity(this, dataHomePosition, {
@@ -57,16 +66,17 @@ class AutoHoe(worldIn: World) : EntityCastable(worldIn) {
                             blockPos.x - vec3i.x, blockPos.y - vec3i.y, blockPos.z - vec3i.z,
                             blockPos.x + vec3i.x, blockPos.y + vec3i.y, blockPos.z + vec3i.z
                     ).find {
-                        this.world.getBlockState(it).block != Blocks.FARMLAND
+                        this.world.getBlockState(it).block is IGrowable
                     } != null
                 },
                 origin = { this.dataManager.get(dataHomePosition) },
                 radius = Vec3i(3, 1, 3),
                 findFunc = { entityIn: EntityLiving, blockPos: BlockPos ->
-                    val block = entityIn.world.getBlockState(blockPos).block
-                    entityIn.world.isAirBlock(blockPos.offset(EnumFacing.UP)) && (block == Blocks.GRASS ||
-                            block == Blocks.GRASS_PATH ||
-                            block == Blocks.DIRT)
+                    val state = entityIn.world.getBlockState(blockPos)
+                    val block = state.block
+                    entityIn.world.isAirBlock(blockPos.offset(EnumFacing.UP)) &&
+                            block is IGrowable &&
+                            (block as IGrowable).canGrow(entityIn.world, blockPos, state, false)
                 }
         ) {}
 
@@ -75,12 +85,13 @@ class AutoHoe(worldIn: World) : EntityCastable(worldIn) {
         this.tasks.addTask(3, WaitWithBlock(findBlock = findBlock, entityIn = this,
                 executeCheck = { entityLiving, blockPos ->
                     !entityLiving.world.isAirBlock(blockPos) &&
-                            entityLiving.position.offset(EnumFacing.DOWN) == blockPos &&
-                            entityLiving.world.getBlockState(blockPos).block != Blocks.FARMLAND
+                            entityLiving.world.getBlockState(blockPos).block is IGrowable
                 },
-                waitFor = 20) { blockPos: BlockPos, entityLiving: EntityLiving ->
+                waitFor = ThreadLocalRandom.current().nextInt(40, 60)) { blockPos: BlockPos, entityLiving: EntityLiving ->
             if (!entityLiving.world.isAirBlock(blockPos)) {
-                entityLiving.world.setBlockState(blockPos, Blocks.FARMLAND.defaultState)
+                val state = entityLiving.world.getBlockState(blockPos)
+                val block = state.block
+                (block as IGrowable).grow(entityLiving.world, random, blockPos, state)
                 findBlock.blockPos = null
                 FindBlock.map[entityLiving.world]!!.remove(blockPos)
             }
@@ -88,6 +99,6 @@ class AutoHoe(worldIn: World) : EntityCastable(worldIn) {
     }
 
     override fun getAIMoveSpeed(): Float {
-        return 0.32f
+        return 0.4f
     }
 }
