@@ -6,6 +6,7 @@ import com.deflatedpickle.bugmagic.BugMagic
 import com.deflatedpickle.bugmagic.Reference
 import com.deflatedpickle.bugmagic.api.entity.mob.EntityCastable
 import com.deflatedpickle.bugmagic.common.entity.mob.AutoFertilizer
+import com.deflatedpickle.bugmagic.common.entity.mob.AutoHarvester
 import com.deflatedpickle.bugmagic.common.entity.mob.AutoHoe
 import com.deflatedpickle.bugmagic.common.entity.mob.AutoPlanter
 import com.deflatedpickle.bugmagic.common.entity.mob.EssenceCollector
@@ -23,6 +24,7 @@ object Entities {
         register("auto_hoe", AutoHoe::class, Pair(0x40362A, 0xFFEB66))
         register("auto_planter", AutoPlanter::class, Pair(0x40362A, 0xFFEB66))
         register("auto_fertilizer", AutoFertilizer::class, Pair(0x40362A, 0xFFEB66))
+        register("auto_harvester", AutoHarvester::class, Pair(0x40362A, 0xFFEB66))
     }
 
     fun register(name: String, clazz: KClass<out EntityCastable>, eggColour: Pair<Int, Int>) {

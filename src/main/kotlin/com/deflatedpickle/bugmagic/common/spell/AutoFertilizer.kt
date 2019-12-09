@@ -10,7 +10,7 @@ import com.deflatedpickle.bugmagic.common.entity.mob.AutoHoe as AutoHoeMob
 
 class AutoFertilizer : ASpell() {
     override fun getName(): String = "Auto Fertilizer"
-    override fun getManaLoss(): Int = 30
+    override fun getManaLoss(): Int = 55
     override fun getCastCount(): Int = 1
     override fun getMaxCount(): Int = 4
     override fun getTier(): Tier = Tier.UNCOMMON

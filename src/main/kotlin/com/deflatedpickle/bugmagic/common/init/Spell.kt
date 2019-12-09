@@ -5,6 +5,7 @@ package com.deflatedpickle.bugmagic.common.init
 import com.deflatedpickle.bugmagic.Reference
 import com.deflatedpickle.bugmagic.api.ASpell
 import com.deflatedpickle.bugmagic.common.spell.AutoFertilizer
+import com.deflatedpickle.bugmagic.common.spell.AutoHarvester
 import com.deflatedpickle.bugmagic.common.spell.AutoHoe
 import com.deflatedpickle.bugmagic.common.spell.AutoPlanter
 import com.deflatedpickle.bugmagic.common.spell.Debug
@@ -28,6 +29,7 @@ object Spell {
     val AUTO_HOE = AutoHoe()
     val AUTO_PLANTER = AutoPlanter()
     val AUTO_FERTILIZER = AutoFertilizer()
+    val AUTO_HARVESTER = AutoHarvester()
 
     init {
         if (Launch.blackboard["fml.deobfuscatedEnvironment"] as Boolean) {
@@ -40,5 +42,6 @@ object Spell {
         registry.register(AUTO_HOE)
         registry.register(AUTO_PLANTER)
         registry.register(AUTO_FERTILIZER)
+        registry.register(AUTO_HARVESTER)
     }
 }

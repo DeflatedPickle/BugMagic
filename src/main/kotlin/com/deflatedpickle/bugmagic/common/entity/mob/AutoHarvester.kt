@@ -13,12 +13,10 @@ import net.minecraft.block.properties.IProperty
 import net.minecraft.entity.EntityLiving
 import net.minecraft.init.Blocks
 import net.minecraft.inventory.IInventory
-import net.minecraft.item.ItemStack
 import net.minecraft.network.datasync.DataParameter
 import net.minecraft.network.datasync.DataSerializers
 import net.minecraft.network.datasync.EntityDataManager
 import net.minecraft.util.EnumFacing
-import net.minecraft.util.NonNullList
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3i
 import net.minecraft.world.World
@@ -27,9 +25,10 @@ import java.util.*
 import java.util.concurrent.ThreadLocalRandom
 import kotlin.math.min
 
-class AutoFertilizer(worldIn: World) : EntityCastable(worldIn) {
+class AutoHarvester(worldIn: World) : EntityCastable(worldIn) {
     companion object {
-        val dataHomePosition: DataParameter<BlockPos> = EntityDataManager.createKey(AutoFertilizer::class.java, DataSerializers.BLOCK_POS)
+        val dataHomePosition: DataParameter<BlockPos> = EntityDataManager.createKey(AutoHarvester::class.java, DataSerializers.BLOCK_POS)
+        val random = Random()
     }
 
     init {
@@ -48,8 +47,8 @@ class AutoFertilizer(worldIn: World) : EntityCastable(worldIn) {
             - Finds an inventory
             - Finds a plant-able block
             - Walks to the block
-            - Grow the plant
-            - Wait 40-60 seconds
+            - Harvest the plant
+            - Wait 10-20 seconds
          */
 
         this.tasks.addTask(1, FindClosestTileEntity(this, dataHomePosition, {
@@ -77,7 +76,7 @@ class AutoFertilizer(worldIn: World) : EntityCastable(worldIn) {
                     val block = state.block
                     entityIn.world.isAirBlock(blockPos.offset(EnumFacing.UP)) &&
                             block is IGrowable &&
-                            (block as IGrowable).canGrow(entityIn.world, blockPos, state, false)
+                            !(block as IGrowable).canGrow(entityIn.world, blockPos, state, false)
                 }
         ) {}
 
@@ -88,11 +87,11 @@ class AutoFertilizer(worldIn: World) : EntityCastable(worldIn) {
                     !entityLiving.world.isAirBlock(blockPos) &&
                             entityLiving.world.getBlockState(blockPos).block is IGrowable
                 },
-                waitFor = ThreadLocalRandom.current().nextInt(240, 360)) { blockPos: BlockPos, entityLiving: EntityLiving ->
+                waitFor = ThreadLocalRandom.current().nextInt(10, 20)) { blockPos: BlockPos, entityLiving: EntityLiving ->
             if (!entityLiving.world.isAirBlock(blockPos)) {
                 val state = entityLiving.world.getBlockState(blockPos)
                 val block = state.block
-                (block as IGrowable).grow(entityLiving.world, AutoHarvester.random, blockPos, state)
+                entityLiving.world.destroyBlock(blockPos, true)
                 findBlock.blockPos = null
                 FindBlock.map[entityLiving.world]!!.remove(blockPos)
             }
@@ -100,6 +99,6 @@ class AutoFertilizer(worldIn: World) : EntityCastable(worldIn) {
     }
 
     override fun getAIMoveSpeed(): Float {
-        return 0.4f
+        return 0.26f
     }
 }

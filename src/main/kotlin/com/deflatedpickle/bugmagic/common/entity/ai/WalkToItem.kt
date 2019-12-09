@@ -5,7 +5,11 @@ package com.deflatedpickle.bugmagic.common.entity.ai
 import com.deflatedpickle.bugmagic.common.entity.mob.ItemCollector
 import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.ai.EntityAIBase
+import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.passive.EntityTameable
+import net.minecraft.init.Blocks
+import net.minecraft.init.Items
+import net.minecraft.item.ItemStack
 import net.minecraft.util.math.BlockPos
 
 class WalkToItem(private val findItem: FindItem, private val entityIn: EntityLiving) : EntityAIBase() {
@@ -16,7 +20,8 @@ class WalkToItem(private val findItem: FindItem, private val entityIn: EntityLiv
             }
         }
 
-        if (entityIn.dataManager.get(ItemCollector.dataItemStack).isEmpty &&
+        val stack = entityIn.dataManager.get(ItemCollector.dataItemStack)
+        if ((stack.isEmpty || stack == ItemStack.EMPTY || stack.item == Items.AIR || stack.item == Blocks.AIR) &&
                 entityIn.dataManager.get(ItemCollector.dataInventoryPosition) != BlockPos.ORIGIN &&
                 entityIn.world.getTileEntity(entityIn.dataManager.get(ItemCollector.dataInventoryPosition)) != null) {
             return true
@@ -25,13 +30,14 @@ class WalkToItem(private val findItem: FindItem, private val entityIn: EntityLiv
     }
 
     override fun updateTask() {
-        val item = findItem.entity
+        var item: EntityItem? = null
+        findItem.entity?.let {
+            item = it
 
-        if (item != null) {
-            val path = this.entityIn.navigator.getPathToEntityLiving(item)
+            val path = this.entityIn.navigator.getPathToEntityLiving(it)
 
-            if (path != null) {
-                this.entityIn.navigator.setPath(path, entityIn.aiMoveSpeed.toDouble())
+            path?.let { oldTownRoad ->
+                this.entityIn.navigator.setPath(oldTownRoad, entityIn.aiMoveSpeed.toDouble())
             }
         }
     }

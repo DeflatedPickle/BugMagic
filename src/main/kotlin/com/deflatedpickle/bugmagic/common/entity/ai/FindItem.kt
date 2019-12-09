@@ -7,21 +7,29 @@ import com.deflatedpickle.bugmagic.common.entity.mob.ItemCollector
 import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.ai.EntityAIBase
 import net.minecraft.entity.item.EntityItem
+import net.minecraft.init.Blocks
+import net.minecraft.init.Items
 import net.minecraft.util.math.AxisAlignedBB
 
 class FindItem(private val entityIn: EntityLiving) : EntityAIBase() {
     var entity: EntityItem? = null
 
     override fun shouldExecute(): Boolean {
-        return entity == null || entity!!.onGround || entity!!.item.count == 1
+        return entity == null || entity!!.onGround
     }
 
     override fun updateTask() {
-        entity = this.entityIn.world.findNearestEntityWithinAABB(EntityItem::class.java,
+        val item = this.entityIn.world.findNearestEntityWithinAABB(EntityItem::class.java,
                 AxisAlignedBB(entityIn.dataManager.get(ItemCollector.dataInventoryPosition)
                         .add(0.5, 0.0, 0.5))
-                        .grow(5.0),
+                        .grow(7.0),
                 this.entityIn) as EntityItem?
-        entity?.let { BugMagic.logger.debug("$entityIn found $entity") }
+
+        item?.let {
+            if (item.item.item.containerItem != null && item.item.item.containerItem != Items.AIR || item.item.item.containerItem != Blocks.AIR) {
+                entity = it
+                BugMagic.logger.debug("$entityIn found $entity")
+            }
+        }
     }
 }

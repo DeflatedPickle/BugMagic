@@ -64,7 +64,7 @@ class ItemCollector(worldIn: World) : EntityCastable(worldIn) {
         }))
         this.tasks.addTask(1, CollectItem(findItem, this))
         this.tasks.addTask(2, WalkToTileEntity(this, { !this.dataManager.get(dataItemStack).isEmpty }, dataInventoryPosition))
-        this.tasks.addTask(3, DeliverToInventory(this))
+        this.tasks.addTask(3, DeliverToInventory(findItem, this))
         this.tasks.addTask(4, findItem)
         this.tasks.addTask(4, WalkToItem(findItem, this))
     }
@@ -73,6 +73,13 @@ class ItemCollector(worldIn: World) : EntityCastable(worldIn) {
         if (player.getHeldItem(hand).item is Wand) {
             this.dataManager.set(dataInventoryPosition, NBTUtil.getPosFromTag(player.getHeldItem(hand).tagCompound!!))
             return true
+        }
+        else {
+            val itemStack = this.dataManager.get(dataItemStack)
+            if (itemStack != ItemStack.EMPTY) {
+                player.addItemStackToInventory(itemStack)
+                itemStack.shrink(1)
+            }
         }
         return false
     }

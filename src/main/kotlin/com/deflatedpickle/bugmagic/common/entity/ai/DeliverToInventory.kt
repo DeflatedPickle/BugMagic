@@ -12,7 +12,7 @@ import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.ItemHandlerHelper
 
 // TODO: Make this not dependent on ItemCollector
-class DeliverToInventory(private val entityIn: EntityLiving) : EntityAIBase() {
+class DeliverToInventory(private val findItem: FindItem, private val entityIn: EntityLiving) : EntityAIBase() {
     override fun shouldExecute(): Boolean {
         val blockPos = this.entityIn.dataManager.get(ItemCollector.dataInventoryPosition)
         return blockPos != BlockPos.ORIGIN && entityIn.getDistanceSq(
@@ -32,6 +32,7 @@ class DeliverToInventory(private val entityIn: EntityLiving) : EntityAIBase() {
             if (itemHandler is IItemHandlerModifiable) {
                 val insertStack = this.entityIn.dataManager.get(ItemCollector.dataItemStack)
 
+                findItem.entity = null
                 entityIn.dataManager.set(ItemCollector.dataItemStack, ItemHandlerHelper.insertItem(itemHandler, insertStack, false))
             }
         }

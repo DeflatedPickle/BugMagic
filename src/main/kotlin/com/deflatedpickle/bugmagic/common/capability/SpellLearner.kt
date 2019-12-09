@@ -30,7 +30,8 @@ object SpellLearner {
                 Spell.ESSENCE_COLLECTOR,
                 Spell.AUTO_HOE,
                 Spell.AUTO_PLANTER,
-                Spell.AUTO_FERTILIZER
+                Spell.AUTO_FERTILIZER,
+                Spell.AUTO_HARVESTER
         )
         private var currentIndex = 0
 
