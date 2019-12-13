@@ -25,7 +25,10 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * A spell that can be cast with the {@link Wand}
+ * A spell that can be cast with something capable of {@link com.deflatedpickle.bugmagic.api.capability.ISpellCaster}
+ * <p>
+ * Officially, this can be cast with the {@link Wand}, however more spell casters can be added,
+ * by making them capable of @{@link com.deflatedpickle.bugmagic.api.capability.ISpellCaster}
  *
  * @author DeflatedPickle
  */
@@ -34,6 +37,11 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
         this.setRegistryName(this.getName().toLowerCase().replace(' ', '_'));
     }
 
+    /**
+     * Gets the name of the spell
+     *
+     * @return The name
+     */
     public abstract @NotNull String getName();
 
     /**
@@ -132,6 +140,9 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
         return Type.CONJURE;
     }
 
+    /**
+     * An enum of the cults
+     */
     public enum Cult {
         ANY(TextFormatting.WHITE),
         /**
@@ -155,6 +166,9 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
          */
         FUNGAL(TextFormatting.DARK_PURPLE);
 
+        /**
+         * The colour of the cult
+         */
         public final TextFormatting colour;
 
         Cult(TextFormatting colour) {
@@ -163,7 +177,10 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
     }
 
     /**
-     * Spells can only be successful if the caster belongs to the cult, otherwise the spell is messed up
+     * Returns the cult of the spell
+     * <p>
+     * Spells from a cult different from yours will be more expensive to cast
+     * They will also return less mana when uncasted
      *
      * @return The cult type
      */
@@ -175,6 +192,7 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
      * The particle emitted randomly around the player whilst this spell is being cast
      *
      * @return The casting particle
+     * @see com.deflatedpickle.bugmagic.client.render.entity.layer.LayerCastingShape
      */
     public @Nullable EnumParticleTypes getCastingParticle() {
         return EnumParticleTypes.CRIT_MAGIC;
@@ -184,6 +202,7 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
      * The particle emitted from the players location if the casting is canceled
      *
      * @return The canceling particle
+     * @see com.deflatedpickle.bugmagic.client.render.entity.layer.LayerCastingShape
      */
     public @Nullable EnumParticleTypes getCancelingParticle() {
         return EnumParticleTypes.EXPLOSION_HUGE;
@@ -193,6 +212,7 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
      * The particle emitted from the players location when the casting finishes
      *
      * @return The finishing particle
+     * @see com.deflatedpickle.bugmagic.client.render.entity.layer.LayerCastingShape
      */
     public @Nullable EnumParticleTypes getFinishingParticle() {
         return EnumParticleTypes.DRAGON_BREATH;
@@ -202,6 +222,7 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
      * The particle emitted from any entities when the spell is uncast
      *
      * @return The uncasting particle
+     * @see com.deflatedpickle.bugmagic.client.render.entity.layer.LayerCastingShape
      */
     public @Nullable EnumParticleTypes getUncastingParticle() {
         return EnumParticleTypes.SMOKE_NORMAL;
@@ -211,15 +232,28 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
      * The shape projected under the player during casting
      *
      * @return The casting shape
+     * @see com.deflatedpickle.bugmagic.client.render.entity.layer.LayerCastingShape
      */
     public int getCastingShapePoints() {
         return 8;
     }
 
+    /**
+     * The base radius of the shape
+     *
+     * @return The radius
+     * @see com.deflatedpickle.bugmagic.client.render.entity.layer.LayerCastingShape
+     */
     public float getRadius() {
         return 1.2f;
     }
 
+    /**
+     * Two values that are linearly interpolated between, that the radius is multiplied by
+     *
+     * @return A pair containing the lower and higher values
+     * @see com.deflatedpickle.bugmagic.client.render.entity.layer.LayerCastingShape
+     */
     public Pair<@NotNull Float, @NotNull Float> getRadiusMultiplier() {
         return Pair.of(1.6f, 1.8f);
     }
@@ -228,6 +262,7 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
      * The thickness of the casting shape
      *
      * @return The casting shape thickness
+     * @see com.deflatedpickle.bugmagic.client.render.entity.layer.LayerCastingShape
      */
     public float getCastingShapeThickness() {
         return 0.5f;
@@ -237,6 +272,7 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
      * The intensity of the casting shapes glow
      *
      * @return The glow intensity
+     * @see com.deflatedpickle.bugmagic.client.render.entity.layer.LayerCastingShape
      */
     public float getGlowIntensity() {
         return 0.2f;
@@ -246,25 +282,32 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
      * The colour of the glow
      *
      * @return The glow colour
+     * @see com.deflatedpickle.bugmagic.client.render.entity.layer.LayerCastingShape
      */
     public @NotNull ReadableColor getGlowColour() {
         return Color.WHITE;
     }
 
-    // TODO: Separate cast/uncast methods for the client and server
 
     /**
      * Casts this spell
+     *
+     * @see com.deflatedpickle.bugmagic.api.capability.ISpellCaster
+     * @see Wand
      */
+    // TODO: Separate cast/uncast methods for the client and server
     public abstract void cast(EntityPlayer entityPlayer, ItemStack wandIn);
 
     /**
      * Uncasts this spell
+     *
+     * @see com.deflatedpickle.bugmagic.api.capability.ISpellCaster
+     * @see Wand
      */
     public abstract void uncast(EntityPlayer entityPlayer, ItemStack wandIn);
 
     /**
-     * Summons an given amount of entity
+     * Summons a given amount of an entity
      *
      * @param entityClass  The class of the entity
      * @param entityPlayer The player
@@ -314,7 +357,7 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
      *
      * @param entityClass  The class of the entity
      * @param entityPlayer The player
-     * @param wand  The wand
+     * @param wand         The wand
      * @return A list of killed entities
      */
     public <T extends EntityTameable> List<EntityTameable> killAllEntities(Class<T> entityClass, EntityPlayer entityPlayer, ItemStack wand) {

@@ -6,6 +6,7 @@ import com.deflatedpickle.bugmagic.common.capability.BugEssence
 import com.deflatedpickle.bugmagic.common.capability.SpellCaster
 import com.deflatedpickle.bugmagic.common.capability.SpellLearner
 import com.deflatedpickle.bugmagic.common.init.Spell
+import com.deflatedpickle.bugmagic.common.item.Wand
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
@@ -24,7 +25,9 @@ class ForgeEventHandler {
 
     @SubscribeEvent
     fun onAttachCapabilitiesEventItemStack(event: AttachCapabilitiesEvent<ItemStack>) {
-        event.addCapability(SpellCaster.NAME, SpellCaster.Provider())
+        if (event.`object`.item is Wand) {
+            event.addCapability(SpellCaster.NAME, SpellCaster.Provider())
+        }
     }
 
     @SubscribeEvent

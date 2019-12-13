@@ -81,7 +81,7 @@ class AutoPlanter(worldIn: World) : EntityCastable(worldIn) {
         ) {}
 
         this.tasks.addTask(1, findBlock)
-        this.tasks.addTask(2, WalkToTileEntity(this, { this.dataManager.get(dataSeeds) == ItemStack.EMPTY }, dataHomePosition))
+        this.tasks.addTask(1, WalkToTileEntity(this, { this.dataManager.get(dataSeeds) == ItemStack.EMPTY }, dataHomePosition))
         this.tasks.addTask(2, TakeFromInventory(this))
         this.tasks.addTask(3, WalkToBlock(findBlock, this) {
             dataManager.get(dataSeeds) != ItemStack.EMPTY

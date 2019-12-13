@@ -32,7 +32,6 @@ class DeliverToInventory(private val findItem: FindItem, private val entityIn: E
             if (itemHandler is IItemHandlerModifiable) {
                 val insertStack = this.entityIn.dataManager.get(ItemCollector.dataItemStack)
 
-                findItem.entity = null
                 entityIn.dataManager.set(ItemCollector.dataItemStack, ItemHandlerHelper.insertItem(itemHandler, insertStack, false))
             }
         }

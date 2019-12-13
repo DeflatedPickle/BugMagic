@@ -3,6 +3,7 @@
 package com.deflatedpickle.bugmagic.common.item
 
 import com.deflatedpickle.bugmagic.BugMagic
+import com.deflatedpickle.bugmagic.api.common.item.Generic
 import com.deflatedpickle.bugmagic.client.Proxy as ClientProxy
 import com.deflatedpickle.bugmagic.common.capability.BugEssence
 import com.deflatedpickle.bugmagic.common.capability.SpellCaster

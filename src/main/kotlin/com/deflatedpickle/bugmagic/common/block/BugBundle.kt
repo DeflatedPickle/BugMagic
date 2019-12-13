@@ -2,6 +2,7 @@
 
 package com.deflatedpickle.bugmagic.common.block
 
+import com.deflatedpickle.bugmagic.api.common.block.Generic
 import net.minecraft.block.material.Material
 import net.minecraft.block.properties.PropertyBool
 import net.minecraft.block.state.BlockFaceShape

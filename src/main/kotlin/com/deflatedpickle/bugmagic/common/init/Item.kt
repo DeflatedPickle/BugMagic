@@ -3,7 +3,7 @@
 package com.deflatedpickle.bugmagic.common.init
 
 import com.deflatedpickle.bugmagic.Reference
-import com.deflatedpickle.bugmagic.common.item.Generic
+import com.deflatedpickle.bugmagic.api.common.item.Generic
 import com.deflatedpickle.bugmagic.common.item.Wand
 import com.github.upcraftlp.glasspane.api.registry.AutoRegistry
 import net.minecraft.creativetab.CreativeTabs

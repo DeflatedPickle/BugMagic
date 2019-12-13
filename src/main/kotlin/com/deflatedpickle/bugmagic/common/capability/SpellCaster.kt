@@ -29,6 +29,10 @@ object SpellCaster {
         private var isCasting = false
         private var castingFor = 0f
 
+        /**
+         * Newly cast spells will increase the count of the spell
+         * Uncast spells will decrease the count, unless decreasing it would result in 0, then the spell key is removed
+         */
         override fun getCastSpellMap(): HashMap<ASpell, Int> = castSpellMap
 
         override fun setOwner(value: UUID?) {

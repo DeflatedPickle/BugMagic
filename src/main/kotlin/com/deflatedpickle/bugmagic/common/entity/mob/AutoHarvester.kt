@@ -87,7 +87,7 @@ class AutoHarvester(worldIn: World) : EntityCastable(worldIn) {
                     !entityLiving.world.isAirBlock(blockPos) &&
                             entityLiving.world.getBlockState(blockPos).block is IGrowable
                 },
-                waitFor = ThreadLocalRandom.current().nextInt(10, 20)) { blockPos: BlockPos, entityLiving: EntityLiving ->
+                waitFor = ThreadLocalRandom.current().nextInt(50, 130)) { blockPos: BlockPos, entityLiving: EntityLiving ->
             if (!entityLiving.world.isAirBlock(blockPos)) {
                 val state = entityLiving.world.getBlockState(blockPos)
                 val block = state.block

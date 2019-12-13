@@ -104,5 +104,25 @@ dokka {
 
         targets = ["JVM"]
         platform = "JVM"
+
+        perPackageOption {
+            prefix = "com.deflatedpickle.bugmagic.client"
+            suppress = true
+        }
+
+        perPackageOption {
+            prefix = "com.deflatedpickle.bugmagic.common"
+            suppress = true
+        }
+
+        perPackageOption {
+            prefix = "com.deflatedpickle.bugmagic.server"
+            suppress = true
+        }
+
+        perPackageOption {
+            prefix = "com.deflatedpickle.bugmagic.api"
+            suppress = false
+        }
     }
 }

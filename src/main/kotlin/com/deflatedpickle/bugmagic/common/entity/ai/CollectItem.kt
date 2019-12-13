@@ -13,20 +13,21 @@ import net.minecraft.item.ItemStack
 class CollectItem(private val findItem: FindItem, private val entityIn: EntityLiving) : EntityAIBase() {
     override fun shouldExecute(): Boolean {
         val stack = entityIn.dataManager.get(ItemCollector.dataItemStack)
-        return !entityIn.navigator.noPath() &&
+        return findItem.entityItem != null &&
                 (stack == ItemStack.EMPTY || stack.item == Items.AIR || stack.item == Blocks.AIR)
     }
 
     override fun updateTask() {
-        BugMagic.logger.debug("$entityIn picked up $findItem")
-        val item = findItem.entity
+        val entityItem = findItem.entityItem
 
-        if (item != null) {
-            if (entityIn.entityBoundingBox.grow(0.8).intersects(item.entityBoundingBox)) {
-                entityIn.dataManager.set(ItemCollector.dataItemStack, item.item.splitStack(1))
+        if (entityItem != null) {
+            if (entityIn.entityBoundingBox.grow(0.8).intersects(entityItem.entityBoundingBox.grow(0.4))) {
+                entityIn.dataManager.set(ItemCollector.dataItemStack, entityItem.item.splitStack(1))
+                println(entityIn.dataManager.get(ItemCollector.dataItemStack))
+                BugMagic.logger.debug("$entityIn picked up $findItem")
 
-                if (item.item.count < 0) {
-                    item.setDead()
+                if (entityItem.item.count <= 0) {
+                    entityItem.setDead()
                 }
             }
         }

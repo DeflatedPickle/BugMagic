@@ -8,6 +8,11 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * A super of {@link EntityTameable} for simplicity
+ *
+ * @author DeflatedPickle
+ */
 public class EntityCastable extends EntityTameable {
     public EntityCastable(World worldIn) {
         super(worldIn);

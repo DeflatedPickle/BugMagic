@@ -12,10 +12,10 @@ import net.minecraft.init.Items
 import net.minecraft.util.math.AxisAlignedBB
 
 class FindItem(private val entityIn: EntityLiving) : EntityAIBase() {
-    var entity: EntityItem? = null
+    var entityItem: EntityItem? = null
 
     override fun shouldExecute(): Boolean {
-        return entity == null || entity!!.onGround
+        return entityItem == null || (entityItem != null && entityItem!!.onGround)
     }
 
     override fun updateTask() {
@@ -27,8 +27,8 @@ class FindItem(private val entityIn: EntityLiving) : EntityAIBase() {
 
         item?.let {
             if (item.item.item.containerItem != null && item.item.item.containerItem != Items.AIR || item.item.item.containerItem != Blocks.AIR) {
-                entity = it
-                BugMagic.logger.debug("$entityIn found $entity")
+                entityItem = it
+                BugMagic.logger.debug("$entityIn found $entityItem")
             }
         }
     }
