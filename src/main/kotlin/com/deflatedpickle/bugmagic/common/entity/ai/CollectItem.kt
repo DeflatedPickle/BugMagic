@@ -23,7 +23,6 @@ class CollectItem(private val findItem: FindItem, private val entityIn: EntityLi
         if (entityItem != null) {
             if (entityIn.entityBoundingBox.grow(0.8).intersects(entityItem.entityBoundingBox.grow(0.4))) {
                 entityIn.dataManager.set(ItemCollector.dataItemStack, entityItem.item.splitStack(1))
-                println(entityIn.dataManager.get(ItemCollector.dataItemStack))
                 BugMagic.logger.debug("$entityIn picked up $findItem")
 
                 if (entityItem.item.count <= 0) {

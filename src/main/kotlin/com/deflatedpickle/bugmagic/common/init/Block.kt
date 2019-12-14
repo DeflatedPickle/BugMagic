@@ -4,10 +4,14 @@ package com.deflatedpickle.bugmagic.common.init
 
 import com.deflatedpickle.bugmagic.Reference
 import com.deflatedpickle.bugmagic.common.block.BugBundle
+import com.deflatedpickle.bugmagic.common.block.SpellTable
 import com.github.upcraftlp.glasspane.api.registry.AutoRegistry
 
 @AutoRegistry(Reference.MOD_ID)
 object Block {
     @JvmField
     val BUG_BUNDLE = BugBundle()
+
+    @JvmField
+    val SPELL_TABLE = SpellTable()
 }

@@ -9,7 +9,8 @@ import com.deflatedpickle.bugmagic.common.capability.SpellLearner
 import com.deflatedpickle.bugmagic.common.event.FMLEventHandler
 import com.deflatedpickle.bugmagic.common.event.ForgeEventHandler
 import com.deflatedpickle.bugmagic.common.init.Entities
-import com.deflatedpickle.bugmagic.common.init.FurnaceRecipe
+import com.deflatedpickle.bugmagic.common.init.Smelting
+import com.deflatedpickle.bugmagic.common.init.TileEntities
 import com.deflatedpickle.bugmagic.common.networking.handler.HandlerBugEssence
 import com.deflatedpickle.bugmagic.common.networking.handler.HandlerSelectedSpell
 import com.deflatedpickle.bugmagic.common.networking.handler.HandlerSpellCaster
@@ -26,7 +27,8 @@ import net.minecraftforge.fml.relauncher.Side
 
 open class Proxy {
     open fun preInit(event: FMLPreInitializationEvent) {
-        FurnaceRecipe
+        Smelting
+        TileEntities
 
         BugEssence.register()
         SpellLearner.register()
