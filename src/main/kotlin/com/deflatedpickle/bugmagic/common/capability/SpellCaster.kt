@@ -3,7 +3,7 @@
 package com.deflatedpickle.bugmagic.common.capability
 
 import com.deflatedpickle.bugmagic.Reference
-import com.deflatedpickle.bugmagic.api.ASpell
+import com.deflatedpickle.bugmagic.api.spell.ASpell
 import com.deflatedpickle.bugmagic.api.capability.ISpellCaster
 import java.util.UUID
 import java.util.concurrent.Callable

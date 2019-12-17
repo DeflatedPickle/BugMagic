@@ -2,10 +2,10 @@
 
 package com.deflatedpickle.bugmagic.client.render.entity.layer
 
+import com.deflatedpickle.bugmagic.api.common.util.Math
 import com.deflatedpickle.bugmagic.common.capability.SpellCaster
 import com.deflatedpickle.bugmagic.common.capability.SpellLearner
 import com.deflatedpickle.bugmagic.common.item.Wand
-import com.deflatedpickle.bugmagic.api.common.util.Math
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin

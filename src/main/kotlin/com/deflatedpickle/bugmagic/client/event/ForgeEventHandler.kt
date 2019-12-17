@@ -47,7 +47,8 @@ class ForgeEventHandler {
                     if (it!!.spellList.size > 0) {
                         for ((index, spell) in it.spellList.withIndex()) {
                             Minecraft.getMinecraft().fontRenderer.drawString(
-                                    "${TextFormatting.GOLD}[${spell.type.name.toLowerCase().capitalize()}] ${TextFormatting.WHITE}${spell.name} ${TextFormatting.ITALIC}(Costs: ${spell.manaLoss}, Summons: ${spell.castCount})",
+                                    "${TextFormatting.GOLD}[${spell.type.name.toLowerCase().capitalize()}] ${TextFormatting.WHITE}${spell.name}",
+                                    // ${TextFormatting.ITALIC}(Costs: ${spell.manaLoss}, Summons: ${spell.castCount})
                                     2f, y + index * textHeightPadding, 0, true
                             )
                         }

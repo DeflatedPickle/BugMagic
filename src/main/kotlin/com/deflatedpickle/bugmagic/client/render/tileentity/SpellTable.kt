@@ -1,19 +1,21 @@
+/* Copyright (c) 2019 DeflatedPickle under the MIT license */
+
 package com.deflatedpickle.bugmagic.client.render.tileentity
 
+import com.deflatedpickle.bugmagic.common.block.tileentity.SpellTable as SpellTableTE
+import kotlin.math.PI
+import kotlin.math.cos
+import kotlin.math.sin
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.OpenGlHelper
 import net.minecraft.client.renderer.RenderHelper
-import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms
 import net.minecraft.client.renderer.texture.TextureMap
-import com.deflatedpickle.bugmagic.common.block.tileentity.SpellTable as SpellTableTE
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
+import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 import net.minecraftforge.client.ForgeHooksClient
-import kotlin.math.PI
-import kotlin.math.cos
-import kotlin.math.sin
 
 class SpellTable : TileEntitySpecialRenderer<SpellTableTE>() {
     override fun render(te: SpellTableTE, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float) {
@@ -21,6 +23,24 @@ class SpellTable : TileEntitySpecialRenderer<SpellTableTE>() {
 
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 140f, 140f)
         RenderHelper.enableStandardItemLighting()
+
+        // Eye
+        // TODO: Make the eye look at the player's eyes
+        GlStateManager.pushMatrix()
+        val eyeSpeed = 0.02
+        val eyeAmplitude = 0.02
+        GlStateManager.translate(x + 0.8, y + 0.15 + sin(te.world.totalWorldTime.toFloat() * eyeSpeed) * eyeAmplitude, z + 0.45)
+        GlStateManager.rotate(45f, 0f, -1.5f, 1f)
+        GlStateManager.scale(0.6f, 0.6f, 0.6f)
+
+        val stack = ItemStack(Items.SPIDER_EYE)
+        var model = Minecraft.getMinecraft().renderItem.getItemModelWithOverrides(stack, this.world, null)
+        model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.GROUND, false)
+
+        Minecraft.getMinecraft().textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE)
+        Minecraft.getMinecraft().renderItem.renderItem(stack, model)
+
+        GlStateManager.popMatrix()
 
         GlStateManager.pushMatrix()
         GlStateManager.translate(x + 0.5, y + 1, z + 0.5)
@@ -33,30 +53,34 @@ class SpellTable : TileEntitySpecialRenderer<SpellTableTE>() {
         for (i in 0 until te.itemStackHandler.slots) {
             val stack = te.itemStackHandler.getStackInSlot(i)
 
+            // Renders all non-empty stacks in a circle
             if (stack != ItemStack.EMPTY) {
                 GlStateManager.pushMatrix()
 
-                val theta = (PI * 2) * i / itemCount
+                val bigTheta = (PI * 2) * i / itemCount
 
-                val radius1 = 1.2
-                val x1 = radius1 * cos(theta)
-                val z1 = radius1 * sin(theta)
+                val bigRadius = 1.2
+                val bigX = bigRadius * cos(bigTheta)
+                val bigZ = bigRadius * sin(bigTheta)
 
-                GlStateManager.translate(x1, sin(te.world.totalWorldTime.toFloat() * 0.1f) * 0.06, z1)
+                val bigSpeed = 0.1f
+                val bigAmplitude = 0.06
+                GlStateManager.translate(bigX, sin(te.world.totalWorldTime.toFloat() * bigSpeed) * bigAmplitude, bigZ)
                 GlStateManager.rotate(te.world.totalWorldTime.toFloat(), 0f, 1.2f, 0f)
 
+                // Renders all items in the stack in a smaller circle
                 for (j in 0 until stack.count) {
                     GlStateManager.pushMatrix()
 
-                    val theta2 = (PI * 2) * j / stack.count
+                    val smallTheta = (PI * 2) * j / stack.count
 
-                    val radius2 = 0.4
-                    val x2 = radius2 * cos(theta2)
-                    val z2 = radius2 * sin(theta2)
+                    val smallRadius = 0.4
+                    val smallX = smallRadius * cos(smallTheta)
+                    val smallZ = smallRadius * sin(smallTheta)
 
-                    val speed = 0.2
-                    val amplitude = 0.05
-                    GlStateManager.translate(x2, sin(((te.world.totalWorldTime.toFloat() + j) * (PI / 2)) * amplitude) * speed, z2)
+                    val smallSpeed = 0.05
+                    val smallAmplitude = 0.2f
+                    GlStateManager.translate(smallX, sin(((te.world.totalWorldTime.toFloat() + j) * (PI / 2)) * smallSpeed) * smallAmplitude, smallZ)
 
                     var model = Minecraft.getMinecraft().renderItem.getItemModelWithOverrides(stack, this.world, null)
                     model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.GROUND, false)

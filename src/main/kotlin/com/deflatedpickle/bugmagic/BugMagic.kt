@@ -4,6 +4,7 @@ package com.deflatedpickle.bugmagic
 
 import com.cout970.modelloader.api.ModelLoaderApi
 import com.deflatedpickle.bugmagic.common.Proxy
+import net.minecraftforge.fluids.FluidRegistry
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.Mod.EventHandler
 import net.minecraftforge.fml.common.SidedProxy
@@ -28,6 +29,10 @@ object BugMagic {
     val CHANNEL = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_ID)
 
     val logger: Logger = LogManager.getLogger(Reference.MOD_ID)
+
+    init {
+        FluidRegistry.enableUniversalBucket()
+    }
 
     @EventHandler
     fun preInit(event: FMLPreInitializationEvent) {

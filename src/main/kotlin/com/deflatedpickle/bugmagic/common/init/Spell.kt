@@ -3,7 +3,7 @@
 package com.deflatedpickle.bugmagic.common.init
 
 import com.deflatedpickle.bugmagic.Reference
-import com.deflatedpickle.bugmagic.api.ASpell
+import com.deflatedpickle.bugmagic.api.spell.ASpell
 import com.deflatedpickle.bugmagic.common.spell.AutoFertilizer
 import com.deflatedpickle.bugmagic.common.spell.AutoHarvester
 import com.deflatedpickle.bugmagic.common.spell.AutoHoe

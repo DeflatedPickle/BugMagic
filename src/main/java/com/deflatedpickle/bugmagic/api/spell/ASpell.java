@@ -1,4 +1,4 @@
-package com.deflatedpickle.bugmagic.api;
+package com.deflatedpickle.bugmagic.api.spell;
 
 import com.deflatedpickle.bugmagic.common.item.Wand;
 import net.minecraft.entity.passive.EntityTameable;
@@ -32,6 +32,7 @@ import java.util.UUID;
  *
  * @author DeflatedPickle
  */
+// TODO: Move all rendering methods to a new class
 public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
     public ASpell() {
         this.setRegistryName(this.getName().toLowerCase().replace(' ', '_'));

@@ -2,7 +2,7 @@
 
 package com.deflatedpickle.bugmagic.common.spell
 
-import com.deflatedpickle.bugmagic.api.ASpell
+import com.deflatedpickle.bugmagic.api.spell.ASpell
 import com.deflatedpickle.bugmagic.common.entity.mob.AutoPlanter as AutoPlanterMob
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack

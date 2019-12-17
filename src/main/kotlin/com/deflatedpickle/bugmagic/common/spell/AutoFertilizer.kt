@@ -2,11 +2,10 @@
 
 package com.deflatedpickle.bugmagic.common.spell
 
-import com.deflatedpickle.bugmagic.api.ASpell
+import com.deflatedpickle.bugmagic.api.spell.ASpell
 import com.deflatedpickle.bugmagic.common.entity.mob.AutoFertilizer
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
-import com.deflatedpickle.bugmagic.common.entity.mob.AutoHoe as AutoHoeMob
 
 class AutoFertilizer : ASpell() {
     override fun getName(): String = "Auto Fertilizer"

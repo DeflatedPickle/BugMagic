@@ -1,6 +1,6 @@
 package com.deflatedpickle.bugmagic.api.capability;
 
-import com.deflatedpickle.bugmagic.api.ASpell;
+import com.deflatedpickle.bugmagic.api.spell.ASpell;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

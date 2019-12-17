@@ -14,7 +14,7 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 
-class BugBundle : Generic("bug_bundle", CreativeTabs.DECORATIONS, Material.CLOTH, lightOpacity = 0, isFullBlock = false, isOpaqueCube = false, renderLayer = BlockRenderLayer.CUTOUT) {
+class BugBundle : Generic("bug_bundle", CreativeTabs.DECORATIONS, Material.CLOTH, lightOpacity = 0, isFullBlock = false, isOpaqueCube = false, renderLayer = BlockRenderLayer.TRANSLUCENT) {
     // TODO: Add more directions
     companion object {
         @JvmStatic

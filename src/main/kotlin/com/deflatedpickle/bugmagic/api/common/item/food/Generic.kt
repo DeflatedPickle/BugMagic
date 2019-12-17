@@ -48,12 +48,10 @@ class Generic(
             return if (playerIn.isCreative) {
                 playerIn.activeHand = handIn
                 ActionResult(EnumActionResult.SUCCESS, stack)
-            }
-            else {
+            } else {
                 super.onItemRightClick(worldIn, playerIn, handIn)
             }
-        }
-        else {
+        } else {
             super.onItemRightClick(worldIn, playerIn, handIn)
         }
     }

@@ -15,7 +15,7 @@ import kotlin.reflect.KClass
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fml.common.registry.EntityRegistry
 
-object Entities {
+object Entity {
     var id = 0
 
     init {
