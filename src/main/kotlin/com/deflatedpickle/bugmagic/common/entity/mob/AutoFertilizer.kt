@@ -7,6 +7,7 @@ import com.deflatedpickle.bugmagic.common.entity.ai.FindBlock
 import com.deflatedpickle.bugmagic.common.entity.ai.FindClosestTileEntity
 import com.deflatedpickle.bugmagic.common.entity.ai.WaitWithBlock
 import com.deflatedpickle.bugmagic.common.entity.ai.WalkToBlock
+import java.util.concurrent.ThreadLocalRandom
 import net.minecraft.block.IGrowable
 import net.minecraft.entity.EntityLiving
 import net.minecraft.inventory.IInventory
@@ -17,7 +18,6 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3i
 import net.minecraft.world.World
-import java.util.concurrent.ThreadLocalRandom
 
 class AutoFertilizer(worldIn: World) : EntityCastable(worldIn) {
     companion object {

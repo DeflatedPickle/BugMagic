@@ -6,13 +6,12 @@ import com.deflatedpickle.bugmagic.Reference
 import com.deflatedpickle.bugmagic.client.render.entity.EssenceCollector as EssenceCollectorRender
 import com.deflatedpickle.bugmagic.client.render.entity.ItemCollector as ItemCollectorRender
 import com.deflatedpickle.bugmagic.client.render.tileentity.SpellTable as SpellTableRender
+import com.deflatedpickle.bugmagic.common.block.tileentity.SpellTable
 import com.deflatedpickle.bugmagic.common.entity.mob.EssenceCollector
 import com.deflatedpickle.bugmagic.common.entity.mob.ItemCollector
-import com.deflatedpickle.bugmagic.common.block.tileentity.SpellTable
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.ItemMeshDefinition
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
-import net.minecraft.client.renderer.block.statemap.IStateMapper
 import net.minecraft.client.renderer.block.statemap.StateMapperBase
 import net.minecraft.item.Item
 import net.minecraft.util.ResourceLocation

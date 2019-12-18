@@ -1,13 +1,14 @@
+/* Copyright (c) 2019 DeflatedPickle under the MIT license */
+
 package com.deflatedpickle.bugmagic.common.block.tileentity
 
-import net.minecraftforge.fluids.Fluid as VFluid
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.NetworkManager
 import net.minecraft.network.play.server.SPacketUpdateTileEntity
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
-import net.minecraftforge.fluids.FluidStack
+import net.minecraftforge.fluids.Fluid as VFluid
 import net.minecraftforge.fluids.FluidTank
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler
 import net.minecraftforge.items.CapabilityItemHandler

@@ -2,8 +2,8 @@
 
 package com.deflatedpickle.bugmagic.client.render.tileentity
 
-import com.deflatedpickle.bugmagic.common.item.Wand
 import com.deflatedpickle.bugmagic.common.block.tileentity.SpellTable as SpellTableTE
+import com.deflatedpickle.bugmagic.common.item.Wand
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
@@ -19,8 +19,6 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 import net.minecraftforge.client.ForgeHooksClient
-import net.minecraftforge.fluids.capability.FluidTankProperties
-import net.minecraftforge.fluids.capability.FluidTankPropertiesWrapper
 import org.lwjgl.opengl.GL11
 
 class SpellTable : TileEntitySpecialRenderer<SpellTableTE>() {

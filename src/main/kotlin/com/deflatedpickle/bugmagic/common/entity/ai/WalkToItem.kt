@@ -5,7 +5,6 @@ package com.deflatedpickle.bugmagic.common.entity.ai
 import com.deflatedpickle.bugmagic.common.entity.mob.ItemCollector
 import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.ai.EntityAIBase
-import net.minecraft.entity.passive.EntityTameable
 import net.minecraft.util.math.BlockPos
 
 class WalkToItem(private val findItem: FindItem, private val entityIn: EntityLiving) : EntityAIBase() {

@@ -1,8 +1,8 @@
+/* Copyright (c) 2019 DeflatedPickle under the MIT license */
+
 package com.deflatedpickle.bugmagic.common.init
 
 import com.deflatedpickle.bugmagic.Reference
-import com.github.upcraftlp.glasspane.api.registry.AutoRegistry
-import kotlinx.coroutines.flow.flow
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fluids.Fluid
 import net.minecraftforge.fluids.FluidRegistry

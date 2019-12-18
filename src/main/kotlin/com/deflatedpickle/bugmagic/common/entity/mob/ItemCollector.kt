@@ -73,8 +73,7 @@ class ItemCollector(worldIn: World) : EntityCastable(worldIn) {
         if (player.getHeldItem(hand).item is Wand) {
             this.dataManager.set(dataInventoryPosition, NBTUtil.getPosFromTag(player.getHeldItem(hand).tagCompound!!))
             return true
-        }
-        else {
+        } else {
             val itemStack = this.dataManager.get(dataItemStack)
             if (itemStack != ItemStack.EMPTY) {
                 player.addItemStackToInventory(itemStack)

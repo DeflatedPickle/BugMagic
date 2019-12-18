@@ -2,7 +2,6 @@
 
 package com.deflatedpickle.bugmagic.common.event
 
-import com.deflatedpickle.bugmagic.common.block.tileentity.SpellTable
 import com.deflatedpickle.bugmagic.common.capability.BugEssence
 import com.deflatedpickle.bugmagic.common.capability.SpellCaster
 import com.deflatedpickle.bugmagic.common.capability.SpellLearner
@@ -11,11 +10,9 @@ import com.deflatedpickle.bugmagic.common.item.Wand
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
-import net.minecraft.tileentity.TileEntity
 import net.minecraftforge.event.AttachCapabilitiesEvent
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
-import net.minecraftforge.items.CapabilityItemHandler
 
 class ForgeEventHandler {
     @SubscribeEvent

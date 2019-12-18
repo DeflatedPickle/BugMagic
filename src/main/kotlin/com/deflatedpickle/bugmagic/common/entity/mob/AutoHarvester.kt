@@ -7,11 +7,10 @@ import com.deflatedpickle.bugmagic.common.entity.ai.FindBlock
 import com.deflatedpickle.bugmagic.common.entity.ai.FindClosestTileEntity
 import com.deflatedpickle.bugmagic.common.entity.ai.WaitWithBlock
 import com.deflatedpickle.bugmagic.common.entity.ai.WalkToBlock
-import net.minecraft.block.BlockCrops
+import java.util.Random
+import java.util.concurrent.ThreadLocalRandom
 import net.minecraft.block.IGrowable
-import net.minecraft.block.properties.IProperty
 import net.minecraft.entity.EntityLiving
-import net.minecraft.init.Blocks
 import net.minecraft.inventory.IInventory
 import net.minecraft.network.datasync.DataParameter
 import net.minecraft.network.datasync.DataSerializers
@@ -20,10 +19,6 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3i
 import net.minecraft.world.World
-import net.minecraftforge.common.IPlantable
-import java.util.*
-import java.util.concurrent.ThreadLocalRandom
-import kotlin.math.min
 
 class AutoHarvester(worldIn: World) : EntityCastable(worldIn) {
     companion object {

@@ -1,15 +1,15 @@
+/* Copyright (c) 2019 DeflatedPickle under the MIT license */
+
 package com.deflatedpickle.bugmagic.common.block
 
 import com.deflatedpickle.bugmagic.api.common.block.Generic
-import com.deflatedpickle.bugmagic.common.item.Wand
 import com.deflatedpickle.bugmagic.common.block.tileentity.SpellTable as SpellTableTE
+import com.deflatedpickle.bugmagic.common.item.Wand
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.init.Items
-import net.minecraft.item.ItemBucket
 import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.BlockRenderLayer
@@ -17,17 +17,10 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
-import net.minecraftforge.common.ForgeModContainer
 import net.minecraftforge.fluids.Fluid
-import net.minecraftforge.fluids.FluidActionResult
-import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.fluids.FluidUtil
-import net.minecraftforge.fluids.UniversalBucket
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler
-import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.ItemHandlerHelper
-import net.minecraftforge.items.ItemStackHandler
-import java.util.*
 
 class SpellTable : Generic("spell_table", CreativeTabs.DECORATIONS, Material.WOOD, lightOpacity = 0, isFullBlock = false, isOpaqueCube = false, renderLayer = BlockRenderLayer.CUTOUT) {
     override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
@@ -50,8 +43,7 @@ class SpellTable : Generic("spell_table", CreativeTabs.DECORATIONS, Material.WOO
                             worldIn.scheduleBlockUpdate(pos, this, 0, 0)
                             tileEntity.markDirty()
                         }
-                    }
-                    else {
+                    } else {
                         if (stack != ItemStack.EMPTY) {
                             // Fill with a fluid
                             when (stack.item) {
@@ -61,8 +53,7 @@ class SpellTable : Generic("spell_table", CreativeTabs.DECORATIONS, Material.WOO
                                 else -> {
                                     if (!stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
                                         ItemHandlerHelper.insertItemStacked(tileEntity.itemStackHandler, stack.splitStack(1), false)
-                                    }
-                                    else {
+                                    } else {
                                         var result = FluidUtil.tryEmptyContainer(stack, tileEntity.fluidTank, Fluid.BUCKET_VOLUME, playerIn, true)
 
                                         if (!result.success) {
