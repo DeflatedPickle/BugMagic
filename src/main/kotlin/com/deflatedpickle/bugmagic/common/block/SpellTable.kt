@@ -1,7 +1,7 @@
 package com.deflatedpickle.bugmagic.common.block
 
 import com.deflatedpickle.bugmagic.api.common.block.Generic
-import com.deflatedpickle.bugmagic.common.init.Fluid
+import com.deflatedpickle.bugmagic.common.item.Wand
 import com.deflatedpickle.bugmagic.common.block.tileentity.SpellTable as SpellTableTE
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
@@ -18,9 +18,12 @@ import net.minecraft.util.EnumHand
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.common.ForgeModContainer
+import net.minecraftforge.fluids.Fluid
+import net.minecraftforge.fluids.FluidActionResult
 import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.fluids.FluidUtil
 import net.minecraftforge.fluids.UniversalBucket
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.ItemHandlerHelper
 import net.minecraftforge.items.ItemStackHandler
@@ -50,32 +53,33 @@ class SpellTable : Generic("spell_table", CreativeTabs.DECORATIONS, Material.WOO
                     }
                     else {
                         if (stack != ItemStack.EMPTY) {
-                            when (val item = stack.item) {
-                                is UniversalBucket -> {
-                                    if (tileEntity.fluidTank.fluidAmount < tileEntity.fluidTank.capacity) {
-                                        tileEntity.fluidTank.fill(item.getFluid(stack), true)
-
-                                        stack.shrink(1)
-                                        playerIn.inventory.addItemStackToInventory(ItemStack(Items.BUCKET))
-                                    }
-                                }
-                                is ItemBucket -> {
-                                    if (tileEntity.fluidTank.fluidAmount > 0) {
-                                        tileEntity.fluidTank.drain(tileEntity.fluidTank.fluid, true)
-
-                                        stack.shrink(1)
-                                        playerIn.inventory.addItemStackToInventory(FluidUtil.getFilledBucket(FluidStack(Fluid.BUG_ESSENCE, 1)))
-                                    }
-                                }
+                            // Fill with a fluid
+                            when (stack.item) {
+                                // Add a wand
+                                is Wand -> ItemHandlerHelper.insertItemStacked(tileEntity.wandStackHandler, stack, false)
+                                // Add any other item to the general inventory
                                 else -> {
-                                    ItemHandlerHelper.insertItemStacked(tileEntity.itemStackHandler, stack.splitStack(1), false)
+                                    if (!stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
+                                        ItemHandlerHelper.insertItemStacked(tileEntity.itemStackHandler, stack.splitStack(1), false)
+                                    }
+                                    else {
+                                        var result = FluidUtil.tryEmptyContainer(stack, tileEntity.fluidTank, Fluid.BUCKET_VOLUME, playerIn, true)
 
-                                    worldIn.markBlockRangeForRenderUpdate(pos, pos)
-                                    worldIn.notifyBlockUpdate(pos, state, state, 3)
-                                    worldIn.scheduleBlockUpdate(pos, this, 0, 0)
-                                    tileEntity.markDirty()
+                                        if (!result.success) {
+                                            result = FluidUtil.tryFillContainer(stack, tileEntity.fluidTank, Fluid.BUCKET_VOLUME, playerIn, true)
+                                        }
+
+                                        if (result.isSuccess) {
+                                            playerIn.setHeldItem(hand, result.getResult())
+                                        }
+                                    }
                                 }
                             }
+
+                            worldIn.markBlockRangeForRenderUpdate(pos, pos)
+                            worldIn.notifyBlockUpdate(pos, state, state, 3)
+                            worldIn.scheduleBlockUpdate(pos, this, 0, 0)
+                            tileEntity.markDirty()
                         }
                     }
                 }
