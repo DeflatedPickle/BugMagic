@@ -1,3 +1,5 @@
+/* Copyright (c) 2019 DeflatedPickle under the MIT license */
+
 package com.deflatedpickle.bugmagic.api.capability;
 
 /**
@@ -7,31 +9,31 @@ package com.deflatedpickle.bugmagic.api.capability;
  * @see com.deflatedpickle.bugmagic.common.capability.BugEssence
  */
 public interface IBugEssence {
-    /**
-     * Sets the maximum bug essence
-     *
-     * @param value The value to use
-     */
-    void setMax(int value);
+  /**
+   * Sets the maximum bug essence
+   *
+   * @param value The value to use
+   */
+  void setMax(int value);
 
-    /**
-     * Gets the maximum bug essence
-     *
-     * @return The max value
-     */
-    int getMax();
+  /**
+   * Gets the maximum bug essence
+   *
+   * @return The max value
+   */
+  int getMax();
 
-    /**
-     * Sets the current bug essence
-     *
-     * @param value The value to use
-     */
-    void setCurrent(int value);
+  /**
+   * Sets the current bug essence
+   *
+   * @param value The value to use
+   */
+  void setCurrent(int value);
 
-    /**
-     * Gets the current bug essence
-     *
-     * @return The current value
-     */
-    int getCurrent();
+  /**
+   * Gets the current bug essence
+   *
+   * @return The current value
+   */
+  int getCurrent();
 }

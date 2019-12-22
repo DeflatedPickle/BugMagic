@@ -88,6 +88,12 @@ compileTestKotlin {
 }
 
 spotless {
+    java {
+        googleJavaFormat()
+
+        licenseHeader '/* Copyright (c) $YEAR DeflatedPickle under the MIT license */\n\n'
+    }
+
     kotlin {
         ktlint()
 

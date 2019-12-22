@@ -2,6 +2,9 @@
 
 package com.deflatedpickle.bugmagic.common.block.tileentity
 
+import com.deflatedpickle.bugmagic.common.init.Spell
+import net.minecraft.init.Items
+import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.NetworkManager
 import net.minecraft.network.play.server.SPacketUpdateTileEntity
@@ -29,11 +32,20 @@ class SpellTable(stackLimit: Int = 32) : TileEntity() {
         }
     }
 
+    companion object {
+        const val invalidRecipe = ""
+    }
+
+    var validRecipe = invalidRecipe
+    var recipeProgression = 0f
+
     override fun readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound)
         this.itemStackHandler.deserializeNBT(compound.getCompoundTag("inventory"))
         this.fluidTank.readFromNBT(compound)
         this.wandStackHandler.deserializeNBT(compound.getCompoundTag("wand"))
+        this.validRecipe = compound.getString("valid")
+        this.recipeProgression = compound.getFloat("progression")
     }
 
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
@@ -41,6 +53,8 @@ class SpellTable(stackLimit: Int = 32) : TileEntity() {
         compound.setTag("inventory", this.itemStackHandler.serializeNBT())
         this.fluidTank.writeToNBT(compound)
         compound.setTag("wand", this.wandStackHandler.serializeNBT())
+        compound.setString("valid", this.validRecipe)
+        compound.setFloat("progression", this.recipeProgression)
         return compound
     }
 
@@ -66,10 +80,50 @@ class SpellTable(stackLimit: Int = 32) : TileEntity() {
         return when (capability) {
             CapabilityItemHandler.ITEM_HANDLER_CAPABILITY -> when (facing) {
                 EnumFacing.EAST -> wandStackHandler as T
-                else -> itemStackHandler as T
+                EnumFacing.UP -> itemStackHandler as T
+                else -> super.getCapability(capability, facing)
             }
-            CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY -> fluidTank as T
+            CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY -> when (facing) {
+                EnumFacing.EAST -> fluidTank as T
+                else -> super.getCapability(capability, facing)
+            }
             else -> super.getCapability(capability, facing)
         }
+    }
+
+    override fun markDirty() {
+        for ((k, v) in Spell.registry.entries) {
+            val list = mutableListOf<ItemStack>()
+
+            for (i in 0 until this.itemStackHandler.slots) {
+                this.itemStackHandler.getStackInSlot(i).apply {
+                    if (this.item != Items.AIR) {
+                        list.add(this)
+                    }
+                }
+            }
+
+            if (v.craftingIngredients.isNotEmpty() && list.isNotEmpty()) {
+                // This isn't the best way to validate it but I can't think of a better way
+                // If you can, feel free to make a pull request
+                if (v.craftingIngredients.size == list.size && list.map {
+                            it.item to it.count
+                        }
+                                .containsAll(v.craftingIngredients.map {
+                                    it.item to it.count
+                                })) {
+                    v.registryName?.let {
+                        validRecipe = it.toString()
+                    }
+                    break
+                } else {
+                    validRecipe = invalidRecipe
+                }
+            } else {
+                validRecipe = invalidRecipe
+            }
+        }
+
+        super.markDirty()
     }
 }

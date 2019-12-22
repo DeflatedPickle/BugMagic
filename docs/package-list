@@ -1,4 +1,10 @@
 com.deflatedpickle.bugmagic
 com.deflatedpickle.bugmagic.api
 com.deflatedpickle.bugmagic.api.capability
+com.deflatedpickle.bugmagic.api.common.block
+com.deflatedpickle.bugmagic.api.common.item
+com.deflatedpickle.bugmagic.api.common.item.food
+com.deflatedpickle.bugmagic.api.common.util
+com.deflatedpickle.bugmagic.api.common.util.extension
 com.deflatedpickle.bugmagic.api.entity.mob
+com.deflatedpickle.bugmagic.api.spell

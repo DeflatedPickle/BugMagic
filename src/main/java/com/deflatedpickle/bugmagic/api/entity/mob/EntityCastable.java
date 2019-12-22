@@ -1,3 +1,5 @@
+/* Copyright (c) 2019 DeflatedPickle under the MIT license */
+
 package com.deflatedpickle.bugmagic.api.entity.mob;
 
 import net.minecraft.entity.EntityAgeable;
@@ -14,37 +16,37 @@ import org.jetbrains.annotations.Nullable;
  * @author DeflatedPickle
  */
 public class EntityCastable extends EntityTameable {
-    public EntityCastable(World worldIn) {
-        super(worldIn);
+  public EntityCastable(World worldIn) {
+    super(worldIn);
 
-        this.isImmuneToFire = true;
+    this.isImmuneToFire = true;
 
-        this.enablePersistence();
-    }
+    this.enablePersistence();
+  }
 
-    @Override
-    public boolean isImmuneToExplosions() {
-        return true;
-    }
+  @Override
+  public boolean isImmuneToExplosions() {
+    return true;
+  }
 
-    @Override
-    public boolean isBreedingItem(ItemStack stack) {
-        return false;
-    }
+  @Override
+  public boolean isBreedingItem(ItemStack stack) {
+    return false;
+  }
 
-    @Override
-    public boolean canBeLeashedTo(EntityPlayer player) {
-        return false;
-    }
+  @Override
+  public boolean canBeLeashedTo(EntityPlayer player) {
+    return false;
+  }
 
-    @Override
-    protected boolean canDespawn() {
-        return false;
-    }
+  @Override
+  protected boolean canDespawn() {
+    return false;
+  }
 
-    @Nullable
-    @Override
-    public EntityAgeable createChild(@NotNull EntityAgeable ageable) {
-        return null;
-    }
+  @Nullable
+  @Override
+  public EntityAgeable createChild(@NotNull EntityAgeable ageable) {
+    return null;
+  }
 }

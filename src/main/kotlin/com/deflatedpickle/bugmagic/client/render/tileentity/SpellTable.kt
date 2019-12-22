@@ -118,6 +118,25 @@ class SpellTable : TileEntitySpecialRenderer<SpellTableTE>() {
 
         GlStateManager.popMatrix()
 
+        // Valid render
+        if (te.validRecipe != SpellTableTE.invalidRecipe) {
+            GlStateManager.pushMatrix()
+
+            val validSpeed = 0.06f
+            val validAmplitude = 0.02f
+            GlStateManager.translate(x + 0.5, y + 1.5 + sin(te.world.totalWorldTime.toFloat() * validSpeed) * validAmplitude, z + 0.4)
+            GlStateManager.rotate(te.world.totalWorldTime.toFloat(), 0f, 0.2f, 0f)
+
+            val paperStack = ItemStack(Items.PAPER)
+            var paperModel = Minecraft.getMinecraft().renderItem.getItemModelWithOverrides(paperStack, this.world, null)
+            paperModel = ForgeHooksClient.handleCameraTransforms(paperModel, ItemCameraTransforms.TransformType.GROUND, false)
+
+            Minecraft.getMinecraft().textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE)
+            Minecraft.getMinecraft().renderItem.renderItem(paperStack, paperModel)
+
+            GlStateManager.popMatrix()
+        }
+
         // Item ring
         GlStateManager.pushMatrix()
         GlStateManager.translate(x + 0.5, y + 1, z + 0.5)

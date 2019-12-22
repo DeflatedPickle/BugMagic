@@ -3,6 +3,7 @@
 package com.deflatedpickle.bugmagic.client.event
 
 import com.deflatedpickle.bugmagic.BugMagic
+import com.deflatedpickle.bugmagic.api.IBoundingBox
 import com.deflatedpickle.bugmagic.client.render.entity.layer.LayerCastingShape
 import com.deflatedpickle.bugmagic.common.capability.BugEssence
 import com.deflatedpickle.bugmagic.common.capability.SpellLearner
@@ -10,7 +11,11 @@ import com.deflatedpickle.bugmagic.common.item.Wand
 import com.github.upcraftlp.glasspane.api.event.client.RegisterRenderLayerEvent
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.Gui
+import net.minecraft.client.renderer.GlStateManager
+import net.minecraft.client.renderer.RenderGlobal
+import net.minecraft.util.math.RayTraceResult
 import net.minecraft.util.text.TextFormatting
+import net.minecraftforge.client.event.DrawBlockHighlightEvent
 import net.minecraftforge.client.event.MouseEvent
 import net.minecraftforge.client.event.RenderGameOverlayEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
@@ -20,7 +25,7 @@ class ForgeEventHandler {
     var textHeightPadding = Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT - 0.6f
 
     @SubscribeEvent
-    fun onRenderGameOverlayEvent(event: RenderGameOverlayEvent) {
+    fun onRenderGameOverlay(event: RenderGameOverlayEvent) {
         with(Minecraft.getMinecraft().player) {
             var y = 2f
 
@@ -66,7 +71,7 @@ class ForgeEventHandler {
     }
 
     @SubscribeEvent
-    fun onMouseEvent(event: MouseEvent) {
+    fun onMouse(event: MouseEvent) {
         val player = BugMagic.proxy!!.getPlayer()
         if (player!!.heldItemMainhand.item is Wand && player.isSneaking &&
                 (event.dwheel == -120 || event.dwheel == 120)) {
@@ -81,7 +86,41 @@ class ForgeEventHandler {
     }
 
     @SubscribeEvent
-    fun onRegisterRenderLayerEvent(event: RegisterRenderLayerEvent) {
+    fun onRegisterRenderLayer(event: RegisterRenderLayerEvent) {
         event.addRenderLayer(LayerCastingShape())
+    }
+
+    @SubscribeEvent
+    fun onDrawBlockHighlight(event: DrawBlockHighlightEvent) {
+        when (event.target.typeOfHit) {
+            RayTraceResult.Type.BLOCK -> {
+                with(event.player.world.getBlockState(event.target.blockPos).block) {
+                    when (this) {
+                        is IBoundingBox -> {
+                            val player = event.player
+
+                            for (i in this.boundingBoxList) {
+                                // Copied from RenderGlobal#drawSelectionBox
+                                GlStateManager.enableBlend()
+                                GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO)
+                                GlStateManager.glLineWidth(2.0f)
+                                GlStateManager.disableTexture2D()
+                                GlStateManager.depthMask(false)
+
+                                val d3 = player.lastTickPosX + (player.posX - player.lastTickPosX) * event.partialTicks
+                                val d4 = player.lastTickPosY + (player.posY - player.lastTickPosY) * event.partialTicks
+                                val d5 = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * event.partialTicks
+
+                                RenderGlobal.drawSelectionBoundingBox(i.offset(event.target.blockPos).grow(0.0020000000949949026).offset(-d3, -d4, -d5), 0f, 0f, 0f, 0.5f)
+
+                                GlStateManager.depthMask(true)
+                                GlStateManager.enableTexture2D()
+                                GlStateManager.disableBlend()
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
