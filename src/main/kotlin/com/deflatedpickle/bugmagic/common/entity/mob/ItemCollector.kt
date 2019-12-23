@@ -53,7 +53,7 @@ class ItemCollector(worldIn: World) : EntityCastable(worldIn) {
             - Walks to an item (if it found one)
          */
 
-        val findItem = FindItem(this)
+        val findItem = FindItem(this, { this.dataManager.get(dataInventoryPosition) }, 7.0)
 
         this.tasks.addTask(1, FindClosestTileEntity(this, dataInventoryPosition, {
             it is IInventory

@@ -1,6 +1,6 @@
 /* Copyright (c) 2019 DeflatedPickle under the MIT license */
 
-package com.deflatedpickle.bugmagic.api.common.util.extension
+package com.deflatedpickle.bugmagic.api.client.util.extension
 
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.FontRenderer

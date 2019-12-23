@@ -3,15 +3,15 @@
 package com.deflatedpickle.bugmagic.common.entity.ai
 
 import com.deflatedpickle.bugmagic.BugMagic
-import com.deflatedpickle.bugmagic.common.entity.mob.ItemCollector
 import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.ai.EntityAIBase
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.init.Blocks
 import net.minecraft.init.Items
 import net.minecraft.util.math.AxisAlignedBB
+import net.minecraft.util.math.BlockPos
 
-class FindItem(private val entityIn: EntityLiving) : EntityAIBase() {
+class FindItem(private val entityIn: EntityLiving, private val origin: () -> BlockPos, private val distance: Double) : EntityAIBase() {
     var entityItem: EntityItem? = null
 
     override fun shouldExecute(): Boolean {
@@ -20,9 +20,9 @@ class FindItem(private val entityIn: EntityLiving) : EntityAIBase() {
 
     override fun updateTask() {
         val item = this.entityIn.world.findNearestEntityWithinAABB(EntityItem::class.java,
-                AxisAlignedBB(entityIn.dataManager.get(ItemCollector.dataInventoryPosition)
+                AxisAlignedBB(origin()
                         .add(0.5, 0.0, 0.5))
-                        .grow(7.0),
+                        .grow(distance),
                 this.entityIn) as EntityItem?
 
         item?.let {

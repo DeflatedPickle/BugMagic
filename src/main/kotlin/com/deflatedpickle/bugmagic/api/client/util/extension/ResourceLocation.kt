@@ -1,8 +1,8 @@
 /* Copyright (c) 2019 DeflatedPickle under the MIT license */
 
-package com.deflatedpickle.bugmagic.api.common.util.extension
+package com.deflatedpickle.bugmagic.api.client.util.extension
 
-import com.deflatedpickle.bugmagic.api.common.util.OpenGL
+import com.deflatedpickle.bugmagic.api.client.util.OpenGL
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.texture.TextureMap
 import net.minecraft.util.ResourceLocation

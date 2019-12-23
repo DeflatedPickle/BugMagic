@@ -9,24 +9,21 @@ import com.cout970.modelloader.api.formats.gltf.GltfAnimationBuilder
 import com.deflatedpickle.bugmagic.Reference
 import com.deflatedpickle.bugmagic.api.IModelRegisterer
 import com.deflatedpickle.bugmagic.api.IModelReloadListener
+import com.deflatedpickle.bugmagic.api.client.RenderCastable
 import com.deflatedpickle.bugmagic.common.entity.mob.ItemCollector as Mob
 import com.deflatedpickle.bugmagic.common.item.Wand
 import net.minecraft.client.Minecraft
-import net.minecraft.client.model.ModelBase
 import net.minecraft.client.renderer.GlStateManager
-import net.minecraft.client.renderer.Tessellator
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
-import net.minecraft.client.renderer.entity.RenderLiving
 import net.minecraft.client.renderer.entity.RenderManager
-import net.minecraft.client.renderer.texture.TextureMap
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.util.ResourceLocation
-import net.minecraftforge.client.ForgeHooksClient
-import org.lwjgl.opengl.GL11
+import net.minecraft.util.math.AxisAlignedBB
+import org.lwjgl.util.ReadableColor
 
-class ItemCollector(renderManager: RenderManager) : RenderLiving<Mob>(renderManager, object : ModelBase() {}, 0f) {
+class ItemCollector(renderManager: RenderManager) : RenderCastable<Mob>(renderManager, 0f) {
     companion object : IModelRegisterer, IModelReloadListener {
+        val axisAlignedBB = AxisAlignedBB(-6.0, 0.1, -6.0, 7.0, 1.0, 7.0)
+
         var models: HashMap<String, IAnimatedModel> = HashMap()
 
         override fun registerModels() {
@@ -53,8 +50,6 @@ class ItemCollector(renderManager: RenderManager) : RenderLiving<Mob>(renderMana
         }
     }
 
-    private val tessellator = Tessellator.getInstance()
-
     override fun getEntityTexture(entity: Mob): ResourceLocation? {
         return null
     }
@@ -63,48 +58,33 @@ class ItemCollector(renderManager: RenderManager) : RenderLiving<Mob>(renderMana
         super.doRender(entity, x, y, z, entityYaw, partialTicks)
 
         GlStateManager.pushMatrix()
+
+        if (entity.owner?.heldItemMainhand?.item is Wand) {
+            val blockPos = entity.dataManager.get(Mob.dataInventoryPosition)
+            drawWorkArea(
+                    axisAlignedBB,
+                    blockPos,
+                    Minecraft.getMinecraft().player,
+                    partialTicks
+            )
+        }
+
         GlStateManager.translate(x, y, z)
 
         if (entity.owner?.heldItemMainhand?.item is Wand) {
-            drawInventoryLine(entity)
+            drawInventoryLine(
+                    entity,
+                    entity.dataManager.get(Mob.dataInventoryPosition),
+                    ReadableColor.RED
+            )
         }
 
         GlStateManager.rotate(entityYaw, 0f, 1f, 0f)
 
-        drawItem(entity)
+        drawItem(entity, entity.dataManager.get(Mob.dataItemStack))
 
         val time = (entity.ticksExisted and 0xFFFFFF).toDouble() + partialTicks
         models["Idle"]!!.render(time)
-
-        GlStateManager.popMatrix()
-    }
-
-    private fun drawInventoryLine(entity: Mob) {
-        GL11.glPushAttrib(GL11.GL_CURRENT_BIT)
-        GlStateManager.disableTexture2D()
-        GlStateManager.color(1f, 0f, 0f, 1f)
-        tessellator.buffer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION)
-        tessellator.buffer.pos(0.0, 0.0, 0.0).endVertex()
-        entity.dataManager.get(Mob.dataInventoryPosition).also {
-            tessellator.buffer.pos(it.x - entity.posX + 0.5, it.y - entity.posY + 0.5, it.z - entity.posZ + 0.5).endVertex()
-        }
-        tessellator.draw()
-        GlStateManager.enableTexture2D()
-        GL11.glPopAttrib()
-    }
-
-    fun drawItem(entity: Mob) {
-        GlStateManager.pushMatrix()
-
-        GlStateManager.translate(0f, 0.2f, 0f)
-
-        val stack = entity.dataManager.get(Mob.dataItemStack)
-
-        var model = Minecraft.getMinecraft().renderItem.getItemModelWithOverrides(stack, entity.world, null)
-        model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.GROUND, false)
-
-        Minecraft.getMinecraft().textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE)
-        Minecraft.getMinecraft().renderItem.renderItem(stack, model)
 
         GlStateManager.popMatrix()
     }

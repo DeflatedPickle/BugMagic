@@ -5,6 +5,7 @@ package com.deflatedpickle.bugmagic.common.block
 import com.deflatedpickle.bugmagic.api.IBoundingBox
 import com.deflatedpickle.bugmagic.api.common.block.Generic
 import com.deflatedpickle.bugmagic.api.common.util.extension.dropSlot
+import com.deflatedpickle.bugmagic.api.common.util.extension.isNotEmpty
 import com.deflatedpickle.bugmagic.api.common.util.extension.update
 import com.deflatedpickle.bugmagic.common.block.tileentity.SpellTable as SpellTableTE
 import com.deflatedpickle.bugmagic.common.init.Spell
@@ -129,14 +130,11 @@ class SpellTable : Generic("spell_table", CreativeTabs.DECORATIONS, Material.WOO
                         // TODO: Track where the items should be, then allow clicking on them to take them out
                         if (playerIn.isSneaking) {
                             if (itemCount - 1 >= 0) {
-                                val dropStack = tileEntity.itemStackHandler.extractItem(itemCount - 1, 1, false)
-                                val entity = EntityItem(worldIn, pos.x.toDouble(), pos.y.toDouble() + 1, pos.z.toDouble(), dropStack)
-                                worldIn.spawnEntity(entity)
-
+                                tileEntity.itemStackHandler.dropSlot(itemCount - 1, worldIn, pos)
                                 tileEntity.update(worldIn, this, state)
                             }
                         } else {
-                            if (stack != ItemStack.EMPTY) {
+                            if (stack.isNotEmpty()) {
                                 ItemHandlerHelper.insertItemStacked(tileEntity.itemStackHandler, stack.splitStack(1), false)
 
                                 tileEntity.update(worldIn, this, state)

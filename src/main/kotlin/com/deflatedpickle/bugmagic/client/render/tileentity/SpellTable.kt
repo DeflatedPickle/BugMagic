@@ -2,9 +2,10 @@
 
 package com.deflatedpickle.bugmagic.client.render.tileentity
 
-import com.deflatedpickle.bugmagic.api.common.util.extension.drawNameTag
-import com.deflatedpickle.bugmagic.api.common.util.extension.render
-import com.deflatedpickle.bugmagic.api.common.util.extension.renderCube
+import com.deflatedpickle.bugmagic.api.client.util.extension.drawNameTag
+import com.deflatedpickle.bugmagic.api.client.util.extension.render
+import com.deflatedpickle.bugmagic.api.client.util.extension.renderCube
+import com.deflatedpickle.bugmagic.api.common.util.Math
 import com.deflatedpickle.bugmagic.common.block.tileentity.SpellTable as SpellTableTE
 import com.deflatedpickle.bugmagic.common.item.Wand
 import kotlin.math.PI
@@ -36,7 +37,8 @@ class SpellTable : TileEntitySpecialRenderer<SpellTableTE>() {
 
         GlStateManager.pushMatrix()
         GlStateManager.translate(0f, 0.2f, 0f)
-        Minecraft.getMinecraft().fontRenderer.drawNameTag("${te.fluidTank.fluid?.localizedName ?: "Empty"}\n${te.fluidTank.fluidAmount} / 1000 mB", x.toInt(), y.toInt())
+        Minecraft.getMinecraft().fontRenderer.drawNameTag("${te.fluidTank.fluid?.localizedName
+                ?: "Empty"}\n${te.fluidTank.fluidAmount} / 1000 mB", x.toInt(), y.toInt())
         GlStateManager.popMatrix()
 
         GlStateManager.rotate(22.5f, 0f, 0f, 1f)
@@ -120,7 +122,7 @@ class SpellTable : TileEntitySpecialRenderer<SpellTableTE>() {
 
         val itemCount = 0.until(te.itemStackHandler.slots).count { te.itemStackHandler.getStackInSlot(it) != ItemStack.EMPTY }
 
-        GlStateManager.rotate(te.world.totalWorldTime.toFloat(), 0f, 0.4f, 0f)
+        GlStateManager.rotate(te.world.totalWorldTime.toFloat(), 0f, 0.2f, 0f)
         GlStateManager.pushMatrix()
 
         for (i in 0 until te.itemStackHandler.slots) {
@@ -158,8 +160,14 @@ class SpellTable : TileEntitySpecialRenderer<SpellTableTE>() {
                     val smallZ = smallRadius * sin(smallTheta)
 
                     val smallSpeed = 0.03
-                    val smallAmplitude = 0.12f
-                    GlStateManager.translate(smallX, sin(((te.world.totalWorldTime.toFloat() + 360 / j) * (PI / 2)) * smallSpeed) * smallAmplitude, smallZ)
+                    val smallAmplitude = 0.08f
+                    GlStateManager.translate(smallX, sin(((te.world.totalWorldTime + 360 /
+                            // If J is less than half of the item stack, uses J
+                            // If J is more, J is reversed with the stack size
+                            if (j < stack.count / 2) j else Math.reverse(1, stack.count, j)
+                            // Pi * 2 is a bit more bumpy and less of a connected loop
+                            // Pi * 2.55 seems to be a sweet spot
+                            ) * (PI * 2.55)) * smallSpeed) * smallAmplitude, smallZ)
 
                     stack.render(world)
 

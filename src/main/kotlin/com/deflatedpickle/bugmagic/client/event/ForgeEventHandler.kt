@@ -4,6 +4,7 @@ package com.deflatedpickle.bugmagic.client.event
 
 import com.deflatedpickle.bugmagic.BugMagic
 import com.deflatedpickle.bugmagic.api.IBoundingBox
+import com.deflatedpickle.bugmagic.api.client.util.OpenGL
 import com.deflatedpickle.bugmagic.client.render.entity.layer.LayerCastingShape
 import com.deflatedpickle.bugmagic.common.capability.BugEssence
 import com.deflatedpickle.bugmagic.common.capability.SpellLearner
@@ -11,8 +12,6 @@ import com.deflatedpickle.bugmagic.common.item.Wand
 import com.github.upcraftlp.glasspane.api.event.client.RegisterRenderLayerEvent
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.Gui
-import net.minecraft.client.renderer.GlStateManager
-import net.minecraft.client.renderer.RenderGlobal
 import net.minecraft.util.math.RayTraceResult
 import net.minecraft.util.text.TextFormatting
 import net.minecraftforge.client.event.DrawBlockHighlightEvent
@@ -100,26 +99,7 @@ class ForgeEventHandler {
                             val player = event.player
 
                             for (i in this.boundingBoxList) {
-                                // Copied from RenderGlobal#drawSelectionBox
-                                GlStateManager.enableBlend()
-                                GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO)
-                                GlStateManager.glLineWidth(2.0f)
-                                GlStateManager.disableTexture2D()
-                                GlStateManager.depthMask(false)
-
-                                val d3 = player.lastTickPosX + (player.posX - player.lastTickPosX) * event.partialTicks
-                                val d4 = player.lastTickPosY + (player.posY - player.lastTickPosY) * event.partialTicks
-                                val d5 = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * event.partialTicks
-
-                                RenderGlobal.drawSelectionBoundingBox(i
-                                        .offset(event.target.blockPos)
-                                        .grow(0.0020000000949949026)
-                                        .offset(-d3, -d4, -d5),
-                                        0f, 0f, 0f, 0.5f)
-
-                                GlStateManager.depthMask(true)
-                                GlStateManager.enableTexture2D()
-                                GlStateManager.disableBlend()
+                                OpenGL.drawSelectionBox(i, event.target.blockPos, player, event.partialTicks)
                             }
                         }
                     }
