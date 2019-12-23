@@ -14,7 +14,11 @@ fun FontRenderer.drawNameTag(string: String, x: Int, y: Int, colour: Int = 0xFFF
     GlStateManager.rotate(-Minecraft.getMinecraft().renderManager.playerViewX, 1.0F, 0.0F, 0.0F)
     GlStateManager.scale(0.0075F, -0.0075F, 0.0075F)
 
-    this.drawString(string, x - this.getStringWidth(string) / 2, y - this.FONT_HEIGHT / 2, colour)
+    val lines = string.split("\n")
+
+    for ((i, str) in lines.reversed().withIndex()) {
+        this.drawString(str, x - this.getStringWidth(str) / 2, y - i * (this.FONT_HEIGHT / 2) * lines.count(), colour)
+    }
 
     GlStateManager.popMatrix()
 }

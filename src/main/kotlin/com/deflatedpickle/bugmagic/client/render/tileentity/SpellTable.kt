@@ -36,7 +36,7 @@ class SpellTable : TileEntitySpecialRenderer<SpellTableTE>() {
 
         GlStateManager.pushMatrix()
         GlStateManager.translate(0f, 0.2f, 0f)
-        Minecraft.getMinecraft().fontRenderer.drawNameTag("${te.fluidTank.fluidAmount} / 1000 mB", x.toInt(), y.toInt())
+        Minecraft.getMinecraft().fontRenderer.drawNameTag("${te.fluidTank.fluid?.localizedName ?: "Empty"}\n${te.fluidTank.fluidAmount} / 1000 mB", x.toInt(), y.toInt())
         GlStateManager.popMatrix()
 
         GlStateManager.rotate(22.5f, 0f, 0f, 1f)
