@@ -4,6 +4,7 @@ package com.deflatedpickle.bugmagic.common.block
 
 import com.deflatedpickle.bugmagic.api.IBoundingBox
 import com.deflatedpickle.bugmagic.api.common.block.Generic
+import com.deflatedpickle.bugmagic.api.common.util.extension.dropSlot
 import com.deflatedpickle.bugmagic.api.common.util.extension.update
 import com.deflatedpickle.bugmagic.common.block.tileentity.SpellTable as SpellTableTE
 import com.deflatedpickle.bugmagic.common.init.Spell
@@ -41,6 +42,7 @@ class SpellTable : Generic("spell_table", CreativeTabs.DECORATIONS, Material.WOO
                 0.0, 0.0, 0.1,
                 1.0, 0.8, 0.9
         )
+
         val liquidAABB = AxisAlignedBB(
                 1.0, 0.5, 0.5,
                 1.2, 0.95, 0.8
@@ -96,25 +98,17 @@ class SpellTable : Generic("spell_table", CreativeTabs.DECORATIONS, Material.WOO
                             tileEntity.update(worldIn, this, state)
                         }
                     } else if (wandAABB.grow(0.2).contains(hitVector)) {
-                        if (stack.item is Wand) {
-                            tileEntity.wandStackHandler.insertItem(0, stack.splitStack(1), false)
+                        if (playerIn.isSneaking) {
+                            tileEntity.wandStackHandler.dropSlot(0, worldIn, pos)
                             tileEntity.update(worldIn, this, state)
-                        } else if (tileEntity.wandStackHandler.getStackInSlot(0) != ItemStack.EMPTY) {
-                            val dropStack = tileEntity.wandStackHandler.extractItem(0, 1, false)
-                            val entity = EntityItem(worldIn, pos.x.toDouble(), pos.y.toDouble() + 1, pos.z.toDouble(), dropStack)
-                            worldIn.spawnEntity(entity)
-
+                        } else if (stack.item is Wand) {
+                            tileEntity.wandStackHandler.insertItem(0, stack.splitStack(1), false)
                             tileEntity.update(worldIn, this, state)
                         }
                     } else if (inkAABB.grow(0.2).contains(hitVector)) {
                         if (playerIn.isSneaking) {
-                            if (tileEntity.featherStackHandler.getStackInSlot(0) != ItemStack.EMPTY) {
-                                val dropStack = tileEntity.featherStackHandler.extractItem(0, 1, false)
-                                val entity = EntityItem(worldIn, pos.x.toDouble(), pos.y.toDouble() + 1, pos.z.toDouble(), dropStack)
-                                worldIn.spawnEntity(entity)
-
-                                tileEntity.update(worldIn, this, state)
-                            }
+                            tileEntity.featherStackHandler.dropSlot(0, worldIn, pos)
+                            tileEntity.update(worldIn, this, state)
                         } else {
                             when (stack.item) {
                                 Items.FEATHER -> {
@@ -149,18 +143,12 @@ class SpellTable : Generic("spell_table", CreativeTabs.DECORATIONS, Material.WOO
                             }
                         }
                     } else {
-                        val tileEntity = worldIn.getTileEntity(pos)
-
-                        if (tileEntity is com.deflatedpickle.bugmagic.common.block.tileentity.SpellTable) {
-                            val stack = playerIn.heldItemMainhand
-
-                            if (stack.item is Wand) {
-                                val split = tileEntity.validRecipe.split(":")
-                                Spell.registry.getValue(ResourceLocation(split[0], split[1]))?.let {
-                                    if (tileEntity.recipeProgression < it.craftingTime) {
-                                        println(tileEntity.recipeProgression)
-                                        tileEntity.recipeProgression++
-                                    }
+                        if (stack.item is Wand) {
+                            val split = tileEntity.validRecipe.split(":")
+                            Spell.registry.getValue(ResourceLocation(split[0], split[1]))?.let {
+                                if (tileEntity.recipeProgression < it.craftingTime) {
+                                    println(tileEntity.recipeProgression)
+                                    tileEntity.recipeProgression++
                                 }
                             }
                         }

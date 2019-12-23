@@ -9,6 +9,8 @@ import net.minecraft.item.ItemStack
 import net.minecraft.world.World
 import net.minecraftforge.client.ForgeHooksClient
 
+fun ItemStack.isNotEmpty() = !this.isEmpty
+
 fun ItemStack.render(world: World) {
     var model = Minecraft.getMinecraft().renderItem.getItemModelWithOverrides(this, world, null)
     model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.GROUND, false)
