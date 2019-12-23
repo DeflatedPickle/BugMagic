@@ -24,17 +24,20 @@ import net.minecraftforge.items.ItemStackHandler
  * @see com.deflatedpickle.bugmagic.client.render.tileentity.SpellTable
  */
 class SpellTable(stackLimit: Int = 32) : TileEntity() {
-    val itemStackHandler = ItemStackHandler(stackLimit)
-    val fluidTank = FluidTank(VFluid.BUCKET_VOLUME)
-    val wandStackHandler = object : ItemStackHandler(1) {
-        override fun getSlotLimit(slot: Int): Int {
-            return 1
-        }
-    }
-
     companion object {
         const val invalidRecipe = ""
     }
+
+    val itemStackHandler = ItemStackHandler(stackLimit)
+    val fluidTank = FluidTank(VFluid.BUCKET_VOLUME)
+    val wandStackHandler = object : ItemStackHandler(1) {
+        override fun getSlotLimit(slot: Int): Int = 1
+    }
+    val featherStackHandler = object : ItemStackHandler(1) {
+        override fun getSlotLimit(slot: Int): Int = 1
+    }
+
+    var ink = 0f
 
     var validRecipe = invalidRecipe
     var recipeProgression = 0f
@@ -44,6 +47,8 @@ class SpellTable(stackLimit: Int = 32) : TileEntity() {
         this.itemStackHandler.deserializeNBT(compound.getCompoundTag("inventory"))
         this.fluidTank.readFromNBT(compound)
         this.wandStackHandler.deserializeNBT(compound.getCompoundTag("wand"))
+        this.featherStackHandler.deserializeNBT(compound.getCompoundTag("feather"))
+        this.ink = compound.getFloat("ink")
         this.validRecipe = compound.getString("valid")
         this.recipeProgression = compound.getFloat("progression")
     }
@@ -53,6 +58,8 @@ class SpellTable(stackLimit: Int = 32) : TileEntity() {
         compound.setTag("inventory", this.itemStackHandler.serializeNBT())
         this.fluidTank.writeToNBT(compound)
         compound.setTag("wand", this.wandStackHandler.serializeNBT())
+        compound.setTag("feather", this.featherStackHandler.serializeNBT())
+        compound.setFloat("ink", this.ink)
         compound.setString("valid", this.validRecipe)
         compound.setFloat("progression", this.recipeProgression)
         return compound

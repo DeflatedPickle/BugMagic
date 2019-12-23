@@ -111,7 +111,11 @@ class ForgeEventHandler {
                                 val d4 = player.lastTickPosY + (player.posY - player.lastTickPosY) * event.partialTicks
                                 val d5 = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * event.partialTicks
 
-                                RenderGlobal.drawSelectionBoundingBox(i.offset(event.target.blockPos).grow(0.0020000000949949026).offset(-d3, -d4, -d5), 0f, 0f, 0f, 0.5f)
+                                RenderGlobal.drawSelectionBoundingBox(i
+                                        .offset(event.target.blockPos)
+                                        .grow(0.0020000000949949026)
+                                        .offset(-d3, -d4, -d5),
+                                        0f, 0f, 0f, 0.5f)
 
                                 GlStateManager.depthMask(true)
                                 GlStateManager.enableTexture2D()

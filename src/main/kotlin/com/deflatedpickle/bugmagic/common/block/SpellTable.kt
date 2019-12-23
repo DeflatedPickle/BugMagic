@@ -14,6 +14,7 @@ import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.Entity
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.BlockRenderLayer
@@ -51,8 +52,13 @@ class SpellTable : Generic("spell_table", CreativeTabs.DECORATIONS, Material.WOO
         )
 
         val matAABB = AxisAlignedBB(
-                0.2, 0.8, 0.2,
+                0.2, 0.82, 0.2,
                 0.8, 0.9, 0.6
+        )
+
+        val inkAABB = AxisAlignedBB(
+                0.03, 0.82, 0.6,
+                0.28, 1.0, 0.8
         )
     }
 
@@ -99,6 +105,31 @@ class SpellTable : Generic("spell_table", CreativeTabs.DECORATIONS, Material.WOO
                             worldIn.spawnEntity(entity)
 
                             tileEntity.update(worldIn, this, state)
+                        }
+                    } else if (inkAABB.grow(0.2).contains(hitVector)) {
+                        if (playerIn.isSneaking) {
+                            if (tileEntity.featherStackHandler.getStackInSlot(0) != ItemStack.EMPTY) {
+                                val dropStack = tileEntity.featherStackHandler.extractItem(0, 1, false)
+                                val entity = EntityItem(worldIn, pos.x.toDouble(), pos.y.toDouble() + 1, pos.z.toDouble(), dropStack)
+                                worldIn.spawnEntity(entity)
+
+                                tileEntity.update(worldIn, this, state)
+                            }
+                        } else {
+                            when (stack.item) {
+                                Items.FEATHER -> {
+                                    tileEntity.featherStackHandler.insertItem(0, stack.splitStack(1), false)
+                                    tileEntity.update(worldIn, this, state)
+                                }
+                                Items.DYE -> {
+                                    if (stack.metadata == 0 && tileEntity.ink != 1f) {
+                                        stack.shrink(1)
+
+                                        tileEntity.ink = 1f
+                                        tileEntity.update(worldIn, this, state)
+                                    }
+                                }
+                            }
                         }
                     } else if (matAABB.grow(0.2).contains(hitVector)) {
                         // TODO: Track where the items should be, then allow clicking on them to take them out
@@ -164,6 +195,7 @@ class SpellTable : Generic("spell_table", CreativeTabs.DECORATIONS, Material.WOO
     override fun getBoundingBoxList(): MutableList<AxisAlignedBB> = mutableListOf(
             liquidAABB,
             wandAABB,
-            matAABB
+            matAABB,
+            inkAABB
     )
 }
