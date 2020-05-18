@@ -27,27 +27,32 @@ import net.minecraftforge.fml.relauncher.Side
 
 open class Proxy {
     open fun preInit(event: FMLPreInitializationEvent) {
+        // Statically initializes objects
         Fluid
         Smelting
         TileEntity
 
+        // Register capabilities
         BugEssence.register()
         SpellLearner.register()
         SpellCaster.register()
 
+        // Register packets
         BugMagic.CHANNEL.registerMessage(HandlerBugEssence::class.java, MessageBugEssence::class.java, Message.BUG_ESSENCE.ordinal, Side.CLIENT)
         BugMagic.CHANNEL.registerMessage(HandlerSelectedSpell::class.java, MessageSelectedSpell::class.java, Message.SELECTED_SPELL.ordinal, Side.SERVER)
         BugMagic.CHANNEL.registerMessage(HandlerSpellCaster::class.java, MessageSpellCaster::class.java, Message.SPELL_CASTER.ordinal, Side.CLIENT)
     }
 
     open fun init(event: FMLInitializationEvent) {
+        // Register events
+        /*MinecraftForge.EVENT_BUS.register(RegistryEventHandler)
         MinecraftForge.EVENT_BUS.register(CapabilityEventHandler)
-        MinecraftForge.EVENT_BUS.register(RegistryEventHandler)
         MinecraftForge.EVENT_BUS.register(SpellRegistryEventHandler)
-        
-        MinecraftForge.EVENT_BUS.register(ItemEventHandler)
-        MinecraftForge.EVENT_BUS.register(PlayerEventHandler)
 
+        MinecraftForge.EVENT_BUS.register(ItemEventHandler)
+        MinecraftForge.EVENT_BUS.register(PlayerEventHandler)*/
+
+        // Statically initialize entities
         Entity
     }
 

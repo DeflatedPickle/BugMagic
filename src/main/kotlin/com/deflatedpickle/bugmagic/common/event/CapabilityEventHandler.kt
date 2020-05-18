@@ -2,6 +2,7 @@
 
 package com.deflatedpickle.bugmagic.common.event
 
+import com.deflatedpickle.bugmagic.Reference
 import com.deflatedpickle.bugmagic.common.capability.BugEssence
 import com.deflatedpickle.bugmagic.common.capability.SpellCaster
 import com.deflatedpickle.bugmagic.common.capability.SpellLearner
@@ -10,8 +11,10 @@ import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraftforge.event.AttachCapabilitiesEvent
+import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 
+@Mod.EventBusSubscriber(modid = Reference.MOD_ID)
 object CapabilityEventHandler {
     @SubscribeEvent
     fun onAttachCapabilitiesEventEntity(event: AttachCapabilitiesEvent<Entity>) {

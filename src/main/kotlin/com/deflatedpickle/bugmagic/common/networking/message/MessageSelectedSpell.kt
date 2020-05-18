@@ -2,10 +2,18 @@
 
 package com.deflatedpickle.bugmagic.common.networking.message
 
+import com.deflatedpickle.bugmagic.common.networking.handler.HandlerSelectedSpell
 import io.netty.buffer.ByteBuf
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage
 
-class MessageSelectedSpell(var index: Int) : IMessage {
+/**
+ * A packet that stores the index of the currently selected spell for an entity
+ * @see [HandlerSelectedSpell]
+ */
+class MessageSelectedSpell(
+        var index: Int
+) : IMessage {
+    @Suppress("unused")
     constructor() : this(0)
 
     override fun toBytes(buf: ByteBuf) {

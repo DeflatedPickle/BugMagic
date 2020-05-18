@@ -7,9 +7,11 @@ import com.deflatedpickle.bugmagic.common.init.Spell
 import com.deflatedpickle.bugmagic.common.init.SpellRecipe
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.event.RegistryEvent
+import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.registries.RegistryBuilder
 
+@Mod.EventBusSubscriber(modid = Reference.MOD_ID)
 object RegistryEventHandler {
     @SubscribeEvent
     fun onRegisterEventNewRegistry(event: RegistryEvent.NewRegistry) {

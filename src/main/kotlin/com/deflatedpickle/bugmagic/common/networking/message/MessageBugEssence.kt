@@ -2,11 +2,21 @@
 
 package com.deflatedpickle.bugmagic.common.networking.message
 
+import com.deflatedpickle.bugmagic.common.networking.handler.HandlerBugEssence
 import io.netty.buffer.ByteBuf
 import net.minecraftforge.fml.common.network.ByteBufUtils
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage
 
-class MessageBugEssence(var entityID: Int, var max: Int, var current: Int) : IMessage {
+/**
+ * A packet that contains; an entity ID, the maximum amount of bug essence they can have and their current bug essence.
+ * @see [HandlerBugEssence]
+ */
+class MessageBugEssence(
+        var entityID: Int,
+        var max: Int,
+        var current: Int
+) : IMessage {
+    @Suppress("unused")
     constructor() : this(1, -1, -1)
 
     override fun toBytes(buf: ByteBuf) {

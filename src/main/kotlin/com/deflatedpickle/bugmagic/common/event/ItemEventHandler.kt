@@ -2,11 +2,14 @@
 
 package com.deflatedpickle.bugmagic.common.event
 
+import com.deflatedpickle.bugmagic.Reference
 import com.deflatedpickle.bugmagic.common.capability.SpellCaster
 import com.deflatedpickle.bugmagic.common.capability.SpellLearner
+import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.gameevent.PlayerEvent
 
+@Mod.EventBusSubscriber(modid = Reference.MOD_ID)
 object ItemEventHandler {
     @SubscribeEvent
     fun onItemPickupEvent(event: PlayerEvent.ItemPickupEvent) {
