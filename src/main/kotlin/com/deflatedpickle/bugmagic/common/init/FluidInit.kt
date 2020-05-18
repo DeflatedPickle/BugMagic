@@ -7,7 +7,7 @@ import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fluids.Fluid
 import net.minecraftforge.fluids.FluidRegistry
 
-object Fluid {
+object FluidInit {
     val BUG_ESSENCE = register("bug_essence")
 
     fun register(name: String): Fluid {

@@ -5,8 +5,8 @@ package com.deflatedpickle.bugmagic.common.init
 import net.minecraft.item.ItemStack
 import net.minecraftforge.fml.common.registry.GameRegistry
 
-object Smelting {
+object SmeltingInit {
     init {
-        GameRegistry.addSmelting(Block.BUG_BUNDLE, ItemStack(Food.PETRIFIED_BUG_BUNDLE), 4f)
+        GameRegistry.addSmelting(BlockInit.BUG_BUNDLE, ItemStack(FoodInit.PETRIFIED_BUG_BUNDLE), 4f)
     }
 }

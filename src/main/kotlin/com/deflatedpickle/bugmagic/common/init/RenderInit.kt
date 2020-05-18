@@ -19,7 +19,7 @@ import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.fml.client.registry.ClientRegistry
 import net.minecraftforge.fml.client.registry.RenderingRegistry
 
-object Render {
+object RenderInit {
     init {
         RenderingRegistry.registerEntityRenderingHandler(ItemCollector::class.java, ::ItemCollectorRender)
         ItemCollectorRender.registerModels()
@@ -29,11 +29,11 @@ object Render {
 
         ClientRegistry.bindTileEntitySpecialRenderer(SpellTable::class.java, SpellTableRender())
 
-        ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(Block.BUG_ESSENCE), ItemMeshDefinition {
+        ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(BlockInit.BUG_ESSENCE), ItemMeshDefinition {
             return@ItemMeshDefinition ModelResourceLocation(ResourceLocation(Reference.MOD_ID, "bug_essence"), "fluid")
         })
 
-        ModelLoader.setCustomStateMapper(Block.BUG_ESSENCE, object : StateMapperBase() {
+        ModelLoader.setCustomStateMapper(BlockInit.BUG_ESSENCE, object : StateMapperBase() {
             override fun getModelResourceLocation(state: IBlockState): ModelResourceLocation {
                 return ModelResourceLocation(ResourceLocation(Reference.MOD_ID, "bug_essence"), "fluid")
             }

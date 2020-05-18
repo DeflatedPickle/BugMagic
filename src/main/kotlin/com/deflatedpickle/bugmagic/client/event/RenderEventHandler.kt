@@ -19,7 +19,7 @@ import net.minecraftforge.client.event.MouseEvent
 import net.minecraftforge.client.event.RenderGameOverlayEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 
-class ForgeEventHandler {
+object RenderEventHandler {
     val textHeight = Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT * 1.4f
     var textHeightPadding = Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT - 0.6f
 

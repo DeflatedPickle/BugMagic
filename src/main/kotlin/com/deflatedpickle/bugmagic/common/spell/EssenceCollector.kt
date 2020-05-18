@@ -2,12 +2,12 @@
 
 package com.deflatedpickle.bugmagic.common.spell
 
-import com.deflatedpickle.bugmagic.api.spell.ASpell
+import com.deflatedpickle.bugmagic.api.spell.Spell
 import com.deflatedpickle.bugmagic.common.entity.mob.EssenceCollector as EssenceCollectorMob
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 
-class EssenceCollector : ASpell() {
+class EssenceCollector : Spell() {
     override fun getName(): String = "Essence Collector"
     override fun getManaLoss(): Int = 40
     override fun getCastCount(): Int = 2

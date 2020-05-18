@@ -2,10 +2,10 @@
 
 package com.deflatedpickle.bugmagic.client
 
-import com.deflatedpickle.bugmagic.client.event.ForgeEventHandler
+import com.deflatedpickle.bugmagic.client.event.RenderEventHandler
 import com.deflatedpickle.bugmagic.client.event.pre.Handler
 import com.deflatedpickle.bugmagic.common.Proxy
-import com.deflatedpickle.bugmagic.common.init.Render
+import com.deflatedpickle.bugmagic.common.init.RenderInit
 import net.minecraft.client.Minecraft
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraftforge.common.MinecraftForge
@@ -16,7 +16,7 @@ class Proxy : Proxy() {
     override fun preInit(event: FMLPreInitializationEvent) {
         super.preInit(event)
 
-        Render
+        RenderInit
 
         MinecraftForge.EVENT_BUS.register(Handler())
     }
@@ -24,7 +24,7 @@ class Proxy : Proxy() {
     override fun init(event: FMLInitializationEvent) {
         super.init(event)
 
-        MinecraftForge.EVENT_BUS.register(ForgeEventHandler())
+        MinecraftForge.EVENT_BUS.register(RenderEventHandler)
     }
 
     override fun getPlayer(): EntityPlayer? {

@@ -2,13 +2,13 @@
 
 package com.deflatedpickle.bugmagic.common.spell
 
-import com.deflatedpickle.bugmagic.api.spell.ASpell
+import com.deflatedpickle.bugmagic.api.spell.Spell
 import com.deflatedpickle.bugmagic.common.entity.mob.AutoHarvester as AutoHarvesterMob
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 
 // Note: This bug is based on Thrips
-class AutoHarvester : ASpell() {
+class AutoHarvester : Spell() {
     override fun getName(): String = "Auto Harvester"
     override fun getManaLoss(): Int = 45
     override fun getCastCount(): Int = 2

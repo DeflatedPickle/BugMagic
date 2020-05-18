@@ -2,12 +2,12 @@
 
 package com.deflatedpickle.bugmagic.common.spell
 
-import com.deflatedpickle.bugmagic.api.spell.ASpell
+import com.deflatedpickle.bugmagic.api.spell.Spell
 import com.deflatedpickle.bugmagic.common.entity.mob.AutoHoe as AutoHoeMob
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 
-class AutoHoe : ASpell() {
+class AutoHoe : Spell() {
     override fun getName(): String = "Auto Hoe"
     override fun getManaLoss(): Int = 24
     override fun getCastCount(): Int = 1

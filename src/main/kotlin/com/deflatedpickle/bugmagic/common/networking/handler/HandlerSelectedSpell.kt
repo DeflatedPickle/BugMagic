@@ -8,6 +8,9 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext
 
+/**
+ * The handler for [MessageSelectedSpell] packets
+ */
 class HandlerSelectedSpell : IMessageHandler<MessageSelectedSpell, IMessage> {
     override fun onMessage(message: MessageSelectedSpell, ctx: MessageContext): IMessage? {
         with(ctx.serverHandler.player) {

@@ -31,15 +31,6 @@ class SpellTable : TileEntitySpecialRenderer<SpellTableTE>() {
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 140f, 140f)
         RenderHelper.enableStandardItemLighting()
 
-        // Progress
-        GlStateManager.pushMatrix()
-        GlStateManager.translate(0f, 0.0f, 0f)
-        Minecraft.getMinecraft().fontRenderer.drawNameTag("${te.recipeProgression}", x.toInt(), y.toInt())
-        GlStateManager.popMatrix()
-
-        if (te.validRecipe != SpellTableTE.invalidRecipe) {
-        }
-
         // Fluid
         GlStateManager.pushMatrix()
         GlStateManager.translate(x + 1.135, y + 0.515, z + 0.57)
@@ -123,6 +114,15 @@ class SpellTable : TileEntitySpecialRenderer<SpellTableTE>() {
             paperStack.render(world)
 
             GlStateManager.popMatrix()
+        }
+
+        // Progress
+        GlStateManager.pushMatrix()
+        GlStateManager.translate(x + 0.5, y + 1.1, z + 0.7)
+        Minecraft.getMinecraft().fontRenderer.drawNameTag("${te.recipeProgression}", x.toInt(), y.toInt())
+        GlStateManager.popMatrix()
+
+        if (te.validRecipe != SpellTableTE.invalidRecipe) {
         }
 
         // Item ring
