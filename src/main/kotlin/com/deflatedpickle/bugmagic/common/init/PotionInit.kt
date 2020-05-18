@@ -7,7 +7,7 @@ import com.deflatedpickle.bugmagic.common.potion.BugEssenceRegeneration
 import com.github.upcraftlp.glasspane.api.registry.AutoRegistry
 
 @AutoRegistry(Reference.MOD_ID)
-object Potion {
+object PotionInit {
     @JvmField
     val BUG_ESSENCE_REGENERATION = BugEssenceRegeneration()
 }

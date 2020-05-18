@@ -1,10 +1,10 @@
 package com.deflatedpickle.bugmagic.common.event
 
 import com.deflatedpickle.bugmagic.Reference
-import com.deflatedpickle.bugmagic.api.spell.ASpell
-import com.deflatedpickle.bugmagic.api.spell.ASpellRecipe
-import com.deflatedpickle.bugmagic.common.init.Spell
-import com.deflatedpickle.bugmagic.common.init.SpellRecipe
+import com.deflatedpickle.bugmagic.api.spell.Spell
+import com.deflatedpickle.bugmagic.api.spell.SpellRecipe
+import com.deflatedpickle.bugmagic.common.init.SpellInit
+import com.deflatedpickle.bugmagic.common.init.SpellRecipeInit
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
@@ -16,21 +16,23 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID)
 object SpellRegistryEventHandler {
     @SubscribeEvent
-    fun onRegisterSpell(event: RegistryEvent.Register<ASpell>) {
+    @JvmStatic
+    fun onRegisterSpell(event: RegistryEvent.Register<Spell>) {
         event.registry.registerAll(
-                Spell.ITEM_COLLECTOR,
-                Spell.ESSENCE_COLLECTOR,
-                Spell.AUTO_HOE,
-                Spell.AUTO_PLANTER,
-                Spell.AUTO_FERTILIZER,
-                Spell.AUTO_HARVESTER
+                SpellInit.ITEM_COLLECTOR,
+                SpellInit.ESSENCE_COLLECTOR,
+                SpellInit.AUTO_HOE,
+                SpellInit.AUTO_PLANTER,
+                SpellInit.AUTO_FERTILIZER,
+                SpellInit.AUTO_HARVESTER
         )
     }
 
     @SubscribeEvent
-    fun onRegisterSpellRecipe(event: RegistryEvent.Register<ASpellRecipe>) {
+    @JvmStatic
+    fun onRegisterSpellRecipe(event: RegistryEvent.Register<SpellRecipe>) {
         event.registry.registerAll(
-                SpellRecipe.ITEM_COLLECTOR_RECIPE
+                SpellRecipeInit.ITEM_COLLECTOR_RECIPE
         )
     }
 }

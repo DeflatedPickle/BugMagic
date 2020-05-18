@@ -2,12 +2,12 @@
 
 package com.deflatedpickle.bugmagic.common.spell
 
-import com.deflatedpickle.bugmagic.api.spell.ASpell
+import com.deflatedpickle.bugmagic.api.spell.Spell
 import com.deflatedpickle.bugmagic.common.entity.mob.AutoFertilizer
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 
-class AutoFertilizer : ASpell() {
+class AutoFertilizer : Spell() {
     override fun getName(): String = "Auto Fertilizer"
     override fun getManaLoss(): Int = 55
     override fun getCastCount(): Int = 1

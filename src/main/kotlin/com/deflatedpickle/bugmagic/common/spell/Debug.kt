@@ -2,11 +2,11 @@
 
 package com.deflatedpickle.bugmagic.common.spell
 
-import com.deflatedpickle.bugmagic.api.spell.ASpell
+import com.deflatedpickle.bugmagic.api.spell.Spell
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 
-class Debug(val index: Int = 1) : ASpell() {
+class Debug(val index: Int = 1) : Spell() {
     override fun getName(): String = "Debug $index"
     override fun getManaLoss(): Int = 4
     override fun getCastingTime(): Int = 64

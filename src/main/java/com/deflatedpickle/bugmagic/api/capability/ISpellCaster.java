@@ -2,7 +2,7 @@
 
 package com.deflatedpickle.bugmagic.api.capability;
 
-import com.deflatedpickle.bugmagic.api.spell.ASpell;
+import com.deflatedpickle.bugmagic.api.spell.Spell;
 import java.util.HashMap;
 import java.util.UUID;
 import org.jetbrains.annotations.NotNull;
@@ -28,7 +28,7 @@ public interface ISpellCaster {
    */
   // TODO: Save/load this map on log out/in
   @NotNull
-  HashMap<ASpell, Integer> getCastSpellMap();
+  HashMap<Spell, Integer> getCastSpellMap();
 
   /**
    * Sets the owner of the spell caster

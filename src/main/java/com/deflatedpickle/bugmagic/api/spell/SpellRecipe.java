@@ -2,10 +2,17 @@ package com.deflatedpickle.bugmagic.api.spell;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-public class ASpellRecipe extends IForgeRegistryEntry.Impl<ASpellRecipe> {
+public abstract class SpellRecipe extends IForgeRegistryEntry.Impl<SpellRecipe> {
+    public SpellRecipe() {
+        this.setRegistryName(this.getSpell().getName().toLowerCase().replace(' ', '_'));
+    }
+
+    public abstract @NotNull Spell getSpell();
+
     /**
      * The ingredients to craft this recipe
      *

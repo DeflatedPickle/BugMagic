@@ -12,6 +12,7 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID)
 object PlayerEventHandler {
     @SubscribeEvent
+    @JvmStatic
     fun onPlayerLoggedInEvent(event: PlayerEvent.PlayerLoggedInEvent) {
         if (!event.player.world.isRemote) {
             val bugEssence = BugEssence.isCapable(event.player)

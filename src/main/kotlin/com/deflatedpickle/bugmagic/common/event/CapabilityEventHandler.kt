@@ -17,6 +17,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID)
 object CapabilityEventHandler {
     @SubscribeEvent
+    @JvmStatic
     fun onAttachCapabilitiesEventEntity(event: AttachCapabilitiesEvent<Entity>) {
         if (event.`object` is EntityPlayer) {
             event.addCapability(BugEssence.NAME, BugEssence.Provider())
@@ -25,6 +26,7 @@ object CapabilityEventHandler {
     }
 
     @SubscribeEvent
+    @JvmStatic
     fun onAttachCapabilitiesEventItemStack(event: AttachCapabilitiesEvent<ItemStack>) {
         if (event.`object`.item is Wand) {
             event.addCapability(SpellCaster.NAME, SpellCaster.Provider())

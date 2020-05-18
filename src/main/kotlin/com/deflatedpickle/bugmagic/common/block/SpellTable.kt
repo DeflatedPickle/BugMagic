@@ -8,7 +8,6 @@ import com.deflatedpickle.bugmagic.api.common.util.extension.dropSlot
 import com.deflatedpickle.bugmagic.api.common.util.extension.isNotEmpty
 import com.deflatedpickle.bugmagic.api.common.util.extension.update
 import com.deflatedpickle.bugmagic.common.block.tileentity.SpellTable as SpellTableTE
-import com.deflatedpickle.bugmagic.common.init.Spell
 import com.deflatedpickle.bugmagic.common.item.Wand
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
@@ -22,7 +21,6 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.BlockRenderLayer
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
-import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3d

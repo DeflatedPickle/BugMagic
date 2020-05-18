@@ -8,7 +8,7 @@ import com.deflatedpickle.bugmagic.common.spell.*
 /**
  * @see [SpellRegistryEventHandler]
  */
-object Spell {
+object SpellInit {
     val registry = "spell_recipe_registry"
 
     val DEBUG = mutableListOf<Debug>()

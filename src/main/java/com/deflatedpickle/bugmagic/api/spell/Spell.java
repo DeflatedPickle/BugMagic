@@ -37,8 +37,8 @@ import org.lwjgl.util.ReadableColor;
  * @author DeflatedPickle
  */
 // TODO: Move all rendering and crafting methods to new classes
-public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
-    public ASpell() {
+public abstract class Spell extends IForgeRegistryEntry.Impl<Spell> {
+    public Spell() {
         this.setRegistryName(this.getName().toLowerCase().replace(' ', '_'));
     }
 

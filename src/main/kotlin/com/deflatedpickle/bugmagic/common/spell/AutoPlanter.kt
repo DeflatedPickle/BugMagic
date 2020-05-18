@@ -2,12 +2,12 @@
 
 package com.deflatedpickle.bugmagic.common.spell
 
-import com.deflatedpickle.bugmagic.api.spell.ASpell
+import com.deflatedpickle.bugmagic.api.spell.Spell
 import com.deflatedpickle.bugmagic.common.entity.mob.AutoPlanter as AutoPlanterMob
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 
-class AutoPlanter : ASpell() {
+class AutoPlanter : Spell() {
     override fun getName(): String = "Auto Planter"
     override fun getManaLoss(): Int = 24
     override fun getCastCount(): Int = 1

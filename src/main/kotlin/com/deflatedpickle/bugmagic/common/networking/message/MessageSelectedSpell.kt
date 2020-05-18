@@ -11,10 +11,12 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage
  * @see [HandlerSelectedSpell]
  */
 class MessageSelectedSpell(
-        var index: Int
+        private var index: Int = -1
 ) : IMessage {
     @Suppress("unused")
-    constructor() : this(0)
+    constructor() : this(index = -1)
+
+    operator fun component1() = this.index
 
     override fun toBytes(buf: ByteBuf) {
         buf.writeInt(index)

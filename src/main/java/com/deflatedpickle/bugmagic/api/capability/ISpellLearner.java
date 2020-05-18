@@ -2,7 +2,7 @@
 
 package com.deflatedpickle.bugmagic.api.capability;
 
-import com.deflatedpickle.bugmagic.api.spell.ASpell;
+import com.deflatedpickle.bugmagic.api.spell.Spell;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,7 +20,7 @@ public interface ISpellLearner {
    * @return The list of spells
    */
   @NotNull
-  List<ASpell> getSpellList();
+  List<Spell> getSpellList();
 
   /**
    * Sets the current index
@@ -43,7 +43,7 @@ public interface ISpellLearner {
    *
    * @return The spell currently selected
    */
-  default ASpell getCurrentSpell() {
+  default Spell getCurrentSpell() {
     return this.getSpellList().get(this.getCurrentIndex());
   }
 
@@ -53,5 +53,5 @@ public interface ISpellLearner {
    * @param spell The spell
    * @return The spell
    */
-  ASpell learnSpell(@NotNull ASpell spell);
+  Spell learnSpell(@NotNull Spell spell);
 }

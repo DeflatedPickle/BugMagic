@@ -2,9 +2,6 @@
 
 package com.deflatedpickle.bugmagic.common.block.tileentity
 
-import com.deflatedpickle.bugmagic.common.init.Spell
-import net.minecraft.init.Items
-import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.NetworkManager
 import net.minecraft.network.play.server.SPacketUpdateTileEntity

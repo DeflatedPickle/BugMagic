@@ -6,11 +6,10 @@ import com.deflatedpickle.bugmagic.BugMagic
 import com.deflatedpickle.bugmagic.common.capability.BugEssence
 import com.deflatedpickle.bugmagic.common.capability.SpellCaster
 import com.deflatedpickle.bugmagic.common.capability.SpellLearner
-import com.deflatedpickle.bugmagic.common.event.*
-import com.deflatedpickle.bugmagic.common.init.Entity
-import com.deflatedpickle.bugmagic.common.init.Fluid
-import com.deflatedpickle.bugmagic.common.init.Smelting
-import com.deflatedpickle.bugmagic.common.init.TileEntity
+import com.deflatedpickle.bugmagic.common.init.EntityInit
+import com.deflatedpickle.bugmagic.common.init.FluidInit
+import com.deflatedpickle.bugmagic.common.init.SmeltingInit
+import com.deflatedpickle.bugmagic.common.init.TileEntityInit
 import com.deflatedpickle.bugmagic.common.networking.handler.HandlerBugEssence
 import com.deflatedpickle.bugmagic.common.networking.handler.HandlerSelectedSpell
 import com.deflatedpickle.bugmagic.common.networking.handler.HandlerSpellCaster
@@ -19,7 +18,6 @@ import com.deflatedpickle.bugmagic.common.networking.message.MessageBugEssence
 import com.deflatedpickle.bugmagic.common.networking.message.MessageSelectedSpell
 import com.deflatedpickle.bugmagic.common.networking.message.MessageSpellCaster
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
@@ -28,9 +26,9 @@ import net.minecraftforge.fml.relauncher.Side
 open class Proxy {
     open fun preInit(event: FMLPreInitializationEvent) {
         // Statically initializes objects
-        Fluid
-        Smelting
-        TileEntity
+        FluidInit
+        SmeltingInit
+        TileEntityInit
 
         // Register capabilities
         BugEssence.register()
@@ -44,16 +42,8 @@ open class Proxy {
     }
 
     open fun init(event: FMLInitializationEvent) {
-        // Register events
-        /*MinecraftForge.EVENT_BUS.register(RegistryEventHandler)
-        MinecraftForge.EVENT_BUS.register(CapabilityEventHandler)
-        MinecraftForge.EVENT_BUS.register(SpellRegistryEventHandler)
-
-        MinecraftForge.EVENT_BUS.register(ItemEventHandler)
-        MinecraftForge.EVENT_BUS.register(PlayerEventHandler)*/
-
         // Statically initialize entities
-        Entity
+        EntityInit
     }
 
     open fun postInit(event: FMLPostInitializationEvent) {

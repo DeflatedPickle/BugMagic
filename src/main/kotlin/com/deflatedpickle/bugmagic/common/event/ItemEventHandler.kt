@@ -12,6 +12,7 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID)
 object ItemEventHandler {
     @SubscribeEvent
+    @JvmStatic
     fun onItemPickupEvent(event: PlayerEvent.ItemPickupEvent) {
         val spellLearner = SpellLearner.isCapable(event.player)
         val spellCaster = SpellCaster.isCapable(event.player.heldItemMainhand)
@@ -22,6 +23,7 @@ object ItemEventHandler {
     }
 
     @SubscribeEvent
+    @JvmStatic
     fun onItemCraftedEvent(event: PlayerEvent.ItemCraftedEvent) {
         val spellLearner = SpellLearner.isCapable(event.player)
         val spellCaster = SpellCaster.isCapable(event.player.heldItemMainhand)
