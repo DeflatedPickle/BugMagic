@@ -7,7 +7,8 @@ import com.deflatedpickle.bugmagic.api.common.block.Generic
 import com.deflatedpickle.bugmagic.api.common.util.extension.dropSlot
 import com.deflatedpickle.bugmagic.api.common.util.extension.isNotEmpty
 import com.deflatedpickle.bugmagic.api.common.util.extension.update
-import com.deflatedpickle.bugmagic.common.block.tileentity.SpellTable as SpellTableTE
+import com.deflatedpickle.bugmagic.client.render.tileentity.SpellTableRender
+import com.deflatedpickle.bugmagic.common.block.tileentity.SpellTableTileEntity
 import com.deflatedpickle.bugmagic.common.item.Wand
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
@@ -30,7 +31,10 @@ import net.minecraftforge.fluids.FluidUtil
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler
 import net.minecraftforge.items.ItemHandlerHelper
 
-class SpellTable : Generic("spell_table", CreativeTabs.DECORATIONS, Material.WOOD, lightOpacity = 0, isFullBlock = false, isOpaqueCube = false, renderLayer = BlockRenderLayer.CUTOUT),
+/**
+ * The block for the tile entity [SpellTableTileEntity] and the renderer [SpellTableRender]
+ */
+class SpellTableBlock : Generic("spell_table", CreativeTabs.DECORATIONS, Material.WOOD, lightOpacity = 0, isFullBlock = false, isOpaqueCube = false, renderLayer = BlockRenderLayer.CUTOUT),
         IBoundingBox {
     init {
         setHardness(4f)
@@ -75,7 +79,7 @@ class SpellTable : Generic("spell_table", CreativeTabs.DECORATIONS, Material.WOO
         if (!worldIn.isRemote) {
             val tileEntity = worldIn.getTileEntity(pos)
 
-            if (tileEntity is SpellTableTE) {
+            if (tileEntity is SpellTableTileEntity) {
                 val itemCount = 0.until(tileEntity.itemStackHandler.slots).count { tileEntity.itemStackHandler.getStackInSlot(it) != ItemStack.EMPTY }
                 val stack = playerIn.getHeldItem(hand)
 
@@ -162,7 +166,7 @@ class SpellTable : Generic("spell_table", CreativeTabs.DECORATIONS, Material.WOO
     override fun breakBlock(worldIn: World, pos: BlockPos, state: IBlockState) {
         val tileEntity = worldIn.getTileEntity(pos)
 
-        if (tileEntity is SpellTableTE) {
+        if (tileEntity is SpellTableTileEntity) {
             for (i in 0 until tileEntity.itemStackHandler.slots) {
                 val stack = tileEntity.itemStackHandler.getStackInSlot(i)
 
@@ -177,7 +181,7 @@ class SpellTable : Generic("spell_table", CreativeTabs.DECORATIONS, Material.WOO
     }
 
     override fun hasTileEntity(state: IBlockState): Boolean = true
-    override fun createTileEntity(world: World, state: IBlockState): TileEntity? = SpellTableTE()
+    override fun createTileEntity(world: World, state: IBlockState): TileEntity? = SpellTableTileEntity()
 
     override fun getBoundingBoxList(): List<AxisAlignedBB> = mutableListOf(
             liquidAABB,

@@ -21,7 +21,14 @@ import org.lwjgl.util.ReadableColor
 abstract class RenderCastable<T : EntityCastable>(renderManager: RenderManager, shadowSize: Float) : RenderLiving<T>(renderManager, object : ModelBase() {}, shadowSize) {
     private val tessellator = Tessellator.getInstance()
 
-    fun drawInventoryLine(entity: T, target: BlockPos, colour: ReadableColor) {
+    /**
+     * Draws a line from an [EntityCastable] to a target [BlockPos], using a [ReadableColor]
+     */
+    fun drawInventoryLine(
+            entity: T,
+            target: BlockPos,
+            colour: ReadableColor
+    ) {
         GL11.glPushAttrib(GL11.GL_CURRENT_BIT)
 
         GlStateManager.disableTexture2D()
@@ -48,7 +55,13 @@ abstract class RenderCastable<T : EntityCastable>(renderManager: RenderManager, 
         GL11.glPopAttrib()
     }
 
-    fun drawItem(entity: T, itemStack: ItemStack) {
+    /**
+     * Renders an [ItemStack] at an [EntityCastable]
+     */
+    fun drawItem(
+            entity: T,
+            itemStack: ItemStack
+    ) {
         GlStateManager.pushMatrix()
 
         GlStateManager.translate(0f, 0.2f, 0f)
@@ -58,7 +71,15 @@ abstract class RenderCastable<T : EntityCastable>(renderManager: RenderManager, 
         GlStateManager.popMatrix()
     }
 
-    fun drawWorkArea(aabb: AxisAlignedBB, blockPos: BlockPos, player: EntityPlayer, partialTicks: Float) {
+    /**
+     * Renders a this entities [AxisAlignedBB]
+     */
+    fun drawWorkArea(
+            aabb: AxisAlignedBB,
+            blockPos: BlockPos,
+            player: EntityPlayer,
+            partialTicks: Float
+    ) {
         GlStateManager.pushMatrix()
 
         OpenGL.drawSelectionBox(aabb, blockPos, player, partialTicks)

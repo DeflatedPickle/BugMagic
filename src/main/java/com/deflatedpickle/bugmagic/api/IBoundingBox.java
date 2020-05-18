@@ -8,7 +8,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 /**
  * Applied to a block that should render multiple bounding boxes
  *
- * @see com.deflatedpickle.bugmagic.common.block.SpellTable
+ * @see com.deflatedpickle.bugmagic.common.block.SpellTableBlock
  */
 public interface IBoundingBox {
   /**

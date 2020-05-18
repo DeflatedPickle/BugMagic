@@ -2,6 +2,7 @@
 
 package com.deflatedpickle.bugmagic.api.common.item.food
 
+import net.minecraft.block.Block
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemFood
@@ -12,6 +13,9 @@ import net.minecraft.util.EnumActionResult
 import net.minecraft.util.EnumHand
 import net.minecraft.world.World
 
+/**
+ * A generic [ItemFood] class that provides most settings as constructor arguments
+ */
 class Generic(
     name: String,
     private val useDuration: Int = 32,
@@ -37,9 +41,7 @@ class Generic(
         }
     }
 
-    override fun getMaxItemUseDuration(stack: ItemStack): Int {
-        return this.useDuration
-    }
+    override fun getMaxItemUseDuration(stack: ItemStack): Int = this.useDuration
 
     override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack> {
         val stack = playerIn.getHeldItem(handIn)

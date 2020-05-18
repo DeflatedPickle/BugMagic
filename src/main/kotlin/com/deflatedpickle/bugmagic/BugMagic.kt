@@ -3,7 +3,7 @@
 package com.deflatedpickle.bugmagic
 
 import com.cout970.modelloader.api.ModelLoaderApi
-import com.deflatedpickle.bugmagic.common.Proxy
+import com.deflatedpickle.bugmagic.common.CommonProxy
 import net.minecraftforge.fluids.FluidRegistry
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.Mod.EventHandler
@@ -24,7 +24,7 @@ import org.apache.logging.log4j.Logger
 )
 object BugMagic {
     @SidedProxy(clientSide = Reference.CLIENT_PROXY_CLASS, serverSide = Reference.SERVER_PROXY_CLASS)
-    var proxy: Proxy? = null
+    var proxy: CommonProxy? = null
 
     val CHANNEL = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_ID)
 

@@ -9,7 +9,7 @@ import com.deflatedpickle.bugmagic.common.entity.mob.AutoFertilizer
 import com.deflatedpickle.bugmagic.common.entity.mob.AutoHarvester
 import com.deflatedpickle.bugmagic.common.entity.mob.AutoHoe
 import com.deflatedpickle.bugmagic.common.entity.mob.AutoPlanter
-import com.deflatedpickle.bugmagic.common.entity.mob.EssenceCollector
+import com.deflatedpickle.bugmagic.common.entity.mob.EssenceCollectorMob
 import com.deflatedpickle.bugmagic.common.entity.mob.ItemCollector
 import kotlin.reflect.KClass
 import net.minecraft.util.ResourceLocation
@@ -20,7 +20,7 @@ object EntityInit {
 
     init {
         register("item_collector", ItemCollector::class, Pair(0x40362A, 0xFFEB66))
-        register("essence_collector", EssenceCollector::class, Pair(0x40362A, 0xFFEB66))
+        register("essence_collector", EssenceCollectorMob::class, Pair(0x40362A, 0xFFEB66))
         register("auto_hoe", AutoHoe::class, Pair(0x40362A, 0xFFEB66))
         register("auto_planter", AutoPlanter::class, Pair(0x40362A, 0xFFEB66))
         register("auto_fertilizer", AutoFertilizer::class, Pair(0x40362A, 0xFFEB66))

@@ -2,6 +2,6 @@
 
 package com.deflatedpickle.bugmagic.server
 
-import com.deflatedpickle.bugmagic.common.Proxy
+import com.deflatedpickle.bugmagic.common.CommonProxy
 
-class Proxy : Proxy()
+class Proxy : CommonProxy()

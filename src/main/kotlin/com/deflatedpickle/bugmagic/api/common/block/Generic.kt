@@ -14,6 +14,9 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 
+/**
+ * A generic [Block] class that provides most settings as constructor arguments
+ */
 open class Generic(
     name: String,
     creativeTab: CreativeTabs?,
@@ -42,35 +45,17 @@ open class Generic(
         if (blastResistance != 1f) this.blockResistance = blastResistance
     }
 
-    override fun isBlockNormalCube(state: IBlockState): Boolean {
-        return this.normalCube
-    }
-
-    override fun isTopSolid(state: IBlockState): Boolean {
-        return this.topSolid
-    }
-
-    override fun isFullBlock(state: IBlockState): Boolean {
-        return this.isFullBlock
-    }
-
-    override fun isFullCube(state: IBlockState): Boolean {
-        return this.isFullBlock
-    }
-
-    override fun isOpaqueCube(state: IBlockState): Boolean {
-        return this.isOpaqueCube
-    }
-
-    override fun getRenderLayer(): BlockRenderLayer {
-        return this.renderLayer
-    }
-
-    override fun isStickyBlock(state: IBlockState): Boolean {
-        return this.stickyBlock
-    }
-
-    override fun getBlockFaceShape(worldIn: IBlockAccess, state: IBlockState, pos: BlockPos, face: EnumFacing): BlockFaceShape {
-        return this.blockFaceShape
-    }
+    override fun isBlockNormalCube(state: IBlockState): Boolean = this.normalCube
+    override fun isTopSolid(state: IBlockState): Boolean = this.topSolid
+    override fun isFullBlock(state: IBlockState): Boolean = this.isFullBlock
+    override fun isFullCube(state: IBlockState): Boolean = this.isFullBlock
+    override fun isOpaqueCube(state: IBlockState): Boolean = this.isOpaqueCube
+    override fun getRenderLayer(): BlockRenderLayer = this.renderLayer
+    override fun isStickyBlock(state: IBlockState): Boolean = this.stickyBlock
+    override fun getBlockFaceShape(
+            worldIn: IBlockAccess,
+            state: IBlockState,
+            pos: BlockPos,
+            face: EnumFacing
+    ): BlockFaceShape = this.blockFaceShape
 }

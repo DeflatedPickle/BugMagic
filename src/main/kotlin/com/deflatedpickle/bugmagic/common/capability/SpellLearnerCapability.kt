@@ -18,7 +18,10 @@ import net.minecraftforge.common.capabilities.CapabilityManager
 import net.minecraftforge.common.capabilities.ICapabilitySerializable
 import net.minecraftforge.fml.common.registry.GameRegistry
 
-object SpellLearner {
+/**
+ * Stores the players list of learnt spells and selected index
+ */
+object SpellLearnerCapability {
     val NAME = ResourceLocation(Reference.MOD_ID, "spell_learner")
 
     fun isCapable(entity: EntityLivingBase): ISpellLearner? = entity.getCapability(Provider.CAPABILITY, null)

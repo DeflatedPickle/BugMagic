@@ -17,9 +17,9 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3i
 import net.minecraft.world.World
 
-class EssenceCollector(worldIn: World) : EntityCastable(worldIn) {
+class EssenceCollectorMob(worldIn: World) : EntityCastable(worldIn) {
     companion object {
-        val dataEssence: DataParameter<Float> = EntityDataManager.createKey(EssenceCollector::class.java, DataSerializers.FLOAT)
+        val dataEssence: DataParameter<Float> = EntityDataManager.createKey(EssenceCollectorMob::class.java, DataSerializers.FLOAT)
     }
 
     init {

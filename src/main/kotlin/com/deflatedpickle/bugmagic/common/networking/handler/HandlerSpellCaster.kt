@@ -2,7 +2,7 @@
 
 package com.deflatedpickle.bugmagic.common.networking.handler
 
-import com.deflatedpickle.bugmagic.common.capability.SpellCaster
+import com.deflatedpickle.bugmagic.common.capability.SpellCasterCapability
 import com.deflatedpickle.bugmagic.common.networking.message.MessageSpellCaster
 import net.minecraft.client.Minecraft
 import net.minecraft.entity.EntityLivingBase
@@ -15,13 +15,15 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext
  */
 class HandlerSpellCaster : IMessageHandler<MessageSpellCaster, IMessage> {
     override fun onMessage(message: MessageSpellCaster, ctx: MessageContext): IMessage? {
-        with(Minecraft.getMinecraft().world.getEntityByID(message.entityID)) {
+        val (entityID, isCasting, castingCurrent) = message
+
+        with(Minecraft.getMinecraft().world.getEntityByID(entityID)) {
             if (this is EntityLivingBase) {
-                val spellCaster = SpellCaster.isCapable(this.heldItemMainhand)
+                val spellCaster = SpellCasterCapability.isCapable(this.heldItemMainhand)
 
                 if (spellCaster != null) {
-                    spellCaster.isCasting = message.isCasting
-                    spellCaster.castingCurrent = message.castingCurrent
+                    spellCaster.isCasting = isCasting
+                    spellCaster.castingCurrent = castingCurrent
                 }
             }
         }

@@ -2,7 +2,7 @@ package com.deflatedpickle.bugmagic.common.event
 
 import com.deflatedpickle.bugmagic.BugMagic
 import com.deflatedpickle.bugmagic.Reference
-import com.deflatedpickle.bugmagic.common.capability.BugEssence
+import com.deflatedpickle.bugmagic.common.capability.BugEssenceCapability
 import com.deflatedpickle.bugmagic.common.networking.message.MessageBugEssence
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraftforge.fml.common.Mod
@@ -15,7 +15,7 @@ object PlayerEventHandler {
     @JvmStatic
     fun onPlayerLoggedInEvent(event: PlayerEvent.PlayerLoggedInEvent) {
         if (!event.player.world.isRemote) {
-            val bugEssence = BugEssence.isCapable(event.player)
+            val bugEssence = BugEssenceCapability.isCapable(event.player)
 
             if (bugEssence != null) {
                 bugEssence.max = 128

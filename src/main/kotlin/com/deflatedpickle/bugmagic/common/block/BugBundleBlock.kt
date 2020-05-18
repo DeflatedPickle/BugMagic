@@ -17,7 +17,15 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 
-class BugBundle : Generic("bug_bundle", CreativeTabs.DECORATIONS, Material.CLOTH, lightOpacity = 0, isFullBlock = false, isOpaqueCube = false, renderLayer = BlockRenderLayer.CUTOUT),
+class BugBundleBlock : Generic(
+        "bug_bundle",
+        CreativeTabs.DECORATIONS,
+        Material.CLOTH,
+        lightOpacity = 0,
+        isFullBlock = false,
+        isOpaqueCube = false,
+        renderLayer = BlockRenderLayer.CUTOUT
+),
         IBoundingBox {
     // TODO: Add more directions
     companion object {

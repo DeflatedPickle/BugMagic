@@ -6,7 +6,7 @@ package com.deflatedpickle.bugmagic.api.capability;
  * An interface for things with bug essence
  *
  * @author DeflatedPickle
- * @see com.deflatedpickle.bugmagic.common.capability.BugEssence
+ * @see com.deflatedpickle.bugmagic.common.capability.BugEssenceCapability
  */
 public interface IBugEssence {
   /**

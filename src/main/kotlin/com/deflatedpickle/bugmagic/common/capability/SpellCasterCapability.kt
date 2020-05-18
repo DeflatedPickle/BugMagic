@@ -18,7 +18,10 @@ import net.minecraftforge.common.capabilities.CapabilityInject
 import net.minecraftforge.common.capabilities.CapabilityManager
 import net.minecraftforge.common.capabilities.ICapabilitySerializable
 
-object SpellCaster {
+/**
+ * Stores the casted spells, user, casting state and casting progress
+ */
+object SpellCasterCapability {
     val NAME = ResourceLocation(Reference.MOD_ID, "spell_caster")
 
     fun isCapable(stack: ItemStack): ISpellCaster? = stack.getCapability(Provider.CAPABILITY, null)

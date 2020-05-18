@@ -5,6 +5,9 @@ package com.deflatedpickle.bugmagic.api.common.item
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.item.Item
 
+/**
+ * A generic [Item] class
+ */
 open class Generic(name: String, creativeTab: CreativeTabs) : Item() {
     init {
         this.translationKey = name

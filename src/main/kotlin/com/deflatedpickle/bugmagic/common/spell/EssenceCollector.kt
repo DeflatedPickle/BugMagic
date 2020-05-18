@@ -3,7 +3,7 @@
 package com.deflatedpickle.bugmagic.common.spell
 
 import com.deflatedpickle.bugmagic.api.spell.Spell
-import com.deflatedpickle.bugmagic.common.entity.mob.EssenceCollector as EssenceCollectorMob
+import com.deflatedpickle.bugmagic.common.entity.mob.EssenceCollectorMob as EssenceCollectorMob
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 

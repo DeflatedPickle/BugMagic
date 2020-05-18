@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author DeflatedPickle
  * @see ISpellLearner
- * @see com.deflatedpickle.bugmagic.common.capability.SpellCaster
+ * @see com.deflatedpickle.bugmagic.common.capability.SpellCasterCapability
  */
 public interface ISpellCaster {
   /**

@@ -3,9 +3,9 @@
 package com.deflatedpickle.bugmagic.common
 
 import com.deflatedpickle.bugmagic.BugMagic
-import com.deflatedpickle.bugmagic.common.capability.BugEssence
-import com.deflatedpickle.bugmagic.common.capability.SpellCaster
-import com.deflatedpickle.bugmagic.common.capability.SpellLearner
+import com.deflatedpickle.bugmagic.common.capability.BugEssenceCapability
+import com.deflatedpickle.bugmagic.common.capability.SpellCasterCapability
+import com.deflatedpickle.bugmagic.common.capability.SpellLearnerCapability
 import com.deflatedpickle.bugmagic.common.init.EntityInit
 import com.deflatedpickle.bugmagic.common.init.FluidInit
 import com.deflatedpickle.bugmagic.common.init.SmeltingInit
@@ -23,7 +23,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import net.minecraftforge.fml.relauncher.Side
 
-open class Proxy {
+open class CommonProxy {
     open fun preInit(event: FMLPreInitializationEvent) {
         // Statically initializes objects
         FluidInit
@@ -31,9 +31,9 @@ open class Proxy {
         TileEntityInit
 
         // Register capabilities
-        BugEssence.register()
-        SpellLearner.register()
-        SpellCaster.register()
+        BugEssenceCapability.register()
+        SpellLearnerCapability.register()
+        SpellCasterCapability.register()
 
         // Register packets
         BugMagic.CHANNEL.registerMessage(HandlerBugEssence::class.java, MessageBugEssence::class.java, Message.BUG_ESSENCE.ordinal, Side.CLIENT)

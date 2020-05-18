@@ -14,7 +14,16 @@ import org.lwjgl.opengl.GL11
 object OpenGL {
     val tessellator = Tessellator.getInstance()
 
-    fun drawSelectionBox(aabb: AxisAlignedBB, blockPos: BlockPos, player: EntityPlayer, partialTicks: Float) {
+    /**
+     * Renders an [AxisAlignedBB] around a [BlockPos]
+     * @see [RenderGlobal.drawSelectionBox]
+     */
+    fun drawSelectionBox(
+            aabb: AxisAlignedBB,
+            blockPos: BlockPos,
+            player: EntityPlayer,
+            partialTicks: Float
+    ) {
         // Copied from RenderGlobal#drawSelectionBox
         GlStateManager.enableBlend()
         GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO)
@@ -37,7 +46,16 @@ object OpenGL {
         GlStateManager.disableBlend()
     }
 
-    fun cube(width: Double, height: Double, depth: Double, lu: Float, lv: Float, mu: Float, mv: Float) {
+    /**
+     * Renders a solid cube
+     */
+    fun cube(
+            width: Double,
+            height: Double,
+            depth: Double,
+            lu: Float, lv: Float,
+            mu: Float, mv: Float
+    ) {
         arrayOf(lu, lv, mu, mv).map { it.toDouble() }.apply {
             // Top Face
             tessellator.buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX)

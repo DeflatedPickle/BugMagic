@@ -2,7 +2,7 @@
 
 package com.deflatedpickle.bugmagic.common.networking.handler
 
-import com.deflatedpickle.bugmagic.common.capability.BugEssence
+import com.deflatedpickle.bugmagic.common.capability.BugEssenceCapability
 import com.deflatedpickle.bugmagic.common.networking.message.MessageBugEssence
 import net.minecraft.client.Minecraft
 import net.minecraft.entity.EntityLivingBase
@@ -15,13 +15,15 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext
  */
 class HandlerBugEssence : IMessageHandler<MessageBugEssence, IMessage> {
     override fun onMessage(message: MessageBugEssence, ctx: MessageContext): IMessage? {
-        with(Minecraft.getMinecraft().world.getEntityByID(message.entityID)) {
+        val (entityID, max, current) = message
+
+        with(Minecraft.getMinecraft().world.getEntityByID(entityID)) {
             if (this is EntityLivingBase) {
-                val bugEssence = BugEssence.isCapable(this)
+                val bugEssence = BugEssenceCapability.isCapable(this)
 
                 if (bugEssence != null) {
-                    bugEssence.max = message.max
-                    bugEssence.current = message.current
+                    bugEssence.max = max
+                    bugEssence.current = current
                 }
             }
         }

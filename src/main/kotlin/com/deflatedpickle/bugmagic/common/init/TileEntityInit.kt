@@ -2,11 +2,11 @@
 
 package com.deflatedpickle.bugmagic.common.init
 
-import com.deflatedpickle.bugmagic.common.block.tileentity.SpellTable
+import com.deflatedpickle.bugmagic.common.block.tileentity.SpellTableTileEntity
 import net.minecraft.tileentity.TileEntity
 
 object TileEntityInit {
     init {
-        TileEntity.register("spell_table", SpellTable::class.java)
+        TileEntity.register("spell_table", SpellTableTileEntity::class.java)
     }
 }

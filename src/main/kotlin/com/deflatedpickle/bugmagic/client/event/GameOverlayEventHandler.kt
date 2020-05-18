@@ -2,25 +2,21 @@
 
 package com.deflatedpickle.bugmagic.client.event
 
-import com.deflatedpickle.bugmagic.BugMagic
-import com.deflatedpickle.bugmagic.api.IBoundingBox
-import com.deflatedpickle.bugmagic.api.client.util.OpenGL
 import com.deflatedpickle.bugmagic.client.render.entity.layer.LayerCastingShape
-import com.deflatedpickle.bugmagic.common.capability.BugEssence
-import com.deflatedpickle.bugmagic.common.capability.SpellLearner
-import com.deflatedpickle.bugmagic.common.item.Wand
+import com.deflatedpickle.bugmagic.common.capability.BugEssenceCapability
+import com.deflatedpickle.bugmagic.common.capability.SpellLearnerCapability
 import com.github.upcraftlp.glasspane.api.event.client.RegisterRenderLayerEvent
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.Gui
-import net.minecraft.util.math.RayTraceResult
 import net.minecraft.util.text.TextFormatting
-import net.minecraftforge.client.event.DrawBlockHighlightEvent
-import net.minecraftforge.client.event.MouseEvent
 import net.minecraftforge.client.event.RenderGameOverlayEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 
-object RenderEventHandler {
+object GameOverlayEventHandler {
+    // This might break with GUI scaling? Maybe use a percentage of the font size
     val textHeight = Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT * 1.4f
+    // The 0.6f just happens to be a nice gap size
+    // This might also break with GUI scaling
     var textHeightPadding = Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT - 0.6f
 
     @SubscribeEvent
@@ -28,8 +24,10 @@ object RenderEventHandler {
         with(Minecraft.getMinecraft().player) {
             var y = 2f
 
-            if (this.hasCapability(BugEssence.Provider.CAPABILITY, null)) {
-                this.getCapability(BugEssence.Provider.CAPABILITY, null).also {
+            // Renders the bug essence string
+            // TODO: The bug essence text looks boring, make a bar asset for it
+            if (this.hasCapability(BugEssenceCapability.Provider.CAPABILITY, null)) {
+                this.getCapability(BugEssenceCapability.Provider.CAPABILITY, null).also {
                     Minecraft.getMinecraft().fontRenderer.drawString(
                             "${TextFormatting.WHITE}Bug Essence: ${it!!.current}/${it.max}",
                             2f, y, 0, true
@@ -39,8 +37,11 @@ object RenderEventHandler {
 
             y += textHeight * 1.4f
 
-            if (this.hasCapability(SpellLearner.Provider.CAPABILITY, null)) {
-                this.getCapability(SpellLearner.Provider.CAPABILITY, null).also {
+            // Renders the players spell library
+            // This is only for debug
+            // TODO: Add a spell book to replace debug text
+            if (this.hasCapability(SpellLearnerCapability.Provider.CAPABILITY, null)) {
+                this.getCapability(SpellLearnerCapability.Provider.CAPABILITY, null).also {
                     Minecraft.getMinecraft().fontRenderer.drawString(
                             "${TextFormatting.WHITE}${TextFormatting.UNDERLINE}Spell Library:",
                             2f, y, 0, true
@@ -70,41 +71,7 @@ object RenderEventHandler {
     }
 
     @SubscribeEvent
-    fun onMouse(event: MouseEvent) {
-        val player = BugMagic.proxy!!.getPlayer()
-        if (player!!.heldItemMainhand.item is Wand && player.isSneaking &&
-                (event.dwheel == -120 || event.dwheel == 120)) {
-            // FIXME: If you scroll too quickly, it can still sometimes move the selected slot
-            // Maybe don't actually fix this, because it's fine if you scroll slowly
-            // Anyone who reports this was rapidly scrolling through their spells like an idiot
-            (player.heldItemMainhand.item as Wand).onMouseEvent()
-
-            event.isCanceled = true
-            // You thought it was a MouseEvent. But it was I, Dio!
-        }
-    }
-
-    @SubscribeEvent
     fun onRegisterRenderLayer(event: RegisterRenderLayerEvent) {
         event.addRenderLayer(LayerCastingShape())
-    }
-
-    @SubscribeEvent
-    fun onDrawBlockHighlight(event: DrawBlockHighlightEvent) {
-        when (event.target.typeOfHit) {
-            RayTraceResult.Type.BLOCK -> {
-                with(event.player.world.getBlockState(event.target.blockPos).block) {
-                    when (this) {
-                        is IBoundingBox -> {
-                            val player = event.player
-
-                            for (i in this.boundingBoxList) {
-                                OpenGL.drawSelectionBox(i, event.target.blockPos, player, event.partialTicks)
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 }

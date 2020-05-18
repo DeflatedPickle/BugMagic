@@ -6,7 +6,7 @@ import com.deflatedpickle.bugmagic.api.client.util.extension.drawNameTag
 import com.deflatedpickle.bugmagic.api.client.util.extension.render
 import com.deflatedpickle.bugmagic.api.client.util.extension.renderCube
 import com.deflatedpickle.bugmagic.api.common.util.Math
-import com.deflatedpickle.bugmagic.common.block.tileentity.SpellTable as SpellTableTE
+import com.deflatedpickle.bugmagic.common.block.tileentity.SpellTableTileEntity
 import com.deflatedpickle.bugmagic.common.item.Wand
 import kotlin.math.PI
 import kotlin.math.cos
@@ -20,15 +20,19 @@ import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
 
-class SpellTable : TileEntitySpecialRenderer<SpellTableTE>() {
-
+/**
+ * The renderer for [SpellTableTileEntity]
+ */
+class SpellTableRender : TileEntitySpecialRenderer<SpellTableTileEntity>() {
     val eyeStack = ItemStack(Items.SPIDER_EYE)
     val paperStack = ItemStack(Items.PAPER)
 
-    override fun render(te: SpellTableTE, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float) {
+    override fun render(te: SpellTableTileEntity, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float) {
         super.render(te, x, y, z, partialTicks, destroyStage, alpha)
 
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 140f, 140f)
+        OpenGlHelper.setLightmapTextureCoords(
+                OpenGlHelper.lightmapTexUnit, 140f, 140f
+        )
         RenderHelper.enableStandardItemLighting()
 
         // Fluid
@@ -37,13 +41,18 @@ class SpellTable : TileEntitySpecialRenderer<SpellTableTE>() {
 
         GlStateManager.pushMatrix()
         GlStateManager.translate(0f, 0.2f, 0f)
-        Minecraft.getMinecraft().fontRenderer.drawNameTag("${te.fluidTank.fluid?.localizedName
-                ?: "Empty"}\n${te.fluidTank.fluidAmount} / 1000 mB", x.toInt(), y.toInt())
+        Minecraft.getMinecraft().fontRenderer.drawNameTag(
+                string = "${te.fluidTank.fluid?.localizedName
+                        ?: "Empty"}\n${te.fluidTank.fluidAmount} / 1000 mB",
+                x = x.toInt(), y = y.toInt()
+        )
         GlStateManager.popMatrix()
 
         GlStateManager.rotate(22.5f, 0f, 0f, 1f)
 
-        te.fluidTank.fluid?.fluid?.still?.renderCube(0.1, (0.4 * (te.fluidTank.fluidAmount / 1000)), 0.18)
+        te.fluidTank.fluid?.fluid?.still?.renderCube(
+                0.1, (0.4 * (te.fluidTank.fluidAmount / 1000)), 0.18
+        )
 
         GlStateManager.popMatrix()
 
@@ -53,7 +62,9 @@ class SpellTable : TileEntitySpecialRenderer<SpellTableTE>() {
             GlStateManager.pushMatrix()
             GlStateManager.translate(x + 1.1, y + 0.6, z + 0.3)
 
-            Minecraft.getMinecraft().fontRenderer.drawNameTag(wandStack.displayName, x.toInt(), y.toInt())
+            Minecraft.getMinecraft().fontRenderer.drawNameTag(
+                    string = wandStack.displayName, x = x.toInt(), y = y.toInt()
+            )
 
             GlStateManager.rotate(60f, 0.2f, -0.8f, 1f)
 
@@ -79,11 +90,15 @@ class SpellTable : TileEntitySpecialRenderer<SpellTableTE>() {
         GlStateManager.pushMatrix()
         GlStateManager.translate(x + 0.11, y + 0.82, z + 0.6)
 
-        Minecraft.getMinecraft().fontRenderer.drawNameTag("${te.ink} / 1.0", x.toInt(), y.toInt())
+        Minecraft.getMinecraft().fontRenderer.drawNameTag(
+                string = "${te.ink} / 1.0", x = x.toInt(), y = y.toInt()
+        )
 
         GlStateManager.rotate(-22.5f, 0f, 1f, 0f)
 
-        ResourceLocation("minecraft:blocks/water_still").renderCube(0.18, 0.08 * te.ink, 0.18)
+        ResourceLocation("minecraft:blocks/water_still").renderCube(
+                0.18, 0.08 * te.ink, 0.18
+        )
 
         GlStateManager.popMatrix()
 
@@ -92,10 +107,22 @@ class SpellTable : TileEntitySpecialRenderer<SpellTableTE>() {
         GlStateManager.pushMatrix()
         val eyeSpeed = 0.02
         val eyeAmplitude = 0.02
-        GlStateManager.translate(x + 0.8, y + 0.15 + sin(te.world.totalWorldTime.toFloat() * eyeSpeed) * eyeAmplitude, z + 0.45)
+        GlStateManager.translate(
+                x + 0.8,
+                y + 0.15 +
+                        sin(te.world.totalWorldTime.toFloat() * eyeSpeed) *
+                        eyeAmplitude,
+                z + 0.45
+        )
         GlStateManager.rotate(90f, 0f, 1f, 0f)
-        GlStateManager.rotate(180f - Minecraft.getMinecraft().renderManager.playerViewY, 0.0F, 1.0F, 0.0F)
-        GlStateManager.rotate(-Minecraft.getMinecraft().renderManager.playerViewX, 1.0F, 0.0F, 0.0F)
+        GlStateManager.rotate(
+                180f - Minecraft.getMinecraft().renderManager.playerViewY,
+                0.0F, 1.0F, 0.0F
+        )
+        GlStateManager.rotate(
+                -Minecraft.getMinecraft().renderManager.playerViewX,
+                1.0F, 0.0F, 0.0F
+        )
         GlStateManager.scale(0.6f, 0.6f, 0.6f)
 
         this.eyeStack.render(world)
@@ -103,12 +130,18 @@ class SpellTable : TileEntitySpecialRenderer<SpellTableTE>() {
         GlStateManager.popMatrix()
 
         // Valid render
-        if (te.validRecipe != SpellTableTE.invalidRecipe) {
+        if (te.validRecipe != SpellTableTileEntity.invalidRecipe) {
             GlStateManager.pushMatrix()
 
             val validSpeed = 0.06f
             val validAmplitude = 0.02f
-            GlStateManager.translate(x + 0.5, y + 1.5 + sin(te.world.totalWorldTime.toFloat() * validSpeed) * validAmplitude, z + 0.4)
+            GlStateManager.translate(
+                    x + 0.5,
+                    y + 1.5 +
+                            sin(te.world.totalWorldTime.toFloat() * validSpeed) *
+                            validAmplitude,
+                    z + 0.4
+            )
             GlStateManager.rotate(te.world.totalWorldTime.toFloat(), 0f, 0.2f, 0f)
 
             paperStack.render(world)
@@ -119,17 +152,21 @@ class SpellTable : TileEntitySpecialRenderer<SpellTableTE>() {
         // Progress
         GlStateManager.pushMatrix()
         GlStateManager.translate(x + 0.5, y + 1.1, z + 0.7)
-        Minecraft.getMinecraft().fontRenderer.drawNameTag("${te.recipeProgression}", x.toInt(), y.toInt())
+        Minecraft.getMinecraft().fontRenderer.drawNameTag(
+                "${te.recipeProgression}", x.toInt(), y.toInt()
+        )
         GlStateManager.popMatrix()
 
-        if (te.validRecipe != SpellTableTE.invalidRecipe) {
+        if (te.validRecipe != SpellTableTileEntity.invalidRecipe) {
         }
 
         // Item ring
         GlStateManager.pushMatrix()
         GlStateManager.translate(x + 0.5, y + 1, z + 0.5)
 
-        val itemCount = 0.until(te.itemStackHandler.slots).count { te.itemStackHandler.getStackInSlot(it) != ItemStack.EMPTY }
+        val itemCount = 0.until(te.itemStackHandler.slots).count {
+            te.itemStackHandler.getStackInSlot(it) != ItemStack.EMPTY
+        }
 
         GlStateManager.rotate(te.world.totalWorldTime.toFloat(), 0f, 0.2f, 0f)
         GlStateManager.pushMatrix()
@@ -149,14 +186,27 @@ class SpellTable : TileEntitySpecialRenderer<SpellTableTE>() {
 
                 val bigSpeed = 0.1f
                 val bigAmplitude = 0.06
-                GlStateManager.translate(bigX, sin(te.world.totalWorldTime.toFloat() * bigSpeed) * bigAmplitude, bigZ)
+                GlStateManager.translate(
+                        bigX,
+                        sin(te.world.totalWorldTime.toFloat() * bigSpeed)
+                                * bigAmplitude,
+                        bigZ)
 
                 GlStateManager.pushMatrix()
-                GlStateManager.rotate(te.world.totalWorldTime.toFloat(), 0f, -0.4f, 0f)
-                Minecraft.getMinecraft().fontRenderer.drawNameTag("${stack.displayName} x${stack.count}", x.toInt(), y.toInt())
+                GlStateManager.rotate(
+                        te.world.totalWorldTime.toFloat(),
+                        0f, -0.4f, 0f
+                )
+                Minecraft.getMinecraft().fontRenderer.drawNameTag(
+                        "${stack.displayName} x${stack.count}",
+                        x.toInt(), y.toInt()
+                )
                 GlStateManager.popMatrix()
 
-                GlStateManager.rotate(te.world.totalWorldTime.toFloat(), 0f, 1.2f, 0f)
+                GlStateManager.rotate(
+                        te.world.totalWorldTime.toFloat(),
+                        0f, 1.2f, 0f
+                )
 
                 // Renders all items in the stack in a smaller circle
                 for (j in 1..stack.count) {
@@ -170,13 +220,16 @@ class SpellTable : TileEntitySpecialRenderer<SpellTableTE>() {
 
                     val smallSpeed = 0.03
                     val smallAmplitude = 0.08f
-                    GlStateManager.translate(smallX, sin(((te.world.totalWorldTime + 360 /
-                            // If J is less than half of the item stack, uses J
-                            // If J is more, J is reversed with the stack size
-                            if (j < stack.count / 2) j else Math.reverse(1, stack.count, j)
-                            // Pi * 2 is a bit more bumpy and less of a connected loop
-                            // Pi * 2.55 seems to be a sweet spot
-                            ) * (PI * 2.55)) * smallSpeed) * smallAmplitude, smallZ)
+                    GlStateManager.translate(
+                            smallX,
+                            sin(((te.world.totalWorldTime + 360 /
+                                    // If J is less than half of the item stack, uses J
+                                    // If J is more, J is reversed with the stack size
+                                    if (j < stack.count / 2) j
+                                    else Math.reverse(1, stack.count, j)
+                                    // Pi * 2 is a bit more bumpy and less of a connected loop
+                                    // Pi * 2.55 seems to be a sweet spot
+                                    ) * (PI * 2.55)) * smallSpeed) * smallAmplitude, smallZ)
 
                     stack.render(world)
 

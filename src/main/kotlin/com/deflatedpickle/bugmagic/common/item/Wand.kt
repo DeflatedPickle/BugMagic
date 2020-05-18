@@ -4,10 +4,10 @@ package com.deflatedpickle.bugmagic.common.item
 
 import com.deflatedpickle.bugmagic.BugMagic
 import com.deflatedpickle.bugmagic.api.common.item.Generic
-import com.deflatedpickle.bugmagic.client.Proxy as ClientProxy
-import com.deflatedpickle.bugmagic.common.capability.BugEssence
-import com.deflatedpickle.bugmagic.common.capability.SpellCaster
-import com.deflatedpickle.bugmagic.common.capability.SpellLearner
+import com.deflatedpickle.bugmagic.client.ClientProxy as ClientProxy
+import com.deflatedpickle.bugmagic.common.capability.BugEssenceCapability
+import com.deflatedpickle.bugmagic.common.capability.SpellCasterCapability
+import com.deflatedpickle.bugmagic.common.capability.SpellLearnerCapability
 import com.deflatedpickle.bugmagic.common.networking.message.MessageBugEssence
 import com.deflatedpickle.bugmagic.common.networking.message.MessageSelectedSpell
 import com.deflatedpickle.bugmagic.common.networking.message.MessageSpellCaster
@@ -52,9 +52,9 @@ class Wand(name: String) : Generic(name, CreativeTabs.TOOLS) {
 
     override fun onEntitySwing(entityLiving: EntityLivingBase, stack: ItemStack): Boolean {
         if (entityLiving is EntityPlayer) {
-            val bugEssence = BugEssence.isCapable(entityLiving)
-            val spellLearner = SpellLearner.isCapable(entityLiving)
-            val spellCaster = SpellCaster.isCapable(stack)
+            val bugEssence = BugEssenceCapability.isCapable(entityLiving)
+            val spellLearner = SpellLearnerCapability.isCapable(entityLiving)
+            val spellCaster = SpellCasterCapability.isCapable(stack)
 
             if (bugEssence != null && spellLearner != null && spellCaster != null) {
                 if (!entityLiving.world.isRemote) {
@@ -94,9 +94,9 @@ class Wand(name: String) : Generic(name, CreativeTabs.TOOLS) {
 
     override fun onItemUseFinish(stack: ItemStack, worldIn: World, entityLiving: EntityLivingBase): ItemStack {
         if (entityLiving is EntityPlayer) {
-            val bugEssence = BugEssence.isCapable(entityLiving)
-            val spellLearner = SpellLearner.isCapable(entityLiving)
-            val spellCaster = SpellCaster.isCapable(stack)
+            val bugEssence = BugEssenceCapability.isCapable(entityLiving)
+            val spellLearner = SpellLearnerCapability.isCapable(entityLiving)
+            val spellCaster = SpellCasterCapability.isCapable(stack)
 
             if (bugEssence != null && spellLearner != null && spellCaster != null) {
                 val manaCost = spellLearner.currentSpell.manaLoss
@@ -137,7 +137,7 @@ class Wand(name: String) : Generic(name, CreativeTabs.TOOLS) {
 
     override fun onUsingTick(stack: ItemStack, player: EntityLivingBase, count: Int) {
         if (player.world.isRemote) {
-            val spellLearner = SpellLearner.isCapable(player)
+            val spellLearner = SpellLearnerCapability.isCapable(player)
 
             if (spellLearner != null && spellLearner.currentSpell.castingParticle != null) {
                 val size = (spellLearner.currentSpell.radius + spellLearner.currentSpell.castingShapeThickness) * (spellLearner.currentSpell.tier.ordinal.toDouble() + 1)
@@ -154,8 +154,8 @@ class Wand(name: String) : Generic(name, CreativeTabs.TOOLS) {
     // This happens on both sides
     override fun onPlayerStoppedUsing(stack: ItemStack, worldIn: World, entityLiving: EntityLivingBase, timeLeft: Int) {
         if (entityLiving is EntityPlayer) {
-            val spellLearner = SpellLearner.isCapable(entityLiving)
-            val spellCaster = SpellCaster.isCapable(stack)
+            val spellLearner = SpellLearnerCapability.isCapable(entityLiving)
+            val spellCaster = SpellCasterCapability.isCapable(stack)
 
             if (spellLearner != null && spellCaster != null) {
                 spellCaster.isCasting = false
@@ -174,7 +174,7 @@ class Wand(name: String) : Generic(name, CreativeTabs.TOOLS) {
     }
 
     override fun onDroppedByPlayer(item: ItemStack, player: EntityPlayer): Boolean {
-        val spellCaster = SpellCaster.isCapable(player.heldItemMainhand)
+        val spellCaster = SpellCasterCapability.isCapable(player.heldItemMainhand)
 
         if (spellCaster != null) {
             spellCaster.isCasting = false
@@ -196,8 +196,8 @@ class Wand(name: String) : Generic(name, CreativeTabs.TOOLS) {
             }
 
             if (isSelected && entityIn is EntityPlayer) {
-                val spellLearner = SpellLearner.isCapable(entityIn)
-                val spellCaster = SpellCaster.isCapable(stack)
+                val spellLearner = SpellLearnerCapability.isCapable(entityIn)
+                val spellCaster = SpellCasterCapability.isCapable(stack)
 
                 if (entityIn.isSneaking) {
                     if (spellLearner != null) {
@@ -254,7 +254,7 @@ class Wand(name: String) : Generic(name, CreativeTabs.TOOLS) {
 
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         if (stack.hasTagCompound() && worldIn!!.isRemote) {
-            val spellLearner = SpellLearner.isCapable(BugMagic.proxy!!.getPlayer()!!)
+            val spellLearner = SpellLearnerCapability.isCapable(BugMagic.proxy!!.getPlayer()!!)
 
             if (spellLearner != null) {
                 val currentSpell = spellLearner.spellList[stack.tagCompound!!.getInteger(SPELL_INDEX)]
@@ -265,19 +265,19 @@ class Wand(name: String) : Generic(name, CreativeTabs.TOOLS) {
 
     // TODO: Fix this, I'm not completely sure this works, plus it's messy
     override fun getMaxItemUseDuration(stack: ItemStack): Int {
-        val spellCaster = SpellCaster.isCapable(stack)
+        val spellCaster = SpellCasterCapability.isCapable(stack)
 
         return when (BugMagic.proxy) {
             is ClientProxy -> {
                 val player = Minecraft.getMinecraft().player
-                val spellLearner = SpellLearner.isCapable(player)
+                val spellLearner = SpellLearnerCapability.isCapable(player)
 
                 spellLearner?.currentSpell?.castingTime ?: 0
             }
             is ServerProxy -> {
                 if (spellCaster != null && spellCaster.owner != null) {
                     val player = FMLCommonHandler.instance().minecraftServerInstance.playerList.getPlayerByUUID(spellCaster.owner!!)
-                    val spellLearner = SpellLearner.isCapable(player)
+                    val spellLearner = SpellLearnerCapability.isCapable(player)
 
                     spellLearner?.currentSpell?.castingTime ?: 0
                 } else {
@@ -294,7 +294,7 @@ class Wand(name: String) : Generic(name, CreativeTabs.TOOLS) {
 
     override fun onItemRightClick(worldIn: World?, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack> {
         playerIn.activeHand = handIn
-        val spellCaster = SpellCaster.isCapable(playerIn.getHeldItem(playerIn.activeHand))
+        val spellCaster = SpellCasterCapability.isCapable(playerIn.getHeldItem(playerIn.activeHand))
 
         return if (spellCaster != null) {
             spellCaster.isCasting = true

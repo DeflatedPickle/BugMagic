@@ -3,8 +3,8 @@
 package com.deflatedpickle.bugmagic.client.render.entity.layer
 
 import com.deflatedpickle.bugmagic.api.common.util.Math
-import com.deflatedpickle.bugmagic.common.capability.SpellCaster
-import com.deflatedpickle.bugmagic.common.capability.SpellLearner
+import com.deflatedpickle.bugmagic.common.capability.SpellCasterCapability
+import com.deflatedpickle.bugmagic.common.capability.SpellLearnerCapability
 import com.deflatedpickle.bugmagic.common.item.Wand
 import kotlin.math.PI
 import kotlin.math.cos
@@ -17,6 +17,9 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.entity.EntityLivingBase
 import org.lwjgl.opengl.GL11
 
+/**
+ * A rendering layer that draws a magical set of circles under an [EntityLivingBase]
+ */
 class LayerCastingShape : LayerRenderer<EntityLivingBase> {
     private val tessellator = Tessellator.getInstance()
 
@@ -26,8 +29,8 @@ class LayerCastingShape : LayerRenderer<EntityLivingBase> {
 
     override fun doRenderLayer(entitylivingbaseIn: EntityLivingBase, limbSwing: Float, limbSwingAmount: Float, partialTicks: Float, ageInTicks: Float, netHeadYaw: Float, headPitch: Float, scale: Float) {
         if (entitylivingbaseIn is EntityPlayerSP && entitylivingbaseIn.heldItemMainhand.item is Wand) {
-            val spellLearner = SpellLearner.isCapable(entitylivingbaseIn)
-            val spellCaster = SpellCaster.isCapable(entitylivingbaseIn.heldItemMainhand)
+            val spellLearner = SpellLearnerCapability.isCapable(entitylivingbaseIn)
+            val spellCaster = SpellCasterCapability.isCapable(entitylivingbaseIn.heldItemMainhand)
 
             if (spellLearner != null && spellCaster != null && spellCaster.isCasting) {
                 with(spellLearner.spellList[spellLearner.currentIndex]) {

@@ -17,7 +17,10 @@ import net.minecraftforge.common.capabilities.CapabilityInject
 import net.minecraftforge.common.capabilities.CapabilityManager
 import net.minecraftforge.common.capabilities.ICapabilitySerializable
 
-object BugEssence {
+/**
+ * Stores a max and current value of bug essence
+ */
+object BugEssenceCapability {
     val NAME = ResourceLocation(Reference.MOD_ID, "bug_essence")
 
     fun isCapable(entity: EntityLivingBase): IBugEssence? = entity.getCapability(Provider.CAPABILITY, null)

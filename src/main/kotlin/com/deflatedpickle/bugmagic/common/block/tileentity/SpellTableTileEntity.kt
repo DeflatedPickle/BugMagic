@@ -13,14 +13,16 @@ import net.minecraftforge.fluids.FluidTank
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.ItemStackHandler
+import com.deflatedpickle.bugmagic.common.block.SpellTableBlock
+import com.deflatedpickle.bugmagic.client.render.tileentity.SpellTableRender
 
 /**
  * Stores the items and fluid for the SpellTable
  *
- * @see com.deflatedpickle.bugmagic.common.block.SpellTable
- * @see com.deflatedpickle.bugmagic.client.render.tileentity.SpellTable
+ * @see [SpellTableBlock]
+ * @see [SpellTableRender]
  */
-class SpellTable(stackLimit: Int = 32) : TileEntity() {
+class SpellTableTileEntity(stackLimit: Int = 32) : TileEntity() {
     companion object {
         const val invalidRecipe = ""
     }

@@ -3,7 +3,7 @@
 package com.deflatedpickle.bugmagic.common.potion
 
 import com.deflatedpickle.bugmagic.BugMagic
-import com.deflatedpickle.bugmagic.common.capability.BugEssence
+import com.deflatedpickle.bugmagic.common.capability.BugEssenceCapability
 import com.deflatedpickle.bugmagic.common.networking.message.MessageBugEssence
 import kotlin.math.min
 import net.minecraft.entity.EntityLivingBase
@@ -19,8 +19,8 @@ class BugEssenceRegeneration : Potion(false, 0xBBFF70) {
 
     override fun performEffect(entityLivingBaseIn: EntityLivingBase, amplifier: Int) {
         if (!entityLivingBaseIn.world.isRemote) {
-            if (entityLivingBaseIn.hasCapability(BugEssence.Provider.CAPABILITY, null)) {
-                with(entityLivingBaseIn.getCapability(BugEssence.Provider.CAPABILITY, null)!!) {
+            if (entityLivingBaseIn.hasCapability(BugEssenceCapability.Provider.CAPABILITY, null)) {
+                with(entityLivingBaseIn.getCapability(BugEssenceCapability.Provider.CAPABILITY, null)!!) {
                     this.current = min(this.current + 1, this.max)
 
                     BugMagic.CHANNEL.sendTo(MessageBugEssence(entityLivingBaseIn.entityId, this.max, this.current), entityLivingBaseIn as EntityPlayerMP)

@@ -9,7 +9,7 @@ import com.cout970.modelloader.api.formats.gltf.GltfAnimationBuilder
 import com.deflatedpickle.bugmagic.Reference
 import com.deflatedpickle.bugmagic.api.IModelRegisterer
 import com.deflatedpickle.bugmagic.api.IModelReloadListener
-import com.deflatedpickle.bugmagic.common.entity.mob.EssenceCollector as Mob
+import com.deflatedpickle.bugmagic.common.entity.mob.EssenceCollectorMob
 import net.minecraft.client.model.ModelBase
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
@@ -17,7 +17,14 @@ import net.minecraft.client.renderer.entity.RenderLiving
 import net.minecraft.client.renderer.entity.RenderManager
 import net.minecraft.util.ResourceLocation
 
-class EssenceCollector(renderManager: RenderManager) : RenderLiving<Mob>(renderManager, object : ModelBase() {}, 0.5f) {
+/**
+ * The renderer for [EssenceCollectorMob]
+ */
+class EssenceCollectorRender(renderManager: RenderManager) : RenderLiving<EssenceCollectorMob>(
+        renderManager,
+        object : ModelBase() {},
+        0.5f
+) {
     companion object : IModelRegisterer, IModelReloadListener {
         var models: HashMap<String, IAnimatedModel> = HashMap()
 
@@ -45,11 +52,11 @@ class EssenceCollector(renderManager: RenderManager) : RenderLiving<Mob>(renderM
         }
     }
 
-    override fun getEntityTexture(entity: Mob): ResourceLocation? {
+    override fun getEntityTexture(entity: EssenceCollectorMob): ResourceLocation? {
         return null
     }
 
-    override fun doRender(entity: Mob, x: Double, y: Double, z: Double, entityYaw: Float, partialTicks: Float) {
+    override fun doRender(entity: EssenceCollectorMob, x: Double, y: Double, z: Double, entityYaw: Float, partialTicks: Float) {
         super.doRender(entity, x, y, z, entityYaw, partialTicks)
 
         GlStateManager.pushMatrix()

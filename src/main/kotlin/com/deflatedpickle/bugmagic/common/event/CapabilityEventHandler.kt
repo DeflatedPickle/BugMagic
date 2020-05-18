@@ -3,9 +3,9 @@
 package com.deflatedpickle.bugmagic.common.event
 
 import com.deflatedpickle.bugmagic.Reference
-import com.deflatedpickle.bugmagic.common.capability.BugEssence
-import com.deflatedpickle.bugmagic.common.capability.SpellCaster
-import com.deflatedpickle.bugmagic.common.capability.SpellLearner
+import com.deflatedpickle.bugmagic.common.capability.BugEssenceCapability
+import com.deflatedpickle.bugmagic.common.capability.SpellCasterCapability
+import com.deflatedpickle.bugmagic.common.capability.SpellLearnerCapability
 import com.deflatedpickle.bugmagic.common.item.Wand
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
@@ -20,8 +20,8 @@ object CapabilityEventHandler {
     @JvmStatic
     fun onAttachCapabilitiesEventEntity(event: AttachCapabilitiesEvent<Entity>) {
         if (event.`object` is EntityPlayer) {
-            event.addCapability(BugEssence.NAME, BugEssence.Provider())
-            event.addCapability(SpellLearner.NAME, SpellLearner.Provider())
+            event.addCapability(BugEssenceCapability.NAME, BugEssenceCapability.Provider())
+            event.addCapability(SpellLearnerCapability.NAME, SpellLearnerCapability.Provider())
         }
     }
 
@@ -29,7 +29,7 @@ object CapabilityEventHandler {
     @JvmStatic
     fun onAttachCapabilitiesEventItemStack(event: AttachCapabilitiesEvent<ItemStack>) {
         if (event.`object`.item is Wand) {
-            event.addCapability(SpellCaster.NAME, SpellCaster.Provider())
+            event.addCapability(SpellCasterCapability.NAME, SpellCasterCapability.Provider())
         }
     }
 }
