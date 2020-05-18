@@ -113,17 +113,17 @@ dokka {
 
         perPackageOption {
             prefix = "com.deflatedpickle.bugmagic.client"
-            suppress = true
+            suppress = false
         }
 
         perPackageOption {
             prefix = "com.deflatedpickle.bugmagic.common"
-            suppress = true
+            suppress = false
         }
 
         perPackageOption {
             prefix = "com.deflatedpickle.bugmagic.server"
-            suppress = true
+            suppress = false
         }
 
         perPackageOption {
