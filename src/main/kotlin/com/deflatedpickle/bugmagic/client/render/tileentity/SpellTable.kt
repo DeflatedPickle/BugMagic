@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 DeflatedPickle under the MIT license */
+/* Copyright (c) 2019-2020 DeflatedPickle under the MIT license */
 
 package com.deflatedpickle.bugmagic.client.render.tileentity
 
@@ -30,6 +30,15 @@ class SpellTable : TileEntitySpecialRenderer<SpellTableTE>() {
 
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 140f, 140f)
         RenderHelper.enableStandardItemLighting()
+
+        // Progress
+        GlStateManager.pushMatrix()
+        GlStateManager.translate(0f, 0.0f, 0f)
+        Minecraft.getMinecraft().fontRenderer.drawNameTag("${te.recipeProgression}", x.toInt(), y.toInt())
+        GlStateManager.popMatrix()
+
+        if (te.validRecipe != SpellTableTE.invalidRecipe) {
+        }
 
         // Fluid
         GlStateManager.pushMatrix()

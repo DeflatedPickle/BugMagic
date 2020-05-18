@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 DeflatedPickle under the MIT license */
+/* Copyright (c) 2019-2020 DeflatedPickle under the MIT license */
 
 package com.deflatedpickle.bugmagic.common.block.tileentity
 
@@ -99,7 +99,7 @@ class SpellTable(stackLimit: Int = 32) : TileEntity() {
     }
 
     override fun markDirty() {
-        for ((k, v) in Spell.registry.entries) {
+        for ((_, spell) in Spell.registry.entries) {
             val list = mutableListOf<ItemStack>()
 
             for (i in 0 until this.itemStackHandler.slots) {
@@ -110,16 +110,16 @@ class SpellTable(stackLimit: Int = 32) : TileEntity() {
                 }
             }
 
-            if (v.craftingIngredients.isNotEmpty() && list.isNotEmpty()) {
+            if (spell.craftingIngredients.isNotEmpty() && list.isNotEmpty()) {
                 // This isn't the best way to validate it but I can't think of a better way
                 // If you can, feel free to make a pull request
-                if (v.craftingIngredients.size == list.size && list.map {
+                if (spell.craftingIngredients.size == list.size && list.map {
                             it.item to it.count
                         }
-                                .containsAll(v.craftingIngredients.map {
+                                .containsAll(spell.craftingIngredients.map {
                                     it.item to it.count
                                 })) {
-                    v.registryName?.let {
+                    spell.registryName?.let {
                         validRecipe = it.toString()
                     }
                     break

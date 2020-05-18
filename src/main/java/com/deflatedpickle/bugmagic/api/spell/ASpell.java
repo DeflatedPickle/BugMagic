@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 DeflatedPickle under the MIT license */
+/* Copyright (c) 2019-2020 DeflatedPickle under the MIT license */
 
 package com.deflatedpickle.bugmagic.api.spell;
 
@@ -287,12 +287,12 @@ public abstract class ASpell extends IForgeRegistryEntry.Impl<ASpell> {
   }
 
   /**
-   * The amount of time (in seconds) that the recipe takes to craft
+   * The amount of times the block must be clicked
    *
-   * @return The time in seconds
+   * @return The amount of clicks
    */
   public int getCraftingTime() {
-    return 20 * 30;
+    return 60;
   }
 
   /**

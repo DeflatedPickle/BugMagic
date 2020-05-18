@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 DeflatedPickle under the MIT license */
+/* Copyright (c) 2019-2020 DeflatedPickle under the MIT license */
 
 package com.deflatedpickle.bugmagic.client
 

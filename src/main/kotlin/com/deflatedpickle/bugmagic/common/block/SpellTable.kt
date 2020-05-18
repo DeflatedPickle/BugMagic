@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 DeflatedPickle under the MIT license */
+/* Copyright (c) 2019-2020 DeflatedPickle under the MIT license */
 
 package com.deflatedpickle.bugmagic.common.block
 
@@ -134,7 +134,7 @@ class SpellTable : Generic("spell_table", CreativeTabs.DECORATIONS, Material.WOO
                                 tileEntity.update(worldIn, this, state)
                             }
                         } else {
-                            if (stack.isNotEmpty()) {
+                            if (stack.isNotEmpty() && stack.item !is Wand) {
                                 ItemHandlerHelper.insertItemStacked(tileEntity.itemStackHandler, stack.splitStack(1), false)
 
                                 tileEntity.update(worldIn, this, state)
@@ -143,10 +143,13 @@ class SpellTable : Generic("spell_table", CreativeTabs.DECORATIONS, Material.WOO
                     } else {
                         if (stack.item is Wand) {
                             val split = tileEntity.validRecipe.split(":")
-                            Spell.registry.getValue(ResourceLocation(split[0], split[1]))?.let {
-                                if (tileEntity.recipeProgression < it.craftingTime) {
-                                    println(tileEntity.recipeProgression)
-                                    tileEntity.recipeProgression++
+
+                            if (split.size > 1) {
+                                Spell.registry.getValue(ResourceLocation(split[0], split[1]))?.let {
+                                    if (tileEntity.recipeProgression < it.craftingTime) {
+                                        tileEntity.recipeProgression++
+                                        tileEntity.update(worldIn, this, state)
+                                    }
                                 }
                             }
                         }
@@ -178,7 +181,7 @@ class SpellTable : Generic("spell_table", CreativeTabs.DECORATIONS, Material.WOO
     override fun hasTileEntity(state: IBlockState): Boolean = true
     override fun createTileEntity(world: World, state: IBlockState): TileEntity? = SpellTableTE()
 
-    override fun getBoundingBoxList(): MutableList<AxisAlignedBB> = mutableListOf(
+    override fun getBoundingBoxList(): List<AxisAlignedBB> = mutableListOf(
             liquidAABB,
             wandAABB,
             matAABB,
