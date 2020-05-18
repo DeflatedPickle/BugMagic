@@ -59,7 +59,7 @@ object SpellLearner {
                 with(nbt as NBTTagList) {
                     for (i in 0..this.tagCount()) {
                         with(this.getStringTagAt(i)) {
-                            if (this != "") {
+                            if (this.isNotEmpty()) {
                                 instance.spellList.add(GameRegistry.findRegistry(ASpell::class.java).getValue(ResourceLocation(this))!!)
                             }
                         }

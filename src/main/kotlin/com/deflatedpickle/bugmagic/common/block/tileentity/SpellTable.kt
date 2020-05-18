@@ -11,7 +11,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
-import net.minecraftforge.fluids.Fluid as VFluid
+import net.minecraftforge.fluids.Fluid
 import net.minecraftforge.fluids.FluidTank
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler
 import net.minecraftforge.items.CapabilityItemHandler
@@ -28,11 +28,14 @@ class SpellTable(stackLimit: Int = 32) : TileEntity() {
         const val invalidRecipe = ""
     }
 
+    // Crafting ingredients inventory
     val itemStackHandler = ItemStackHandler(stackLimit)
-    val fluidTank = FluidTank(VFluid.BUCKET_VOLUME)
+    // Bug essence tank
+    val fluidTank = FluidTank(Fluid.BUCKET_VOLUME)
     val wandStackHandler = object : ItemStackHandler(1) {
         override fun getSlotLimit(slot: Int): Int = 1
     }
+    // Stores a feather, to write the recipe with
     val featherStackHandler = object : ItemStackHandler(1) {
         override fun getSlotLimit(slot: Int): Int = 1
     }
@@ -98,7 +101,7 @@ class SpellTable(stackLimit: Int = 32) : TileEntity() {
         }
     }
 
-    override fun markDirty() {
+    /*override fun markDirty() {
         for ((_, spell) in Spell.registry.entries) {
             val list = mutableListOf<ItemStack>()
 
@@ -132,5 +135,5 @@ class SpellTable(stackLimit: Int = 32) : TileEntity() {
         }
 
         super.markDirty()
-    }
+    }*/
 }

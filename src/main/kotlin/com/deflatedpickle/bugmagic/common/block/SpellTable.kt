@@ -145,12 +145,12 @@ class SpellTable : Generic("spell_table", CreativeTabs.DECORATIONS, Material.WOO
                             val split = tileEntity.validRecipe.split(":")
 
                             if (split.size > 1) {
-                                Spell.registry.getValue(ResourceLocation(split[0], split[1]))?.let {
-                                    if (tileEntity.recipeProgression < it.craftingTime) {
-                                        tileEntity.recipeProgression++
-                                        tileEntity.update(worldIn, this, state)
-                                    }
-                                }
+                                // Spell.registry.getValue(ResourceLocation(split[0], split[1]))?.let {
+                                    // if (tileEntity.recipeProgression < it.craftingTime) {
+                                    //     tileEntity.recipeProgression++
+                                    //     tileEntity.update(worldIn, this, state)
+                                    // }
+                                // }
                             }
                         }
                     }

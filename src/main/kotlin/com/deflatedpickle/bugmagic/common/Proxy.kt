@@ -6,8 +6,7 @@ import com.deflatedpickle.bugmagic.BugMagic
 import com.deflatedpickle.bugmagic.common.capability.BugEssence
 import com.deflatedpickle.bugmagic.common.capability.SpellCaster
 import com.deflatedpickle.bugmagic.common.capability.SpellLearner
-import com.deflatedpickle.bugmagic.common.event.FMLEventHandler
-import com.deflatedpickle.bugmagic.common.event.ForgeEventHandler
+import com.deflatedpickle.bugmagic.common.event.*
 import com.deflatedpickle.bugmagic.common.init.Entity
 import com.deflatedpickle.bugmagic.common.init.Fluid
 import com.deflatedpickle.bugmagic.common.init.Smelting
@@ -42,8 +41,12 @@ open class Proxy {
     }
 
     open fun init(event: FMLInitializationEvent) {
-        MinecraftForge.EVENT_BUS.register(FMLEventHandler())
-        MinecraftForge.EVENT_BUS.register(ForgeEventHandler())
+        MinecraftForge.EVENT_BUS.register(CapabilityEventHandler)
+        MinecraftForge.EVENT_BUS.register(RegistryEventHandler)
+        MinecraftForge.EVENT_BUS.register(SpellRegistryEventHandler)
+        
+        MinecraftForge.EVENT_BUS.register(ItemEventHandler)
+        MinecraftForge.EVENT_BUS.register(PlayerEventHandler)
 
         Entity
     }
