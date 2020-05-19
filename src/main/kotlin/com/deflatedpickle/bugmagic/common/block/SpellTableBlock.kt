@@ -7,8 +7,9 @@ import com.deflatedpickle.bugmagic.api.common.block.GenericBlock
 import com.deflatedpickle.bugmagic.api.common.util.extension.dropSlot
 import com.deflatedpickle.bugmagic.api.common.util.extension.isNotEmpty
 import com.deflatedpickle.bugmagic.api.common.util.extension.update
-import com.deflatedpickle.bugmagic.client.render.tileentity.SpellTableRender
+import com.deflatedpickle.bugmagic.client.render.tileentity.SpellTableTileEntitySpecialRender
 import com.deflatedpickle.bugmagic.common.block.tileentity.SpellTableTileEntity
+import com.deflatedpickle.bugmagic.common.init.SpellRecipeInit
 import com.deflatedpickle.bugmagic.common.item.Wand
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
@@ -22,6 +23,7 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.BlockRenderLayer
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
+import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3d
@@ -32,7 +34,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler
 import net.minecraftforge.items.ItemHandlerHelper
 
 /**
- * The block for the tile entity [SpellTableTileEntity] and the renderer [SpellTableRender]
+ * The block for the tile entity [SpellTableTileEntity] and the renderer [SpellTableTileEntitySpecialRender]
  */
 class SpellTableBlock : GenericBlock("spell_table", CreativeTabs.DECORATIONS, Material.WOOD, lightOpacity = 0, isFullBlock = false, isOpaqueCube = false, renderLayer = BlockRenderLayer.CUTOUT),
         BoundingBox {
@@ -86,6 +88,7 @@ class SpellTableBlock : GenericBlock("spell_table", CreativeTabs.DECORATIONS, Ma
                 if (playerIn.canPlayerEdit(pos, facing, stack)) {
                     val hitVector = Vec3d(hitX.toDouble(), hitY.toDouble(), hitZ.toDouble())
 
+                    // Put liquid in
                     if (liquidAABB.grow(0.2).contains(hitVector)) {
                         if (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
                             var result = FluidUtil.tryEmptyContainer(stack, tileEntity.fluidTank, Fluid.BUCKET_VOLUME, playerIn, true)
@@ -100,7 +103,9 @@ class SpellTableBlock : GenericBlock("spell_table", CreativeTabs.DECORATIONS, Ma
 
                             tileEntity.update(worldIn, this, state)
                         }
-                    } else if (wandAABB.grow(0.2).contains(hitVector)) {
+                    }
+                    // Put a wand in
+                    else if (wandAABB.grow(0.2).contains(hitVector)) {
                         if (playerIn.isSneaking) {
                             tileEntity.wandStackHandler.dropSlot(0, worldIn, pos)
                             tileEntity.update(worldIn, this, state)
@@ -108,7 +113,9 @@ class SpellTableBlock : GenericBlock("spell_table", CreativeTabs.DECORATIONS, Ma
                             tileEntity.wandStackHandler.insertItem(0, stack.splitStack(1), false)
                             tileEntity.update(worldIn, this, state)
                         }
-                    } else if (inkAABB.grow(0.2).contains(hitVector)) {
+                    }
+                    // Put a feather or ink in
+                    else if (inkAABB.grow(0.2).contains(hitVector)) {
                         if (playerIn.isSneaking) {
                             tileEntity.featherStackHandler.dropSlot(0, worldIn, pos)
                             tileEntity.update(worldIn, this, state)
@@ -119,7 +126,7 @@ class SpellTableBlock : GenericBlock("spell_table", CreativeTabs.DECORATIONS, Ma
                                     tileEntity.update(worldIn, this, state)
                                 }
                                 Items.DYE -> {
-                                    if (stack.metadata == 0 && tileEntity.ink != 1f) {
+                                    if (stack.metadata == 0 && tileEntity.ink < 1f) {
                                         stack.shrink(1)
 
                                         tileEntity.ink = 1f
@@ -128,7 +135,9 @@ class SpellTableBlock : GenericBlock("spell_table", CreativeTabs.DECORATIONS, Ma
                                 }
                             }
                         }
-                    } else if (matAABB.grow(0.2).contains(hitVector)) {
+                    }
+                    // Put items in
+                    else if (matAABB.grow(0.2).contains(hitVector)) {
                         // TODO: Track where the items should be, then allow clicking on them to take them out
                         if (playerIn.isSneaking) {
                             if (itemCount - 1 >= 0) {
@@ -145,14 +154,15 @@ class SpellTableBlock : GenericBlock("spell_table", CreativeTabs.DECORATIONS, Ma
                     } else {
                         if (stack.item is Wand) {
                             val split = tileEntity.validRecipe.split(":")
+                            println(split)
 
                             if (split.size > 1) {
-                                // Spell.registry.getValue(ResourceLocation(split[0], split[1]))?.let {
-                                    // if (tileEntity.recipeProgression < it.craftingTime) {
-                                    //     tileEntity.recipeProgression++
-                                    //     tileEntity.update(worldIn, this, state)
-                                    // }
-                                // }
+                                SpellRecipeInit.registry.getValue(ResourceLocation(split[0], split[1]))?.let {
+                                    if (tileEntity.recipeProgression < it.craftingTime) {
+                                        tileEntity.recipeProgression++
+                                        tileEntity.update(worldIn, this, state)
+                                    }
+                                }
                             }
                         }
                     }

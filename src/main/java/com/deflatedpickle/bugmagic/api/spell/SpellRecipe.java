@@ -2,10 +2,11 @@
 
 package com.deflatedpickle.bugmagic.api.spell;
 
+import com.deflatedpickle.bugmagic.api.common.spell.SpellIngredient;
 import java.util.ArrayList;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A recipe for a {@link Spell}
@@ -24,8 +25,8 @@ public abstract class SpellRecipe extends IForgeRegistryEntry.Impl<SpellRecipe> 
    *
    * @return A list of item stacks
    */
-  public ArrayList<ItemStack> getIngredients() {
-    return new ArrayList<>();
+  public @Nullable ArrayList<SpellIngredient> getIngredients() {
+    return null;
   }
 
   /**

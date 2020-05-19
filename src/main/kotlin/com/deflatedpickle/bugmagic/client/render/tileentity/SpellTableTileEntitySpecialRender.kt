@@ -25,7 +25,7 @@ import net.minecraft.util.ResourceLocation
  *
  * @author DeflatedPickle
  */
-class SpellTableRender : TileEntitySpecialRenderer<SpellTableTileEntity>() {
+class SpellTableTileEntitySpecialRender : TileEntitySpecialRenderer<SpellTableTileEntity>() {
     val eyeStack = ItemStack(Items.SPIDER_EYE)
     val paperStack = ItemStack(Items.PAPER)
 
@@ -93,7 +93,7 @@ class SpellTableRender : TileEntitySpecialRenderer<SpellTableTileEntity>() {
         GlStateManager.translate(x + 0.11, y + 0.82, z + 0.6)
 
         Minecraft.getMinecraft().fontRenderer.drawNameTag(
-                string = "${te.ink} / 1.0", x = x.toInt(), y = y.toInt()
+                string = "Ink\n${te.ink} / 1.0", x = x.toInt(), y = y.toInt()
         )
 
         GlStateManager.rotate(-22.5f, 0f, 1f, 0f)
@@ -131,35 +131,44 @@ class SpellTableRender : TileEntitySpecialRenderer<SpellTableTileEntity>() {
 
         GlStateManager.popMatrix()
 
-        // Valid render
+        // Valid recipe
         if (te.validRecipe != SpellTableTileEntity.invalidRecipe) {
+            // Progress
+            GlStateManager.pushMatrix()
+            GlStateManager.translate(x + 0.5, y + 0.95, z + 0.4)
+            Minecraft.getMinecraft().fontRenderer.drawNameTag(
+                    "Progress\n${te.recipeProgression}", x.toInt(), y.toInt()
+            )
+            GlStateManager.popMatrix()
+
+            // Name
+            GlStateManager.pushMatrix()
+            GlStateManager.translate(x + 0.5, y + 1.46, z + 0.4)
+            Minecraft.getMinecraft().fontRenderer.drawNameTag(
+                    te.validRecipe, x.toInt(), y.toInt()
+            )
+            GlStateManager.popMatrix()
+
             GlStateManager.pushMatrix()
 
             val validSpeed = 0.06f
-            val validAmplitude = 0.02f
+            // omg ur so valid uwu
+            val validTransAmplitude = 0.02f
             GlStateManager.translate(
                     x + 0.5,
                     y + 1.5 +
                             sin(te.world.totalWorldTime.toFloat() * validSpeed) *
-                            validAmplitude,
+                            validTransAmplitude,
                     z + 0.4
             )
             GlStateManager.rotate(te.world.totalWorldTime.toFloat(), 0f, 0.2f, 0f)
+            val validScaleAmplitude = 0.1f
+            val scale = sin(te.world.totalWorldTime.toFloat() * validSpeed) * validScaleAmplitude
+            GlStateManager.scale(0.7 + scale, 0.7 + scale, 0.7 + scale)
 
             paperStack.render(world)
 
             GlStateManager.popMatrix()
-        }
-
-        // Progress
-        GlStateManager.pushMatrix()
-        GlStateManager.translate(x + 0.5, y + 1.1, z + 0.7)
-        Minecraft.getMinecraft().fontRenderer.drawNameTag(
-                "${te.recipeProgression}", x.toInt(), y.toInt()
-        )
-        GlStateManager.popMatrix()
-
-        if (te.validRecipe != SpellTableTileEntity.invalidRecipe) {
         }
 
         // Item ring

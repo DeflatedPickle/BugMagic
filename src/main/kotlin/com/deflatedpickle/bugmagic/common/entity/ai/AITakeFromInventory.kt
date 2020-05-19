@@ -21,7 +21,7 @@ import net.minecraftforge.items.ItemStackHandler
  */
 // TODO: AITakeFromInventory should take an item type and limits
 class AITakeFromInventory(
-        private val entityIn: EntityLiving
+    private val entityIn: EntityLiving
 ) : EntityAIBase() {
     override fun shouldExecute(): Boolean {
         val blockPos = this.entityIn.dataManager.get(AutoPlanterEntity.dataHomePosition)

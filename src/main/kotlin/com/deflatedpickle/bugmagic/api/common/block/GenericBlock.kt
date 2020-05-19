@@ -16,7 +16,7 @@ import net.minecraft.world.IBlockAccess
 
 /**
  * A generic [Block] class that provides most settings as constructor arguments
- * 
+ *
  * @author DeflatedPickle
  */
 open class GenericBlock(

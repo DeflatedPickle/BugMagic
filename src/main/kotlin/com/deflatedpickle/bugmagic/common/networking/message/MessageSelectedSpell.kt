@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage
  * @see [HandlerSelectedSpell]
  */
 class MessageSelectedSpell(
-        private var index: Int = -1
+    private var index: Int = -1
 ) : IMessage {
     @Suppress("unused")
     constructor() : this(index = -1)

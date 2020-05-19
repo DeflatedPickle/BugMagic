@@ -5,7 +5,7 @@ package com.deflatedpickle.bugmagic.common.init
 import com.deflatedpickle.bugmagic.Reference
 import com.deflatedpickle.bugmagic.client.render.entity.EssenceCollectorRender
 import com.deflatedpickle.bugmagic.client.render.entity.ItemCollectorRender
-import com.deflatedpickle.bugmagic.client.render.tileentity.SpellTableRender
+import com.deflatedpickle.bugmagic.client.render.tileentity.SpellTableTileEntitySpecialRender
 import com.deflatedpickle.bugmagic.common.block.tileentity.SpellTableTileEntity
 import com.deflatedpickle.bugmagic.common.entity.mob.EssenceCollectorEntity
 import com.deflatedpickle.bugmagic.common.entity.mob.ItemCollectorEntity
@@ -27,7 +27,7 @@ object RenderInit {
         RenderingRegistry.registerEntityRenderingHandler(EssenceCollectorEntity::class.java, ::EssenceCollectorRender)
         EssenceCollectorRender.registerModels()
 
-        ClientRegistry.bindTileEntitySpecialRenderer(SpellTableTileEntity::class.java, SpellTableRender())
+        ClientRegistry.bindTileEntitySpecialRenderer(SpellTableTileEntity::class.java, SpellTableTileEntitySpecialRender())
 
         ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(BlockInit.BUG_ESSENCE), ItemMeshDefinition {
             return@ItemMeshDefinition ModelResourceLocation(ResourceLocation(Reference.MOD_ID, "bug_essence"), "fluid")

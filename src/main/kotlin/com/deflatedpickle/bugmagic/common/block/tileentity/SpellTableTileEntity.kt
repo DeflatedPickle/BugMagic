@@ -2,8 +2,12 @@
 
 package com.deflatedpickle.bugmagic.common.block.tileentity
 
-import com.deflatedpickle.bugmagic.client.render.tileentity.SpellTableRender
+import com.deflatedpickle.bugmagic.api.common.util.extension.containsAll
+import com.deflatedpickle.bugmagic.client.render.tileentity.SpellTableTileEntitySpecialRender
 import com.deflatedpickle.bugmagic.common.block.SpellTableBlock
+import com.deflatedpickle.bugmagic.common.init.SpellRecipeInit
+import net.minecraft.init.Items
+import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.NetworkManager
 import net.minecraft.network.play.server.SPacketUpdateTileEntity
@@ -21,7 +25,7 @@ import net.minecraftforge.items.ItemStackHandler
  *
  * @author DeflatedPickle
  * @see [SpellTableBlock]
- * @see [SpellTableRender]
+ * @see [SpellTableTileEntitySpecialRender]
  */
 class SpellTableTileEntity(stackLimit: Int = 32) : TileEntity() {
     companion object {
@@ -101,28 +105,22 @@ class SpellTableTileEntity(stackLimit: Int = 32) : TileEntity() {
         }
     }
 
-    /*override fun markDirty() {
-        for ((_, spell) in Spell.registry.entries) {
-            val list = mutableListOf<ItemStack>()
+    override fun markDirty() {
+        for ((_, spellRecipe) in SpellRecipeInit.registry.entries) {
+            val stacks = mutableListOf<ItemStack>()
 
             for (i in 0 until this.itemStackHandler.slots) {
                 this.itemStackHandler.getStackInSlot(i).apply {
                     if (this.item != Items.AIR) {
-                        list.add(this)
+                        stacks.add(this)
                     }
                 }
             }
 
-            if (spell.craftingIngredients.isNotEmpty() && list.isNotEmpty()) {
-                // This isn't the best way to validate it but I can't think of a better way
-                // If you can, feel free to make a pull request
-                if (spell.craftingIngredients.size == list.size && list.map {
-                            it.item to it.count
-                        }
-                                .containsAll(spell.craftingIngredients.map {
-                                    it.item to it.count
-                                })) {
-                    spell.registryName?.let {
+            if (spellRecipe.ingredients != null &&
+                    spellRecipe.ingredients!!.isNotEmpty() && stacks.isNotEmpty()) {
+                if (spellRecipe.containsAll(stacks)) {
+                    spellRecipe.registryName?.let {
                         validRecipe = it.toString()
                     }
                     break
@@ -135,5 +133,5 @@ class SpellTableTileEntity(stackLimit: Int = 32) : TileEntity() {
         }
 
         super.markDirty()
-    }*/
+    }
 }

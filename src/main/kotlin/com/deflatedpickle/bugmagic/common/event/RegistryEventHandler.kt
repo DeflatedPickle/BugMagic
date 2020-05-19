@@ -3,6 +3,8 @@
 package com.deflatedpickle.bugmagic.common.event
 
 import com.deflatedpickle.bugmagic.Reference
+import com.deflatedpickle.bugmagic.api.spell.Spell
+import com.deflatedpickle.bugmagic.api.spell.SpellRecipe
 import com.deflatedpickle.bugmagic.common.init.SpellInit
 import com.deflatedpickle.bugmagic.common.init.SpellRecipeInit
 import net.minecraft.util.ResourceLocation
@@ -16,18 +18,18 @@ object RegistryEventHandler {
     @SubscribeEvent
     @JvmStatic
     fun onRegisterEventNewRegistry(event: RegistryEvent.NewRegistry) {
-        RegistryBuilder<com.deflatedpickle.bugmagic.api.spell.Spell>().setName(
+        SpellInit.registry = RegistryBuilder<Spell>().setName(
                 ResourceLocation(
                         Reference.MOD_ID,
-                        SpellInit.registry
+                        SpellInit.registryKey
                 )
-        ).setType(com.deflatedpickle.bugmagic.api.spell.Spell::class.java).create()
+        ).setType(Spell::class.java).create()
 
-        RegistryBuilder<com.deflatedpickle.bugmagic.api.spell.SpellRecipe>().setName(
+        SpellRecipeInit.registry = RegistryBuilder<SpellRecipe>().setName(
                 ResourceLocation(
                         Reference.MOD_ID,
-                        SpellRecipeInit.recipe
+                        SpellRecipeInit.registryKey
                 )
-        ).setType(com.deflatedpickle.bugmagic.api.spell.SpellRecipe::class.java).create()
+        ).setType(SpellRecipe::class.java).create()
     }
 }

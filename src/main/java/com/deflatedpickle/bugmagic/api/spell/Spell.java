@@ -27,8 +27,7 @@ import org.lwjgl.util.Color;
 import org.lwjgl.util.ReadableColor;
 
 /**
- * A spell that can be cast with something capable of {@link
- * SpellCaster}
+ * A spell that can be cast with something capable of {@link SpellCaster}
  *
  * <p>Officially, this can be cast with the {@link Wand}, however more spell casters can be added,
  * by making them capable of @{@link SpellCaster}

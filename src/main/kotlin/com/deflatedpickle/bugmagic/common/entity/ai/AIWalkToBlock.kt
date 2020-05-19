@@ -17,9 +17,9 @@ import net.minecraft.pathfinding.Path
 // TODO: AIWalkToBlock shouldn't be dependant on AIFindBlock
 // TODO: Merge AIWalkToBlock with AIWalkToBlockPos
 class AIWalkToBlock(
-        private val findBlock: AIFindBlock,
-        private val entityIn: EntityLiving,
-        private val check: () -> Boolean
+    private val findBlock: AIFindBlock,
+    private val entityIn: EntityLiving,
+    private val check: () -> Boolean
 ) : EntityAIBase() {
     var path: Path? = null
 

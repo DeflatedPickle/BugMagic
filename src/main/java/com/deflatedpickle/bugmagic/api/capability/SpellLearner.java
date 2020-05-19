@@ -3,9 +3,8 @@
 package com.deflatedpickle.bugmagic.api.capability;
 
 import com.deflatedpickle.bugmagic.api.spell.Spell;
-import java.util.List;
-
 import com.deflatedpickle.bugmagic.common.capability.SpellLearnerCapability;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 /**

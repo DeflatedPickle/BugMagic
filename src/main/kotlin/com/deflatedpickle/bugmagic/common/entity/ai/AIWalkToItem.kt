@@ -17,8 +17,8 @@ import net.minecraft.util.math.BlockPos
  */
 // TODO: AIWalkToItem shouldn't be dependant on ItemCollector
 class AIWalkToItem(
-        private val findItem: AIFindItem,
-        private val entityIn: EntityLiving
+    private val findItem: AIFindItem,
+    private val entityIn: EntityLiving
 ) : EntityAIBase() {
     override fun shouldExecute(): Boolean {
         val stack = entityIn.dataManager.get(ItemCollectorEntity.dataItemStack)

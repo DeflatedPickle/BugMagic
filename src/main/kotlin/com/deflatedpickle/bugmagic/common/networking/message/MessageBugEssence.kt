@@ -12,9 +12,9 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage
  * @see [HandlerBugEssence]
  */
 class MessageBugEssence(
-        private var entityID: Int = 1,
-        private var max: Int = -1,
-        private var current: Int = -1
+    private var entityID: Int = 1,
+    private var max: Int = -1,
+    private var current: Int = -1
 ) : IMessage {
     @Suppress("unused")
     constructor() : this(entityID = 1, max = -1, current = -1)

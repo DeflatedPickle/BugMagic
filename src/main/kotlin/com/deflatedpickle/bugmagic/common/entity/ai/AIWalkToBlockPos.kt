@@ -16,9 +16,9 @@ import net.minecraft.util.math.BlockPos
  * @param inventory The [BlockPos] to walk to
  */
 class AIWalkToBlockPos(
-        private val entityIn: EntityLiving,
-        private val check: () -> Boolean,
-        private val inventory: DataParameter<BlockPos>
+    private val entityIn: EntityLiving,
+    private val check: () -> Boolean,
+    private val inventory: DataParameter<BlockPos>
 ) : EntityAIBase() {
     override fun shouldExecute(): Boolean {
         if (check() &&

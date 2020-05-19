@@ -19,11 +19,11 @@ import net.minecraft.util.math.BlockPos
  */
 // TODO: AIWaitWithBlock shouldn't be dependant on AIFindBlock
 class AIWaitWithBlock(
-        private val findBlock: AIFindBlock,
-        private val entityIn: EntityLiving,
-        private val executeCheck: (EntityLiving, BlockPos) -> Boolean,
-        private val waitFor: Int,
-        internal val postWait: (BlockPos, EntityLiving) -> Unit
+    private val findBlock: AIFindBlock,
+    private val entityIn: EntityLiving,
+    private val executeCheck: (EntityLiving, BlockPos) -> Boolean,
+    private val waitFor: Int,
+    internal val postWait: (BlockPos, EntityLiving) -> Unit
 ) : EntityAIBase() {
     var waitCurrent = 0
 

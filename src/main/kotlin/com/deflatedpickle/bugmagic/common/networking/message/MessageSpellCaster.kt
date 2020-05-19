@@ -11,9 +11,9 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage
  * @see [MessageSpellCaster]
  */
 class MessageSpellCaster(
-        private var entityID: Int,
-        private var isCasting: Boolean,
-        private var castingCurrent: Float
+    private var entityID: Int,
+    private var isCasting: Boolean,
+    private var castingCurrent: Float
 ) : IMessage {
     @Suppress("unused")
     constructor() : this(entityID = 1, isCasting = false, castingCurrent = -1f)

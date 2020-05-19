@@ -20,10 +20,10 @@ import net.minecraft.util.math.Vec3i
  */
 // TODO: AIFindClosestTileEntity should be moved to AIFindTileEntity and given an enum for CLOSEST, FARTHEST, FIRST, etc
 class AIFindClosestTileEntity(
-        private val entityIn: EntityLiving,
-        private val key: DataParameter<*>,
-        private val filter: (TileEntity) -> Boolean,
-        private val withTileEntity: (TileEntity?) -> Unit
+    private val entityIn: EntityLiving,
+    private val key: DataParameter<*>,
+    private val filter: (TileEntity) -> Boolean,
+    private val withTileEntity: (TileEntity?) -> Unit
 ) : EntityAIBase() {
     override fun shouldExecute(): Boolean {
         return entityIn.dataManager.get(key) == BlockPos.ORIGIN ||

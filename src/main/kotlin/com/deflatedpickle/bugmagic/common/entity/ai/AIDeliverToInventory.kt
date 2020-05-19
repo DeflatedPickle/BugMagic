@@ -22,8 +22,8 @@ import net.minecraftforge.items.ItemStackHandler
  */
 // TODO: Make this not dependent on ItemCollector
 class AIDeliverToInventory(
-        private val findItem: AIFindItem,
-        private val entityIn: EntityLiving
+    private val findItem: AIFindItem,
+    private val entityIn: EntityLiving
 ) : EntityAIBase() {
     override fun shouldExecute(): Boolean {
         val blockPos = this.entityIn.dataManager.get(ItemCollectorEntity.dataInventoryPosition)

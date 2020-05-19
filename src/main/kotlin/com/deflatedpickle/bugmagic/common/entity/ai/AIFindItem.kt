@@ -20,9 +20,9 @@ import net.minecraft.util.math.BlockPos
  * @param distance The length of
  */
 class AIFindItem(
-        private val entityIn: EntityLiving,
-        private val origin: () -> BlockPos,
-        private val distance: Double
+    private val entityIn: EntityLiving,
+    private val origin: () -> BlockPos,
+    private val distance: Double
 ) : EntityAIBase() {
     var entityItem: EntityItem? = null
 

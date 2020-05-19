@@ -7,8 +7,8 @@ import com.deflatedpickle.bugmagic.common.entity.ai.AICollectItem
 import com.deflatedpickle.bugmagic.common.entity.ai.AIDeliverToInventory
 import com.deflatedpickle.bugmagic.common.entity.ai.AIFindClosestTileEntity
 import com.deflatedpickle.bugmagic.common.entity.ai.AIFindItem
-import com.deflatedpickle.bugmagic.common.entity.ai.AIWalkToItem
 import com.deflatedpickle.bugmagic.common.entity.ai.AIWalkToBlockPos
+import com.deflatedpickle.bugmagic.common.entity.ai.AIWalkToItem
 import com.deflatedpickle.bugmagic.common.item.Wand
 import com.deflatedpickle.bugmagic.common.spell.ItemCollectorSpell
 import net.minecraft.entity.player.EntityPlayer

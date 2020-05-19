@@ -80,9 +80,9 @@ class BugBundleBlock : GenericBlock(
     override fun createBlockState(): BlockStateContainer = BlockStateContainer(this, UP)
 
     override fun canBeConnectedTo(
-            world: IBlockAccess,
-            pos: BlockPos,
-            facing: EnumFacing
+        world: IBlockAccess,
+        pos: BlockPos,
+        facing: EnumFacing
     ): Boolean {
         return when (facing) {
             // EnumFacing.UP -> !world.isAirBlock(pos.offset(facing)) && world.getBlockState(pos).getBlockFaceShape(world, pos.offset(facing), facing) == BlockFaceShape.SOLID
@@ -91,26 +91,26 @@ class BugBundleBlock : GenericBlock(
     }
 
     override fun getActualState(
-            state: IBlockState,
-            worldIn: IBlockAccess,
-            pos: BlockPos
+        state: IBlockState,
+        worldIn: IBlockAccess,
+        pos: BlockPos
     ): IBlockState =
             state.withProperty(UP, canBeConnectedTo(worldIn, pos, EnumFacing.UP))
 
     override fun getSelectedBoundingBox(
-            state: IBlockState,
-            worldIn: World,
-            pos: BlockPos
+        state: IBlockState,
+        worldIn: World,
+        pos: BlockPos
     ): AxisAlignedBB? = EMPTY_AABB
 
     override fun addCollisionBoxToList(
-            state: IBlockState,
-            worldIn: World,
-            pos: BlockPos,
-            entityBox: AxisAlignedBB,
-            collidingBoxes: MutableList<AxisAlignedBB>,
-            entityIn: Entity?,
-            isActualState: Boolean
+        state: IBlockState,
+        worldIn: World,
+        pos: BlockPos,
+        entityBox: AxisAlignedBB,
+        collidingBoxes: MutableList<AxisAlignedBB>,
+        entityIn: Entity?,
+        isActualState: Boolean
     ) = boundingBoxList.forEach { addCollisionBoxToList(pos, entityBox, collidingBoxes, it) }
 
     override fun getBoundingBoxList(): List<AxisAlignedBB> = boundingBoxes

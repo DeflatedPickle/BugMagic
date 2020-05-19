@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.FontRenderer
 import net.minecraft.client.renderer.GlStateManager
 
+// Maybe make this take a list or varargs of strings?
 fun FontRenderer.drawNameTag(string: String, x: Int, y: Int, colour: Int = 0xFFFFFF) {
     GlStateManager.pushMatrix()
 

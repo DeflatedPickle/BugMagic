@@ -18,8 +18,8 @@ import net.minecraft.item.ItemStack
  * @param entityIn The [EntityLiving] this task is added to
  */
 class AICollectItem(
-        private val findItem: AIFindItem,
-        private val entityIn: EntityLiving
+    private val findItem: AIFindItem,
+    private val entityIn: EntityLiving
 ) : EntityAIBase() {
     override fun shouldExecute(): Boolean {
         val stack = entityIn.dataManager.get(ItemCollectorEntity.dataItemStack)
