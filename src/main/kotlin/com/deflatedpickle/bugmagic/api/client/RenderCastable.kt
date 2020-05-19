@@ -2,29 +2,55 @@
 
 package com.deflatedpickle.bugmagic.api.client
 
+import com.deflatedpickle.bugmagic.api.HasModel
 import com.deflatedpickle.bugmagic.api.client.util.OpenGL
 import com.deflatedpickle.bugmagic.api.client.util.extension.render
 import com.deflatedpickle.bugmagic.api.entity.mob.EntityCastable
 import net.minecraft.client.model.ModelBase
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.Tessellator
+import net.minecraft.client.renderer.entity.Render
 import net.minecraft.client.renderer.entity.RenderLiving
 import net.minecraft.client.renderer.entity.RenderManager
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
+import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import org.lwjgl.opengl.GL11
 import org.lwjgl.util.ReadableColor
 
-abstract class RenderCastable<T : EntityCastable>(renderManager: RenderManager, shadowSize: Float) : RenderLiving<T>(renderManager, object : ModelBase() {}, shadowSize) {
+abstract class RenderCastable<T : EntityCastable>(
+    renderManager: RenderManager,
+    shadowSize: Float
+) : RenderLiving<T>(
+        renderManager,
+        object : ModelBase() {},
+        shadowSize), HasModel {
     private val tessellator = Tessellator.getInstance()
 
+    override fun getEntityTexture(entity: T): ResourceLocation? {
+        return null
+    }
+
     /**
-     * Draws a line from an [EntityCastable] to a target [BlockPos], using a [ReadableColor]
+     * Checks [hasModel] and if false, draws the AABB using [Render.renderOffsetAABB]
      */
-    fun drawInventoryLine(
+    override fun doRender(entity: T, x: Double, y: Double, z: Double, entityYaw: Float, partialTicks: Float) {
+        if (!this.hasModel()) {
+            GlStateManager.pushMatrix()
+            Render.renderOffsetAABB(entity.entityBoundingBox, x - entity.lastTickPosX, y - entity.lastTickPosY, z - entity.lastTickPosZ)
+            GlStateManager.popMatrix()
+        }
+
+        super.doRender(entity, x, y, z, entityYaw, partialTicks)
+    }
+
+    /**
+     * Draws a line from an [T] to a target [BlockPos], using a [ReadableColor]
+     */
+    fun drawLine(
         entity: T,
         target: BlockPos,
         colour: ReadableColor
@@ -60,11 +86,14 @@ abstract class RenderCastable<T : EntityCastable>(renderManager: RenderManager, 
      */
     fun drawItem(
         entity: T,
-        itemStack: ItemStack
+        itemStack: ItemStack,
+        x: Float = 0f,
+        y: Float = 0f,
+        z: Float = 0f
     ) {
         GlStateManager.pushMatrix()
 
-        GlStateManager.translate(0f, 0.2f, 0f)
+        GlStateManager.translate(x, y, z)
 
         itemStack.render(entity.world)
 

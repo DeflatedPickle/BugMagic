@@ -215,6 +215,7 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell> {
    * @see com.deflatedpickle.bugmagic.client.render.entity.layer.LayerCastingShape
    */
   public int getCastingShapePoints() {
+    // the glorious octagon of destiny uwu
     return 8;
   }
 
