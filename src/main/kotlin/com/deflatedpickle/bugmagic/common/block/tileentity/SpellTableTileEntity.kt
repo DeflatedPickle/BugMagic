@@ -2,6 +2,8 @@
 
 package com.deflatedpickle.bugmagic.common.block.tileentity
 
+import com.deflatedpickle.bugmagic.client.render.tileentity.SpellTableRender
+import com.deflatedpickle.bugmagic.common.block.SpellTableBlock
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.NetworkManager
 import net.minecraft.network.play.server.SPacketUpdateTileEntity
@@ -13,12 +15,11 @@ import net.minecraftforge.fluids.FluidTank
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.ItemStackHandler
-import com.deflatedpickle.bugmagic.common.block.SpellTableBlock
-import com.deflatedpickle.bugmagic.client.render.tileentity.SpellTableRender
 
 /**
  * Stores the items and fluid for the SpellTable
  *
+ * @author DeflatedPickle
  * @see [SpellTableBlock]
  * @see [SpellTableRender]
  */

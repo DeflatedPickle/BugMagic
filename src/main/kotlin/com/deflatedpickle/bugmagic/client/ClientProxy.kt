@@ -11,6 +11,11 @@ import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 
+/**
+ * A proxy to register client-side code
+ *
+ * @author DeflatedPickle
+ */
 class ClientProxy : CommonProxy() {
     override fun preInit(event: FMLPreInitializationEvent) {
         super.preInit(event)

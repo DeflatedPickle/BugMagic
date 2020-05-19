@@ -22,6 +22,8 @@ import net.minecraft.util.ResourceLocation
 
 /**
  * The renderer for [SpellTableTileEntity]
+ *
+ * @author DeflatedPickle
  */
 class SpellTableRender : TileEntitySpecialRenderer<SpellTableTileEntity>() {
     val eyeStack = ItemStack(Items.SPIDER_EYE)
@@ -188,8 +190,8 @@ class SpellTableRender : TileEntitySpecialRenderer<SpellTableTileEntity>() {
                 val bigAmplitude = 0.06
                 GlStateManager.translate(
                         bigX,
-                        sin(te.world.totalWorldTime.toFloat() * bigSpeed)
-                                * bigAmplitude,
+                        sin(te.world.totalWorldTime.toFloat() * bigSpeed) *
+                                bigAmplitude,
                         bigZ)
 
                 GlStateManager.pushMatrix()

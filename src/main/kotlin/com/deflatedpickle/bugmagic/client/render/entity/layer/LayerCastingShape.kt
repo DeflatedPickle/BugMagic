@@ -19,6 +19,8 @@ import org.lwjgl.opengl.GL11
 
 /**
  * A rendering layer that draws a magical set of circles under an [EntityLivingBase]
+ *
+ * @author DeflatedPickle
  */
 class LayerCastingShape : LayerRenderer<EntityLivingBase> {
     private val tessellator = Tessellator.getInstance()

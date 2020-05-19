@@ -10,7 +10,7 @@ import com.deflatedpickle.bugmagic.Reference
 import com.deflatedpickle.bugmagic.api.IModelRegisterer
 import com.deflatedpickle.bugmagic.api.IModelReloadListener
 import com.deflatedpickle.bugmagic.api.client.RenderCastable
-import com.deflatedpickle.bugmagic.common.entity.mob.ItemCollector
+import com.deflatedpickle.bugmagic.common.entity.mob.ItemCollectorEntity
 import com.deflatedpickle.bugmagic.common.item.Wand
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.GlStateManager
@@ -21,9 +21,11 @@ import net.minecraft.util.math.AxisAlignedBB
 import org.lwjgl.util.ReadableColor
 
 /**
- * The renderer for [ItemCollector]
+ * The renderer for [ItemCollectorEntity]
+ *
+ * @author DeflatedPickle
  */
-class ItemCollectorRender(renderManager: RenderManager) : RenderCastable<ItemCollector>(
+class ItemCollectorRender(renderManager: RenderManager) : RenderCastable<ItemCollectorEntity>(
         renderManager,
         0f
 ) {
@@ -56,17 +58,17 @@ class ItemCollectorRender(renderManager: RenderManager) : RenderCastable<ItemCol
         }
     }
 
-    override fun getEntityTexture(entity: ItemCollector): ResourceLocation? {
+    override fun getEntityTexture(entity: ItemCollectorEntity): ResourceLocation? {
         return null
     }
 
-    override fun doRender(entity: ItemCollector, x: Double, y: Double, z: Double, entityYaw: Float, partialTicks: Float) {
+    override fun doRender(entity: ItemCollectorEntity, x: Double, y: Double, z: Double, entityYaw: Float, partialTicks: Float) {
         super.doRender(entity, x, y, z, entityYaw, partialTicks)
 
         GlStateManager.pushMatrix()
 
         if (entity.owner?.heldItemMainhand?.item is Wand) {
-            val blockPos = entity.dataManager.get(ItemCollector.dataInventoryPosition)
+            val blockPos = entity.dataManager.get(ItemCollectorEntity.dataInventoryPosition)
             drawWorkArea(
                     axisAlignedBB,
                     blockPos,
@@ -80,14 +82,14 @@ class ItemCollectorRender(renderManager: RenderManager) : RenderCastable<ItemCol
         if (entity.owner?.heldItemMainhand?.item is Wand) {
             drawInventoryLine(
                     entity,
-                    entity.dataManager.get(ItemCollector.dataInventoryPosition),
+                    entity.dataManager.get(ItemCollectorEntity.dataInventoryPosition),
                     ReadableColor.RED
             )
         }
 
         GlStateManager.rotate(entityYaw, 0f, 1f, 0f)
 
-        drawItem(entity, entity.dataManager.get(ItemCollector.dataItemStack))
+        drawItem(entity, entity.dataManager.get(ItemCollectorEntity.dataItemStack))
 
         val time = (entity.ticksExisted and 0xFFFFFF).toDouble() + partialTicks
         models["Idle"]!!.render(time)

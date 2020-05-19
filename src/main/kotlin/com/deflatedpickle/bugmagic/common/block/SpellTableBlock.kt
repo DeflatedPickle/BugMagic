@@ -2,8 +2,8 @@
 
 package com.deflatedpickle.bugmagic.common.block
 
-import com.deflatedpickle.bugmagic.api.IBoundingBox
-import com.deflatedpickle.bugmagic.api.common.block.Generic
+import com.deflatedpickle.bugmagic.api.BoundingBox
+import com.deflatedpickle.bugmagic.api.common.block.GenericBlock
 import com.deflatedpickle.bugmagic.api.common.util.extension.dropSlot
 import com.deflatedpickle.bugmagic.api.common.util.extension.isNotEmpty
 import com.deflatedpickle.bugmagic.api.common.util.extension.update
@@ -34,8 +34,8 @@ import net.minecraftforge.items.ItemHandlerHelper
 /**
  * The block for the tile entity [SpellTableTileEntity] and the renderer [SpellTableRender]
  */
-class SpellTableBlock : Generic("spell_table", CreativeTabs.DECORATIONS, Material.WOOD, lightOpacity = 0, isFullBlock = false, isOpaqueCube = false, renderLayer = BlockRenderLayer.CUTOUT),
-        IBoundingBox {
+class SpellTableBlock : GenericBlock("spell_table", CreativeTabs.DECORATIONS, Material.WOOD, lightOpacity = 0, isFullBlock = false, isOpaqueCube = false, renderLayer = BlockRenderLayer.CUTOUT),
+        BoundingBox {
     init {
         setHardness(4f)
     }

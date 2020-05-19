@@ -1,3 +1,5 @@
+/* Copyright (c) 2020 DeflatedPickle under the MIT license */
+
 package com.deflatedpickle.bugmagic.client.event
 
 import com.deflatedpickle.bugmagic.BugMagic
@@ -7,6 +9,11 @@ import net.minecraftforge.client.event.MouseEvent
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 
+/**
+ * An event handler for [MouseEventHandler]
+ *
+ * @author DeflatedPickle
+ */
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID)
 object MouseEventHandler {
     @SubscribeEvent

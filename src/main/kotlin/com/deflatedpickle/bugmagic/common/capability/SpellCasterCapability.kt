@@ -3,7 +3,7 @@
 package com.deflatedpickle.bugmagic.common.capability
 
 import com.deflatedpickle.bugmagic.Reference
-import com.deflatedpickle.bugmagic.api.capability.ISpellCaster
+import com.deflatedpickle.bugmagic.api.capability.SpellCaster
 import com.deflatedpickle.bugmagic.api.spell.Spell
 import java.util.UUID
 import java.util.concurrent.Callable
@@ -24,9 +24,9 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable
 object SpellCasterCapability {
     val NAME = ResourceLocation(Reference.MOD_ID, "spell_caster")
 
-    fun isCapable(stack: ItemStack): ISpellCaster? = stack.getCapability(Provider.CAPABILITY, null)
+    fun isCapable(stack: ItemStack): SpellCaster? = stack.getCapability(Provider.CAPABILITY, null)
 
-    class Implementation : ISpellCaster {
+    class Implementation : SpellCaster {
         private val castSpellMap = hashMapOf<Spell, Int>()
         private var owner: UUID? = null
         private var isCasting = false
@@ -58,8 +58,8 @@ object SpellCasterCapability {
         override fun getCastingCurrent(): Float = castingFor
     }
 
-    class Storage : Capability.IStorage<ISpellCaster> {
-        override fun readNBT(capability: Capability<ISpellCaster>?, instance: ISpellCaster?, side: EnumFacing?, nbt: NBTBase?) {
+    class Storage : Capability.IStorage<SpellCaster> {
+        override fun readNBT(capability: Capability<SpellCaster>?, instance: SpellCaster?, side: EnumFacing?, nbt: NBTBase?) {
             if (instance is Implementation) {
                 with(nbt as NBTTagCompound) {
                     instance.isCasting = this.getBoolean("isCasting")
@@ -70,7 +70,7 @@ object SpellCasterCapability {
             }
         }
 
-        override fun writeNBT(capability: Capability<ISpellCaster>?, instance: ISpellCaster?, side: EnumFacing?): NBTBase? {
+        override fun writeNBT(capability: Capability<SpellCaster>?, instance: SpellCaster?, side: EnumFacing?): NBTBase? {
             if (instance != null) {
                 return NBTTagCompound().apply {
                     setBoolean("isCasting", instance.isCasting)
@@ -81,8 +81,8 @@ object SpellCasterCapability {
         }
     }
 
-    class Factory : Callable<ISpellCaster> {
-        override fun call(): ISpellCaster {
+    class Factory : Callable<SpellCaster> {
+        override fun call(): SpellCaster {
             return Implementation()
         }
     }
@@ -90,8 +90,8 @@ object SpellCasterCapability {
     class Provider : ICapabilitySerializable<NBTBase> {
         companion object {
             @JvmStatic
-            @CapabilityInject(ISpellCaster::class)
-            lateinit var CAPABILITY: Capability<ISpellCaster>
+            @CapabilityInject(SpellCaster::class)
+            lateinit var CAPABILITY: Capability<SpellCaster>
         }
 
         val INSTANCE = CAPABILITY.defaultInstance
@@ -104,6 +104,6 @@ object SpellCasterCapability {
     }
 
     fun register() {
-        CapabilityManager.INSTANCE.register(ISpellCaster::class.java, Storage(), Factory())
+        CapabilityManager.INSTANCE.register(SpellCaster::class.java, Storage(), Factory())
     }
 }

@@ -25,9 +25,9 @@ abstract class RenderCastable<T : EntityCastable>(renderManager: RenderManager, 
      * Draws a line from an [EntityCastable] to a target [BlockPos], using a [ReadableColor]
      */
     fun drawInventoryLine(
-            entity: T,
-            target: BlockPos,
-            colour: ReadableColor
+        entity: T,
+        target: BlockPos,
+        colour: ReadableColor
     ) {
         GL11.glPushAttrib(GL11.GL_CURRENT_BIT)
 
@@ -59,8 +59,8 @@ abstract class RenderCastable<T : EntityCastable>(renderManager: RenderManager, 
      * Renders an [ItemStack] at an [EntityCastable]
      */
     fun drawItem(
-            entity: T,
-            itemStack: ItemStack
+        entity: T,
+        itemStack: ItemStack
     ) {
         GlStateManager.pushMatrix()
 
@@ -75,10 +75,10 @@ abstract class RenderCastable<T : EntityCastable>(renderManager: RenderManager, 
      * Renders a this entities [AxisAlignedBB]
      */
     fun drawWorkArea(
-            aabb: AxisAlignedBB,
-            blockPos: BlockPos,
-            player: EntityPlayer,
-            partialTicks: Float
+        aabb: AxisAlignedBB,
+        blockPos: BlockPos,
+        player: EntityPlayer,
+        partialTicks: Float
     ) {
         GlStateManager.pushMatrix()
 

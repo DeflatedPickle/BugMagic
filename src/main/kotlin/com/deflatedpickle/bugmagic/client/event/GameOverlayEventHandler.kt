@@ -12,6 +12,11 @@ import net.minecraft.util.text.TextFormatting
 import net.minecraftforge.client.event.RenderGameOverlayEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 
+/**
+ * An event handler for [RenderGameOverlayEvent] and [RegisterRenderLayerEvent]
+ *
+ * @author DeflatedPickle
+ */
 object GameOverlayEventHandler {
     // This might break with GUI scaling? Maybe use a percentage of the font size
     val textHeight = Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT * 1.4f

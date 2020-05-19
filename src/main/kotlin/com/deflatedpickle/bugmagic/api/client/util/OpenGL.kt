@@ -19,10 +19,10 @@ object OpenGL {
      * @see [RenderGlobal.drawSelectionBox]
      */
     fun drawSelectionBox(
-            aabb: AxisAlignedBB,
-            blockPos: BlockPos,
-            player: EntityPlayer,
-            partialTicks: Float
+        aabb: AxisAlignedBB,
+        blockPos: BlockPos,
+        player: EntityPlayer,
+        partialTicks: Float
     ) {
         // Copied from RenderGlobal#drawSelectionBox
         GlStateManager.enableBlend()
@@ -50,11 +50,13 @@ object OpenGL {
      * Renders a solid cube
      */
     fun cube(
-            width: Double,
-            height: Double,
-            depth: Double,
-            lu: Float, lv: Float,
-            mu: Float, mv: Float
+        width: Double,
+        height: Double,
+        depth: Double,
+        lu: Float,
+        lv: Float,
+        mu: Float,
+        mv: Float
     ) {
         arrayOf(lu, lv, mu, mv).map { it.toDouble() }.apply {
             // Top Face

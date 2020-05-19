@@ -2,8 +2,8 @@
 
 package com.deflatedpickle.bugmagic.common.block
 
-import com.deflatedpickle.bugmagic.api.IBoundingBox
-import com.deflatedpickle.bugmagic.api.common.block.Generic
+import com.deflatedpickle.bugmagic.api.BoundingBox
+import com.deflatedpickle.bugmagic.api.common.block.GenericBlock
 import net.minecraft.block.material.Material
 import net.minecraft.block.properties.PropertyBool
 import net.minecraft.block.state.BlockStateContainer
@@ -17,7 +17,12 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 
-class BugBundleBlock : Generic(
+/**
+ * A decoration block bundle of bugs, wrapped in string
+ *
+ * @author DeflatedPickle
+ */
+class BugBundleBlock : GenericBlock(
         "bug_bundle",
         CreativeTabs.DECORATIONS,
         Material.CLOTH,
@@ -26,7 +31,7 @@ class BugBundleBlock : Generic(
         isOpaqueCube = false,
         renderLayer = BlockRenderLayer.CUTOUT
 ),
-        IBoundingBox {
+        BoundingBox {
     // TODO: Add more directions
     companion object {
         @JvmStatic
@@ -74,18 +79,39 @@ class BugBundleBlock : Generic(
 
     override fun createBlockState(): BlockStateContainer = BlockStateContainer(this, UP)
 
-    override fun canBeConnectedTo(world: IBlockAccess, pos: BlockPos, facing: EnumFacing): Boolean {
+    override fun canBeConnectedTo(
+            world: IBlockAccess,
+            pos: BlockPos,
+            facing: EnumFacing
+    ): Boolean {
         return when (facing) {
             // EnumFacing.UP -> !world.isAirBlock(pos.offset(facing)) && world.getBlockState(pos).getBlockFaceShape(world, pos.offset(facing), facing) == BlockFaceShape.SOLID
             else -> false
         }
     }
 
-    override fun getActualState(state: IBlockState, worldIn: IBlockAccess, pos: BlockPos): IBlockState = state.withProperty(UP, canBeConnectedTo(worldIn, pos, EnumFacing.UP))
+    override fun getActualState(
+            state: IBlockState,
+            worldIn: IBlockAccess,
+            pos: BlockPos
+    ): IBlockState =
+            state.withProperty(UP, canBeConnectedTo(worldIn, pos, EnumFacing.UP))
 
-    override fun getSelectedBoundingBox(state: IBlockState, worldIn: World, pos: BlockPos): AxisAlignedBB? = EMPTY_AABB
+    override fun getSelectedBoundingBox(
+            state: IBlockState,
+            worldIn: World,
+            pos: BlockPos
+    ): AxisAlignedBB? = EMPTY_AABB
 
-    override fun addCollisionBoxToList(state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?, isActualState: Boolean) = boundingBoxList.forEach { addCollisionBoxToList(pos, entityBox, collidingBoxes, it) }
+    override fun addCollisionBoxToList(
+            state: IBlockState,
+            worldIn: World,
+            pos: BlockPos,
+            entityBox: AxisAlignedBB,
+            collidingBoxes: MutableList<AxisAlignedBB>,
+            entityIn: Entity?,
+            isActualState: Boolean
+    ) = boundingBoxList.forEach { addCollisionBoxToList(pos, entityBox, collidingBoxes, it) }
 
     override fun getBoundingBoxList(): List<AxisAlignedBB> = boundingBoxes
 }

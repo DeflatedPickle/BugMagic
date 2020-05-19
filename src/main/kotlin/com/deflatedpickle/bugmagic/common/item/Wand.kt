@@ -3,7 +3,7 @@
 package com.deflatedpickle.bugmagic.common.item
 
 import com.deflatedpickle.bugmagic.BugMagic
-import com.deflatedpickle.bugmagic.api.common.item.Generic
+import com.deflatedpickle.bugmagic.api.common.item.GenericItem
 import com.deflatedpickle.bugmagic.client.ClientProxy as ClientProxy
 import com.deflatedpickle.bugmagic.common.capability.BugEssenceCapability
 import com.deflatedpickle.bugmagic.common.capability.SpellCasterCapability
@@ -11,7 +11,7 @@ import com.deflatedpickle.bugmagic.common.capability.SpellLearnerCapability
 import com.deflatedpickle.bugmagic.common.networking.message.MessageBugEssence
 import com.deflatedpickle.bugmagic.common.networking.message.MessageSelectedSpell
 import com.deflatedpickle.bugmagic.common.networking.message.MessageSpellCaster
-import com.deflatedpickle.bugmagic.server.Proxy as ServerProxy
+import com.deflatedpickle.bugmagic.server.ServerProxy as ServerProxy
 import java.util.concurrent.ThreadLocalRandom
 import net.minecraft.client.Minecraft
 import net.minecraft.client.util.ITooltipFlag
@@ -35,7 +35,7 @@ import net.minecraft.world.World
 import net.minecraftforge.fml.common.FMLCommonHandler
 import org.lwjgl.input.Mouse
 
-class Wand(name: String) : Generic(name, CreativeTabs.TOOLS) {
+class Wand(name: String) : GenericItem(name, CreativeTabs.TOOLS) {
     companion object {
         const val SPELL_INDEX = "spell_index"
     }

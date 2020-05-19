@@ -3,7 +3,7 @@
 package com.deflatedpickle.bugmagic.common.capability
 
 import com.deflatedpickle.bugmagic.Reference
-import com.deflatedpickle.bugmagic.api.capability.ISpellLearner
+import com.deflatedpickle.bugmagic.api.capability.SpellLearner
 import com.deflatedpickle.bugmagic.common.init.SpellInit
 import java.util.concurrent.Callable
 import net.minecraft.entity.EntityLivingBase
@@ -24,9 +24,9 @@ import net.minecraftforge.fml.common.registry.GameRegistry
 object SpellLearnerCapability {
     val NAME = ResourceLocation(Reference.MOD_ID, "spell_learner")
 
-    fun isCapable(entity: EntityLivingBase): ISpellLearner? = entity.getCapability(Provider.CAPABILITY, null)
+    fun isCapable(entity: EntityLivingBase): SpellLearner? = entity.getCapability(Provider.CAPABILITY, null)
 
-    class Implementation : ISpellLearner {
+    class Implementation : SpellLearner {
         private val spellList = mutableListOf(
                 SpellInit.ITEM_COLLECTOR,
                 SpellInit.ESSENCE_COLLECTOR,
@@ -55,8 +55,8 @@ object SpellLearnerCapability {
         }
     }
 
-    class Storage : Capability.IStorage<ISpellLearner> {
-        override fun readNBT(capability: Capability<ISpellLearner>?, instance: ISpellLearner?, side: EnumFacing?, nbt: NBTBase?) {
+    class Storage : Capability.IStorage<SpellLearner> {
+        override fun readNBT(capability: Capability<SpellLearner>?, instance: SpellLearner?, side: EnumFacing?, nbt: NBTBase?) {
             if (instance is Implementation) {
                 with(nbt as NBTTagList) {
                     for (i in 0..this.tagCount()) {
@@ -72,7 +72,7 @@ object SpellLearnerCapability {
             }
         }
 
-        override fun writeNBT(capability: Capability<ISpellLearner>?, instance: ISpellLearner?, side: EnumFacing?): NBTBase? {
+        override fun writeNBT(capability: Capability<SpellLearner>?, instance: SpellLearner?, side: EnumFacing?): NBTBase? {
             if (instance != null) {
                 with(NBTTagList()) {
                     for (i in instance.spellList.map { it.registryName!! }) {
@@ -85,15 +85,15 @@ object SpellLearnerCapability {
         }
     }
 
-    class Factory : Callable<ISpellLearner> {
-        override fun call(): ISpellLearner = Implementation()
+    class Factory : Callable<SpellLearner> {
+        override fun call(): SpellLearner = Implementation()
     }
 
     class Provider : ICapabilitySerializable<NBTBase> {
         companion object {
             @JvmStatic
-            @CapabilityInject(ISpellLearner::class)
-            lateinit var CAPABILITY: Capability<ISpellLearner>
+            @CapabilityInject(SpellLearner::class)
+            lateinit var CAPABILITY: Capability<SpellLearner>
         }
 
         val INSTANCE = CAPABILITY.defaultInstance
@@ -106,6 +106,6 @@ object SpellLearnerCapability {
     }
 
     fun register() {
-        CapabilityManager.INSTANCE.register(ISpellLearner::class.java, Storage(), Factory())
+        CapabilityManager.INSTANCE.register(SpellLearner::class.java, Storage(), Factory())
     }
 }

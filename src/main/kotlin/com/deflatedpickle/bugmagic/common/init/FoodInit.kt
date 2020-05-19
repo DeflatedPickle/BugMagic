@@ -3,7 +3,7 @@
 package com.deflatedpickle.bugmagic.common.init
 
 import com.deflatedpickle.bugmagic.Reference
-import com.deflatedpickle.bugmagic.api.common.item.food.Generic
+import com.deflatedpickle.bugmagic.api.common.item.food.GenericFood
 import com.github.upcraftlp.glasspane.api.registry.AutoRegistry
 import net.minecraft.potion.PotionEffect
 
@@ -11,7 +11,7 @@ import net.minecraft.potion.PotionEffect
 object FoodInit {
     // Made by smelting a bug bundle
     @JvmField
-    val PETRIFIED_BUG_BUNDLE = Generic(
+    val PETRIFIED_BUG_BUNDLE = GenericFood(
             name = "petrified_bug_bundle",
             healAmount = 1,
             saturation = 0.1f,

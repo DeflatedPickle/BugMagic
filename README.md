@@ -21,3 +21,7 @@
     <img src="https://sloc.xyz/github/DeflatedPickle/BugMagic/?category=comments">
     <img src="https://sloc.xyz/github/DeflatedPickle/BugMagic/?category=lines">
 </p>
+
+<p align="center">
+    <a href="https://deflatedpickle.github.io/BugMagic/"><img src="https://img.shields.io/badge/Javadoc-1.12.2-green"></a>
+</p>

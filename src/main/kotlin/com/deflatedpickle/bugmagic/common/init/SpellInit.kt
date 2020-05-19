@@ -11,12 +11,10 @@ import com.deflatedpickle.bugmagic.common.spell.*
 object SpellInit {
     val registry = "spell_recipe_registry"
 
-    val DEBUG = mutableListOf<Debug>()
-
-    val ITEM_COLLECTOR = ItemCollector()
-    val ESSENCE_COLLECTOR = EssenceCollector()
-    val AUTO_HOE = AutoHoe()
-    val AUTO_PLANTER = AutoPlanter()
-    val AUTO_FERTILIZER = AutoFertilizer()
-    val AUTO_HARVESTER = AutoHarvester()
+    val ITEM_COLLECTOR = ItemCollectorSpell()
+    val ESSENCE_COLLECTOR = EssenceCollectorSpell()
+    val AUTO_HOE = AutoHoeSpell()
+    val AUTO_PLANTER = AutoPlanterSpell()
+    val AUTO_FERTILIZER = AutoFertilizerSpell()
+    val AUTO_HARVESTER = AutoHarvesterSpell()
 }

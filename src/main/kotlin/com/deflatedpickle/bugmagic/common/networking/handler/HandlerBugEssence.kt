@@ -17,13 +17,15 @@ class HandlerBugEssence : IMessageHandler<MessageBugEssence, IMessage> {
     override fun onMessage(message: MessageBugEssence, ctx: MessageContext): IMessage? {
         val (entityID, max, current) = message
 
-        with(Minecraft.getMinecraft().world.getEntityByID(entityID)) {
-            if (this is EntityLivingBase) {
-                val bugEssence = BugEssenceCapability.isCapable(this)
+        if (entityID != -1) {
+            with(Minecraft.getMinecraft().world.getEntityByID(entityID)) {
+                if (this is EntityLivingBase) {
+                    val bugEssence = BugEssenceCapability.isCapable(this)
 
-                if (bugEssence != null) {
-                    bugEssence.max = max
-                    bugEssence.current = current
+                    if (bugEssence != null) {
+                        bugEssence.max = max
+                        bugEssence.current = current
+                    }
                 }
             }
         }

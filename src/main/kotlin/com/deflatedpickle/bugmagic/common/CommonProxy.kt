@@ -23,6 +23,11 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import net.minecraftforge.fml.relauncher.Side
 
+/**
+ * A proxy to register common objects
+ *
+ * @author DeflatedPickle
+ */
 open class CommonProxy {
     open fun preInit(event: FMLPreInitializationEvent) {
         // Statically initializes objects

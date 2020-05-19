@@ -9,6 +9,11 @@ import net.minecraftforge.client.event.ModelBakeEvent
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 
+/**
+ * An event handler for [ModelBakeEvent]
+ *
+ * @author DeflatedPickle
+ */
 @Suppress("unused")
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID)
 object ModelBakeEventHandler {

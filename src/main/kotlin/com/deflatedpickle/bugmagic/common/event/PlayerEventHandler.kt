@@ -1,3 +1,5 @@
+/* Copyright (c) 2020 DeflatedPickle under the MIT license */
+
 package com.deflatedpickle.bugmagic.common.event
 
 import com.deflatedpickle.bugmagic.BugMagic
