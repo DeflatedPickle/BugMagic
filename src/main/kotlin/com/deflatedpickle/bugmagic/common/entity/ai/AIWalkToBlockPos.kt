@@ -20,9 +20,11 @@ class AIWalkToBlockPos(
         private val blockPos: () -> BlockPos?
 ) : EntityAIBase() {
     override fun shouldExecute(): Boolean = with(blockPos()) {
-        !entityIn.world.isAirBlock(this) &&
-                entityIn.position.getDistance(this.x, this.y, this.z) > 1.0 &&
-                this@AIWalkToBlockPos.check()
+        if (this != null) {
+            !entityIn.world.isAirBlock(this) &&
+                    entityIn.position.getDistance(this.x, this.y, this.z) > 1.0 &&
+                    this@AIWalkToBlockPos.check()
+        } else false
     }
 
 
