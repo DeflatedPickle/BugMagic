@@ -1,5 +1,5 @@
 <h1 align="center">
-    <p align="center"><img src="https://raw.githubusercontent.com/DeflatedPickle/BugMagic/master/src/resources/logo.png"></p>
+    <p align="center"><img src="https://raw.githubusercontent.com/DeflatedPickle/BugMagic/master/src/main/resources/logo.png"></p>
     <br>
     <p align="center">
         <a href="https://www.patreon.com/DeflatedPickle"><img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" height="24px"></a>
