@@ -25,3 +25,11 @@
 <p align="center">
     <a href="https://deflatedpickle.github.io/BugMagic/"><img src="https://img.shields.io/badge/Javadoc-1.12.2-green"></a>
 </p>
+
+## Table of Contents
+- [Dependencies](#dependencies)
+
+## Dependencies
+- [Forgelin](https://www.curseforge.com/minecraft/mc-mods/shadowfacts-forgelin)
+- [ModelLoader](https://www.curseforge.com/minecraft/mc-mods/modelloader)
+- [GlassPane](https://www.curseforge.com/minecraft/mc-mods/glasspane)
