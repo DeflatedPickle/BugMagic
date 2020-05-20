@@ -5,9 +5,12 @@ package com.deflatedpickle.bugmagic.api.client.util.extension
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.FontRenderer
 import net.minecraft.client.renderer.GlStateManager
+import net.minecraft.client.renderer.RenderHelper
 
 // Maybe make this take a list or varargs of strings?
 fun FontRenderer.drawNameTag(string: String, x: Int, y: Int, colour: Int = 0xFFFFFF) {
+    RenderHelper.disableStandardItemLighting()
+
     GlStateManager.pushMatrix()
 
     GlStateManager.translate(0.0, 0.4, 0.0)
@@ -22,4 +25,6 @@ fun FontRenderer.drawNameTag(string: String, x: Int, y: Int, colour: Int = 0xFFF
     }
 
     GlStateManager.popMatrix()
+
+    RenderHelper.enableStandardItemLighting()
 }

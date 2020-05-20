@@ -5,11 +5,11 @@ package com.deflatedpickle.bugmagic.common.item
 import com.deflatedpickle.bugmagic.BugMagic
 import com.deflatedpickle.bugmagic.api.common.item.GenericItem
 import com.deflatedpickle.bugmagic.client.ClientProxy as ClientProxy
+import com.deflatedpickle.bugmagic.client.networking.message.MessageSelectedSpell
 import com.deflatedpickle.bugmagic.common.capability.BugEssenceCapability
 import com.deflatedpickle.bugmagic.common.capability.SpellCasterCapability
 import com.deflatedpickle.bugmagic.common.capability.SpellLearnerCapability
 import com.deflatedpickle.bugmagic.common.networking.message.MessageBugEssence
-import com.deflatedpickle.bugmagic.common.networking.message.MessageSelectedSpell
 import com.deflatedpickle.bugmagic.common.networking.message.MessageSpellCaster
 import com.deflatedpickle.bugmagic.server.ServerProxy as ServerProxy
 import java.util.concurrent.ThreadLocalRandom

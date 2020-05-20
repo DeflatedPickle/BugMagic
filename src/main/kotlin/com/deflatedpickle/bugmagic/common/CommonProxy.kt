@@ -3,6 +3,8 @@
 package com.deflatedpickle.bugmagic.common
 
 import com.deflatedpickle.bugmagic.BugMagic
+import com.deflatedpickle.bugmagic.client.networking.handler.HandlerSelectedSpell
+import com.deflatedpickle.bugmagic.client.networking.message.MessageSelectedSpell
 import com.deflatedpickle.bugmagic.common.capability.BugEssenceCapability
 import com.deflatedpickle.bugmagic.common.capability.SpellCasterCapability
 import com.deflatedpickle.bugmagic.common.capability.SpellLearnerCapability
@@ -11,11 +13,9 @@ import com.deflatedpickle.bugmagic.common.init.FluidInit
 import com.deflatedpickle.bugmagic.common.init.SmeltingInit
 import com.deflatedpickle.bugmagic.common.init.TileEntityInit
 import com.deflatedpickle.bugmagic.common.networking.handler.HandlerBugEssence
-import com.deflatedpickle.bugmagic.common.networking.handler.HandlerSelectedSpell
 import com.deflatedpickle.bugmagic.common.networking.handler.HandlerSpellCaster
 import com.deflatedpickle.bugmagic.common.networking.message.Message
 import com.deflatedpickle.bugmagic.common.networking.message.MessageBugEssence
-import com.deflatedpickle.bugmagic.common.networking.message.MessageSelectedSpell
 import com.deflatedpickle.bugmagic.common.networking.message.MessageSpellCaster
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
@@ -41,9 +41,12 @@ open class CommonProxy {
         SpellCasterCapability.register()
 
         // Register packets
+        // Server->Client Packets
         BugMagic.CHANNEL.registerMessage(HandlerBugEssence::class.java, MessageBugEssence::class.java, Message.BUG_ESSENCE.ordinal, Side.CLIENT)
-        BugMagic.CHANNEL.registerMessage(HandlerSelectedSpell::class.java, MessageSelectedSpell::class.java, Message.SELECTED_SPELL.ordinal, Side.SERVER)
         BugMagic.CHANNEL.registerMessage(HandlerSpellCaster::class.java, MessageSpellCaster::class.java, Message.SPELL_CASTER.ordinal, Side.CLIENT)
+
+        // Client->Server Packets
+        BugMagic.CHANNEL.registerMessage(HandlerSelectedSpell::class.java, MessageSelectedSpell::class.java, Message.SELECTED_SPELL.ordinal, Side.SERVER)
     }
 
     open fun init(event: FMLInitializationEvent) {

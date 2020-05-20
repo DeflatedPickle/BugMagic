@@ -34,7 +34,13 @@ minecraft {
     version = "1.12.2-14.23.5.2847"
     runDir = "run"
 
-    mappings = "snapshot_20180814"
+    mappings = "stable_39"
+}
+
+jar {
+    manifest {
+        attributes 'FMLAT': 'bugmagic_at.cfg'
+    }
 }
 
 repositories {
@@ -73,6 +79,8 @@ processResources {
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
+
+    rename '(.+_at.cfg)', 'META-INF/$1'
 }
 
 compileKotlin {

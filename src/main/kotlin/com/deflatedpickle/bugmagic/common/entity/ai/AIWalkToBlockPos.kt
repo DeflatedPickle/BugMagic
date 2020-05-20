@@ -15,9 +15,9 @@ import net.minecraft.util.math.BlockPos
  * @param blockPos The [BlockPos] to walk to
  */
 class AIWalkToBlockPos(
-        private val entityIn: EntityLiving,
-        private val check: () -> Boolean,
-        private val blockPos: () -> BlockPos?
+    private val entityIn: EntityLiving,
+    private val check: () -> Boolean,
+    private val blockPos: () -> BlockPos?
 ) : EntityAIBase() {
     override fun shouldExecute(): Boolean = with(blockPos()) {
         if (this != null) {
@@ -26,7 +26,6 @@ class AIWalkToBlockPos(
                     this@AIWalkToBlockPos.check()
         } else false
     }
-
 
     override fun updateTask() {
         val path = this.entityIn.navigator.getPathToPos(blockPos())

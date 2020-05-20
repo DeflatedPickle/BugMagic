@@ -24,13 +24,13 @@ class MessageBugEssence(
     operator fun component3() = this.current
 
     override fun toBytes(buf: ByteBuf) {
-        ByteBufUtils.writeVarInt(buf, this.entityID, 5)
+        ByteBufUtils.writeVarInt(buf, this.entityID, 3)
         buf.writeInt(this.max)
         buf.writeInt(this.current)
     }
 
     override fun fromBytes(buf: ByteBuf) {
-        this.entityID = ByteBufUtils.readVarInt(buf, 5)
+        this.entityID = ByteBufUtils.readVarInt(buf, 3)
         this.max = buf.readInt()
         this.current = buf.readInt()
     }

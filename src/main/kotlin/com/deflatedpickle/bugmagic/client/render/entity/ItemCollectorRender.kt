@@ -47,7 +47,7 @@ class ItemCollectorRender(renderManager: RenderManager) :
 
         if (entity.owner?.heldItemMainhand?.item is Wand) {
             drawLine(
-                    entity,
+                    entity.positionVector,
                     entity.dataManager.get(ItemCollectorEntity.dataInventoryPosition),
                     ReadableColor.RED
             )

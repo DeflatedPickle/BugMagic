@@ -6,6 +6,7 @@ import com.deflatedpickle.bugmagic.api.HasModel
 import com.deflatedpickle.bugmagic.api.client.util.OpenGL
 import com.deflatedpickle.bugmagic.api.client.util.extension.render
 import com.deflatedpickle.bugmagic.api.entity.mob.EntityCastable
+import com.deflatedpickle.bugmagic.common.item.Wand
 import net.minecraft.client.model.ModelBase
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.Tessellator
@@ -18,6 +19,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.Vec3d
 import org.lwjgl.opengl.GL11
 import org.lwjgl.util.ReadableColor
 
@@ -44,17 +46,26 @@ abstract class RenderCastable<T : EntityCastable>(
             GlStateManager.popMatrix()
         }
 
-        super.doRender(entity, x, y, z, entityYaw, partialTicks)
-    }
+        if (entity.owner?.heldItemMainhand?.item is Wand) {
+            drawLine(
+                    entity.owner!!.positionVector,
+                    entity.positionVector,
+                    ReadableColor.BLUE
+            )
+        }
 
+        super.doRender(entity, x, y, z, entityYaw, partialTicks)
+
+    }
     /**
-     * Draws a line from an [T] to a target [BlockPos], using a [ReadableColor]
+     * Draws a line from an [Vec3d] to a target [Vec3d], using a [ReadableColor]
      */
     fun drawLine(
-        entity: T,
-        target: BlockPos,
+        start: Vec3d,
+        target: Vec3d,
         colour: ReadableColor
     ) {
+
         GL11.glPushAttrib(GL11.GL_CURRENT_BIT)
 
         GlStateManager.disableTexture2D()
@@ -69,9 +80,9 @@ abstract class RenderCastable<T : EntityCastable>(
         tessellator.buffer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION)
         tessellator.buffer.pos(0.0, 0.0, 0.0).endVertex()
         tessellator.buffer.pos(
-                target.x - entity.posX + 0.5,
-                target.y - entity.posY + 0.5,
-                target.z - entity.posZ + 0.5
+                target.x - start.x,
+                target.y - start.y,
+                target.z - start.z
         ).endVertex()
 
         tessellator.draw()
@@ -79,6 +90,46 @@ abstract class RenderCastable<T : EntityCastable>(
         GlStateManager.enableTexture2D()
 
         GL11.glPopAttrib()
+    }
+
+    /**
+     * Draws a line from an [T] to a target [Vec3d], using a [ReadableColor]
+     */
+    fun drawLine(
+        entity: T,
+        target: Vec3d,
+        colour: ReadableColor
+    ) {
+        this.drawLine(Vec3d(entity.posX, entity.posY, entity.posZ), target, colour)
+    }
+
+    /**
+     * Draws a line from an [T] to a target [BlockPos], using a [ReadableColor]
+     */
+    fun drawLine(
+        entity: T,
+        target: BlockPos,
+        colour: ReadableColor
+    ) {
+        this.drawLine(
+                Vec3d(entity.posX, entity.posY, entity.posZ),
+                Vec3d(target.x + 0.5, target.y.toDouble(), target.z.toDouble() + 0.5),
+                colour
+        )
+    }
+    /**
+     * Draws a line from an [Vec3d] to a target [BlockPos], using a [ReadableColor]
+     */
+    fun drawLine(
+        start: Vec3d,
+        target: BlockPos,
+        colour: ReadableColor
+    ) {
+        drawLine(
+                start,
+                Vec3d(target.x + 0.5, target.y.toDouble(), target.z + 0.5),
+                colour
+        )
     }
 
     /**

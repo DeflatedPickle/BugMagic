@@ -1,8 +1,8 @@
 /* Copyright (c) 2019-2020 DeflatedPickle under the MIT license */
 
-package com.deflatedpickle.bugmagic.common.networking.message
+package com.deflatedpickle.bugmagic.client.networking.message
 
-import com.deflatedpickle.bugmagic.common.networking.handler.HandlerSelectedSpell
+import com.deflatedpickle.bugmagic.client.networking.handler.HandlerSelectedSpell
 import io.netty.buffer.ByteBuf
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage
 

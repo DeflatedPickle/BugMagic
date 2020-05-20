@@ -13,8 +13,6 @@ import kotlin.math.cos
 import kotlin.math.sin
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.GlStateManager
-import net.minecraft.client.renderer.OpenGlHelper
-import net.minecraft.client.renderer.RenderHelper
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
@@ -31,11 +29,6 @@ class SpellTableTileEntitySpecialRender : TileEntitySpecialRenderer<SpellTableTi
 
     override fun render(te: SpellTableTileEntity, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float) {
         super.render(te, x, y, z, partialTicks, destroyStage, alpha)
-
-        OpenGlHelper.setLightmapTextureCoords(
-                OpenGlHelper.lightmapTexUnit, 140f, 140f
-        )
-        RenderHelper.enableStandardItemLighting()
 
         // Fluid
         GlStateManager.pushMatrix()
@@ -150,7 +143,6 @@ class SpellTableTileEntitySpecialRender : TileEntitySpecialRenderer<SpellTableTi
             GlStateManager.popMatrix()
 
             GlStateManager.pushMatrix()
-
             val validSpeed = 0.06f
             // omg ur so valid uwu
             val validTransAmplitude = 0.02f
@@ -253,7 +245,5 @@ class SpellTableTileEntitySpecialRender : TileEntitySpecialRenderer<SpellTableTi
 
         GlStateManager.popMatrix()
         GlStateManager.popMatrix()
-
-        RenderHelper.disableStandardItemLighting()
     }
 }
