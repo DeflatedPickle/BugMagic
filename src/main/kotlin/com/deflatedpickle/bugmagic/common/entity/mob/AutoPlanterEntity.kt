@@ -7,7 +7,6 @@ import com.deflatedpickle.bugmagic.common.entity.ai.AIFindBlock
 import com.deflatedpickle.bugmagic.common.entity.ai.AIFindClosestTileEntity
 import com.deflatedpickle.bugmagic.common.entity.ai.AITakeFromInventory
 import com.deflatedpickle.bugmagic.common.entity.ai.AIWaitWithBlock
-import com.deflatedpickle.bugmagic.common.entity.ai.AIWalkToBlock
 import com.deflatedpickle.bugmagic.common.entity.ai.AIWalkToBlockPos
 import com.deflatedpickle.bugmagic.common.spell.AutoPlanterSpell
 import net.minecraft.entity.EntityLiving
@@ -88,11 +87,9 @@ class AutoPlanterEntity(worldIn: World) : EntityCastable(worldIn) {
         ) {}
 
         this.tasks.addTask(1, findBlock)
-        this.tasks.addTask(1, AIWalkToBlockPos(this, { this.dataManager.get(dataSeeds) == ItemStack.EMPTY }, dataHomePosition))
+        this.tasks.addTask(1, AIWalkToBlockPos(this, { this.dataManager.get(dataSeeds) == ItemStack.EMPTY }, { this.dataManager.get(dataHomePosition) }))
         this.tasks.addTask(2, AITakeFromInventory(this))
-        this.tasks.addTask(3, AIWalkToBlock(findBlock, this) {
-            dataManager.get(dataSeeds) != ItemStack.EMPTY
-        })
+        this.tasks.addTask(3, AIWalkToBlockPos(this, { dataManager.get(dataSeeds) != ItemStack.EMPTY }) { this.dataManager.get(dataHomePosition) })
         this.tasks.addTask(4, AIWaitWithBlock(findBlock = findBlock, entityIn = this,
                 executeCheck = { entityLiving, blockPos ->
                     entityLiving.world.getBlockState(blockPos.offset(EnumFacing.UP)).block == Blocks.AIR

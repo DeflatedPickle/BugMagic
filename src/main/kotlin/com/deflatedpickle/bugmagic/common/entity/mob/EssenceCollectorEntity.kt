@@ -5,7 +5,7 @@ package com.deflatedpickle.bugmagic.common.entity.mob
 import com.deflatedpickle.bugmagic.api.entity.mob.EntityCastable
 import com.deflatedpickle.bugmagic.common.entity.ai.AIFindBlock
 import com.deflatedpickle.bugmagic.common.entity.ai.AIWaitWithBlock
-import com.deflatedpickle.bugmagic.common.entity.ai.AIWalkToBlock
+import com.deflatedpickle.bugmagic.common.entity.ai.AIWalkToBlockPos
 import com.deflatedpickle.bugmagic.common.spell.EssenceCollectorSpell
 import java.util.concurrent.ThreadLocalRandom
 import kotlin.math.min
@@ -58,7 +58,7 @@ class EssenceCollectorEntity(worldIn: World) : EntityCastable(worldIn) {
                 }) {}
 
         this.tasks.addTask(1, findBlock)
-        this.tasks.addTask(2, AIWalkToBlock(findBlock, this) { dataManager.get(dataEssence) < 100 })
+        this.tasks.addTask(2, AIWalkToBlockPos(this, { dataManager.get(dataEssence) < 100 }, { findBlock.blockPos }))
         this.tasks.addTask(3, AIWaitWithBlock(findBlock, this,
                 { entityLiving: EntityLiving, blockPos: BlockPos -> true },
                 32) { blockPosIn, entityIn ->

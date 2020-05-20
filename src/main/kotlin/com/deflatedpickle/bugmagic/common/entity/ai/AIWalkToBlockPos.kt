@@ -4,7 +4,6 @@ package com.deflatedpickle.bugmagic.common.entity.ai
 
 import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.ai.EntityAIBase
-import net.minecraft.network.datasync.DataParameter
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.math.BlockPos
 
@@ -13,25 +12,24 @@ import net.minecraft.util.math.BlockPos
  *
  * @author DeflatedPickle
  * @param check A check run to see if this task should execute
- * @param inventory The [BlockPos] to walk to
+ * @param blockPos The [BlockPos] to walk to
  */
 class AIWalkToBlockPos(
-    private val entityIn: EntityLiving,
-    private val check: () -> Boolean,
-    private val inventory: DataParameter<BlockPos>
+        private val entityIn: EntityLiving,
+        private val check: () -> Boolean,
+        private val blockPos: () -> BlockPos?
 ) : EntityAIBase() {
-    override fun shouldExecute(): Boolean {
-        if (check() &&
-                entityIn.dataManager.get(inventory) != BlockPos.ORIGIN) {
-            return true
-        }
-        return false
+    override fun shouldExecute(): Boolean = with(blockPos()) {
+        !entityIn.world.isAirBlock(this) &&
+                entityIn.position.getDistance(this.x, this.y, this.z) > 1.0 &&
+                this@AIWalkToBlockPos.check()
     }
 
-    override fun updateTask() {
-        val path = this.entityIn.navigator.getPathToPos(entityIn.dataManager.get(inventory))
 
-        if (path != null) {
+    override fun updateTask() {
+        val path = this.entityIn.navigator.getPathToPos(blockPos())
+
+        path?.let {
             this.entityIn.navigator.setPath(path, entityIn.aiMoveSpeed.toDouble())
         }
     }

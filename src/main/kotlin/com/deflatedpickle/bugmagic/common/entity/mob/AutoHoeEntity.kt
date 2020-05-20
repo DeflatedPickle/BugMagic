@@ -6,7 +6,7 @@ import com.deflatedpickle.bugmagic.api.entity.mob.EntityCastable
 import com.deflatedpickle.bugmagic.common.entity.ai.AIFindBlock
 import com.deflatedpickle.bugmagic.common.entity.ai.AIFindClosestTileEntity
 import com.deflatedpickle.bugmagic.common.entity.ai.AIWaitWithBlock
-import com.deflatedpickle.bugmagic.common.entity.ai.AIWalkToBlock
+import com.deflatedpickle.bugmagic.common.entity.ai.AIWalkToBlockPos
 import com.deflatedpickle.bugmagic.common.spell.AutoHoeSpell
 import net.minecraft.entity.EntityLiving
 import net.minecraft.init.Blocks
@@ -78,7 +78,7 @@ class AutoHoeEntity(worldIn: World) : EntityCastable(worldIn) {
         ) {}
 
         this.tasks.addTask(1, findBlock)
-        this.tasks.addTask(2, AIWalkToBlock(findBlock, this) { true })
+        this.tasks.addTask(2, AIWalkToBlockPos(this, { true }) { this.dataManager.get(AutoFertilizerEntity.dataHomePosition) })
         this.tasks.addTask(3, AIWaitWithBlock(findBlock = findBlock, entityIn = this,
                 executeCheck = { entityLiving, blockPos ->
                     !entityLiving.world.isAirBlock(blockPos) &&
