@@ -46,11 +46,12 @@ class AutoHarvesterEntity(worldIn: World) : EntityCastable(worldIn) {
     override fun initEntityAI() {
         /*
             AI Steps:
-            - Finds an inventory
-            - Finds a plant-able block
-            - Walks to the block
-            - Harvest the plant
-            - Wait 10-20 seconds
+            1. Finds an inventory
+            2. Finds a plant-able block
+            3. Walks to the block
+            4. Harvest the plant
+            5. Wait 10-20 seconds
+            - Usually repeats steps 2 through 5
          */
 
         this.tasks.addTask(1, AIFindClosestTileEntity(this, dataHomePosition, {

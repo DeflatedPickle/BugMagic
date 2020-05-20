@@ -1,0 +1,12 @@
+daysUntilStale: 60
+daysUntilClose: 7
+exemptLabels:
+  - "todo"
+  - "extension"
+  - "good first issue"
+  - "help wanted"
+  - "question"
+  - "pinned"
+exemptProjects: true
+exemptMilestone: true
+staleLabel: "stale"

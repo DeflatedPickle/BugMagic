@@ -37,6 +37,7 @@ class AICollectItem(
 
                 if (entityItem.item.count <= 0) {
                     entityItem.setDead()
+                    this.findItem.entityItem = null
                 }
             }
         }

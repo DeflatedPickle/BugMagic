@@ -43,10 +43,12 @@ class AutoHoeEntity(worldIn: World) : EntityCastable(worldIn) {
     override fun initEntityAI() {
         /*
             AI Steps:
-            - Finds an inventory
-            - Finds a grass, dirt or path block
-            - Walks to the block
-            - Tills the soil
+            1. Finds an inventory
+            2. Finds a grass, dirt or path block
+            3. Walks to the block
+            4. Tills the soil
+            5. Waits 20 ticks
+            - Usually repeats steps 2 through 5
          */
 
         this.tasks.addTask(1, AIFindClosestTileEntity(this, dataHomePosition, {

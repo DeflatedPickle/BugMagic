@@ -48,11 +48,13 @@ class AutoPlanterEntity(worldIn: World) : EntityCastable(worldIn) {
     override fun initEntityAI() {
         /*
             AI Steps:
-            - Find a farm block
-            - Walk to inventory
-            - Take a seed
-            - Walk to farm block
-            - Plant seed
+            1. Find a farm block
+            2. Walk to inventory
+            3. Take a seed
+            4. Walk to farm block
+            5. Plant seed
+            6. Waits for 14 ticks
+            - Usually repeats steps 1 through 6
          */
 
         this.tasks.addTask(1, AIFindClosestTileEntity(this, dataHomePosition, {

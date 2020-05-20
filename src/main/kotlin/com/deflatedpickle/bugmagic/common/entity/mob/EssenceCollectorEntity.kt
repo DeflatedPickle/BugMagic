@@ -42,9 +42,11 @@ class EssenceCollectorEntity(worldIn: World) : EntityCastable(worldIn) {
     override fun initEntityAI() {
         /*
             AI Steps:
-            - Finds a flower
-            - Walks to the flower
-            - Eats the flower
+            1. Finds a flower
+            2. Walks to the flower
+            3. Eats the flower
+            4. Waits for 32 ticks
+            - Usually repeats steps 1 through 4
          */
 
         val findBlock = AIFindBlock(entityIn = this,

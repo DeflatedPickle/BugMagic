@@ -52,12 +52,12 @@ class ItemCollectorEntity(worldIn: World) : EntityCastable(worldIn) {
     override fun initEntityAI() {
         /*
             AI Steps:
-            - Finds an inventory
-            - Collects an item (if near one)
-            - Walks to the inventory (if it found one)
-            - Delivers the item to the inventory (if it found one)
-            - Looks for an item
-            - Walks to an item (if it found one)
+            1. Finds an inventory
+            2. Collects an item (if near one)
+            3. Walks to the inventory (if it found one)
+            4. Delivers the item to the inventory (if it found one)
+            5. Looks for an item
+            - Repeats steps 3 through 5
          */
 
         val findItem = AIFindItem(this, { this.dataManager.get(dataInventoryPosition) }, 7.0)
