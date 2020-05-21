@@ -6,4 +6,5 @@ enum class Message {
     BUG_ESSENCE,
     SELECTED_SPELL,
     SPELL_CASTER,
+    ENTITY_TASKS,
 }

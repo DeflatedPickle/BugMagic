@@ -11,3 +11,13 @@ fun SpellRecipe.containsExact(input: Collection<ItemStack>): Boolean =
 
 fun SpellRecipe.containsAll(input: Collection<ItemStack>): Boolean =
         input.all { SpellIngredient(it.item, it.count) in this.ingredients!! }
+
+fun SpellRecipe.getAll(input: MutableCollection<ItemStack>): Collection<ItemStack> =
+        input.filter { SpellIngredient(it.item, it.count) in this.ingredients!! }
+
+fun SpellRecipe.removeAll(input: MutableCollection<ItemStack>): Collection<ItemStack> =
+        input.also { ingredient ->
+            ingredient.removeIf {
+                SpellIngredient(it.item, it.count) in this.ingredients!!
+            }
+        }

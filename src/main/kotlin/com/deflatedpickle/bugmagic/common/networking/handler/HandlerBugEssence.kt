@@ -18,15 +18,17 @@ class HandlerBugEssence : IMessageHandler<MessageBugEssence, IMessage> {
         val (entityID, max, current) = message
 
         if (entityID != -1) {
-            with(Minecraft.getMinecraft().world.getEntityByID(entityID)) {
-                if (this is EntityLivingBase) {
-                    val bugEssence = BugEssenceCapability.isCapable(this)
+            Minecraft.getMinecraft().world?.let { world ->
+                world.getEntityByID(entityID)?.let { entity ->
+                if (entity is EntityLivingBase) {
+                    val bugEssence = BugEssenceCapability.isCapable(entity)
 
                     if (bugEssence != null) {
                         bugEssence.max = max
                         bugEssence.current = current
                     }
                 }
+            }
             }
         }
 

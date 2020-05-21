@@ -6,6 +6,7 @@ import com.deflatedpickle.bugmagic.api.spell.Spell;
 import com.deflatedpickle.bugmagic.common.capability.SpellLearnerCapability;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * An interface for things that can learn spells
@@ -44,7 +45,8 @@ public interface SpellLearner {
    *
    * @return The spell currently selected
    */
-  default Spell getCurrentSpell() {
+  default @Nullable Spell getCurrentSpell() {
+    if (this.getSpellList().size() <= 0) return null;
     return this.getSpellList().get(this.getCurrentIndex());
   }
 

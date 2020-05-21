@@ -4,13 +4,18 @@ package com.deflatedpickle.bugmagic.common.block
 
 import com.deflatedpickle.bugmagic.api.BoundingBox
 import com.deflatedpickle.bugmagic.api.common.block.GenericBlock
+import com.deflatedpickle.bugmagic.api.common.util.extension.drop
 import com.deflatedpickle.bugmagic.api.common.util.extension.dropSlot
+import com.deflatedpickle.bugmagic.api.common.util.extension.getSlotItems
 import com.deflatedpickle.bugmagic.api.common.util.extension.isNotEmpty
 import com.deflatedpickle.bugmagic.api.common.util.extension.update
 import com.deflatedpickle.bugmagic.client.render.tileentity.SpellTableTileEntitySpecialRender
 import com.deflatedpickle.bugmagic.common.block.tileentity.SpellTableTileEntity
+import com.deflatedpickle.bugmagic.common.capability.SpellLearnerCapability
+import com.deflatedpickle.bugmagic.common.init.FoodInit
 import com.deflatedpickle.bugmagic.common.init.SpellRecipeInit
 import com.deflatedpickle.bugmagic.common.item.Wand
+import java.util.concurrent.ThreadLocalRandom
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
 import net.minecraft.creativetab.CreativeTabs
@@ -154,13 +159,41 @@ class SpellTableBlock : GenericBlock("spell_table", CreativeTabs.DECORATIONS, Ma
                     } else {
                         if (stack.item is Wand) {
                             val split = tileEntity.validRecipe.split(":")
-                            println(split)
+                            if (split.size <= 1) return false
+
+                            val resourceLocation = ResourceLocation(split[0], split[1])
 
                             if (split.size > 1) {
-                                SpellRecipeInit.registry.getValue(ResourceLocation(split[0], split[1]))?.let {
-                                    if (tileEntity.recipeProgression < it.craftingTime) {
-                                        tileEntity.recipeProgression++
+                                val recipe = SpellRecipeInit.registry.getValue(resourceLocation)!!
+
+                                recipe.ingredients?.let { ingredients ->
+                                    if (tileEntity.recipeProgression >= recipe.craftingTime) {
+                                        val allItemStacks = tileEntity.itemStackHandler.getSlotItems().toMutableList()
+                                        val filteredStacks = allItemStacks.filter { stack ->
+                                            stack.item in ingredients.map {
+                                                it.item
+                                            }
+                                        }
+
+                                        // TODO: Add a packet to sync the spell list with the client
+                                        SpellLearnerCapability.isCapable(playerIn)?.learnSpell(recipe.spell)
+
+                                        for (i in filteredStacks) {
+                                            for (l in 0 until i.count) {
+                                                i.shrink(1)
+                                                if (ThreadLocalRandom.current().nextInt(0, 10) == 0) {
+                                                    ItemStack(FoodInit.JELLY_BUG).drop(worldIn, pos)
+                                                }
+                                            }
+                                        }
                                         tileEntity.update(worldIn, this, state)
+                                    } else {
+                                        SpellRecipeInit.registry.getValue(resourceLocation)?.let {
+                                            if (tileEntity.recipeProgression < it.craftingTime) {
+                                                tileEntity.recipeProgression++
+                                                tileEntity.update(worldIn, this, state)
+                                            }
+                                        }
                                     }
                                 }
                             }

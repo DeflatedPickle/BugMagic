@@ -59,31 +59,35 @@ class Wand(name: String) : GenericItem(name, CreativeTabs.TOOLS) {
             if (bugEssence != null && spellLearner != null && spellCaster != null) {
                 if (!entityLiving.world.isRemote) {
                     if (spellCaster.castSpellMap.containsKey(spellLearner.currentSpell)) {
-                        if (bugEssence.current + spellLearner.currentSpell.manaGain < bugEssence.max) {
-                            bugEssence.current += spellLearner.currentSpell.manaGain
-                            BugMagic.CHANNEL.sendTo(MessageBugEssence(entityLiving.entityId, bugEssence.max, bugEssence.current), entityLiving as EntityPlayerMP)
-                        } else {
-                            bugEssence.current = bugEssence.max
-                            BugMagic.CHANNEL.sendTo(MessageBugEssence(entityLiving.entityId, bugEssence.max, bugEssence.current), entityLiving as EntityPlayerMP)
-                        }
+                        spellLearner.currentSpell?.let { spell ->
+                            if (bugEssence.current + spell.manaGain < bugEssence.max) {
+                                bugEssence.current += spell.manaGain
+                                BugMagic.CHANNEL.sendTo(MessageBugEssence(entityLiving.entityId, bugEssence.max, bugEssence.current), entityLiving as EntityPlayerMP)
+                            } else {
+                                bugEssence.current = bugEssence.max
+                                BugMagic.CHANNEL.sendTo(MessageBugEssence(entityLiving.entityId, bugEssence.max, bugEssence.current), entityLiving as EntityPlayerMP)
+                            }
 
-                        if (spellCaster.castSpellMap[spellLearner.currentSpell]!! <= 0) {
-                            spellLearner.currentSpell.uncast(entityLiving, stack)
-                            spellCaster.castSpellMap.remove(spellLearner.currentSpell)
-                        } else {
-                            spellLearner.currentSpell.uncast(entityLiving, stack)
-                            spellCaster.castSpellMap[spellLearner.currentSpell] = spellCaster.castSpellMap[spellLearner.currentSpell]!! - 1
+                            if (spellCaster.castSpellMap[spellLearner.currentSpell]!! <= 0) {
+                                spell.uncast(entityLiving, stack)
+                                spellCaster.castSpellMap.remove(spellLearner.currentSpell)
+                            } else {
+                                spell.uncast(entityLiving, stack)
+                                spellCaster.castSpellMap[spellLearner.currentSpell] = spellCaster.castSpellMap[spellLearner.currentSpell]!! - 1
+                            }
                         }
                     }
 
                     return true
                 } else {
-                    if (spellLearner.currentSpell.uncastingParticle != null) {
-                        entityLiving.world.spawnParticle(spellLearner.currentSpell.uncastingParticle!!,
-                                entityLiving.posX,
-                                entityLiving.posY,
-                                entityLiving.posZ,
-                                0.0, 0.0, 0.0)
+                    spellLearner.currentSpell?.let { spell ->
+                        if (spell.uncastingParticle != null) {
+                            entityLiving.world.spawnParticle(spell.uncastingParticle!!,
+                                    entityLiving.posX,
+                                    entityLiving.posY,
+                                    entityLiving.posZ,
+                                    0.0, 0.0, 0.0)
+                        }
                     }
                 }
             }
@@ -99,33 +103,35 @@ class Wand(name: String) : GenericItem(name, CreativeTabs.TOOLS) {
             val spellCaster = SpellCasterCapability.isCapable(stack)
 
             if (bugEssence != null && spellLearner != null && spellCaster != null) {
-                val manaCost = spellLearner.currentSpell.manaLoss
+                spellLearner.currentSpell?.let { spell ->
+                    val manaCost = spell.manaLoss
 
-                if (bugEssence.current - manaCost >= 0) {
-                    if (!worldIn.isRemote) {
-                        bugEssence.current -= manaCost
-                        BugMagic.CHANNEL.sendTo(MessageBugEssence(entityLiving.entityId, bugEssence.max, bugEssence.current), entityLiving as EntityPlayerMP)
+                    if (bugEssence.current - manaCost >= 0) {
+                        if (!worldIn.isRemote) {
+                            bugEssence.current -= manaCost
+                            BugMagic.CHANNEL.sendTo(MessageBugEssence(entityLiving.entityId, bugEssence.max, bugEssence.current), entityLiving as EntityPlayerMP)
 
-                        if (!spellCaster.castSpellMap.containsKey(spellLearner.currentSpell)) {
-                            spellLearner.currentSpell.cast(entityLiving, stack)
-                            spellCaster.castSpellMap[spellLearner.currentSpell] = 1
-                        } else if (spellCaster.castSpellMap[spellLearner.currentSpell]!! < spellLearner.currentSpell.maxCount) {
-                            spellLearner.currentSpell.cast(entityLiving, stack)
-                            spellCaster.castSpellMap[spellLearner.currentSpell] = spellCaster.castSpellMap[spellLearner.currentSpell]!! + 1
-                        }
+                            if (!spellCaster.castSpellMap.containsKey(spellLearner.currentSpell)) {
+                                spell.cast(entityLiving, stack)
+                                spellCaster.castSpellMap[spellLearner.currentSpell] = 1
+                            } else if (spellCaster.castSpellMap[spellLearner.currentSpell]!! < spell.maxCount) {
+                                spell.cast(entityLiving, stack)
+                                spellCaster.castSpellMap[spellLearner.currentSpell] = spellCaster.castSpellMap[spellLearner.currentSpell]!! + 1
+                            }
 
-                        entityLiving.cooldownTracker.setCooldown(this, spellLearner.currentSpell.maxCooldown)
+                            entityLiving.cooldownTracker.setCooldown(this, spell.maxCooldown)
 
-                        spellCaster.isCasting = false
+                            spellCaster.isCasting = false
 
-                        BugMagic.CHANNEL.sendTo(MessageSpellCaster(entityLiving.entityId, spellCaster.isCasting, spellCaster.castingCurrent), entityLiving as EntityPlayerMP?)
-                    } else {
-                        if (spellLearner.currentSpell.finishingParticle != null) {
-                            entityLiving.world.spawnParticle(spellLearner.currentSpell.finishingParticle!!,
-                                    entityLiving.posX,
-                                    entityLiving.posY + entityLiving.eyeHeight,
-                                    entityLiving.posZ,
-                                    0.0, 0.0, 0.0)
+                            BugMagic.CHANNEL.sendTo(MessageSpellCaster(entityLiving.entityId, spellCaster.isCasting, spellCaster.castingCurrent), entityLiving as EntityPlayerMP?)
+                        } else {
+                            if (spell.finishingParticle != null) {
+                                entityLiving.world.spawnParticle(spell.finishingParticle!!,
+                                        entityLiving.posX,
+                                        entityLiving.posY + entityLiving.eyeHeight,
+                                        entityLiving.posZ,
+                                        0.0, 0.0, 0.0)
+                            }
                         }
                     }
                 }
@@ -139,14 +145,20 @@ class Wand(name: String) : GenericItem(name, CreativeTabs.TOOLS) {
         if (player.world.isRemote) {
             val spellLearner = SpellLearnerCapability.isCapable(player)
 
-            if (spellLearner != null && spellLearner.currentSpell.castingParticle != null) {
-                val size = (spellLearner.currentSpell.radius + spellLearner.currentSpell.castingShapeThickness) * (spellLearner.currentSpell.tier.ordinal.toDouble() + 1)
+            if (spellLearner != null) {
+                spellLearner.currentSpell?.let { spell ->
+                    spell.castingParticle?.let { particle ->
+                        val size = (spell.radius + spell.castingShapeThickness) * (spell.tier.ordinal.toDouble() + 1)
 
-                player.world.spawnParticle(spellLearner.currentSpell.castingParticle!!,
-                        player.posX + ThreadLocalRandom.current().nextDouble(-size, size),
-                        player.posY + ThreadLocalRandom.current().nextDouble(-size, size),
-                        player.posZ + ThreadLocalRandom.current().nextDouble(-size, size),
-                        0.0, 0.0, 0.0)
+                        player.world.spawnParticle(
+                                particle,
+                                player.posX + ThreadLocalRandom.current().nextDouble(-size, size),
+                                player.posY + ThreadLocalRandom.current().nextDouble(-size, size),
+                                player.posZ + ThreadLocalRandom.current().nextDouble(-size, size),
+                                0.0, 0.0, 0.0
+                        )
+                    }
+                }
             }
         }
     }
@@ -161,12 +173,18 @@ class Wand(name: String) : GenericItem(name, CreativeTabs.TOOLS) {
                 spellCaster.isCasting = false
 
                 if (worldIn.isRemote) {
-                    if (spellLearner.currentSpell.cancelingParticle != null) {
-                        entityLiving.world.spawnParticle(spellLearner.currentSpell.cancelingParticle!!,
-                                entityLiving.posX,
-                                entityLiving.posY,
-                                entityLiving.posZ,
-                                0.0, 0.0, 0.0)
+                    spellLearner.currentSpell?.let { spell ->
+                        spell.castingParticle?.let { particle ->
+                            if (spell.cancelingParticle != null) {
+                                entityLiving.world.spawnParticle(
+                                        particle,
+                                        entityLiving.posX,
+                                        entityLiving.posY,
+                                        entityLiving.posZ,
+                                        0.0, 0.0, 0.0
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -256,7 +274,7 @@ class Wand(name: String) : GenericItem(name, CreativeTabs.TOOLS) {
         if (stack.hasTagCompound() && worldIn!!.isRemote) {
             val spellLearner = SpellLearnerCapability.isCapable(BugMagic.proxy!!.getPlayer()!!)
 
-            if (spellLearner != null) {
+            if (spellLearner != null && spellLearner.spellList.size > 0) {
                 val currentSpell = spellLearner.spellList[stack.tagCompound!!.getInteger(SPELL_INDEX)]
                 tooltip.add("Spell: ${currentSpell.name} (${currentSpell.cult.colour}${currentSpell.cult}${TextFormatting.GRAY})")
             }

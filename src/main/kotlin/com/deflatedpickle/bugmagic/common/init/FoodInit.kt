@@ -19,4 +19,11 @@ object FoodInit {
             potionEffect = PotionEffect(PotionInit.BUG_ESSENCE_REGENERATION, 900),
             creativeEdible = true
     )
+
+    @JvmField
+    val JELLY_BUG = GenericFood(
+            name = "jelly_bug",
+            healAmount = 3,
+            saturation = 2f
+    )
 }

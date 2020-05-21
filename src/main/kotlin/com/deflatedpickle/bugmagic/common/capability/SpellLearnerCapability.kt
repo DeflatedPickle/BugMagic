@@ -4,7 +4,7 @@ package com.deflatedpickle.bugmagic.common.capability
 
 import com.deflatedpickle.bugmagic.Reference
 import com.deflatedpickle.bugmagic.api.capability.SpellLearner
-import com.deflatedpickle.bugmagic.common.init.SpellInit
+import com.deflatedpickle.bugmagic.api.spell.Spell
 import java.util.concurrent.Callable
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.nbt.NBTBase
@@ -27,17 +27,10 @@ object SpellLearnerCapability {
     fun isCapable(entity: EntityLivingBase): SpellLearner? = entity.getCapability(Provider.CAPABILITY, null)
 
     class Implementation : SpellLearner {
-        private val spellList = mutableListOf(
-                SpellInit.ITEM_COLLECTOR,
-                SpellInit.ESSENCE_COLLECTOR,
-                SpellInit.AUTO_HOE,
-                SpellInit.AUTO_PLANTER,
-                SpellInit.AUTO_FERTILIZER,
-                SpellInit.AUTO_HARVESTER
-        )
+        private val spellList = mutableListOf<Spell>()
         private var currentIndex = 0
 
-        override fun getSpellList(): MutableList<com.deflatedpickle.bugmagic.api.spell.Spell> = spellList
+        override fun getSpellList(): MutableList<Spell> = spellList
 
         override fun setCurrentIndex(value: Int) {
             currentIndex = value
@@ -45,13 +38,11 @@ object SpellLearnerCapability {
 
         override fun getCurrentIndex(): Int = currentIndex
 
-        override fun learnSpell(spell: com.deflatedpickle.bugmagic.api.spell.Spell): com.deflatedpickle.bugmagic.api.spell.Spell {
-            with(spell) {
-                if (!spellList.contains(this)) {
-                    spellList.add(this)
-                }
-                return this
+        override fun learnSpell(spell: Spell): Spell {
+            if (!this.spellList.any { it::class == spell::class }) {
+                this.spellList.add(spell)
             }
+            return spell
         }
     }
 
@@ -62,7 +53,7 @@ object SpellLearnerCapability {
                     for (i in 0..this.tagCount()) {
                         with(this.getStringTagAt(i)) {
                             if (this.isNotEmpty()) {
-                                instance.spellList.add(GameRegistry.findRegistry(com.deflatedpickle.bugmagic.api.spell.Spell::class.java).getValue(ResourceLocation(this))!!)
+                                instance.spellList.add(GameRegistry.findRegistry(Spell::class.java).getValue(ResourceLocation(this))!!)
                             }
                         }
                     }

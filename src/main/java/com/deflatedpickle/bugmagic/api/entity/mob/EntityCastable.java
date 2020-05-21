@@ -2,6 +2,13 @@
 
 package com.deflatedpickle.bugmagic.api.entity.mob;
 
+import com.deflatedpickle.bugmagic.BugMagic;
+import com.deflatedpickle.bugmagic.api.common.util.AITaskString;
+import com.deflatedpickle.bugmagic.api.common.util.extension.ByteBufKt;
+import com.deflatedpickle.bugmagic.api.common.util.extension.EntityAITaskEntryKt;
+import com.deflatedpickle.bugmagic.common.networking.message.MessageEntityTasks;
+import java.util.Set;
+import java.util.stream.Collectors;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,6 +23,9 @@ import org.jetbrains.annotations.Nullable;
  * @author DeflatedPickle
  */
 public class EntityCastable extends EntityTameable {
+  public Set<AITaskString> clientTasks;
+  public Set<AITaskString> clientExecutingTasks;
+
   public EntityCastable(World worldIn) {
     super(worldIn);
 
@@ -48,5 +58,23 @@ public class EntityCastable extends EntityTameable {
   @Override
   public EntityAgeable createChild(@NotNull EntityAgeable ageable) {
     return null;
+  }
+
+  @Override
+  protected void updateAITasks() {
+    super.updateAITasks();
+
+    // Send a packet to notify the client of AI tasks
+    BugMagic.INSTANCE
+            .getCHANNEL()
+            .sendToAll(
+                    new MessageEntityTasks(
+                            this.getEntityId(),
+                            this.tasks.taskEntries.stream()
+                                    .map(EntityAITaskEntryKt::toTaskString)
+                                    .collect(Collectors.toSet()),
+                            this.tasks.executingTaskEntries.stream()
+                                    .map(EntityAITaskEntryKt::toTaskString)
+                                    .collect(Collectors.toSet())));
   }
 }
