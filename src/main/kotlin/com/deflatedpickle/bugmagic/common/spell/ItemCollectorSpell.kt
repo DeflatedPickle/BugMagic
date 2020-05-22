@@ -17,7 +17,7 @@ import net.minecraft.item.ItemStack
  *
  * @author DeflatedPickle
  */
-class ItemCollectorSpell : Spell() {
+class ItemCollectorSpell : Spell("Item Collector") {
     class Recipe : SpellRecipe() {
         override fun getSpell(): Spell = SpellInit.ITEM_COLLECTOR
 
@@ -28,13 +28,12 @@ class ItemCollectorSpell : Spell() {
         }
     }
 
-	init {
-	    this.name = "Item Collector"
-		this.manaLoss = 22
-		this.castCount = 1
-		this.maxCount = 3
-		this.tier = Tier.COMMON
-	}
+    init {
+        this.manaLoss = 22
+        this.castCount = 1
+        this.maxCount = 3
+        this.tier = Tier.COMMON
+    }
 
     override fun cast(entityPlayer: EntityPlayer, itemWand: ItemStack) {
         this.summonEntity(ItemCollectorEntity::class.java, entityPlayer, itemWand)

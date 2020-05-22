@@ -27,8 +27,8 @@ import org.lwjgl.opengl.GL11
 import org.lwjgl.util.ReadableColor
 
 abstract class RenderCastable<T : EntityCastable>(
-        renderManager: RenderManager,
-        shadowSize: Float
+    renderManager: RenderManager,
+    shadowSize: Float
 ) : RenderLiving<T>(
         renderManager,
         object : ModelBase() {},
@@ -84,9 +84,9 @@ abstract class RenderCastable<T : EntityCastable>(
      * Draws a line from an [Vec3d] to a target [Vec3d], using a [ReadableColor]
      */
     fun drawLine(
-            start: Vec3d,
-            target: Vec3d,
-            colour: ReadableColor
+        start: Vec3d,
+        target: Vec3d,
+        colour: ReadableColor
     ) {
 
         GL11.glPushAttrib(GL11.GL_CURRENT_BIT)
@@ -119,9 +119,9 @@ abstract class RenderCastable<T : EntityCastable>(
      * Draws a line from an [T] to a target [Vec3d], using a [ReadableColor]
      */
     fun drawLine(
-            entity: T,
-            target: Vec3d,
-            colour: ReadableColor
+        entity: T,
+        target: Vec3d,
+        colour: ReadableColor
     ) {
         this.drawLine(Vec3d(entity.posX, entity.posY, entity.posZ), target, colour)
     }
@@ -130,9 +130,9 @@ abstract class RenderCastable<T : EntityCastable>(
      * Draws a line from an [T] to a target [BlockPos], using a [ReadableColor]
      */
     fun drawLine(
-            entity: T,
-            target: BlockPos,
-            colour: ReadableColor
+        entity: T,
+        target: BlockPos,
+        colour: ReadableColor
     ) {
         this.drawLine(
                 Vec3d(entity.posX, entity.posY, entity.posZ),
@@ -145,9 +145,9 @@ abstract class RenderCastable<T : EntityCastable>(
      * Draws a line from an [Vec3d] to a target [BlockPos], using a [ReadableColor]
      */
     fun drawLine(
-            start: Vec3d,
-            target: BlockPos,
-            colour: ReadableColor
+        start: Vec3d,
+        target: BlockPos,
+        colour: ReadableColor
     ) {
         drawLine(
                 start,
@@ -160,11 +160,11 @@ abstract class RenderCastable<T : EntityCastable>(
      * Renders an [ItemStack] at an [EntityCastable]
      */
     fun drawItem(
-            entity: T,
-            itemStack: ItemStack,
-            x: Float = 0f,
-            y: Float = 0f,
-            z: Float = 0f
+        entity: T,
+        itemStack: ItemStack,
+        x: Float = 0f,
+        y: Float = 0f,
+        z: Float = 0f
     ) {
         GlStateManager.pushMatrix()
 
@@ -179,10 +179,10 @@ abstract class RenderCastable<T : EntityCastable>(
      * Renders a this entities [AxisAlignedBB]
      */
     fun drawWorkArea(
-            aabb: AxisAlignedBB,
-            blockPos: BlockPos,
-            player: EntityPlayer,
-            partialTicks: Float
+        aabb: AxisAlignedBB,
+        blockPos: BlockPos,
+        player: EntityPlayer,
+        partialTicks: Float
     ) {
         GlStateManager.pushMatrix()
 

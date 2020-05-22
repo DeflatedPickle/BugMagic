@@ -2,6 +2,7 @@
 
 package com.deflatedpickle.bugmagic.api.spell;
 
+import com.deflatedpickle.bugmagic.Reference;
 import com.deflatedpickle.bugmagic.api.common.spell.SpellIngredient;
 import java.util.ArrayList;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -15,7 +16,8 @@ import org.jetbrains.annotations.Nullable;
  */
 public abstract class SpellRecipe extends IForgeRegistryEntry.Impl<SpellRecipe> {
   public SpellRecipe() {
-    this.setRegistryName(this.getSpell().getName().toLowerCase().replace(' ', '_'));
+    this.setRegistryName(
+        Reference.MOD_ID, this.getSpell().getName().toLowerCase().replace(' ', '_'));
   }
 
   public abstract @NotNull Spell getSpell();

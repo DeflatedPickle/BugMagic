@@ -4,7 +4,6 @@ package com.deflatedpickle.bugmagic.api.common.util.extension
 
 import com.deflatedpickle.bugmagic.api.common.util.AITaskString
 import io.netty.buffer.ByteBuf
-import net.minecraft.entity.ai.EntityAITasks
 import net.minecraftforge.fml.common.network.ByteBufUtils
 
 fun ByteBuf.writeEntityAITaskEntry(task: AITaskString) {

@@ -15,10 +15,12 @@ import com.deflatedpickle.bugmagic.common.init.TileEntityInit
 import com.deflatedpickle.bugmagic.common.networking.handler.HandlerBugEssence
 import com.deflatedpickle.bugmagic.common.networking.handler.HandlerEntityTasks
 import com.deflatedpickle.bugmagic.common.networking.handler.HandlerSpellCaster
+import com.deflatedpickle.bugmagic.common.networking.handler.HandlerSpellChange
 import com.deflatedpickle.bugmagic.common.networking.message.Message
 import com.deflatedpickle.bugmagic.common.networking.message.MessageBugEssence
 import com.deflatedpickle.bugmagic.common.networking.message.MessageEntityTasks
 import com.deflatedpickle.bugmagic.common.networking.message.MessageSpellCaster
+import com.deflatedpickle.bugmagic.common.networking.message.MessageSpellChange
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
@@ -44,12 +46,28 @@ open class CommonProxy {
 
         // Register packets
         // Server->Client Packets
-        BugMagic.CHANNEL.registerMessage(HandlerBugEssence::class.java, MessageBugEssence::class.java, Message.BUG_ESSENCE.ordinal, Side.CLIENT)
-        BugMagic.CHANNEL.registerMessage(HandlerSpellCaster::class.java, MessageSpellCaster::class.java, Message.SPELL_CASTER.ordinal, Side.CLIENT)
-        BugMagic.CHANNEL.registerMessage(HandlerEntityTasks::class.java, MessageEntityTasks::class.java, Message.ENTITY_TASKS.ordinal, Side.CLIENT)
+        BugMagic.CHANNEL.registerMessage(
+            HandlerBugEssence::class.java, MessageBugEssence::class.java,
+            Message.BUG_ESSENCE.ordinal, Side.CLIENT
+        )
+        BugMagic.CHANNEL.registerMessage(
+            HandlerSpellCaster::class.java, MessageSpellCaster::class.java,
+            Message.SPELL_CASTER.ordinal, Side.CLIENT
+        )
+        BugMagic.CHANNEL.registerMessage(
+            HandlerEntityTasks::class.java, MessageEntityTasks::class.java,
+            Message.ENTITY_TASKS.ordinal, Side.CLIENT
+        )
+        BugMagic.CHANNEL.registerMessage(
+            HandlerSpellChange::class.java, MessageSpellChange::class.java,
+            Message.SPELL_CHANGE.ordinal, Side.CLIENT
+        )
 
         // Client->Server Packets
-        BugMagic.CHANNEL.registerMessage(HandlerSelectedSpell::class.java, MessageSelectedSpell::class.java, Message.SELECTED_SPELL.ordinal, Side.SERVER)
+        BugMagic.CHANNEL.registerMessage(
+            HandlerSelectedSpell::class.java, MessageSelectedSpell::class.java,
+            Message.SELECTED_SPELL.ordinal, Side.SERVER
+        )
     }
 
     open fun init(event: FMLInitializationEvent) {

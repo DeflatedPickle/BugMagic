@@ -12,15 +12,14 @@ import net.minecraft.item.ItemStack
  *
  * @author DeflatedPickle
  */
-class AutoHoeSpell : Spell() {
-	init {
-	    this.name = "Auto Hoe"
-		this.manaLoss = 24
-		this.castCount = 1
-		this.maxCount = 2
-		this.tier = Tier.COMMON
-		this.cult = Cult.GASTROPOD
-	}
+class AutoHoeSpell : Spell("Auto Hoe") {
+    init {
+        this.manaLoss = 24
+        this.castCount = 1
+        this.maxCount = 2
+        this.tier = Tier.COMMON
+        this.cult = Cult.GASTROPOD
+    }
 
     override fun cast(entityPlayer: EntityPlayer, itemWand: ItemStack) {
         this.summonEntity(AutoHoeEntity::class.java, entityPlayer, itemWand)

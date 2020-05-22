@@ -12,15 +12,14 @@ import net.minecraft.item.ItemStack
  *
  * @author DeflatedPickle
  */
-class AutoPlanterSpell : Spell() {
-	init {
-	    this.name = "Auto Planter"
-		this.manaLoss = 24
-		this.castCount = 1
-		this.maxCount = 2
-		this.tier = Tier.COMMON
-		this.cult = Cult.INSECT
-	}
+class AutoPlanterSpell : Spell("Auto Planter") {
+    init {
+        this.manaLoss = 24
+        this.castCount = 1
+        this.maxCount = 2
+        this.tier = Tier.COMMON
+        this.cult = Cult.INSECT
+    }
 
     override fun cast(entityPlayer: EntityPlayer, itemWand: ItemStack) {
         this.summonEntity(AutoPlanterEntity::class.java, entityPlayer, itemWand)
