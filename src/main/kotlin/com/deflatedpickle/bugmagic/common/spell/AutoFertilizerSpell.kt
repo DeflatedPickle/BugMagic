@@ -13,12 +13,14 @@ import net.minecraft.item.ItemStack
  * @author DeflatedPickle
  */
 class AutoFertilizerSpell : Spell() {
-    override fun getName(): String = "Auto Fertilizer"
-    override fun getManaLoss(): Int = 55
-    override fun getCastCount(): Int = 1
-    override fun getMaxCount(): Int = 4
-    override fun getTier(): Tier = Tier.UNCOMMON
-    override fun getCult(): Cult = Cult.APOIDEA
+	init {
+	    this.name = "Auto Fertilizer"
+		this.manaLoss = 55
+		this.castCount = 1
+		this.maxCount = 1
+		this.tier = Tier.UNCOMMON
+		this.cult = Cult.APOIDEA
+	}
 
     override fun cast(entityPlayer: EntityPlayer, itemWand: ItemStack) {
         this.summonEntity(AutoFertilizerEntity::class.java, entityPlayer, itemWand)

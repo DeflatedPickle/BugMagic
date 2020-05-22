@@ -14,12 +14,14 @@ import net.minecraft.item.ItemStack
  */
 // Note: This bug is based on Thrips
 class AutoHarvesterSpell : Spell() {
-    override fun getName(): String = "Auto Harvester"
-    override fun getManaLoss(): Int = 45
-    override fun getCastCount(): Int = 2
-    override fun getMaxCount(): Int = 6
-    override fun getTier(): Tier = Tier.UNCOMMON
-    override fun getCult(): Cult = Cult.INSECT
+	init {
+	    this.name = "Auto Harvester"
+		this.manaLoss = 45
+		this.castCount = 2
+		this.maxCount = 6
+		this.tier = Tier.UNCOMMON
+		this.cult = Cult.INSECT
+	}
 
     override fun cast(entityPlayer: EntityPlayer, itemWand: ItemStack) {
         this.summonEntity(AutoHarvesterEntity::class.java, entityPlayer, itemWand)

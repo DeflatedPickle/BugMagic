@@ -28,11 +28,13 @@ class ItemCollectorSpell : Spell() {
         }
     }
 
-    override fun getName(): String = "Item Collector"
-    override fun getManaLoss(): Int = 22
-    override fun getCastCount(): Int = 1
-    override fun getMaxCount(): Int = 3
-    override fun getTier(): Tier = Tier.COMMON
+	init {
+	    this.name = "Item Collector"
+		this.manaLoss = 22
+		this.castCount = 1
+		this.maxCount = 3
+		this.tier = Tier.COMMON
+	}
 
     override fun cast(entityPlayer: EntityPlayer, itemWand: ItemStack) {
         this.summonEntity(ItemCollectorEntity::class.java, entityPlayer, itemWand)
