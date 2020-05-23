@@ -2,7 +2,7 @@
 
 package com.deflatedpickle.bugmagic.client.render.entity.layer
 
-import com.deflatedpickle.bugmagic.api.common.util.Math
+import com.deflatedpickle.bugmagic.api.common.util.MathUtil
 import com.deflatedpickle.bugmagic.common.capability.SpellCasterCapability
 import com.deflatedpickle.bugmagic.common.capability.SpellLearnerCapability
 import com.deflatedpickle.bugmagic.common.item.Wand
@@ -45,7 +45,7 @@ class LayerCastingShape : LayerRenderer<EntityLivingBase> {
 
                     for (tier in 1..this.tier.ordinal + 1) {
                         // TODO: Make the shapes pulsate, getting more frantic as the spell completes
-                        val innerRadius = this.radius * (tier * Math.lerp(this.radiusMultiplier.left, this.radiusMultiplier.right, tier.toFloat()) / 3)
+                        val innerRadius = this.radius * (tier * MathUtil.lerp(this.radiusMultiplier.left, this.radiusMultiplier.right, tier.toFloat()) / 3)
                         val isOdd = tier % 2 == 0
                         val time = (ageInTicks + partialTicks) * if (isOdd) -1f else 1f
 

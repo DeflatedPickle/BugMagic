@@ -3,7 +3,7 @@
 package com.deflatedpickle.bugmagic.api.client
 
 import com.deflatedpickle.bugmagic.api.HasModel
-import com.deflatedpickle.bugmagic.api.client.util.OpenGL
+import com.deflatedpickle.bugmagic.api.client.util.OpenGLUtil
 import com.deflatedpickle.bugmagic.api.client.util.extension.drawNameTag
 import com.deflatedpickle.bugmagic.api.client.util.extension.render
 import com.deflatedpickle.bugmagic.api.common.util.AITaskString
@@ -186,7 +186,7 @@ abstract class RenderCastable<T : EntityCastable>(
     ) {
         GlStateManager.pushMatrix()
 
-        OpenGL.drawSelectionBox(aabb, blockPos, player, partialTicks)
+        OpenGLUtil.drawSelectionBox(aabb, blockPos, player, partialTicks)
 
         GlStateManager.popMatrix()
     }

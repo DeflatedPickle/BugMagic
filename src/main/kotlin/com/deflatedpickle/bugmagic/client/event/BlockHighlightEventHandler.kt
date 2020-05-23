@@ -4,7 +4,7 @@ package com.deflatedpickle.bugmagic.client.event
 
 import com.deflatedpickle.bugmagic.Reference
 import com.deflatedpickle.bugmagic.api.BoundingBox
-import com.deflatedpickle.bugmagic.api.client.util.OpenGL
+import com.deflatedpickle.bugmagic.api.client.util.OpenGLUtil
 import net.minecraft.util.math.RayTraceResult
 import net.minecraftforge.client.event.DrawBlockHighlightEvent
 import net.minecraftforge.fml.common.Mod
@@ -28,7 +28,7 @@ object BlockHighlightEventHandler {
                             val player = event.player
 
                             for (i in this.boundingBoxList) {
-                                OpenGL.drawSelectionBox(i, event.target.blockPos, player, event.partialTicks)
+                                OpenGLUtil.drawSelectionBox(i, event.target.blockPos, player, event.partialTicks)
                             }
                         }
                     }
