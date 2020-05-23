@@ -7,5 +7,5 @@ object MathUtil {
     fun lerp(first: Float, second: Float, time: Float): Float = (1 - time) * first + time * second
 
     // https://stackoverflow.com/a/16242301
-    fun reverse(min: Int, max: Int, value: Int) = (max + min) - value
+    fun reverse(min: Int, max: Int, value: Int) = max + min - value
 }
