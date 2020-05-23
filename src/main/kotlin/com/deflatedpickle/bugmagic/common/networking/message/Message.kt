@@ -7,4 +7,5 @@ enum class Message {
     SELECTED_SPELL,
     SPELL_CASTER,
     ENTITY_TASKS,
+    SPELL_CHANGE,
 }

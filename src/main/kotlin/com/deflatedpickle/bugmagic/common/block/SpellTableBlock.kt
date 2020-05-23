@@ -2,6 +2,7 @@
 
 package com.deflatedpickle.bugmagic.common.block
 
+import com.deflatedpickle.bugmagic.BugMagic
 import com.deflatedpickle.bugmagic.api.BoundingBox
 import com.deflatedpickle.bugmagic.api.common.block.GenericBlock
 import com.deflatedpickle.bugmagic.api.common.util.extension.drop
@@ -15,6 +16,7 @@ import com.deflatedpickle.bugmagic.common.capability.SpellLearnerCapability
 import com.deflatedpickle.bugmagic.common.init.FoodInit
 import com.deflatedpickle.bugmagic.common.init.SpellRecipeInit
 import com.deflatedpickle.bugmagic.common.item.Wand
+import com.deflatedpickle.bugmagic.common.networking.message.MessageSpellChange
 import java.util.concurrent.ThreadLocalRandom
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
@@ -176,7 +178,13 @@ class SpellTableBlock : GenericBlock("spell_table", CreativeTabs.DECORATIONS, Ma
                                         }
 
                                         // TODO: Add a packet to sync the spell list with the client
-                                        SpellLearnerCapability.isCapable(playerIn)?.learnSpell(recipe.spell)
+                                        SpellLearnerCapability.isCapable(playerIn)?.let {
+                                            it.learnSpell(recipe.spell)
+											// You HAVE to send THIS packet
+											// Otherwise the client WON'T be notified of the change
+											// And the player will NOT be able to cast the spell
+                                            BugMagic.CHANNEL.sendToAll(MessageSpellChange(playerIn.entityId, it.spellList))
+                                        }
 
                                         for (i in filteredStacks) {
                                             for (l in 0 until i.count) {

@@ -1,4 +1,4 @@
-/* Copyright (c) 2019-2020 DeflatedPickle under the MIT license */
+/* Copyright (c) 2020 DeflatedPickle under the MIT license */
 
 package com.deflatedpickle.bugmagic.common.networking.message
 
@@ -14,9 +14,9 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage
  * @see [MessageEntityTasks]
  */
 class MessageEntityTasks(
-        private var entityID: Int,
-        private var taskEntries: Set<AITaskString>,
-        private var executingTaskEntries: Set<AITaskString>
+    private var entityID: Int,
+    private var taskEntries: Set<AITaskString>,
+    private var executingTaskEntries: Set<AITaskString>
 ) : IMessage {
     @Suppress("unused")
     constructor() : this(entityID = 1, taskEntries = setOf(), executingTaskEntries = setOf())

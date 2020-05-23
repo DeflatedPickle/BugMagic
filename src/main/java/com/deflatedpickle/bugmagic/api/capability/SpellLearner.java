@@ -17,6 +17,13 @@ import org.jetbrains.annotations.Nullable;
  */
 public interface SpellLearner {
   /**
+   * Sets the list of spells
+   *
+   * @param value A list of spells
+   */
+  void setSpellList(@NotNull List<Spell> value);
+
+  /**
    * A list of learnt spells
    *
    * @return The list of spells

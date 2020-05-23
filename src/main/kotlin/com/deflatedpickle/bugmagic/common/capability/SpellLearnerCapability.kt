@@ -27,16 +27,20 @@ object SpellLearnerCapability {
     fun isCapable(entity: EntityLivingBase): SpellLearner? = entity.getCapability(Provider.CAPABILITY, null)
 
     class Implementation : SpellLearner {
-        private val spellList = mutableListOf<Spell>()
+        private var spellList = mutableListOf<Spell>()
         private var currentIndex = 0
 
-        override fun getSpellList(): MutableList<Spell> = spellList
-
-        override fun setCurrentIndex(value: Int) {
-            currentIndex = value
+        override fun setSpellList(value: MutableList<Spell>) {
+            this.spellList = value
         }
 
-        override fun getCurrentIndex(): Int = currentIndex
+        override fun getSpellList(): MutableList<Spell> = this.spellList
+
+        override fun setCurrentIndex(value: Int) {
+            this.currentIndex = value
+        }
+
+        override fun getCurrentIndex(): Int = this.currentIndex
 
         override fun learnSpell(spell: Spell): Spell {
             if (!this.spellList.any { it::class == spell::class }) {

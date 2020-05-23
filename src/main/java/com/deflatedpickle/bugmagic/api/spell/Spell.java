@@ -2,6 +2,7 @@
 
 package com.deflatedpickle.bugmagic.api.spell;
 
+import com.deflatedpickle.bugmagic.Reference;
 import com.deflatedpickle.bugmagic.api.capability.SpellCaster;
 import com.deflatedpickle.bugmagic.common.item.Wand;
 import java.lang.reflect.InvocationTargetException;
@@ -34,10 +35,41 @@ import org.lwjgl.util.ReadableColor;
  *
  * @author DeflatedPickle
  */
-// TODO: Move all rendering and crafting methods to new classes
+@SuppressWarnings("unused")
 public abstract class Spell extends IForgeRegistryEntry.Impl<Spell> {
-  public Spell() {
-    this.setRegistryName(this.getName().toLowerCase().replace(' ', '_'));
+  private @NotNull String name;
+  private int manaLoss;
+  private int castTime = 32;
+  private int castCount = 1;
+  private int maxCount = 1;
+  private int maxCooldown = 32;
+  private @NotNull Tier tier = Tier.COMMON;
+  private @NotNull Type type = Type.CONJURE;
+  private @NotNull Cult cult = Cult.ANY;
+  private @Nullable EnumParticleTypes castingParticle = EnumParticleTypes.CRIT_MAGIC;
+  private @Nullable EnumParticleTypes cancelingParticle = EnumParticleTypes.EXPLOSION_HUGE;
+  private @Nullable EnumParticleTypes finishingParticle = EnumParticleTypes.DRAGON_BREATH;
+  private @Nullable EnumParticleTypes uncastingParticle = EnumParticleTypes.SMOKE_NORMAL;
+  // OKAY herobrine i see the stop sign BUT i need to find an OCTAGON
+  // if i STOP at the STOP sign, how can i find an octagon?
+  // HOW herobrine HOW?!
+  // wait a minute...
+  // look!
+  // this casting shape has 1, 2, 3, 4, 5, 6, 7, 8 glorious SIDES
+  // and 1, 2, 3, 4, 5, 6, 7, 8 stunning ANGLES
+  // this casting shape is an OCTAGON
+  // we found an octagon!
+  // OCTAGON uwu
+  private int castingShapePoints = 8;
+  private float radius = 1.2f;
+  private @NotNull Pair<@NotNull Float, @NotNull Float> radiusMultiplier = Pair.of(1.6f, 1.8f);
+  private float castingShapeThickness = 0.5f;
+  private float glowIntensity = 0.2f;
+  private @NotNull ReadableColor glowColor = Color.WHITE;
+
+  public Spell(@NotNull String name) {
+    this.name = name;
+    this.setRegistryName(Reference.MOD_ID, this.getName().toLowerCase().replace(' ', '_'));
   }
 
   /**
@@ -45,14 +77,26 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell> {
    *
    * @return The name
    */
-  public abstract @NotNull String getName();
+  public @NotNull String getName() {
+    return this.name;
+  }
+
+  protected void setName(String value) {
+    this.name = value;
+  }
 
   /**
    * The amount of mana this spell costs to cast
    *
    * @return The mana lost
    */
-  public abstract int getManaLoss();
+  public int getManaLoss() {
+    return this.manaLoss;
+  }
+
+  protected void setManaLoss(int value) {
+    this.manaLoss = value;
+  }
 
   /**
    * The amount of mana this spell rewards to uncast
@@ -60,7 +104,7 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell> {
    * @return The mana gained
    */
   public int getManaGain() {
-    return (getManaLoss() / 3) * 2;
+    return (this.getManaLoss() / 3) * 2;
   }
 
   /**
@@ -69,7 +113,11 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell> {
    * @return The casting time
    */
   public int getCastingTime() {
-    return 32;
+    return this.castTime;
+  }
+
+  public void setCastingTime(int value) {
+    this.castTime = value;
   }
 
   /**
@@ -78,7 +126,11 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell> {
    * @return The amount casted
    */
   public int getCastCount() {
-    return 1;
+    return this.castCount;
+  }
+
+  protected void setCastCount(int value) {
+    this.castCount = value;
   }
 
   /**
@@ -87,7 +139,11 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell> {
    * @return The max count
    */
   public int getMaxCount() {
-    return 1;
+    return this.maxCount;
+  }
+
+  protected void setMaxCount(int value) {
+    this.maxCount = value;
   }
 
   /**
@@ -96,10 +152,15 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell> {
    * @return The time before this spell can be cast again
    */
   public int getMaxCooldown() {
-    return 32;
+    return this.maxCooldown;
+  }
+
+  protected void setMaxCooldown(int value) {
+    this.maxCooldown = value;
   }
 
   /** An enum of the spell tiers */
+  @SuppressWarnings("unused")
   public enum Tier {
     COMMON,
     UNCOMMON,
@@ -115,9 +176,16 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell> {
    *
    * @return The spell tier
    */
-  public abstract @NotNull Tier getTier();
+  public @NotNull Tier getTier() {
+    return this.tier;
+  }
+
+  protected void setTier(@NotNull Tier value) {
+    this.tier = value;
+  }
 
   /** An enum of the spell types */
+  @SuppressWarnings("unused")
   public enum Type {
     /** Spawns a mob */
     CONJURE,
@@ -131,10 +199,15 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell> {
    * @return The spell type
    */
   public @NotNull Type getType() {
-    return Type.CONJURE;
+    return this.type;
+  }
+
+  protected void setType(@NotNull Type value) {
+    this.type = value;
   }
 
   /** An enum of the cults */
+  @SuppressWarnings("unused")
   public enum Cult {
     ANY(TextFormatting.WHITE),
     /** Spiders, etc */
@@ -165,7 +238,11 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell> {
    * @return The cult type
    */
   public @NotNull Cult getCult() {
-    return Cult.ANY;
+    return this.cult;
+  }
+
+  protected void setCult(@NotNull Cult value) {
+    this.cult = value;
   }
 
   /**
@@ -175,7 +252,11 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell> {
    * @see com.deflatedpickle.bugmagic.client.render.entity.layer.LayerCastingShape
    */
   public @Nullable EnumParticleTypes getCastingParticle() {
-    return EnumParticleTypes.CRIT_MAGIC;
+    return this.castingParticle;
+  }
+
+  protected void setCastingParticle(@Nullable EnumParticleTypes value) {
+    this.castingParticle = value;
   }
 
   /**
@@ -185,7 +266,11 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell> {
    * @see com.deflatedpickle.bugmagic.client.render.entity.layer.LayerCastingShape
    */
   public @Nullable EnumParticleTypes getCancelingParticle() {
-    return EnumParticleTypes.EXPLOSION_HUGE;
+    return this.cancelingParticle;
+  }
+
+  protected void setCancelingParticle(@Nullable EnumParticleTypes value) {
+    this.cancelingParticle = value;
   }
 
   /**
@@ -195,7 +280,11 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell> {
    * @see com.deflatedpickle.bugmagic.client.render.entity.layer.LayerCastingShape
    */
   public @Nullable EnumParticleTypes getFinishingParticle() {
-    return EnumParticleTypes.DRAGON_BREATH;
+    return this.finishingParticle;
+  }
+
+  protected void setFinishingParticle(@Nullable EnumParticleTypes value) {
+    this.finishingParticle = value;
   }
 
   /**
@@ -205,7 +294,11 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell> {
    * @see com.deflatedpickle.bugmagic.client.render.entity.layer.LayerCastingShape
    */
   public @Nullable EnumParticleTypes getUncastingParticle() {
-    return EnumParticleTypes.SMOKE_NORMAL;
+    return this.uncastingParticle;
+  }
+
+  protected void setUncastingParticle(@Nullable EnumParticleTypes value) {
+    this.uncastingParticle = value;
   }
 
   /**
@@ -215,8 +308,11 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell> {
    * @see com.deflatedpickle.bugmagic.client.render.entity.layer.LayerCastingShape
    */
   public int getCastingShapePoints() {
-    // the glorious octagon of destiny uwu
-    return 8;
+    return this.castingShapePoints;
+  }
+
+  protected void setCastingShapePoints(int value) {
+    this.castingShapePoints = value;
   }
 
   /**
@@ -226,7 +322,11 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell> {
    * @see com.deflatedpickle.bugmagic.client.render.entity.layer.LayerCastingShape
    */
   public float getRadius() {
-    return 1.2f;
+    return this.radius;
+  }
+
+  protected void setRadius(float value) {
+    this.radius = value;
   }
 
   /**
@@ -235,8 +335,12 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell> {
    * @return A pair containing the lower and higher values
    * @see com.deflatedpickle.bugmagic.client.render.entity.layer.LayerCastingShape
    */
-  public Pair<@NotNull Float, @NotNull Float> getRadiusMultiplier() {
-    return Pair.of(1.6f, 1.8f);
+  public @NotNull Pair<@NotNull Float, @NotNull Float> getRadiusMultiplier() {
+    return this.radiusMultiplier;
+  }
+
+  protected void setRadiusMultiplier(@NotNull Pair<@NotNull Float, @NotNull Float> value) {
+    this.radiusMultiplier = value;
   }
 
   /**
@@ -246,7 +350,11 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell> {
    * @see com.deflatedpickle.bugmagic.client.render.entity.layer.LayerCastingShape
    */
   public float getCastingShapeThickness() {
-    return 0.5f;
+    return this.castingShapeThickness;
+  }
+
+  protected void setCastingShapeThickness(float value) {
+    this.castingShapeThickness = value;
   }
 
   /**
@@ -256,7 +364,11 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell> {
    * @see com.deflatedpickle.bugmagic.client.render.entity.layer.LayerCastingShape
    */
   public float getGlowIntensity() {
-    return 0.2f;
+    return this.glowIntensity;
+  }
+
+  protected void setGlowIntensity(float value) {
+    this.glowIntensity = value;
   }
 
   /**
@@ -266,7 +378,11 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell> {
    * @see com.deflatedpickle.bugmagic.client.render.entity.layer.LayerCastingShape
    */
   public @NotNull ReadableColor getGlowColour() {
-    return Color.WHITE;
+    return this.glowColor;
+  }
+
+  protected void setGlowColor(@NotNull ReadableColor value) {
+    this.glowColor = value;
   }
 
   /**

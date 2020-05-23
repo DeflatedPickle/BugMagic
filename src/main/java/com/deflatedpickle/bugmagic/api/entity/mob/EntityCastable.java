@@ -4,7 +4,6 @@ package com.deflatedpickle.bugmagic.api.entity.mob;
 
 import com.deflatedpickle.bugmagic.BugMagic;
 import com.deflatedpickle.bugmagic.api.common.util.AITaskString;
-import com.deflatedpickle.bugmagic.api.common.util.extension.ByteBufKt;
 import com.deflatedpickle.bugmagic.api.common.util.extension.EntityAITaskEntryKt;
 import com.deflatedpickle.bugmagic.common.networking.message.MessageEntityTasks;
 import java.util.Set;
@@ -66,15 +65,15 @@ public class EntityCastable extends EntityTameable {
 
     // Send a packet to notify the client of AI tasks
     BugMagic.INSTANCE
-            .getCHANNEL()
-            .sendToAll(
-                    new MessageEntityTasks(
-                            this.getEntityId(),
-                            this.tasks.taskEntries.stream()
-                                    .map(EntityAITaskEntryKt::toTaskString)
-                                    .collect(Collectors.toSet()),
-                            this.tasks.executingTaskEntries.stream()
-                                    .map(EntityAITaskEntryKt::toTaskString)
-                                    .collect(Collectors.toSet())));
+        .getCHANNEL()
+        .sendToAll(
+            new MessageEntityTasks(
+                this.getEntityId(),
+                this.tasks.taskEntries.stream()
+                    .map(EntityAITaskEntryKt::toTaskString)
+                    .collect(Collectors.toSet()),
+                this.tasks.executingTaskEntries.stream()
+                    .map(EntityAITaskEntryKt::toTaskString)
+                    .collect(Collectors.toSet())));
   }
 }

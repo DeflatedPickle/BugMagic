@@ -12,13 +12,14 @@ import net.minecraft.item.ItemStack
  *
  * @author DeflatedPickle
  */
-class EssenceCollectorSpell : Spell() {
-    override fun getName(): String = "Essence Collector"
-    override fun getManaLoss(): Int = 40
-    override fun getCastCount(): Int = 2
-    override fun getMaxCount(): Int = 2
-    override fun getTier(): Tier = Tier.RARE
-    override fun getCult(): Cult = Cult.APOIDEA
+class EssenceCollectorSpell : Spell("Essence Collector") {
+    init {
+        this.manaLoss = 40
+        this.castCount = 2
+        this.maxCount = 2
+        this.tier = Tier.RARE
+        this.cult = Cult.APOIDEA
+    }
 
     override fun cast(entityPlayer: EntityPlayer, itemWand: ItemStack) {
         this.summonEntity(EssenceCollectorEntity::class.java, entityPlayer, itemWand)
