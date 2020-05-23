@@ -41,6 +41,7 @@ import net.minecraftforge.fluids.FluidUtil
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler
 import net.minecraftforge.fml.common.registry.GameRegistry
 import net.minecraftforge.items.ItemHandlerHelper
+import kotlin.math.roundToInt
 
 /**
  * The block for the tile entity [SpellTableTileEntity] and the renderer [SpellTableTileEntitySpecialRender]
@@ -178,7 +179,7 @@ class SpellTableBlock : GenericBlock("spell_table", CreativeTabs.DECORATIONS, Ma
 										tileEntity.ink - recipe.inkAmount > 0 &&
 										tileEntity.fluidTank.fluid?.fluid?.unlocalizedName == recipe.fluidType &&
 										tileEntity.fluidTank.fluidAmount - recipe.fluidAmount > 0) {
-										if (Math.round(tileEntity.recipeProgression * 100f) / 100f >= 1f) {
+										if ((tileEntity.recipeProgression * 100f).roundToInt() / 100f >= 1f) {
 											tileEntity.ink -= recipe.inkAmount
 											tileEntity.fluidTank.drain(recipe.fluidAmount, true)
 

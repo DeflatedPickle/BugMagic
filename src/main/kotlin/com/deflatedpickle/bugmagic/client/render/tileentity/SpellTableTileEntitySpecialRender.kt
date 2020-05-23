@@ -5,7 +5,7 @@ package com.deflatedpickle.bugmagic.client.render.tileentity
 import com.deflatedpickle.bugmagic.api.client.util.extension.drawNameTag
 import com.deflatedpickle.bugmagic.api.client.util.extension.render
 import com.deflatedpickle.bugmagic.api.client.util.extension.renderCube
-import com.deflatedpickle.bugmagic.api.common.util.Math
+import com.deflatedpickle.bugmagic.api.common.util.MathUtil
 import com.deflatedpickle.bugmagic.common.block.tileentity.SpellTableTileEntity
 import com.deflatedpickle.bugmagic.common.item.Wand
 import kotlin.math.PI
@@ -16,7 +16,6 @@ import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
-import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.ResourceLocation
 import kotlin.math.roundToInt
 
@@ -156,7 +155,7 @@ class SpellTableTileEntitySpecialRender : TileEntitySpecialRenderer<SpellTableTi
 		GlStateManager.pushMatrix()
 		GlStateManager.translate(x + 0.5, y + 0.95, z + 0.4)
 		Minecraft.getMinecraft().fontRenderer.drawNameTag(
-			"Progress\n${java.lang.Math.round(te.recipeProgression * 100f)} / 100", x.toInt(), y.toInt()
+			"Progress\n${(te.recipeProgression * 100f).roundToInt()} / 100", x.toInt(), y.toInt()
 		)
 		GlStateManager.popMatrix()
 
@@ -230,7 +229,7 @@ class SpellTableTileEntitySpecialRender : TileEntitySpecialRenderer<SpellTableTi
 				// If J is less than half of the item stack, uses J
 				// If J is more, J is reversed with the stack size
 				if (j < stack.count / 2) j
-				else Math.reverse(1, stack.count, j)
+				else MathUtil.reverse(1, stack.count, j)
 				// Pi * 2 is a bit more bumpy and less of a connected loop
 				// Pi * 2.55 seems to be a sweet spot
 				) * (PI * 2.55)) * smallSpeed) * smallAmplitude,

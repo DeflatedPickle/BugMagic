@@ -11,7 +11,7 @@ import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import org.lwjgl.opengl.GL11
 
-object OpenGL {
+object OpenGLUtil {
     val tessellator = Tessellator.getInstance()
 
     /**

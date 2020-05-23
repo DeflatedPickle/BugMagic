@@ -25,7 +25,7 @@ class MessageSpellChange(
     operator fun component2() = this.spellList
 
     override fun toBytes(buf: ByteBuf) {
-        ByteBufUtils.writeVarInt(buf, this.entityID, 3)
+        ByteBufUtils.writeVarInt(buf, this.entityID, 5)
 
         buf.writeInt(this.spellList.size)
         for (i in this.spellList) {
@@ -34,7 +34,7 @@ class MessageSpellChange(
     }
 
     override fun fromBytes(buf: ByteBuf) {
-        this.entityID = ByteBufUtils.readVarInt(buf, 3)
+        this.entityID = ByteBufUtils.readVarInt(buf, 5)
 
         val list = mutableListOf<Spell>()
         val size = buf.readInt()
