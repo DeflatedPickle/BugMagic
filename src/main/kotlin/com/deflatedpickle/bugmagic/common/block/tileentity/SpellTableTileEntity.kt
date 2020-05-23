@@ -44,6 +44,7 @@ class SpellTableTileEntity(stackLimit: Int = 32) : TileEntity() {
         override fun getSlotLimit(slot: Int): Int = 1
     }
 
+	// Range: 0f..1f
     var ink = 0f
 
     var validRecipe = invalidRecipe
