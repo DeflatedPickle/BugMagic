@@ -100,70 +100,19 @@ class SpellTableBlock : GenericBlock("spell_table", CreativeTabs.DECORATIONS, Ma
 
 					// Put liquid in
 					if (liquidAABB.grow(0.2).contains(hitVector)) {
-						if (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
-							var result = FluidUtil.tryEmptyContainer(stack, tileEntity.fluidTank, Fluid.BUCKET_VOLUME, playerIn, true)
-
-							if (!result.success) {
-								result = FluidUtil.tryFillContainer(stack, tileEntity.fluidTank, Fluid.BUCKET_VOLUME, playerIn, true)
-							}
-
-							if (result.isSuccess) {
-								playerIn.setHeldItem(hand, result.getResult())
-								tileEntity.recipeProgression = 0f
-							}
-
-							tileEntity.update(worldIn, this, state)
-						}
+						this.tryInsertFluid(worldIn, tileEntity, state, playerIn, hand, stack)
 					}
 					// Put a wand in
 					else if (wandAABB.grow(0.2).contains(hitVector)) {
-						if (playerIn.isSneaking) {
-							tileEntity.wandStackHandler.dropSlot(0, worldIn, pos)
-							tileEntity.update(worldIn, this, state)
-						} else if (stack.item is Wand) {
-							tileEntity.wandStackHandler.insertItem(0, stack.splitStack(1), false)
-							tileEntity.update(worldIn, this, state)
-						}
+						this.tryInsertWand(worldIn, tileEntity, state, playerIn, pos, stack)
 					}
 					// Put a feather or ink in
 					else if (inkAABB.grow(0.2).contains(hitVector)) {
-						if (playerIn.isSneaking) {
-							tileEntity.featherStackHandler.dropSlot(0, worldIn, pos)
-							tileEntity.recipeProgression = 0f
-							tileEntity.update(worldIn, this, state)
-						} else {
-							when (stack.item) {
-								Items.FEATHER -> {
-									tileEntity.featherStackHandler.insertItem(0, stack.splitStack(1), false)
-									tileEntity.update(worldIn, this, state)
-								}
-								Items.DYE -> {
-									if (stack.metadata == 0 && tileEntity.ink < 1f) {
-										stack.shrink(1)
-
-										tileEntity.ink = 1f
-										tileEntity.update(worldIn, this, state)
-									}
-								}
-							}
-						}
+						this.tryInsertInk(worldIn, tileEntity, state, playerIn, pos, stack)
 					}
 					// Put items in
 					else if (matAABB.grow(0.2).contains(hitVector)) {
-						// TODO: Track where the items should be, then allow clicking on them to take them out
-						if (playerIn.isSneaking) {
-							if (itemCount - 1 >= 0) {
-								tileEntity.itemStackHandler.dropSlot(itemCount - 1, worldIn, pos)
-								tileEntity.recipeProgression = 0f
-								tileEntity.update(worldIn, this, state)
-							}
-						} else {
-							if (stack.isNotEmpty() && stack.item !is Wand) {
-								ItemHandlerHelper.insertItemStacked(tileEntity.itemStackHandler, stack.splitStack(1), false)
-								tileEntity.recipeProgression = 0f
-								tileEntity.update(worldIn, this, state)
-							}
-						}
+						this.tryInsertIngredient(worldIn, tileEntity, state, playerIn, pos, stack, itemCount)
 					} else {
 						if (stack.item is Wand) {
 							val split = tileEntity.validRecipe.split(":")
@@ -174,47 +123,7 @@ class SpellTableBlock : GenericBlock("spell_table", CreativeTabs.DECORATIONS, Ma
 							if (split.size > 1) {
 								val recipe = GameRegistry.findRegistry(SpellRecipe::class.java).getValue(resourceLocation)!!
 
-								recipe.ingredients?.let { ingredients ->
-									if (tileEntity.featherStackHandler.getStackInSlot(0).item == Items.FEATHER &&
-										tileEntity.ink - recipe.inkAmount > 0 &&
-										tileEntity.fluidTank.fluid?.fluid?.unlocalizedName == recipe.fluidType &&
-										tileEntity.fluidTank.fluidAmount - recipe.fluidAmount > 0) {
-										if ((tileEntity.recipeProgression * 100f).roundToInt() / 100f >= 1f) {
-											tileEntity.ink -= recipe.inkAmount
-											tileEntity.fluidTank.drain(recipe.fluidAmount, true)
-
-											tileEntity.recipeProgression = 0f
-
-											val allItemStacks = tileEntity.itemStackHandler.getSlotItems().toMutableList()
-											val filteredStacks = allItemStacks.filter { stack ->
-												stack.item in ingredients.map {
-													it.item
-												}
-											}
-
-											SpellLearnerCapability.isCapable(playerIn)?.let {
-												it.learnSpell(recipe.spell)
-												// You HAVE to send THIS packet
-												// Otherwise the client WON'T be notified of the change
-												// And the player will NOT be able to cast the spell
-												BugMagic.CHANNEL.sendToAll(MessageSpellChange(playerIn.entityId, it.spellList))
-											}
-
-											for (i in filteredStacks) {
-												for (l in 0 until i.count) {
-													i.shrink(1)
-													if (ThreadLocalRandom.current().nextInt(0, 10) == 0) {
-														ItemStack(FoodInit.JELLY_BUG).drop(worldIn, pos)
-													}
-												}
-											}
-											tileEntity.update(worldIn, this, state)
-										} else {
-											tileEntity.recipeProgression += 1f / recipe.craftingTime
-											tileEntity.update(worldIn, this, state)
-										}
-									}
-								}
+								this.manageCrafting(worldIn, tileEntity, state, playerIn, pos, recipe)
 							}
 						}
 					}
@@ -251,4 +160,143 @@ class SpellTableBlock : GenericBlock("spell_table", CreativeTabs.DECORATIONS, Ma
 		matAABB,
 		inkAABB
 	)
+
+	private fun tryInsertFluid(
+		worldIn: World, tileEntity: SpellTableTileEntity, state: IBlockState,
+		playerIn: EntityPlayer, hand: EnumHand, stack: ItemStack
+	) {
+		if (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
+			var result = FluidUtil.tryEmptyContainer(stack, tileEntity.fluidTank, Fluid.BUCKET_VOLUME, playerIn, true)
+
+			if (!result.success) {
+				result = FluidUtil.tryFillContainer(stack, tileEntity.fluidTank, Fluid.BUCKET_VOLUME, playerIn, true)
+			}
+
+			if (result.isSuccess) {
+				playerIn.setHeldItem(hand, result.getResult())
+				tileEntity.recipeProgression = 0f
+			}
+
+			tileEntity.update(worldIn, this, state)
+		}
+	}
+
+	private fun tryInsertWand(
+		worldIn: World, tileEntity: SpellTableTileEntity, state: IBlockState,
+		playerIn: EntityPlayer, pos: BlockPos, stack: ItemStack
+	) {
+		if (playerIn.isSneaking) {
+			tileEntity.wandStackHandler.dropSlot(0, worldIn, pos)
+			tileEntity.update(worldIn, this, state)
+		} else if (stack.item is Wand) {
+			tileEntity.wandStackHandler.insertItem(0, stack.splitStack(1), false)
+			tileEntity.update(worldIn, this, state)
+		}
+	}
+
+	private fun tryInsertInk(
+		worldIn: World, tileEntity: SpellTableTileEntity, state: IBlockState,
+		playerIn: EntityPlayer, pos: BlockPos, stack: ItemStack
+	) {
+		if (playerIn.isSneaking) {
+			tileEntity.featherStackHandler.dropSlot(0, worldIn, pos)
+			tileEntity.recipeProgression = 0f
+			tileEntity.update(worldIn, this, state)
+		} else {
+			when (stack.item) {
+				Items.FEATHER -> {
+					tileEntity.featherStackHandler.insertItem(0, stack.splitStack(1), false)
+					tileEntity.update(worldIn, this, state)
+				}
+				Items.DYE -> {
+					if (stack.metadata == 0 && tileEntity.ink < 1f) {
+						stack.shrink(1)
+
+						tileEntity.ink = 1f
+						tileEntity.update(worldIn, this, state)
+					}
+				}
+			}
+		}
+	}
+
+	private fun tryInsertIngredient(
+		worldIn: World, tileEntity: SpellTableTileEntity, state: IBlockState,
+		playerIn: EntityPlayer, pos: BlockPos, stack: ItemStack, itemCount: Int
+	) {
+		// TODO: Track where the items should be, then allow clicking on them to take them out
+		if (playerIn.isSneaking) {
+			if (itemCount - 1 >= 0) {
+				tileEntity.itemStackHandler.dropSlot(itemCount - 1, worldIn, pos)
+				tileEntity.recipeProgression = 0f
+				tileEntity.update(worldIn, this, state)
+			}
+		} else {
+			if (stack.isNotEmpty() && stack.item !is Wand) {
+				ItemHandlerHelper.insertItemStacked(tileEntity.itemStackHandler, stack.splitStack(1), false)
+				tileEntity.recipeProgression = 0f
+				tileEntity.update(worldIn, this, state)
+			}
+		}
+	}
+
+	private fun isCraftingValid(tileEntity: SpellTableTileEntity, recipe: SpellRecipe): Boolean =
+		tileEntity.featherStackHandler.getStackInSlot(0).item == Items.FEATHER &&
+			tileEntity.ink - recipe.inkAmount > 0 &&
+			tileEntity.fluidTank.fluid?.fluid?.unlocalizedName == recipe.fluidType &&
+			tileEntity.fluidTank.fluidAmount - recipe.fluidAmount > 0
+
+	private fun manageCrafting(
+		worldIn: World, tileEntity: SpellTableTileEntity, state: IBlockState,
+		playerIn: EntityPlayer, pos: BlockPos, recipe: SpellRecipe
+	) {
+		if (!isCraftingValid(tileEntity, recipe)) return
+
+		recipe.ingredients?.let { ingredients ->
+			if ((tileEntity.recipeProgression * 100f).roundToInt() / 100f >= 1f) {
+				tileEntity.ink -= recipe.inkAmount
+				tileEntity.fluidTank.drain(recipe.fluidAmount, true)
+
+				tileEntity.recipeProgression = 0f
+
+				val allItemStacks = tileEntity.itemStackHandler.getSlotItems().toMutableList()
+				val filteredStacks = allItemStacks.filter { stack ->
+					stack.item in ingredients.map {
+						it.item
+					}
+				}
+
+				for (i in filteredStacks) {
+					for (l in 0 until i.count) {
+						i.shrink(1)
+						if (ThreadLocalRandom.current().nextInt(0, 10) == 0) {
+							ItemStack(FoodInit.JELLY_BUG).drop(worldIn, pos)
+						}
+					}
+				}
+
+				SpellLearnerCapability.isCapable(playerIn)?.let {
+					it.learnSpell(recipe.spell)
+					// You HAVE to send THIS packet
+					// Otherwise the client WON'T be notified of the change
+					// And the player will NOT be able to cast the spell
+					BugMagic.CHANNEL.sendToAll(
+						MessageSpellChange(playerIn.entityId, it.spellList)
+					)
+				}
+
+				tileEntity.update(worldIn, this, state)
+			} else {
+				this.increaseCrafting(worldIn, tileEntity, recipe, state)
+			}
+		}
+	}
+
+	private fun increaseCrafting(
+		worldIn: World, tileEntity: SpellTableTileEntity,
+		recipe: SpellRecipe, state: IBlockState
+	) {
+		tileEntity.recipeProgression += 1f / recipe.craftingTime
+		tileEntity.update(worldIn, this, state)
+	}
 }
