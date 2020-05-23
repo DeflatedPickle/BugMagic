@@ -108,6 +108,7 @@ class SpellTableBlock : GenericBlock("spell_table", CreativeTabs.DECORATIONS, Ma
 
 							if (result.isSuccess) {
 								playerIn.setHeldItem(hand, result.getResult())
+								tileEntity.recipeProgression = 0f
 							}
 
 							tileEntity.update(worldIn, this, state)
@@ -127,6 +128,7 @@ class SpellTableBlock : GenericBlock("spell_table", CreativeTabs.DECORATIONS, Ma
 					else if (inkAABB.grow(0.2).contains(hitVector)) {
 						if (playerIn.isSneaking) {
 							tileEntity.featherStackHandler.dropSlot(0, worldIn, pos)
+							tileEntity.recipeProgression = 0f
 							tileEntity.update(worldIn, this, state)
 						} else {
 							when (stack.item) {
@@ -151,12 +153,13 @@ class SpellTableBlock : GenericBlock("spell_table", CreativeTabs.DECORATIONS, Ma
 						if (playerIn.isSneaking) {
 							if (itemCount - 1 >= 0) {
 								tileEntity.itemStackHandler.dropSlot(itemCount - 1, worldIn, pos)
+								tileEntity.recipeProgression = 0f
 								tileEntity.update(worldIn, this, state)
 							}
 						} else {
 							if (stack.isNotEmpty() && stack.item !is Wand) {
 								ItemHandlerHelper.insertItemStacked(tileEntity.itemStackHandler, stack.splitStack(1), false)
-
+								tileEntity.recipeProgression = 0f
 								tileEntity.update(worldIn, this, state)
 							}
 						}
@@ -172,10 +175,10 @@ class SpellTableBlock : GenericBlock("spell_table", CreativeTabs.DECORATIONS, Ma
 
 								recipe.ingredients?.let { ingredients ->
 									if (tileEntity.featherStackHandler.getStackInSlot(0).item == Items.FEATHER &&
-										tileEntity.ink >= recipe.inkAmount &&
+										tileEntity.ink - recipe.inkAmount > 0 &&
 										tileEntity.fluidTank.fluid?.fluid?.unlocalizedName == recipe.fluidType &&
-										tileEntity.fluidTank.fluidAmount >= recipe.fluidAmount) {
-										if (tileEntity.recipeProgression >= recipe.craftingTime) {
+										tileEntity.fluidTank.fluidAmount - recipe.fluidAmount > 0) {
+										if (Math.round(tileEntity.recipeProgression * 100f) / 100f >= 1f) {
 											tileEntity.ink -= recipe.inkAmount
 											tileEntity.fluidTank.drain(recipe.fluidAmount, true)
 
@@ -188,7 +191,6 @@ class SpellTableBlock : GenericBlock("spell_table", CreativeTabs.DECORATIONS, Ma
 												}
 											}
 
-											// TODO: Add a packet to sync the spell list with the client
 											SpellLearnerCapability.isCapable(playerIn)?.let {
 												it.learnSpell(recipe.spell)
 												// You HAVE to send THIS packet
@@ -207,12 +209,8 @@ class SpellTableBlock : GenericBlock("spell_table", CreativeTabs.DECORATIONS, Ma
 											}
 											tileEntity.update(worldIn, this, state)
 										} else {
-											recipe.ingredients?.let {
-												if (tileEntity.recipeProgression < recipe.craftingTime) {
-													tileEntity.recipeProgression++
-													tileEntity.update(worldIn, this, state)
-												}
-											}
+											tileEntity.recipeProgression += 1f / recipe.craftingTime
+											tileEntity.update(worldIn, this, state)
 										}
 									}
 								}

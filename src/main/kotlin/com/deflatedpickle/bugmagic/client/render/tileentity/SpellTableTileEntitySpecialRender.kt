@@ -18,6 +18,7 @@ import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.ResourceLocation
+import kotlin.math.roundToInt
 
 /**
  * The renderer for [SpellTableTileEntity]
@@ -34,7 +35,7 @@ class SpellTableTileEntitySpecialRender : TileEntitySpecialRenderer<SpellTableTi
 		partialTicks: Float, destroyStage: Int, alpha: Float
 	) {
 		super.render(te, x, y, z, partialTicks, destroyStage, alpha)
-		
+
 		this.renderFluid(te, x, y, z)
 		this.renderInk(te, x, y, z)
 		this.renderEye(te, x, y, z)
@@ -62,7 +63,7 @@ class SpellTableTileEntitySpecialRender : TileEntitySpecialRenderer<SpellTableTi
 		GlStateManager.pushMatrix()
 		GlStateManager.translate(x + 1.135, y + 0.515, z + 0.57)
 
-		// Draws the fluid name and ammount
+		// Draws the fluid name and amount
 		GlStateManager.pushMatrix()
 		GlStateManager.translate(0f, 0.2f, 0f)
 		Minecraft.getMinecraft().fontRenderer.drawNameTag(
@@ -155,7 +156,7 @@ class SpellTableTileEntitySpecialRender : TileEntitySpecialRenderer<SpellTableTi
 		GlStateManager.pushMatrix()
 		GlStateManager.translate(x + 0.5, y + 0.95, z + 0.4)
 		Minecraft.getMinecraft().fontRenderer.drawNameTag(
-			"Progress\n${te.recipeProgression}", x.toInt(), y.toInt()
+			"Progress\n${java.lang.Math.round(te.recipeProgression * 100f)} / 100", x.toInt(), y.toInt()
 		)
 		GlStateManager.popMatrix()
 
@@ -232,7 +233,9 @@ class SpellTableTileEntitySpecialRender : TileEntitySpecialRenderer<SpellTableTi
 				else Math.reverse(1, stack.count, j)
 				// Pi * 2 is a bit more bumpy and less of a connected loop
 				// Pi * 2.55 seems to be a sweet spot
-				) * (PI * 2.55)) * smallSpeed) * smallAmplitude, smallZ)
+				) * (PI * 2.55)) * smallSpeed) * smallAmplitude,
+			smallZ
+		)
 
 		stack.render(world)
 

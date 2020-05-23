@@ -48,6 +48,8 @@ class SpellTableTileEntity(stackLimit: Int = 32) : TileEntity() {
     var ink = 0f
 
     var validRecipe = invalidRecipe
+	// Range: 0f..1f
+	// Increased by 1f/SpellRecipe.getCraftingTime
     var recipeProgression = 0f
 
     override fun readFromNBT(compound: NBTTagCompound) {
