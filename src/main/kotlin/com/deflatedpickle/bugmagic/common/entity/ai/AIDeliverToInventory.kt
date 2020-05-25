@@ -2,11 +2,11 @@
 
 package com.deflatedpickle.bugmagic.common.entity.ai
 
-import com.deflatedpickle.bugmagic.BugMagic
-import com.deflatedpickle.bugmagic.common.entity.mob.ItemCollectorEntity
 import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.ai.EntityAIBase
 import net.minecraft.item.Item
+import net.minecraft.item.ItemStack
+import net.minecraft.network.datasync.DataParameter
 import net.minecraft.util.math.BlockPos
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
@@ -22,11 +22,13 @@ import net.minecraftforge.items.ItemStackHandler
  */
 // TODO: Make this not dependent on ItemCollector
 class AIDeliverToInventory(
-    private val findItem: AIFindItem,
-    private val entityIn: EntityLiving
+	private val findItem: AIFindItem,
+	private val entityIn: EntityLiving,
+	private val itemParameter: DataParameter<ItemStack>,
+	private val inventoryParameter: DataParameter<BlockPos>
 ) : EntityAIBase() {
     override fun shouldExecute(): Boolean {
-        val blockPos = this.entityIn.dataManager.get(ItemCollectorEntity.dataInventoryPosition)
+        val blockPos = this.entityIn.dataManager.get(this.inventoryParameter)
         return blockPos != BlockPos.ORIGIN && entityIn.getDistanceSq(
                 blockPos.x.toDouble() + 0.5,
                 blockPos.y.toDouble(),
@@ -35,16 +37,23 @@ class AIDeliverToInventory(
     }
 
     override fun updateTask() {
-        BugMagic.logger.debug("$entityIn delivered ${this.entityIn.dataManager.get(ItemCollectorEntity.dataInventoryPosition)} to ${this.entityIn.dataManager.get(ItemCollectorEntity.dataInventoryPosition)}")
-        val tileEntity = this.entityIn.world.getTileEntity(this.entityIn.dataManager.get(ItemCollectorEntity.dataInventoryPosition))
+		val inventoryBlockPos = this.entityIn.dataManager.get(this.inventoryParameter)
+		val itemStack = this.entityIn.dataManager.get(this.itemParameter)
+
+        val tileEntity = this.entityIn.world.getTileEntity(inventoryBlockPos)
 
         if (tileEntity != null) {
-            val itemHandler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)
+            val itemHandler = tileEntity.getCapability(
+				CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null
+			)
 
             if (itemHandler is IItemHandlerModifiable) {
-                val insertStack = this.entityIn.dataManager.get(ItemCollectorEntity.dataItemStack)
-
-                entityIn.dataManager.set(ItemCollectorEntity.dataItemStack, ItemHandlerHelper.insertItemStacked(itemHandler, insertStack, false))
+                entityIn.dataManager.set(
+					this.itemParameter,
+					ItemHandlerHelper.insertItemStacked(
+						itemHandler, itemStack, false
+					)
+				)
             }
         }
     }
