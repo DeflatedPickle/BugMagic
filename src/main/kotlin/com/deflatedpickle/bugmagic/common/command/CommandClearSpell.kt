@@ -12,8 +12,8 @@ import net.minecraft.server.MinecraftServer
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.text.TextComponentString
 
-class CommandLearnSpell : CommandBase() {
-	val names = listOf("learnspell", "bmls")
+class CommandClearSpell : CommandBase() {
+	val names = listOf("clearspell", "bmcs")
 
 	override fun getName(): String = this.names[0]
 	override fun getUsage(p0: ICommandSender): String =
@@ -45,9 +45,7 @@ class CommandLearnSpell : CommandBase() {
 					if (spellLearner != null) {
 						when (p2[0]) {
 							"all" -> {
-								for (i in SpellInit.registry.valuesCollection) {
-									spellLearner.learnSpell(i)
-								}
+								spellLearner.spellList.clear()
 								BugMagic.CHANNEL.sendToAll(
 									MessageSpellChange(p1.entityId, spellLearner.spellList)
 								)
@@ -55,7 +53,7 @@ class CommandLearnSpell : CommandBase() {
 							else -> {
 								for (i in SpellInit.registry.valuesCollection) {
 									if (p2[0] == i.registryName.toString()) {
-										spellLearner.learnSpell(i)
+										spellLearner.spellList.remove(i)
 									}
 								}
 								BugMagic.CHANNEL.sendToAll(

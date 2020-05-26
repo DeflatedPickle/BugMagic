@@ -4,6 +4,7 @@ package com.deflatedpickle.bugmagic
 
 import com.cout970.modelloader.api.ModelLoaderApi
 import com.deflatedpickle.bugmagic.common.CommonProxy
+import com.deflatedpickle.bugmagic.common.command.CommandClearSpell
 import com.deflatedpickle.bugmagic.common.command.CommandLearnSpell
 import net.minecraftforge.fluids.FluidRegistry
 import net.minecraftforge.fml.common.Mod
@@ -53,6 +54,11 @@ object BugMagic {
 
 	@Mod.EventHandler
 	fun serverStarting(event: FMLServerStartingEvent) {
-		event.registerServerCommand(CommandLearnSpell())
+		for (i in setOf(
+			CommandLearnSpell(),
+			CommandClearSpell()
+		)) {
+			event.registerServerCommand(i)
+		}
 	}
 }
