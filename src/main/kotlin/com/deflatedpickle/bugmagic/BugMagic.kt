@@ -4,12 +4,15 @@ package com.deflatedpickle.bugmagic
 
 import com.cout970.modelloader.api.ModelLoaderApi
 import com.deflatedpickle.bugmagic.common.CommonProxy
+import com.deflatedpickle.bugmagic.common.command.CommandClearSpell
+import com.deflatedpickle.bugmagic.common.command.CommandLearnSpell
 import net.minecraftforge.fluids.FluidRegistry
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.Mod.EventHandler
 import net.minecraftforge.fml.common.SidedProxy
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent
 import net.minecraftforge.fml.common.network.NetworkRegistry
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -48,4 +51,14 @@ object BugMagic {
         proxy!!.init(event)
         logger.info("Finished init.")
     }
+
+	@Mod.EventHandler
+	fun serverStarting(event: FMLServerStartingEvent) {
+		for (i in setOf(
+			CommandLearnSpell(),
+			CommandClearSpell()
+		)) {
+			event.registerServerCommand(i)
+		}
+	}
 }

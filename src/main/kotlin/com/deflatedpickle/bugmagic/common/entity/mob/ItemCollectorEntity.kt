@@ -71,7 +71,12 @@ class ItemCollectorEntity(worldIn: World) : EntityCastable(worldIn) {
         }))
         this.tasks.addTask(1, AICollectItem(findItem, this))
         this.tasks.addTask(2, AIWalkToBlockPos(this, { !this.dataManager.get(dataItemStack).isEmpty }, { this.dataManager.get(dataInventoryPosition) }))
-        this.tasks.addTask(3, AIDeliverToInventory(findItem, this))
+        this.tasks.addTask(3, AIDeliverToInventory(
+			findItem,
+			this,
+			dataItemStack,
+			dataInventoryPosition)
+		)
         this.tasks.addTask(4, findItem)
         this.tasks.addTask(4, AIWalkToItem(findItem, this))
     }
