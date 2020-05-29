@@ -4,6 +4,7 @@ package com.deflatedpickle.bugmagic.common.block
 
 import com.deflatedpickle.bugmagic.api.BoundingBox
 import com.deflatedpickle.bugmagic.api.common.block.GenericBlock
+import com.deflatedpickle.bugmagic.api.common.util.AABBUtil
 import net.minecraft.block.material.Material
 import net.minecraft.block.properties.PropertyBool
 import net.minecraft.block.state.BlockStateContainer
@@ -37,32 +38,29 @@ class BugBundleBlock : GenericBlock(
         @JvmStatic
         val UP = PropertyBool.create("up")
 
-        val EMPTY_AABB = AxisAlignedBB(0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
-        val bbUnit = 1.0 / 16.0
-
         val topAABB = AxisAlignedBB(
-                bbUnit * 7, bbUnit * 8.05, bbUnit * 7,
-                bbUnit * 9, bbUnit * 11, bbUnit * 9
+                AABBUtil.unitDouble() * 7, AABBUtil.unitDouble() * 8.05, AABBUtil.unitDouble() * 7,
+                AABBUtil.unitDouble() * 9, AABBUtil.unitDouble() * 11, AABBUtil.unitDouble() * 9
         )
         val secondTopAABB = AxisAlignedBB(
-                bbUnit * 5, bbUnit * 7.05, bbUnit * 5,
-                bbUnit * 11, bbUnit * 8, bbUnit * 11
+                AABBUtil.unitDouble() * 5, AABBUtil.unitDouble() * 7.05, AABBUtil.unitDouble() * 5,
+                AABBUtil.unitDouble() * 11, AABBUtil.unitDouble() * 8, AABBUtil.unitDouble() * 11
         )
         val middleAABB = AxisAlignedBB(
-                bbUnit * 4, bbUnit * 4, bbUnit * 4,
-                bbUnit * 12, bbUnit * 7, bbUnit * 12
+                AABBUtil.unitDouble() * 4, AABBUtil.unitDouble() * 4, AABBUtil.unitDouble() * 4,
+                AABBUtil.unitDouble() * 12, AABBUtil.unitDouble() * 7, AABBUtil.unitDouble() * 12
         )
         val thirdBottomAABB = AxisAlignedBB(
-                bbUnit * 5, bbUnit * 2, bbUnit * 5,
-                bbUnit * 11, bbUnit * 3.95, bbUnit * 11
+                AABBUtil.unitDouble() * 5, AABBUtil.unitDouble() * 2, AABBUtil.unitDouble() * 5,
+                AABBUtil.unitDouble() * 11, AABBUtil.unitDouble() * 3.95, AABBUtil.unitDouble() * 11
         )
         val secondBottomAABB = AxisAlignedBB(
-                bbUnit * 6, bbUnit, bbUnit * 6,
-                bbUnit * 10, bbUnit * 2.95, bbUnit * 10
+                AABBUtil.unitDouble() * 6, AABBUtil.unitDouble(), AABBUtil.unitDouble() * 6,
+                AABBUtil.unitDouble() * 10, AABBUtil.unitDouble() * 2.95, AABBUtil.unitDouble() * 10
         )
         val bottomAABB = AxisAlignedBB(
-                bbUnit * 7, 0.0, bbUnit * 7,
-                bbUnit * 9, bbUnit * 1.95, bbUnit * 9
+                AABBUtil.unitDouble() * 7, 0.0, AABBUtil.unitDouble() * 7,
+                AABBUtil.unitDouble() * 9, AABBUtil.unitDouble() * 1.95, AABBUtil.unitDouble() * 9
         )
 
         val boundingBoxes = listOf(
@@ -101,7 +99,7 @@ class BugBundleBlock : GenericBlock(
         state: IBlockState,
         worldIn: World,
         pos: BlockPos
-    ): AxisAlignedBB? = EMPTY_AABB
+    ): AxisAlignedBB? = AABBUtil.empty()
 
     override fun addCollisionBoxToList(
         state: IBlockState,

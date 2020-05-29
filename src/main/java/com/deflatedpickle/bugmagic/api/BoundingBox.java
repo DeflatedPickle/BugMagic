@@ -2,14 +2,19 @@
 
 package com.deflatedpickle.bugmagic.api;
 
+import com.deflatedpickle.bugmagic.common.block.SpellTableBlock;
+import com.deflatedpickle.bugmagic.client.event.BlockHighlightEventHandler;
+
 import java.util.List;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 
 /**
  * Applied to a block that should render multiple bounding boxes
  *
  * @author DeflatedPickle
- * @see com.deflatedpickle.bugmagic.common.block.SpellTableBlock
+ * @see BlockHighlightEventHandler#onDrawBlockHighlight(DrawBlockHighlightEvent)
+ * @see SpellTableBlock
  */
 public interface BoundingBox {
   /**
