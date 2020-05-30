@@ -1,32 +1,71 @@
 package com.deflatedpickle.bugmagic.api.common.block.tileentity
 
 import com.deflatedpickle.bugmagic.api.TotemType
+import com.deflatedpickle.bugmagic.api.client.render.tileentity.TotemTileEntitySpecialRender
+import com.deflatedpickle.bugmagic.api.common.block.TotemBlock
+import net.minecraft.init.Items
+import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.NetworkManager
 import net.minecraft.network.play.server.SPacketUpdateTileEntity
 import net.minecraft.tileentity.TileEntity
+import net.minecraftforge.items.ItemStackHandler
 
+/**
+ * A generic [TileEntity] for totems
+ * @see [TotemBlock]
+ * @see [TotemTileEntitySpecialRender]
+ */
 class TotemTileEntity(
-	val totemType: TotemType,
+	totemType: TotemType,
+	inputStackLimit: Int = 8,
+	outputStackLimit: Int = 16,
 	var currentBugEssence: Int = 0,
-	val maxBugEssence: Int = 100,
+	maxBugEssence: Int = 100,
 	var areaWidth: Int = 3,
 	var areaHeight: Int = 3
 ) : TileEntity() {
+	var maxBugEssence = maxBugEssence
+		private set
+
+	var totemType = totemType
+		private set
+
+	// Totems need stack handlers
+	// So they can store inserted and converted items
+	val inputItemStackHandler = ItemStackHandler(inputStackLimit)
+	val outputItemStackHandler = ItemStackHandler(outputStackLimit)
+
+	companion object {
+		val currentBugEssenceKey = "currentBugEssence"
+		val maxBugEssenceKey = "maxBugEssence"
+		val areaWidthKey = "areaWidth"
+		val areaHeightKey = "areaHeight"
+		val totemTypeKey = "totemType"
+		val inputInventory = "inputInventory"
+		val outputInventory = "outputInventory"
+	}
+
 	override fun readFromNBT(compound: NBTTagCompound) {
 		super.readFromNBT(compound)
-		this.currentBugEssence = compound.getInteger("currentBugEssence")
-		this.areaWidth = compound.getInteger("areaWidth")
-		this.areaHeight = compound.getInteger("areaHeight")
+		this.currentBugEssence = compound.getInteger(currentBugEssenceKey)
+		this.maxBugEssence = compound.getInteger(maxBugEssenceKey)
+		this.areaWidth = compound.getInteger(areaWidthKey)
+		this.areaHeight = compound.getInteger(areaHeightKey)
+		this.totemType = TotemType.valueOf(compound.getString(totemTypeKey))
+		this.inputItemStackHandler.deserializeNBT(compound.getCompoundTag(inputInventory))
+		this.outputItemStackHandler.deserializeNBT(compound.getCompoundTag(outputInventory))
 	}
 
 	override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
 		super.writeToNBT(compound)
-		compound.setString("totemType", this.totemType.toString())
-		compound.setInteger("currentBugEssence", this.currentBugEssence)
-		compound.setInteger("maxBugEssence", this.maxBugEssence)
-		compound.setInteger("areaWidth", this.areaWidth)
-		compound.setInteger("areaHeight", this.areaHeight)
+		compound.setInteger(currentBugEssenceKey, this.currentBugEssence)
+		compound.setInteger(maxBugEssenceKey, this.maxBugEssence)
+		compound.setInteger(areaWidthKey, this.areaWidth)
+		compound.setInteger(areaHeightKey, this.areaHeight)
+		compound.setString(totemTypeKey, this.totemType.toString())
+		compound.setTag(inputInventory, this.inputItemStackHandler.serializeNBT())
+		compound.setTag(outputInventory, this.outputItemStackHandler.serializeNBT())
 		return compound
 	}
 

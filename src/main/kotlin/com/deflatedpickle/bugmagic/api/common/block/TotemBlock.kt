@@ -44,5 +44,5 @@ open class TotemBlock(name: String, material: Material, lightOpacity: Int = 0, v
 	// The default totem tile entity should be good enough
 	override fun createTileEntity(
 		world: World, state: IBlockState
-	): TileEntity? = TotemTileEntity(this.type)
+	): TileEntity? = TotemTileEntity(totemType = this.type)
 }

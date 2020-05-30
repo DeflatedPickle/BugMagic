@@ -3,6 +3,8 @@
 package com.deflatedpickle.bugmagic.common.init
 
 import com.deflatedpickle.bugmagic.Reference
+import com.deflatedpickle.bugmagic.api.client.render.tileentity.TotemTileEntitySpecialRender
+import com.deflatedpickle.bugmagic.api.common.block.tileentity.TotemTileEntity
 import com.deflatedpickle.bugmagic.client.render.entity.AutoFertilizerRender
 import com.deflatedpickle.bugmagic.client.render.entity.AutoHarvesterRender
 import com.deflatedpickle.bugmagic.client.render.entity.AutoHoeRender
@@ -43,6 +45,7 @@ object RenderInit {
 
         // TESRs
         ClientRegistry.bindTileEntitySpecialRenderer(SpellTableTileEntity::class.java, SpellTableTileEntitySpecialRender())
+		ClientRegistry.bindTileEntitySpecialRenderer(TotemTileEntity::class.java, TotemTileEntitySpecialRender())
 
         // Fluid
         ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(BlockInit.BUG_ESSENCE), ItemMeshDefinition {
