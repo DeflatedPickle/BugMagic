@@ -190,12 +190,12 @@ abstract class RenderCastable<T : EntityCastable>(
 
         GlStateManager.popMatrix()
     }
-}
 
-fun prepareTaskString(tasks: Set<AITaskString>): String =
-        tasks.sortedBy { it.priority }.map {
-            "${it.priority}. ${it.action} (${it.using})"
-        }.toString()
-                .replace("[", "")
-                .replace("]", "")
-                .replace(",", "\n")
+	private fun prepareTaskString(tasks: Set<AITaskString>): String =
+		tasks.sortedBy { it.priority }.map {
+			"${it.priority}. ${it.action} (${it.using})"
+		}.toString()
+			.replace("[", "")
+			.replace("]", "")
+			.replace(",", "\n")
+}
