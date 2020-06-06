@@ -3,6 +3,7 @@
     <br>
     <p align="center">
         <a href="https://www.patreon.com/DeflatedPickle"><img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" height="24px"></a>
+        <a href="https://saythanks.io/to/DeflatedPickle%40gmail.com"><img src="https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg"></a>
         <a href='https://ko-fi.com/Q5Q0CSWL' target='_blank'><img height='24' style='border:0px;height:24px;' src='https://az743702.vo.msecnd.net/cdn/kofi4.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com'/></a>
     </p>
 </h1>
@@ -24,6 +25,13 @@
 
 <p align="center">
     <a href="https://deflatedpickle.github.io/BugMagic/"><img src="https://img.shields.io/badge/Javadoc-1.12.2-green"></a>
+</p>
+
+<br>
+
+<p align="center">
+    <a href="http://isitmaintained.com/project/deflatedpickle/bugmagic"><img src="http://isitmaintained.com/badge/resolution/deflatedpickle/bugmagic.svg"></a>
+    <a href="http://isitmaintained.com/project/deflatedpickle/bugmagic"><img src="http://isitmaintained.com/badge/open/deflatedpickle/bugmagic.svg"></a>
 </p>
 
 ## Table of Contents
