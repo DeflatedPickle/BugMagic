@@ -4,14 +4,13 @@ package com.deflatedpickle.bugmagic.common.item
 
 import com.deflatedpickle.bugmagic.BugMagic
 import com.deflatedpickle.bugmagic.api.common.item.GenericItem
-import com.deflatedpickle.bugmagic.client.ClientProxy as ClientProxy
+import com.deflatedpickle.bugmagic.api.common.util.WorldUtil
 import com.deflatedpickle.bugmagic.client.networking.message.MessageSelectedSpell
 import com.deflatedpickle.bugmagic.common.capability.BugEssenceCapability
 import com.deflatedpickle.bugmagic.common.capability.SpellCasterCapability
 import com.deflatedpickle.bugmagic.common.capability.SpellLearnerCapability
 import com.deflatedpickle.bugmagic.common.networking.message.MessageBugEssence
 import com.deflatedpickle.bugmagic.common.networking.message.MessageSpellCaster
-import com.deflatedpickle.bugmagic.server.ServerProxy as ServerProxy
 import java.util.concurrent.ThreadLocalRandom
 import net.minecraft.client.Minecraft
 import net.minecraft.client.util.ITooltipFlag
@@ -32,7 +31,6 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.text.TextComponentString
 import net.minecraft.util.text.TextFormatting
 import net.minecraft.world.World
-import net.minecraftforge.fml.common.FMLCommonHandler
 import org.lwjgl.input.Mouse
 
 class Wand(name: String) : GenericItem(name, CreativeTabs.TOOLS) {
@@ -40,7 +38,7 @@ class Wand(name: String) : GenericItem(name, CreativeTabs.TOOLS) {
         const val SPELL_INDEX = "spell_index"
     }
 
-    var hasBeenScrolled = false
+    private var hasBeenScrolled = false
 
     override fun onItemUse(player: EntityPlayer, worldIn: World, pos: BlockPos, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): EnumActionResult {
         if (worldIn.getTileEntity(pos) != null) {
@@ -96,7 +94,13 @@ class Wand(name: String) : GenericItem(name, CreativeTabs.TOOLS) {
         return false
     }
 
-    override fun onItemUseFinish(stack: ItemStack, worldIn: World, entityLiving: EntityLivingBase): ItemStack {
+    // I used to change the use time. Can you believe that?
+    // Thanks Upcraft, you've saved this mod again uwu
+    private fun whenFinished(
+        stack: ItemStack,
+        worldIn: World,
+        entityLiving: EntityLivingBase
+    ): ItemStack {
         if (entityLiving is EntityPlayer) {
             val bugEssence = BugEssenceCapability.isCapable(entityLiving)
             val spellLearner = SpellLearnerCapability.isCapable(entityLiving)
@@ -109,21 +113,37 @@ class Wand(name: String) : GenericItem(name, CreativeTabs.TOOLS) {
                     if (bugEssence.current - manaCost >= 0) {
                         if (!worldIn.isRemote) {
                             bugEssence.current -= manaCost
-                            BugMagic.CHANNEL.sendTo(MessageBugEssence(entityLiving.entityId, bugEssence.max, bugEssence.current), entityLiving as EntityPlayerMP)
+                            BugMagic.CHANNEL.sendTo(
+                                    MessageBugEssence(
+                                            entityLiving.entityId,
+                                            bugEssence.max,
+                                            bugEssence.current
+                                    ),
+                                    entityLiving as EntityPlayerMP
+                            )
 
                             if (!spellCaster.castSpellMap.containsKey(spellLearner.currentSpell)) {
                                 spell.cast(entityLiving, stack)
                                 spellCaster.castSpellMap[spellLearner.currentSpell] = 1
-                            } else if (spellCaster.castSpellMap[spellLearner.currentSpell]!! < spell.maxCount) {
+                            } else if (spellCaster.castSpellMap[spellLearner.currentSpell]!!
+                                    < spell.maxCount) {
                                 spell.cast(entityLiving, stack)
-                                spellCaster.castSpellMap[spellLearner.currentSpell] = spellCaster.castSpellMap[spellLearner.currentSpell]!! + 1
+                                spellCaster.castSpellMap[spellLearner.currentSpell] =
+                                        spellCaster.castSpellMap[spellLearner.currentSpell]!! + 1
                             }
 
                             entityLiving.cooldownTracker.setCooldown(this, spell.maxCooldown)
 
                             spellCaster.isCasting = false
 
-                            BugMagic.CHANNEL.sendTo(MessageSpellCaster(entityLiving.entityId, spellCaster.isCasting, spellCaster.castingCurrent), entityLiving as EntityPlayerMP?)
+                            BugMagic.CHANNEL.sendTo(
+                                    MessageSpellCaster(
+                                            entityLiving.entityId,
+                                            spellCaster.isCasting,
+                                            spellCaster.castingCurrent
+                                    ),
+                                    entityLiving as EntityPlayerMP?
+                            )
                         } else {
                             if (spell.finishingParticle != null) {
                                 entityLiving.world.spawnParticle(spell.finishingParticle!!,
@@ -160,6 +180,18 @@ class Wand(name: String) : GenericItem(name, CreativeTabs.TOOLS) {
                     }
                 }
             }
+        } else {
+            val spellCaster = SpellCasterCapability.isCapable(stack)
+
+            if (spellCaster != null && spellCaster.owner != null) {
+                val spellLearner = SpellLearnerCapability.isCapable(player)
+
+                if (spellLearner != null) {
+                    if (WorldUtil.DAY - count == spellLearner.currentSpell!!.castingTime) {
+                        this.whenFinished(stack, player.world, player)
+                    }
+                }
+            }
         }
     }
 
@@ -192,7 +224,7 @@ class Wand(name: String) : GenericItem(name, CreativeTabs.TOOLS) {
     }
 
     override fun onDroppedByPlayer(item: ItemStack, player: EntityPlayer): Boolean {
-        val spellCaster = SpellCasterCapability.isCapable(player.heldItemMainhand)
+        val spellCaster = SpellCasterCapability.isCapable(item)
 
         if (spellCaster != null) {
             spellCaster.isCasting = false
@@ -249,10 +281,10 @@ class Wand(name: String) : GenericItem(name, CreativeTabs.TOOLS) {
 
                                         // The next spell
                                         "${TextFormatting.GRAY} > ${spellLearner.spellList[
-                                        if (stack.tagCompound!!.getInteger(SPELL_INDEX) + 1 > spellLearner.spellList.lastIndex)
-                                            0
-                                        else
-                                            stack.tagCompound!!.getInteger(SPELL_INDEX) + 1].name}"
+                                                if (stack.tagCompound!!.getInteger(SPELL_INDEX) + 1 > spellLearner.spellList.lastIndex)
+                                                    0
+                                                else
+                                                    stack.tagCompound!!.getInteger(SPELL_INDEX) + 1].name}"
                                 ), true)
 
                                 BugMagic.CHANNEL.sendToServer(MessageSelectedSpell(stack.tagCompound!!.getInteger(SPELL_INDEX)))
@@ -272,6 +304,12 @@ class Wand(name: String) : GenericItem(name, CreativeTabs.TOOLS) {
 
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         if (stack.hasTagCompound() && worldIn!!.isRemote) {
+            val spellCaster = SpellCasterCapability.isCapable(stack)
+
+            if (spellCaster != null) {
+                tooltip.add("Owner: (${spellCaster.owner})")
+            }
+
             val spellLearner = SpellLearnerCapability.isCapable(BugMagic.proxy!!.getPlayer()!!)
 
             if (spellLearner != null && spellLearner.spellList.size > 0) {
@@ -281,34 +319,9 @@ class Wand(name: String) : GenericItem(name, CreativeTabs.TOOLS) {
         }
     }
 
-    // TODO: Fix this, I'm not completely sure this works, plus it's messy
-    override fun getMaxItemUseDuration(stack: ItemStack): Int {
-        val spellCaster = SpellCasterCapability.isCapable(stack)
-
-        return when (BugMagic.proxy) {
-            is ClientProxy -> {
-                val player = Minecraft.getMinecraft().player
-                val spellLearner = SpellLearnerCapability.isCapable(player)
-
-                spellLearner?.currentSpell?.castingTime ?: 0
-            }
-            is ServerProxy -> {
-                if (spellCaster != null && spellCaster.owner != null) {
-                    val player = FMLCommonHandler.instance().minecraftServerInstance.playerList.getPlayerByUUID(spellCaster.owner!!)
-                    val spellLearner = SpellLearnerCapability.isCapable(player)
-
-                    spellLearner?.currentSpell?.castingTime ?: 0
-                } else {
-                    0
-                }
-            }
-            else -> 0
-        }
-    }
-
-    override fun getItemUseAction(stack: ItemStack?): EnumAction {
-        return EnumAction.BOW
-    }
+    override fun getMaxItemUseDuration(stack: ItemStack): Int = WorldUtil.DAY
+    override fun getItemUseAction(stack: ItemStack?): EnumAction = EnumAction.BOW
+    override fun isDamageable(): Boolean = false
 
     override fun onItemRightClick(worldIn: World?, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack> {
         playerIn.activeHand = handIn
@@ -322,7 +335,11 @@ class Wand(name: String) : GenericItem(name, CreativeTabs.TOOLS) {
         }
     }
 
-    override fun isDamageable(): Boolean {
-        return false
+    override fun getNBTShareTag(stack: ItemStack): NBTTagCompound? {
+        if (!stack.hasTagCompound()) {
+            stack.tagCompound = NBTTagCompound()
+        }
+
+        return super.getNBTShareTag(stack)
     }
 }
