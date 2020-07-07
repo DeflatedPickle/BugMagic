@@ -16,6 +16,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent
 import net.minecraftforge.fml.common.network.NetworkRegistry
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import java.util.concurrent.ThreadLocalRandom
 
 @Mod(
         modid = Reference.MOD_ID,
@@ -32,6 +33,8 @@ object BugMagic {
     val CHANNEL = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_ID)
 
     val logger: Logger = LogManager.getLogger(Reference.MOD_ID)
+
+	val random = ThreadLocalRandom.current()
 
     init {
         FluidRegistry.enableUniversalBucket()

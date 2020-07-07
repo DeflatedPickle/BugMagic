@@ -15,7 +15,6 @@ import com.deflatedpickle.bugmagic.client.render.tileentity.SpellTableTileEntity
 import com.deflatedpickle.bugmagic.common.block.tileentity.SpellTableTileEntity
 import com.deflatedpickle.bugmagic.common.capability.SpellLearnerCapability
 import com.deflatedpickle.bugmagic.common.init.FoodInit
-import com.deflatedpickle.bugmagic.common.init.SpellRecipeInit
 import com.deflatedpickle.bugmagic.common.item.Wand
 import com.deflatedpickle.bugmagic.common.networking.message.MessageSpellChange
 import java.util.concurrent.ThreadLocalRandom
@@ -92,7 +91,9 @@ class SpellTableBlock : GenericBlock("spell_table", CreativeTabs.DECORATIONS, Ma
 			val tileEntity = worldIn.getTileEntity(pos)
 
 			if (tileEntity is SpellTableTileEntity) {
-				val itemCount = 0.until(tileEntity.itemStackHandler.slots).count { tileEntity.itemStackHandler.getStackInSlot(it) != ItemStack.EMPTY }
+				val itemCount = 0.until(tileEntity.itemStackHandler.slots).count {
+					tileEntity.itemStackHandler.getStackInSlot(it) != ItemStack.EMPTY
+				}
 				val stack = playerIn.getHeldItem(hand)
 
 				if (playerIn.canPlayerEdit(pos, facing, stack)) {
@@ -112,7 +113,7 @@ class SpellTableBlock : GenericBlock("spell_table", CreativeTabs.DECORATIONS, Ma
 					}
 					// Put items in
 					else if (matAABB.grow(0.2).contains(hitVector)) {
-						this.tryInsertIngredient(worldIn, tileEntity, state, playerIn, pos, stack, itemCount)
+						this.tryInsertOrRemoveIngredient(worldIn, tileEntity, state, playerIn, pos, stack, itemCount)
 					} else {
 						if (stack.item is Wand) {
 							val split = tileEntity.validRecipe.split(":")
@@ -220,7 +221,7 @@ class SpellTableBlock : GenericBlock("spell_table", CreativeTabs.DECORATIONS, Ma
 		}
 	}
 
-	private fun tryInsertIngredient(
+	private fun tryInsertOrRemoveIngredient(
 		worldIn: World, tileEntity: SpellTableTileEntity, state: IBlockState,
 		playerIn: EntityPlayer, pos: BlockPos, stack: ItemStack, itemCount: Int
 	) {

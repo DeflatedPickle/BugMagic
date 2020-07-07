@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ppp",
+    "ece",
+    "ppp"
+  ],
+  "key": {
+    "p": {
+      "item": "minecraft:porkchop",
+      "data": 0
+    },
+    "e": {
+      "item": "minecraft:spider_eye",
+      "data": 0
+    },
+    "c": {
+      "item": "minecraft:clay_ball",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "bugmagic:pig_head",
+    "count": 1,
+    "data": 0
+  }
+}

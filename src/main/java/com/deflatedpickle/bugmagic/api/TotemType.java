@@ -16,7 +16,7 @@ public enum TotemType {
 	 */
 	DUMP,
 	/**
-	 * Generates bug essence by using input or the surroundings
+	 * Generates bug essence by using input
 	 * Feeds off items and/or blocks
 	 */
 	GENERATOR,

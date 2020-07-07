@@ -1,0 +1,129 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [64, 64],
+	"textures": {
+		"0": "bugmagic:blocks/pig_stick",
+		"particle": "bugmagic:blocks/pig_stick"
+	},
+	"elements": [
+		{
+			"name": "Head",
+			"from": [5.5, 0, 5.5],
+			"to": [10.5, 5, 10.5],
+			"rotation": {"angle": 0, "axis": "z", "origin": [8, 2.5, 8]},
+			"faces": {
+				"north": {"uv": [2, 2, 4, 4], "texture": "#0"},
+				"east": {"uv": [0, 2, 2, 4], "texture": "#0"},
+				"south": {"uv": [2, 4, 4, 6], "texture": "#0"},
+				"west": {"uv": [4, 2, 6, 4], "texture": "#0"},
+				"up": {"uv": [2, 0, 4, 2], "texture": "#0"},
+				"down": {"uv": [4, 0, 6, 2], "texture": "#0"}
+			}
+		},
+		{
+			"name": "East",
+			"from": [10.5, -0.025, 6.5],
+			"to": [11.5, 3.975, 9.5],
+			"rotation": {"angle": 0, "axis": "z", "origin": [10.9, 2.9, 8]},
+			"faces": {
+				"north": {"uv": [0, 0.5, 0.5, 1.75], "texture": "#0"},
+				"east": {"uv": [0, 0.5, 1, 1.75], "texture": "#0"},
+				"south": {"uv": [0, 0.5, 0.5, 1.75], "texture": "#0"},
+				"west": {"uv": [1, 0.5, 2, 1.75], "texture": "#0"},
+				"up": {"uv": [0, 0.5, 0.5, 1.75], "rotation": 180, "texture": "#0"},
+				"down": {"uv": [0, 0.5, 0.5, 1.75], "rotation": 180, "texture": "#0"}
+			}
+		},
+		{
+			"name": "West",
+			"from": [4.525, -0.075, 6.5],
+			"to": [5.525, 3.925, 9.5],
+			"rotation": {"angle": 0, "axis": "z", "origin": [5.9, 5, 8]},
+			"faces": {
+				"north": {"uv": [0.25, 0.5, 0.75, 1.75], "texture": "#0"},
+				"east": {"uv": [1, 0.5, 2, 1.75], "texture": "#0"},
+				"south": {"uv": [0, 0.5, 0.5, 1.75], "texture": "#0"},
+				"west": {"uv": [0, 0.5, 1, 1.75], "texture": "#0"},
+				"up": {"uv": [0.25, 1.25, 1.25, 1.75], "rotation": 270, "texture": "#0"},
+				"down": {"uv": [1, 0, 2, 0.5], "rotation": 90, "texture": "#0"}
+			}
+		},
+		{
+			"name": "Nose",
+			"from": [6.4, 0, 4.5],
+			"to": [9.4, 2, 5.5],
+			"rotation": {"angle": 0, "axis": "z", "origin": [7.4, 1, 5.5]},
+			"faces": {
+				"north": {"uv": [2.5, 3.25, 3.5, 3.75], "texture": "#0"},
+				"east": {"uv": [2.5, 3.25, 2.75, 3.75], "texture": "#0"},
+				"south": {"uv": [2.5, 3.25, 3.5, 3.75], "texture": "#0"},
+				"west": {"uv": [3.25, 3.25, 3.5, 3.75], "texture": "#0"},
+				"up": {"uv": [2.5, 3.25, 3.5, 3.5], "texture": "#0"},
+				"down": {"uv": [2.5, 3.5, 3.5, 3.75], "texture": "#0"}
+			}
+		},
+		{
+			"from": [6.9, 1.25, 4],
+			"to": [7.4, 1.75, 5],
+			"rotation": {"angle": -45, "axis": "x", "origin": [7.9, 1, 5.5]},
+			"faces": {
+				"north": {"uv": [0, 0, 0.5, 0.25], "texture": "#0"},
+				"east": {"uv": [0, 0, 0.5, 0.25], "texture": "#0"},
+				"south": {"uv": [0, 0, 0.5, 0.25], "texture": "#0"},
+				"west": {"uv": [0, 0, 0.5, 0.25], "texture": "#0"},
+				"up": {"uv": [0, 0, 0.25, 0.5], "texture": "#0"},
+				"down": {"uv": [0, 0, 0.25, 0.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [8.4, 1.25, 4],
+			"to": [8.9, 1.75, 5],
+			"rotation": {"angle": -45, "axis": "x", "origin": [7.9, 1, 5.5]},
+			"faces": {
+				"north": {"uv": [0, 0, 0.5, 0.25], "texture": "#0"},
+				"east": {"uv": [0, 0, 0.5, 0.25], "texture": "#0"},
+				"south": {"uv": [0, 0, 0.5, 0.25], "texture": "#0"},
+				"west": {"uv": [0, 0, 0.5, 0.25], "texture": "#0"},
+				"up": {"uv": [0, 0, 0.25, 0.5], "texture": "#0"},
+				"down": {"uv": [0, 0, 0.25, 0.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [7.4, 1.25, 4],
+			"to": [8.4, 1.75, 4.5],
+			"rotation": {"angle": -45, "axis": "x", "origin": [7.9, 1, 5.5]},
+			"faces": {
+				"north": {"uv": [0, 0, 0.5, 0.25], "texture": "#0"},
+				"east": {"uv": [0, 0, 0.5, 0.25], "texture": "#0"},
+				"south": {"uv": [0, 0, 0.5, 0.25], "texture": "#0"},
+				"west": {"uv": [0, 0, 0.5, 0.25], "texture": "#0"},
+				"up": {"uv": [0, 0, 0.5, 0.25], "texture": "#0"},
+				"down": {"uv": [0, 0, 0.5, 0.25], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "Head",
+			"origin": [7, 8, 8],
+			"children": [0,
+				{
+					"name": "Ears",
+					"origin": [5, 4, 2.5],
+					"children": [1, 2]
+				},
+				{
+					"name": "Nose",
+					"origin": [9, 8, 7],
+					"children": [3,
+						{
+							"name": "Ring",
+							"origin": [9, 8, 7],
+							"children": [4, 5, 6]
+						}
+					]
+				}
+			]
+		}
+	]
+}

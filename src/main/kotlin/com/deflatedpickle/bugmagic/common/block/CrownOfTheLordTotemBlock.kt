@@ -3,8 +3,9 @@ package com.deflatedpickle.bugmagic.common.block
 import com.deflatedpickle.bugmagic.api.BoundingBox
 import com.deflatedpickle.bugmagic.api.TotemType
 import com.deflatedpickle.bugmagic.api.common.block.TotemBlock
-import com.deflatedpickle.bugmagic.api.common.block.tileentity.TotemTileEntity
+import com.deflatedpickle.bugmagic.api.common.block.tileentity.TotemGathererTileEntity
 import com.deflatedpickle.bugmagic.api.common.util.AABBUtil
+import com.deflatedpickle.bugmagic.common.init.ItemInit
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.Entity
@@ -14,10 +15,13 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 
+// TODO: Add some rotting mechanic before producing flies
 class CrownOfTheLordTotemBlock : TotemBlock(
 	"pig_stick",
 	Material.CACTUS,
-	type = TotemType.GENERATOR
+	type = TotemType.GENERATOR,
+	doesOutput = true,
+	acceptsInput = false
 ), BoundingBox {
 	companion object {
 		val stickAABB = AxisAlignedBB(
@@ -57,10 +61,26 @@ class CrownOfTheLordTotemBlock : TotemBlock(
 		rightEarAABB
 	)
 
-	override fun addCollisionBoxToList(state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?, isActualState: Boolean) {
+	override fun addCollisionBoxToList(
+		state: IBlockState,
+		worldIn: World,
+		pos: BlockPos,
+		entityBox: AxisAlignedBB,
+		collidingBoxes:
+		MutableList<AxisAlignedBB>,
+		entityIn: Entity?,
+		isActualState: Boolean
+	) {
 		addCollisionBoxToList(pos, entityBox, collidingBoxes, headAABB)
 		addCollisionBoxToList(pos, entityBox, collidingBoxes, noseAABB)
 		addCollisionBoxToList(pos, entityBox, collidingBoxes, leftEarAABB)
 		addCollisionBoxToList(pos, entityBox, collidingBoxes, rightEarAABB)
 	}
+
+	override fun createTileEntity(
+		world: World, state: IBlockState
+	): TileEntity? = TotemGathererTileEntity(
+		item = ItemInit.BUG,
+		upperBound = 99
+	)
 }

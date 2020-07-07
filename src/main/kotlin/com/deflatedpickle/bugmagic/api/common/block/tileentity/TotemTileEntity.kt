@@ -3,8 +3,7 @@ package com.deflatedpickle.bugmagic.api.common.block.tileentity
 import com.deflatedpickle.bugmagic.api.TotemType
 import com.deflatedpickle.bugmagic.api.client.render.tileentity.TotemTileEntitySpecialRender
 import com.deflatedpickle.bugmagic.api.common.block.TotemBlock
-import net.minecraft.init.Items
-import net.minecraft.item.ItemStack
+import com.deflatedpickle.bugmagic.api.common.util.LimitedItemStackHandler
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.NetworkManager
 import net.minecraft.network.play.server.SPacketUpdateTileEntity
@@ -16,7 +15,7 @@ import net.minecraftforge.items.ItemStackHandler
  * @see [TotemBlock]
  * @see [TotemTileEntitySpecialRender]
  */
-class TotemTileEntity(
+open class TotemTileEntity(
 	totemType: TotemType,
 	inputStackLimit: Int = 8,
 	outputStackLimit: Int = 16,
@@ -34,16 +33,17 @@ class TotemTileEntity(
 	// Totems need stack handlers
 	// So they can store inserted and converted items
 	val inputItemStackHandler = ItemStackHandler(inputStackLimit)
-	val outputItemStackHandler = ItemStackHandler(outputStackLimit)
+	// Output slots are limited to 1 item each
+	val outputItemStackHandler = LimitedItemStackHandler(outputStackLimit, 1)
 
 	companion object {
-		val currentBugEssenceKey = "currentBugEssence"
-		val maxBugEssenceKey = "maxBugEssence"
-		val areaWidthKey = "areaWidth"
-		val areaHeightKey = "areaHeight"
-		val totemTypeKey = "totemType"
-		val inputInventory = "inputInventory"
-		val outputInventory = "outputInventory"
+		const val currentBugEssenceKey = "currentBugEssence"
+		const val maxBugEssenceKey = "maxBugEssence"
+		const val areaWidthKey = "areaWidth"
+		const val areaHeightKey = "areaHeight"
+		const val totemTypeKey = "totemType"
+		const val inputInventory = "inputInventory"
+		const val outputInventory = "outputInventory"
 	}
 
 	override fun readFromNBT(compound: NBTTagCompound) {
