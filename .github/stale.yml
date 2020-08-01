@@ -1,12 +1,14 @@
 daysUntilStale: 60
 daysUntilClose: 7
 exemptLabels:
-  - "todo"
+  - "todo :spiral_notepad:"
   - "extension"
   - "good first issue"
   - "help wanted"
   - "question"
   - "pinned"
+  - "bug"
+  - "feature"
 exemptProjects: true
 exemptMilestone: true
 staleLabel: "stale"
