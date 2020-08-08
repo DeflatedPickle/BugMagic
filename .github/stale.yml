@@ -9,6 +9,8 @@ exemptLabels:
   - "pinned"
   - "bug"
   - "feature"
+  - "java api"
+  - "kotlin api"
 exemptProjects: true
 exemptMilestone: true
 staleLabel: "stale"
