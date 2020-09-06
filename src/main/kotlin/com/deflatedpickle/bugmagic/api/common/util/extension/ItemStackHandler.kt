@@ -3,6 +3,7 @@
 package com.deflatedpickle.bugmagic.api.common.util.extension
 
 import net.minecraft.entity.item.EntityItem
+import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
@@ -16,12 +17,19 @@ fun ItemStackHandler.dropSlot(slot: Int, worldIn: World, pos: BlockPos) {
     }
 }
 
-fun ItemStackHandler.getSlotItems(): Collection<ItemStack> {
-    val stacks = mutableListOf<ItemStack>()
+fun ItemStackHandler.getSlotStacks(): Array<ItemStack?> {
+    val stacks = arrayOfNulls<ItemStack>(this.slots)
 
     for (i in 0 until this.slots) {
-        stacks.add(this.getStackInSlot(i))
+		val stack = this.getStackInSlot(i)
+
+		if (!stack.isEmpty) {
+			stacks[i] = stack
+		}
     }
 
     return stacks
 }
+
+fun ItemStackHandler.getSlotItems(): Array<Item?> =
+	this.getSlotStacks().map { it?.item }.toTypedArray()

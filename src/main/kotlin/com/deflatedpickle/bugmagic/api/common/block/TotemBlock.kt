@@ -3,6 +3,7 @@ package com.deflatedpickle.bugmagic.api.common.block
 import com.deflatedpickle.bugmagic.api.TotemType
 import com.deflatedpickle.bugmagic.api.common.block.tileentity.TotemTileEntity
 import com.deflatedpickle.bugmagic.api.common.util.extension.dropSlot
+import com.deflatedpickle.bugmagic.api.common.util.extension.getSlotItems
 import com.deflatedpickle.bugmagic.api.common.util.extension.update
 import com.deflatedpickle.bugmagic.common.block.tileentity.SpellTableTileEntity
 import net.minecraft.block.material.Material
@@ -99,12 +100,14 @@ open class TotemBlock(
 				}
 
 				if (this.acceptsInput) {
-					if (stack == ItemStack.EMPTY) {
+					if (stack != ItemStack.EMPTY) {
 						ItemHandlerHelper.insertItemStacked(
 							tileEntity.inputItemStackHandler,
 							stack.splitStack(1),
 							false)
 						tileEntity.update(worldIn, this, state)
+
+						println(tileEntity.inputItemStackHandler.getSlotItems())
 					}
 				}
 			}

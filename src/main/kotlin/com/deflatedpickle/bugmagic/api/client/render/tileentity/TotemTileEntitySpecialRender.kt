@@ -87,7 +87,7 @@ class TotemTileEntitySpecialRender : TileEntitySpecialRenderer<TotemTileEntity>(
 		val bigAmplitude = 0.06
 		GlStateManager.translate(
 			bigX,
-			sin(te.world.totalWorldTime.toFloat() * bigSpeed) *
+			sin(te.world.totalWorldTime.toFloat() * bigSpeed + i) *
 				bigAmplitude,
 			bigZ)
 
@@ -97,7 +97,10 @@ class TotemTileEntitySpecialRender : TileEntitySpecialRenderer<TotemTileEntity>(
 			0f, -0.4f, 0f
 		)
 		Minecraft.getMinecraft().fontRenderer.drawNameTag(
-			"${stack.displayName} x${stack.count}",
+			// There can only be one item in each stack
+			// so there's no point including the count
+			// like the spell table does
+			stack.displayName,
 			x.toInt(), y.toInt()
 		)
 		GlStateManager.popMatrix()

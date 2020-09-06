@@ -5,7 +5,10 @@ import net.minecraft.block.material.Material
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.util.BlockRenderLayer
 
-class PigHead : GenericBlock(
+// it's in your head
+// in your head
+// zombie
+class HeadOfPig : GenericBlock(
 	"pig_head",
 	materialIn = Material.CACTUS,
 	creativeTab = CreativeTabs.DECORATIONS,

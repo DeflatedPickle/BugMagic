@@ -7,6 +7,7 @@ import com.deflatedpickle.bugmagic.api.common.block.TotemBlock
 import com.deflatedpickle.bugmagic.api.common.util.LimitedItemStackHandler
 import com.deflatedpickle.bugmagic.api.common.util.extension.update
 import com.deflatedpickle.bugmagic.common.init.ItemInit
+import net.minecraft.block.Block
 import net.minecraft.init.Items
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
@@ -26,11 +27,12 @@ class TotemGathererTileEntity(
 	maxBugEssence: Int = 100,
 	areaWidth: Int = 3,
 	areaHeight: Int = 3,
-	val item: Item,
+	// TODO: Use a loot pool for gathering totems
+	val gather: () -> Any,
 	@Suppress("MemberVisibilityCanBePrivate")
 	val upperBound: Int
 ) : TotemTileEntity(
-	TotemType.GENERATOR,
+	TotemType.GATHERER,
 	0, outputStackLimit,
 	0, maxBugEssence,
 	areaWidth, areaHeight
@@ -48,11 +50,18 @@ class TotemGathererTileEntity(
 				}
 			}
 
-			this.outputItemStackHandler.insertItem(
-				firstEmptySlot,
-				ItemStack(this.item),
-				false
-			)
+			when (val result = this.gather()) {
+				is Item -> this.outputItemStackHandler.insertItem(
+					firstEmptySlot,
+					ItemStack(result),
+					false
+				)
+				is Block -> this.outputItemStackHandler.insertItem(
+					firstEmptySlot,
+					ItemStack(result),
+					false
+				)
+			}
 		}
 	}
 }

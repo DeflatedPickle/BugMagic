@@ -19,7 +19,7 @@ import net.minecraft.world.World
 class CrownOfTheLordTotemBlock : TotemBlock(
 	"pig_stick",
 	Material.CACTUS,
-	type = TotemType.GENERATOR,
+	type = TotemType.GATHERER,
 	doesOutput = true,
 	acceptsInput = false
 ), BoundingBox {
@@ -80,7 +80,7 @@ class CrownOfTheLordTotemBlock : TotemBlock(
 	override fun createTileEntity(
 		world: World, state: IBlockState
 	): TileEntity? = TotemGathererTileEntity(
-		item = ItemInit.BUG,
+		gather = { ItemInit.BUG },
 		upperBound = 99
 	)
 }

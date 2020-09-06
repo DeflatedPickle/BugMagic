@@ -8,6 +8,7 @@ import com.deflatedpickle.bugmagic.api.common.block.GenericBlock
 import com.deflatedpickle.bugmagic.api.common.util.extension.drop
 import com.deflatedpickle.bugmagic.api.common.util.extension.dropSlot
 import com.deflatedpickle.bugmagic.api.common.util.extension.getSlotItems
+import com.deflatedpickle.bugmagic.api.common.util.extension.getSlotStacks
 import com.deflatedpickle.bugmagic.api.common.util.extension.isNotEmpty
 import com.deflatedpickle.bugmagic.api.common.util.extension.update
 import com.deflatedpickle.bugmagic.api.spell.SpellRecipe
@@ -260,15 +261,15 @@ class SpellTableBlock : GenericBlock("spell_table", CreativeTabs.DECORATIONS, Ma
 
 				tileEntity.recipeProgression = 0f
 
-				val allItemStacks = tileEntity.itemStackHandler.getSlotItems().toMutableList()
+				val allItemStacks = tileEntity.itemStackHandler.getSlotStacks().toMutableList()
 				val filteredStacks = allItemStacks.filter { stack ->
-					stack.item in ingredients.map {
+					stack?.item in ingredients.map {
 						it.item
 					}
 				}
 
 				for (i in filteredStacks) {
-					for (l in 0 until i.count) {
+					for (l in 0 until i!!.count) {
 						i.shrink(1)
 						if (ThreadLocalRandom.current().nextInt(0, 10) == 0) {
 							ItemStack(FoodInit.JELLY_BUG).drop(worldIn, pos)

@@ -5,7 +5,8 @@ package com.deflatedpickle.bugmagic.common.init
 import com.deflatedpickle.bugmagic.Reference
 import com.deflatedpickle.bugmagic.common.block.CrownOfTheLordTotemBlock
 import com.deflatedpickle.bugmagic.common.block.BugBundleBlock
-import com.deflatedpickle.bugmagic.common.block.PigHead
+import com.deflatedpickle.bugmagic.common.block.ImmobileServantTotemBlock
+import com.deflatedpickle.bugmagic.common.block.HeadOfPig
 import com.deflatedpickle.bugmagic.common.block.SpellTableBlock
 import com.github.upcraftlp.glasspane.api.registry.AutoRegistry
 import net.minecraftforge.fluids.BlockFluidFinite
@@ -23,11 +24,17 @@ object BlockInit {
 	@JvmField
 	val PIG_STICK = CrownOfTheLordTotemBlock()
 
+	@JvmField
+	val IMMOBILE_SERVANT = ImmobileServantTotemBlock()
+
+	// Heads
+	// haha head
+
+	@JvmField
+	val PIG_HEAD = HeadOfPig()
+
 	// Fluid
 
     @JvmField
     val BUG_ESSENCE = BlockFluidFinite(FluidInit.BUG_ESSENCE, MaterialInit.BUG_ESSENCE)
-
-	@JvmField
-	val PIG_HEAD = PigHead()
 }

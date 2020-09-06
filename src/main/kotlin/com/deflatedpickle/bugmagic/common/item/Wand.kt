@@ -306,9 +306,7 @@ class Wand(name: String) : GenericItem(name, CreativeTabs.TOOLS) {
         }
     }
 
-    override fun getItemUseAction(stack: ItemStack?): EnumAction {
-        return EnumAction.BOW
-    }
+    override fun getItemUseAction(stack: ItemStack?): EnumAction = EnumAction.BOW
 
     override fun onItemRightClick(worldIn: World?, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack> {
         playerIn.activeHand = handIn
@@ -322,7 +320,5 @@ class Wand(name: String) : GenericItem(name, CreativeTabs.TOOLS) {
         }
     }
 
-    override fun isDamageable(): Boolean {
-        return false
-    }
+    override fun isDamageable(): Boolean = false
 }
