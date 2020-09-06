@@ -19,22 +19,26 @@ object CastingCameraEventHandler {
 	fun onMouse(event: MouseEvent) {
 		val options = Minecraft.getMinecraft().renderManager.options
 
-		val player = BugMagic.proxy!!.getPlayer()
+		// I've crashed on the first time I joined a world because of this,
+		// So if we schedule it... hopefully it won't cause a crash
+		Minecraft.getMinecraft().addScheduledTask {
+			val player = BugMagic.proxy!!.getPlayer()
 
-		player?.let { entityPlayer ->
-			val stack = entityPlayer.getHeldItem(entityPlayer.activeHand)
-			val spellCaster = SpellCasterCapability.isCapable(stack)
+			player?.let { entityPlayer ->
+				val stack = entityPlayer.getHeldItem(entityPlayer.activeHand)
+				val spellCaster = SpellCasterCapability.isCapable(stack)
 
-			spellCaster?.let {
-				when (event.button) {
-					1 -> {
-						when (event.isButtonstate) {
-							true -> this.perspective = options.thirdPersonView
-							// This is checked here because if it was checked earlier
-							// It wouldn't set the perspective to the current view
-							// So it'd always default to 0
-							false -> if (it.isCasting)
-								options.thirdPersonView = this.perspective
+				spellCaster?.let {
+					when (event.button) {
+						1 -> {
+							when (event.isButtonstate) {
+								true -> this.perspective = options.thirdPersonView
+								// This is checked here because if it was checked earlier
+								// It wouldn't set the perspective to the current view
+								// So it'd always default to 0
+								false -> if (it.isCasting)
+									options.thirdPersonView = this.perspective
+							}
 						}
 					}
 				}
