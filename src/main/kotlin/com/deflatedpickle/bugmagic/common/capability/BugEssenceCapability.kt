@@ -7,7 +7,6 @@ import com.deflatedpickle.bugmagic.api.capability.IBugEssence
 import java.util.concurrent.Callable
 import kotlin.math.max
 import kotlin.math.min
-import net.minecraft.entity.EntityLivingBase
 import net.minecraft.nbt.NBTBase
 import net.minecraft.nbt.NBTTagIntArray
 import net.minecraft.util.EnumFacing
@@ -15,6 +14,7 @@ import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.capabilities.CapabilityInject
 import net.minecraftforge.common.capabilities.CapabilityManager
+import net.minecraftforge.common.capabilities.ICapabilityProvider
 import net.minecraftforge.common.capabilities.ICapabilitySerializable
 
 /**
@@ -23,7 +23,7 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable
 object BugEssenceCapability {
     val NAME = ResourceLocation(Reference.MOD_ID, "bug_essence")
 
-    fun isCapable(entity: EntityLivingBase): IBugEssence? = entity.getCapability(Provider.CAPABILITY, null)
+    fun isCapable(thing: ICapabilityProvider): IBugEssence? = thing.getCapability(Provider.CAPABILITY, null)
 
     class Implementation : IBugEssence {
         private var max = 0

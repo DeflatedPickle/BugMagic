@@ -8,7 +8,6 @@ import com.deflatedpickle.bugmagic.api.spell.Spell
 import java.util.UUID
 import java.util.concurrent.Callable
 import kotlin.collections.HashMap
-import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTBase
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
@@ -16,6 +15,7 @@ import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.capabilities.CapabilityInject
 import net.minecraftforge.common.capabilities.CapabilityManager
+import net.minecraftforge.common.capabilities.ICapabilityProvider
 import net.minecraftforge.common.capabilities.ICapabilitySerializable
 
 /**
@@ -24,7 +24,7 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable
 object SpellCasterCapability {
     val NAME = ResourceLocation(Reference.MOD_ID, "spell_caster")
 
-    fun isCapable(stack: ItemStack): SpellCaster? = stack.getCapability(Provider.CAPABILITY, null)
+    fun isCapable(thing: ICapabilityProvider): SpellCaster? = thing.getCapability(Provider.CAPABILITY, null)
 
     class Implementation : SpellCaster {
         private val castSpellMap = hashMapOf<Spell, Int>()
