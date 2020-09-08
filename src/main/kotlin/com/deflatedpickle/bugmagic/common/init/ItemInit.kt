@@ -15,5 +15,5 @@ object ItemInit {
     val BUG = GenericItem("bug", CreativeTabs.MISC)
 
     @JvmField
-    val BASIC_WAND = Wand("basic_wand")
+    val BASIC_WAND = Wand("basic_wand", 32)
 }

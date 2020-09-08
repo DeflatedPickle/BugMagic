@@ -26,7 +26,7 @@ class MessageEntityTasks(
     operator fun component3() = this.executingTaskEntries
 
     override fun toBytes(buf: ByteBuf) {
-        ByteBufUtils.writeVarInt(buf, this.entityID, 3)
+        ByteBufUtils.writeVarInt(buf, this.entityID, 4)
 
         buf.writeInt(this.taskEntries.size)
         for (i in this.taskEntries.iterator()) {
@@ -40,7 +40,7 @@ class MessageEntityTasks(
     }
 
     override fun fromBytes(buf: ByteBuf) {
-        this.entityID = ByteBufUtils.readVarInt(buf, 3)
+        this.entityID = ByteBufUtils.readVarInt(buf, 4)
 
         val entrySet = mutableSetOf<AITaskString>()
         val entryLength = buf.readInt()

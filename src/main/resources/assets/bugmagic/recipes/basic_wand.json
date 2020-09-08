@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  b",
+    " s ",
+    "s  "
+  ],
+  "key": {
+    "b": {
+      "item": "bugmagic:bug",
+      "data": 0
+    },
+    "s": {
+      "item": "minecraft:stick",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "bugmagic:basic_wand",
+    "count": 1,
+    "data": 0
+  }
+}

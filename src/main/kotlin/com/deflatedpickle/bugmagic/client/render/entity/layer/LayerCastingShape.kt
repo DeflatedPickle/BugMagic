@@ -35,6 +35,8 @@ class LayerCastingShape : LayerRenderer<EntityLivingBase> {
             val spellCaster = SpellCasterCapability.isCapable(entitylivingbaseIn.heldItemMainhand)
 
             if (spellLearner != null && spellCaster != null && spellCaster.isCasting) {
+				if (spellLearner.spellList.isEmpty()) return
+
                 with(spellLearner.spellList[spellLearner.currentIndex]) {
                     GlStateManager.pushMatrix()
                     GlStateManager.enableBlend()

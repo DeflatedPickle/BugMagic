@@ -29,7 +29,8 @@ object CapabilityEventHandler {
     @JvmStatic
     fun onAttachCapabilitiesEventItemStack(event: AttachCapabilitiesEvent<ItemStack>) {
         if (event.`object`.item is Wand) {
-            event.addCapability(SpellCasterCapability.NAME, SpellCasterCapability.Provider())
+			event.addCapability(SpellCasterCapability.NAME, SpellCasterCapability.Provider())
+			event.addCapability(BugEssenceCapability.NAME, BugEssenceCapability.Provider())
         }
     }
 }
