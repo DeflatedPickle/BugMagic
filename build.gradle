@@ -5,9 +5,9 @@ buildscript {
     }
 
     dependencies {
-        classpath(group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true) {
-            exclude group: 'trove', module: 'trove'
-        }
+        // I did update to FG3, but resource loading is broken
+        // The Forge team doesn't want to fix it, so I have to switch back1
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.diffplug.spotless:spotless-plugin-gradle:$spotless_version"
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokka_version"
@@ -17,7 +17,7 @@ buildscript {
 apply plugin: 'kotlin'
 apply plugin: "com.diffplug.gradle.spotless"
 apply plugin: 'org.jetbrains.dokka'
-apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'net.minecraftforge.gradle.forge'
 
 // Versions follow this format: MCVERSION-MAJORMOD.MAJORAPI.MINOR.PATCH.
 version = "${minecraft_version()}-$mod_version"
@@ -30,66 +30,71 @@ compileJava {
 }
 
 minecraft {
-    mappings channel: "$snapshot_channel", version: "$snapshot_version-${minecraft_version_short()}"
+    version = "${minecraft_version()}-$forge_version"
+    runDir = "run"
 
-    accessTransformer = file('src/main/resources/META-INF/bugmagic_at.cfg')
-
-    runs {
-        client {
-            //noinspection GroovyAssignabilityCheck
-            workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'debug'
-        }
-
-        server {
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'debug'
-        }
-    }
-}
-
-repositories {
-    jcenter()
-    maven { url = "http://maven.shadowfacts.net/" }
-    maven {
-        name = "CurseForge"
-        url = "https://minecraft.curseforge.com/api/maven/"
-    }
-    maven { url = 'https://repo.elytradev.com/' }
-    maven { url = "https://maven.mcmoddev.com/" }
-    mavenCentral()
-}
-
-dependencies {
-    minecraft "net.minecraftforge:forge:${minecraft_version()}-$forge_version"
-
-    implementation "net.shadowfacts:Forgelin:$forgelin_version"
-    implementation "picklelib:picklelib:${minecraft_version()}:$picklelib_version"
-    implementation "modelloader:modelloader:$modelloader_version"
-    // implementation 'com.elytradev:mirage:2.0.3-rc3-SNAPSHOT'
-    // implementation "net.ilexiconn:llibrary:1.7.19-1.12.2:dev"
-    // implementation "guide-api:Guide-API-1.12:2.1.6:61"
-    implementation "glasspane:glasspane:${minecraft_version()}:$glasspane_version"
-    // implementation "ctm:CTM:MC1.12.2:0.3.3.22"
+    mappings = "${mappings_channel}_$mappings_version"
 }
 
 jar {
     manifest {
-        attributes([
-                "Specification-Title"     : "$mod_id",
-                "Specification-Vendor"    : "$developer",
-                "Specification-Version"   : "$mod_version",
-                "Implementation-Title"    : project.name,
-                "Implementation-Version"  : "${version}",
-                "Implementation-Vendor"   : "$developer",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-        ])
+        attributes 'FMLAT': 'bugmagic_at.cfg'
     }
 }
 
-jar.finalizedBy('reobfJar')
+processResources {
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+
+    rename '(.+_at.cfg)', 'META-INF/$1'
+}
+
+repositories {
+    jcenter()
+    maven {
+        name = "ShadowFacts"
+        url = "http://maven.shadowfacts.net/"
+    }
+    maven {
+        name = "CurseForge"
+        url = "https://minecraft.curseforge.com/api/maven/"
+    }
+    maven {
+        name = "ElytraDev"
+        url = 'https://repo.elytradev.com/'
+    }
+    maven {
+        name = "MCModDev"
+        url = "https://maven.mcmoddev.com/"
+    }
+    mavenCentral()
+}
+
+dependencies {
+    // BugMagic is written mostly in Kotlin, using objects
+    // For this we require a different loader
+    implementation "net.shadowfacts:Forgelin:$forgelin_version"
+    // I occasionally move util from my mods to PickleLib to use from other mods
+    implementation "picklelib:picklelib:${minecraft_version()}:$picklelib_version"
+    // I want a nice editor for my entity models, this format has a nice editor
+    implementation "modelloader:modelloader:$modelloader_version"
+    // GlassPane provides a way to automatically register things
+    // We can probably stop using this at some point, if nothing else from GlassPane is used
+    implementation "glasspane:glasspane:${minecraft_version()}:$glasspane_version"
+
+    // implementation 'com.elytradev:mirage:2.0.3-rc3-SNAPSHOT'
+    // implementation "ctm:CTM:MC1.12.2:0.3.3.22"
+}
 
 compileKotlin {
     kotlinOptions {
