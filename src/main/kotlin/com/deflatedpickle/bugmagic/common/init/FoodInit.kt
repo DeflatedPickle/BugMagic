@@ -9,21 +9,22 @@ import net.minecraft.potion.PotionEffect
 
 @AutoRegistry(Reference.MOD_ID)
 object FoodInit {
-    // Made by smelting a bug bundle
-    @JvmField
-    val PETRIFIED_BUG_BUNDLE = GenericFood(
-            name = "petrified_bug_bundle",
-            healAmount = 1,
-            saturation = 0.1f,
-            alwaysEdible = true,
-            potionEffect = PotionEffect(PotionInit.BUG_ESSENCE_REGENERATION, 900),
-            creativeEdible = true
-    )
+	// Made by smelting a bug bundle
+	@JvmField
+	val PETRIFIED_BUG_BUNDLE = GenericFood(
+		name = "petrified_bug_bundle",
+		healAmount = 1,
+		saturation = 0.1f,
+		alwaysEdible = true,
+		potionEffect = PotionEffect(PotionInit.BUG_ESSENCE_REGENERATION, 900),
+		creativeEdible = true
+	)
 
-    @JvmField
-    val JELLY_BUG = GenericFood(
-            name = "jelly_bug",
-            healAmount = 3,
-            saturation = 2f
-    )
+	@JvmField
+	val JELLY_BUG = GenericFood(
+		name = "jelly_bug",
+		healAmount = 3,
+		saturation = 2f,
+		tooltip = listOf("It seems like it's been microwaved...")
+	)
 }

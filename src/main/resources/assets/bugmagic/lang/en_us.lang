@@ -1,2 +1,15 @@
-# Wands
+# Items
+item.bug.name=Bug
+item.petrified_bug_bundle.name=Petrified Bug
+item.jelly_bug.name=Gelbagu
+## Wands
 item.basic_wand.name=Wand of the Bugoneer
+
+# Enchantments
+enchantment.bloodleak=Bloodleak
+
+# Blocks
+tile.spell_table.name=Spell Table
+
+# Fluid
+fluid.bug_essence=Bug Essence

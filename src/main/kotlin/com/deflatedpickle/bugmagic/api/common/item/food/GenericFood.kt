@@ -2,6 +2,7 @@
 
 package com.deflatedpickle.bugmagic.api.common.item.food
 
+import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemFood
@@ -26,7 +27,8 @@ class GenericFood(
     alwaysEdible: Boolean = false,
     potionEffect: PotionEffect? = null,
     potionEffectProbability: Float = 1.0f,
-    val creativeEdible: Boolean = false
+    val creativeEdible: Boolean = false,
+	val tooltip: Collection<String> = listOf()
 ) :
     ItemFood(healAmount, saturation, isWolfFood) {
     init {
@@ -58,4 +60,13 @@ class GenericFood(
             super.onItemRightClick(worldIn, playerIn, handIn)
         }
     }
+
+	override fun addInformation(
+		stack: ItemStack,
+		worldIn: World?,
+		tooltip: MutableList<String>,
+		flagIn: ITooltipFlag
+	) {
+		tooltip.addAll(this.tooltip)
+	}
 }
