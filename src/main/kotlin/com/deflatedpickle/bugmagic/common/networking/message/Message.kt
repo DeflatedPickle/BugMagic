@@ -8,4 +8,5 @@ enum class Message {
     SPELL_CASTER,
     ENTITY_TASKS,
     SPELL_CHANGE,
+	CHUNK_ESSENCE,
 }
