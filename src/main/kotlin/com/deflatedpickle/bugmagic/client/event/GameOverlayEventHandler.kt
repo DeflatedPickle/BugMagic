@@ -49,6 +49,7 @@ object GameOverlayEventHandler {
 		// TODO: Add a spell book to replace debug text
 		this.renderPlayerSpellList(player, y)
 
+		// We have to do this or Minecraft's GUI breaks down
 		Minecraft.getMinecraft().textureManager.bindTexture(Gui.ICONS)
 	}
 
@@ -101,13 +102,13 @@ object GameOverlayEventHandler {
 	}
 
 	private fun renderChunkBugEssence(chunk: Chunk, y: Float) {
-		if (chunk.hasCapability(BugEssenceCapability.Provider.CAPABILITY, null)) {
-			chunk.getCapability(BugEssenceCapability.Provider.CAPABILITY, null).also {
-				Minecraft.getMinecraft().fontRenderer.drawString(
-					"${TextFormatting.WHITE}Chunk Bug Essence: ${it!!.current}/${it.max}",
-					2f, y, 0, true
-				)
-			}
+		val bugEssence = BugEssenceCapability.isCapable(chunk)
+
+		if (bugEssence != null) {
+			Minecraft.getMinecraft().fontRenderer.drawString(
+				"${TextFormatting.WHITE}Chunk Bug Essence: ${bugEssence.current}/${bugEssence.max}",
+				2f, y, 0, true
+			)
 		}
 	}
 }

@@ -6,9 +6,9 @@ import com.deflatedpickle.bugmagic.common.capability.BugEssenceCapability
 import com.deflatedpickle.bugmagic.common.networking.message.MessageChunkBugEssence
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.util.math.BlockPos
-import net.minecraft.world.biome.Biome
-import net.minecraft.world.biome.BiomePlains
+import net.minecraft.world.biome.*
 import net.minecraftforge.event.world.ChunkEvent
+import net.minecraftforge.event.world.ChunkWatchEvent
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 
@@ -16,44 +16,65 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID)
 object ChunkBugEssenceEventHandler {
 	@SubscribeEvent
-	fun onChunkLoadEvent(event: ChunkEvent.Load) {
-		val chunk = event.chunk
-
-		@Suppress("SpellCheckingInspection")
-		val biomeList = arrayListOf<Biome>()
-
-		/*for (x in 0..16) {
-			for (z in 0..16) {
-				@Suppress("SpellCheckingInspection")
-				val tempBiome = chunk.getBiome(
-					BlockPos(x, z, 0),
-					event.`object`.world.biomeProvider
-				).biomeClass.kotlin.objectInstance
-
-				if (tempBiome!= null && !biomeList.contains(tempBiome)) {
-					biomeList.add(tempBiome)
-				}
-			}
-		}*/
+	fun onChunkWatchEvent(event: ChunkWatchEvent) {
+		val chunk = event.chunkInstance ?: return
 
 		val bugEssence = BugEssenceCapability.isCapable(chunk)
 
 		if (bugEssence != null) {
 			@Suppress("SpellCheckingInspection")
-			/*for (biome in biomeList) {
+			var max = 0
+			var current = 0
+
+			for (biomeID in chunk.biomeArray.toSet()) {
+				val biome = Biome.REGISTRY.getObjectById(biomeID.toInt())
+
 				when (biome) {
-					else -> {
+					is BiomeMushroomIsland -> {
+						max += 3000
+						current += 2000
+					}
+					is BiomeSwamp -> {
+						max += 1600
+						current += 1000
+					}
+					is BiomePlains -> {
+						max += 1000
+						current += 200
+					}
+					is BiomeForest -> {
+						max += 800
+						current += 140
+					}
+					is BiomeJungle -> {
+						max += 600
+						current += 140
+					}
+					is BiomeSavanna, is BiomeTaiga -> {
+						max += 400
+						current += 60
+					}
+					is BiomeDesert, is BiomeMesa,
+					is BiomeHills -> {
+						max += 200
+						current += 24
+					}
+					is BiomeRiver, is BiomeBeach,
+					is BiomeOcean, is BiomeSnow,
+					is BiomeStoneBeach -> {
+						max += 100
+						current += 8
 					}
 				}
-			}*/
+			}
 
-			bugEssence.max = 500
-			bugEssence.current = 200
+			bugEssence.max = max
+			bugEssence.current = current
 
-			for (player in event.world.playerEntities) {
+			for (player in chunk.world.playerEntities) {
 				BugMagic.CHANNEL.sendTo(
 					MessageChunkBugEssence(
-						BlockPos(chunk.x, chunk.z, 0),
+						player.position,
 						bugEssence.max,
 						bugEssence.current
 					), player as EntityPlayerMP
