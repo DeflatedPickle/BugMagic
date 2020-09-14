@@ -4,7 +4,7 @@ package com.deflatedpickle.bugmagic.common.potion
 
 import com.deflatedpickle.bugmagic.BugMagic
 import com.deflatedpickle.bugmagic.common.capability.BugEssenceCapability
-import com.deflatedpickle.bugmagic.common.networking.message.MessageBugEssence
+import com.deflatedpickle.bugmagic.common.networking.message.MessagePlayerBugEssence
 import kotlin.math.min
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayerMP
@@ -26,7 +26,7 @@ class BugEssenceRegenerationPotionEffect : Potion(false, 0xBBFF70) {
                 with(entityLivingBaseIn.getCapability(BugEssenceCapability.Provider.CAPABILITY, null)!!) {
                     this.current = min(this.current + 1, this.max)
 
-                    BugMagic.CHANNEL.sendTo(MessageBugEssence(entityLivingBaseIn.entityId, this.max, this.current), entityLivingBaseIn as EntityPlayerMP)
+                    BugMagic.CHANNEL.sendTo(MessagePlayerBugEssence(entityLivingBaseIn.entityId, this.max, this.current), entityLivingBaseIn as EntityPlayerMP)
                 }
             }
         }

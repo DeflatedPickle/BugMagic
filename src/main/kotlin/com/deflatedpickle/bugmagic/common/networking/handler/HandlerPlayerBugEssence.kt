@@ -3,7 +3,7 @@
 package com.deflatedpickle.bugmagic.common.networking.handler
 
 import com.deflatedpickle.bugmagic.common.capability.BugEssenceCapability
-import com.deflatedpickle.bugmagic.common.networking.message.MessageBugEssence
+import com.deflatedpickle.bugmagic.common.networking.message.MessagePlayerBugEssence
 import net.minecraft.client.Minecraft
 import net.minecraft.entity.EntityLivingBase
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage
@@ -11,10 +11,10 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext
 
 /**
- * The handler for [MessageBugEssence] packets
+ * The handler for [MessagePlayerBugEssence] packets
  */
-class HandlerBugEssence : IMessageHandler<MessageBugEssence, IMessage> {
-    override fun onMessage(message: MessageBugEssence, ctx: MessageContext): IMessage? {
+class HandlerPlayerBugEssence : IMessageHandler<MessagePlayerBugEssence, IMessage> {
+    override fun onMessage(message: MessagePlayerBugEssence, ctx: MessageContext): IMessage? {
         val (entityID, max, current) = message
 
         if (entityID != -1) {

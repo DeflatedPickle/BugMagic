@@ -6,7 +6,7 @@ import com.deflatedpickle.bugmagic.BugMagic
 import com.deflatedpickle.bugmagic.Reference
 import com.deflatedpickle.bugmagic.common.capability.BugEssenceCapability
 import com.deflatedpickle.bugmagic.common.capability.SpellLearnerCapability
-import com.deflatedpickle.bugmagic.common.networking.message.MessageBugEssence
+import com.deflatedpickle.bugmagic.common.networking.message.MessagePlayerBugEssence
 import com.deflatedpickle.bugmagic.common.networking.message.MessageSpellChange
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraftforge.fml.common.Mod
@@ -26,7 +26,7 @@ object PlayerEventHandler {
 				bugEssence.current = 64
 
 				BugMagic.CHANNEL.sendTo(
-					MessageBugEssence(
+					MessagePlayerBugEssence(
 						event.player.entityId,
 						bugEssence.max,
 						bugEssence.current),

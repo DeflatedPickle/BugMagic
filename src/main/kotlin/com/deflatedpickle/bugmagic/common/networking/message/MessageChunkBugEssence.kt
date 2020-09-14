@@ -2,35 +2,38 @@
 
 package com.deflatedpickle.bugmagic.common.networking.message
 
-import com.deflatedpickle.bugmagic.common.networking.handler.HandlerBugEssence
+import com.deflatedpickle.bugmagic.common.networking.handler.HandlerPlayerBugEssence
 import io.netty.buffer.ByteBuf
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.nbt.NBTUtil
+import net.minecraft.util.math.BlockPos
 import net.minecraftforge.fml.common.network.ByteBufUtils
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage
 
 /**
  * A packet that contains; an entity ID, the maximum amount of bug essence they can have and their current bug essence.
- * @see [HandlerBugEssence]
+ * @see [HandlerPlayerBugEssence]
  */
-class MessageBugEssence(
-    private var entityID: Int = 1,
+class MessageChunkBugEssence(
+    private var blockPos: BlockPos? = null,
     private var max: Int = -1,
     private var current: Int = -1
 ) : IMessage {
     @Suppress("unused")
-    constructor() : this(entityID = 1, max = -1, current = -1)
+    constructor() : this(blockPos = null, max = -1, current = -1)
 
-    operator fun component1() = this.entityID
+    operator fun component1() = this.blockPos
     operator fun component2() = this.max
     operator fun component3() = this.current
 
     override fun toBytes(buf: ByteBuf) {
-        ByteBufUtils.writeVarInt(buf, this.entityID, 5)
+		buf.writeLong(this.blockPos!!.toLong())
         buf.writeInt(this.max)
         buf.writeInt(this.current)
     }
 
     override fun fromBytes(buf: ByteBuf) {
-        this.entityID = ByteBufUtils.readVarInt(buf, 5)
+        this.blockPos = BlockPos.fromLong(buf.readLong())
         this.max = buf.readInt()
         this.current = buf.readInt()
     }

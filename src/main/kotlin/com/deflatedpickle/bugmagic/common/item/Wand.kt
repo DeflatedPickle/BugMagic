@@ -15,7 +15,7 @@ import com.deflatedpickle.bugmagic.common.capability.BugEssenceCapability
 import com.deflatedpickle.bugmagic.common.capability.SpellCasterCapability
 import com.deflatedpickle.bugmagic.common.capability.SpellLearnerCapability
 import com.deflatedpickle.bugmagic.common.init.EnchantmentInit
-import com.deflatedpickle.bugmagic.common.networking.message.MessageBugEssence
+import com.deflatedpickle.bugmagic.common.networking.message.MessagePlayerBugEssence
 import com.deflatedpickle.bugmagic.common.networking.message.MessageSpellCaster
 import net.minecraft.client.Minecraft
 import net.minecraft.client.util.ITooltipFlag
@@ -89,7 +89,7 @@ class Wand(
 								bugEssence.current = bugEssence.max
 							}
 							BugMagic.CHANNEL.sendTo(
-								MessageBugEssence(
+								MessagePlayerBugEssence(
 									entityLiving.entityId,
 									bugEssence.max,
 									bugEssence.current
@@ -166,7 +166,7 @@ class Wand(
 								entityBugEssence.current -= manaCost
 								// Entities don't automatically sync
 								BugMagic.CHANNEL.sendTo(
-									MessageBugEssence(
+									MessagePlayerBugEssence(
 										entityLiving.entityId,
 										entityBugEssence.max,
 										entityBugEssence.current
