@@ -22,14 +22,15 @@ object ChunkBugEssenceEventHandler {
 		val bugEssence = BugEssenceCapability.isCapable(chunk)
 
 		if (bugEssence != null) {
-			@Suppress("SpellCheckingInspection")
+			// This chunk has already been given values, ditch it
+			if (bugEssence.max > 0 || bugEssence.current > 0) return
+
 			var max = 0
 			var current = 0
 
+			@Suppress("SpellCheckingInspection")
 			for (biomeID in chunk.biomeArray.toSet()) {
-				val biome = Biome.REGISTRY.getObjectById(biomeID.toInt())
-
-				when (biome) {
+				when (Biome.REGISTRY.getObjectById(biomeID.toInt())) {
 					is BiomeMushroomIsland -> {
 						max += 3000
 						current += 2000
