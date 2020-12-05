@@ -5,11 +5,10 @@ package com.deflatedpickle.bugmagic.api.spell;
 import com.deflatedpickle.bugmagic.Reference;
 import com.deflatedpickle.bugmagic.api.common.spell.SpellIngredient;
 import com.deflatedpickle.bugmagic.common.init.FluidInit;
+import java.util.List;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 /**
  * A recipe for a {@link Spell}
@@ -33,12 +32,13 @@ public abstract class SpellRecipe extends IForgeRegistryEntry.Impl<SpellRecipe> 
     return null;
   }
 
-	/**
-	 * The kind of fluid required to craft this recipe
-	 * @return The fluid instance
-	 */
-	public String getFluidType() {
-  	return FluidInit.INSTANCE.getBUG_ESSENCE().getUnlocalizedName();
+  /**
+   * The kind of fluid required to craft this recipe
+   *
+   * @return The fluid instance
+   */
+  public String getFluidType() {
+    return FluidInit.INSTANCE.getBUG_ESSENCE().getUnlocalizedName();
   }
 
   /**
@@ -50,13 +50,14 @@ public abstract class SpellRecipe extends IForgeRegistryEntry.Impl<SpellRecipe> 
     return 200;
   }
 
-	/**
-	 * The amount of ink needed to write this recipe
-	 * @return The amount of ink
-	 */
-	public float getInkAmount() {
-  	return 1f / (Spell.Tier.values().length - this.getSpell().getTier().ordinal());
-	}
+  /**
+   * The amount of ink needed to write this recipe
+   *
+   * @return The amount of ink
+   */
+  public float getInkAmount() {
+    return 1f / (Spell.Tier.values().length - this.getSpell().getTier().ordinal());
+  }
 
   /**
    * The amount of times the block must be clicked

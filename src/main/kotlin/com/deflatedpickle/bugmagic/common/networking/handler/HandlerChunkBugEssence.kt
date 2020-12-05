@@ -4,9 +4,7 @@ package com.deflatedpickle.bugmagic.common.networking.handler
 
 import com.deflatedpickle.bugmagic.common.capability.BugEssenceCapability
 import com.deflatedpickle.bugmagic.common.networking.message.MessageChunkBugEssence
-import com.deflatedpickle.bugmagic.common.networking.message.MessagePlayerBugEssence
 import net.minecraft.client.Minecraft
-import net.minecraft.entity.EntityLivingBase
 import net.minecraft.world.chunk.EmptyChunk
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler
@@ -23,14 +21,14 @@ class HandlerChunkBugEssence : IMessageHandler<MessageChunkBugEssence, IMessage>
             Minecraft.getMinecraft().addScheduledTask {
                 val chunk = Minecraft.getMinecraft().world.getChunk(blockPos)
 
-				if (chunk !is EmptyChunk) {
-					val bugEssence = BugEssenceCapability.isCapable(chunk)
+                if (chunk !is EmptyChunk) {
+                    val bugEssence = BugEssenceCapability.isCapable(chunk)
 
-					if (bugEssence != null) {
-						bugEssence.max = max
-						bugEssence.current = current
-					}
-				}
+                    if (bugEssence != null) {
+                        bugEssence.max = max
+                        bugEssence.current = current
+                    }
+                }
             }
         }
 

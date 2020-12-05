@@ -20,7 +20,7 @@ import net.minecraft.world.World
  */
 class GenericFood(
     name: String,
-	creativeTab: CreativeTabs? = CreativeTabs.FOOD,
+    creativeTab: CreativeTabs? = CreativeTabs.FOOD,
     private val useDuration: Int = 32,
     healAmount: Int,
     saturation: Float,
@@ -29,7 +29,7 @@ class GenericFood(
     potionEffect: PotionEffect? = null,
     potionEffectProbability: Float = 1.0f,
     val creativeEdible: Boolean = false,
-	val tooltip: Collection<String> = listOf()
+    val tooltip: Collection<String> = listOf()
 ) :
     ItemFood(healAmount, saturation, isWolfFood) {
     init {
@@ -62,12 +62,12 @@ class GenericFood(
         }
     }
 
-	override fun addInformation(
-		stack: ItemStack,
-		worldIn: World?,
-		tooltip: MutableList<String>,
-		flagIn: ITooltipFlag
-	) {
-		tooltip.addAll(this.tooltip)
-	}
+    override fun addInformation(
+        stack: ItemStack,
+        worldIn: World?,
+        tooltip: MutableList<String>,
+        flagIn: ITooltipFlag
+    ) {
+        tooltip.addAll(this.tooltip)
+    }
 }

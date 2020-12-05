@@ -24,16 +24,16 @@ fun ItemStack.render(world: World) {
  * Renders an [ItemStack] at an [EntityCastable]
  */
 fun ItemStack.drawItem(
-	entity: Entity,
-	x: Float = 0f,
-	y: Float = 0f,
-	z: Float = 0f
+    entity: Entity,
+    x: Float = 0f,
+    y: Float = 0f,
+    z: Float = 0f
 ) {
-	GlStateManager.pushMatrix()
+    GlStateManager.pushMatrix()
 
-	GlStateManager.translate(x, y, z)
+    GlStateManager.translate(x, y, z)
 
-	this.render(entity.world)
+    this.render(entity.world)
 
-	GlStateManager.popMatrix()
+    GlStateManager.popMatrix()
 }

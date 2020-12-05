@@ -45,7 +45,7 @@ abstract class RenderCastable<T : EntityCastable>(
             GlStateManager.popMatrix()
         }
 
-		// Draw a line from the owner to this entity
+        // Draw a line from the owner to this entity
         if (entity.owner?.heldItemMainhand?.item is Wand) {
             this.tessellator.drawLine(
                     entity.owner!!.positionVector,
@@ -76,17 +76,17 @@ abstract class RenderCastable<T : EntityCastable>(
 
         GlStateManager.popMatrix()
 
-		// Draw a line to the home position
-		GlStateManager.pushMatrix()
-		GlStateManager.translate(x, y, z)
-		if (entity.owner?.heldItemMainhand?.item is Wand) {
-			this.tessellator.drawLine(
-				entity,
-				entity.dataManager.get(EntityCastable.dataHomePosition),
-				ReadableColor.RED
-			)
-		}
-		GlStateManager.popMatrix()
+        // Draw a line to the home position
+        GlStateManager.pushMatrix()
+        GlStateManager.translate(x, y, z)
+        if (entity.owner?.heldItemMainhand?.item is Wand) {
+            this.tessellator.drawLine(
+                entity,
+                entity.dataManager.get(EntityCastable.dataHomePosition),
+                ReadableColor.RED
+            )
+        }
+        GlStateManager.popMatrix()
     }
 
     /**
@@ -105,11 +105,11 @@ abstract class RenderCastable<T : EntityCastable>(
         GlStateManager.popMatrix()
     }
 
-	private fun prepareTaskString(tasks: Set<AITaskString>): String =
-		tasks.sortedBy { it.priority }.map {
-			"${it.priority}. ${it.action} (${it.using})"
-		}.toString()
-			.replace("[", "")
-			.replace("]", "")
-			.replace(",", "\n")
+    private fun prepareTaskString(tasks: Set<AITaskString>): String =
+        tasks.sortedBy { it.priority }.map {
+            "${it.priority}. ${it.action} (${it.using})"
+        }.toString()
+            .replace("[", "")
+            .replace("]", "")
+            .replace(",", "\n")
 }

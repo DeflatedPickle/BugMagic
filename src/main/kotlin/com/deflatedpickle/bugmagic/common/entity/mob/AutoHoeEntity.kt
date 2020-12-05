@@ -11,9 +11,6 @@ import com.deflatedpickle.bugmagic.common.spell.AutoHoeSpell
 import net.minecraft.entity.EntityLiving
 import net.minecraft.init.Blocks
 import net.minecraft.inventory.IInventory
-import net.minecraft.network.datasync.DataParameter
-import net.minecraft.network.datasync.DataSerializers
-import net.minecraft.network.datasync.EntityDataManager
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3i

@@ -11,9 +11,10 @@ import net.minecraft.client.renderer.RenderHelper
  * Draws a series of strings, split at newlines, that face the player
  */
 fun FontRenderer.drawNameTag(
-	string: String,
-	x: Int, y: Int,
-	colour: Int = 0xFFFFFF
+    string: String,
+    x: Int,
+    y: Int,
+    colour: Int = 0xFFFFFF
 ) {
     RenderHelper.disableStandardItemLighting()
 
@@ -39,44 +40,47 @@ fun FontRenderer.drawNameTag(
  * Draws a series of strings that face the player
  */
 fun FontRenderer.drawNameTag(
-	x: Int, y: Int,
-	colour: Int = 0xFFFFFF,
-	vararg string: String
+    x: Int,
+    y: Int,
+    colour: Int = 0xFFFFFF,
+    vararg string: String
 ) = this.drawNameTag(string.joinToString("\n"), x, y, colour)
 
 /**
  * Draws a flat string with culling disabled
  */
 fun FontRenderer.drawStillNameTag(
-	string: String,
-	x: Int, y: Int,
-	colour: Int = 0xFFFFFF
+    string: String,
+    x: Int,
+    y: Int,
+    colour: Int = 0xFFFFFF
 ) {
-	RenderHelper.disableStandardItemLighting()
+    RenderHelper.disableStandardItemLighting()
 
-	GlStateManager.disableCull()
-	GlStateManager.pushMatrix()
+    GlStateManager.disableCull()
+    GlStateManager.pushMatrix()
 
-	GlStateManager.translate(0.0, 0.4, 0.0)
-	GlStateManager.scale(0.0075F, -0.0075F, 0.0075F)
+    GlStateManager.translate(0.0, 0.4, 0.0)
+    GlStateManager.scale(0.0075F, -0.0075F, 0.0075F)
 
-	val lines = string.split("\n")
+    val lines = string.split("\n")
 
-	for ((i, str) in lines.reversed().withIndex()) {
-		this.drawString(str, x - this.getStringWidth(str) / 2, y - i * (this.FONT_HEIGHT / 2) * lines.count(), colour)
-	}
+    for ((i, str) in lines.reversed().withIndex()) {
+        this.drawString(str, x - this.getStringWidth(str) / 2, y - i * (this.FONT_HEIGHT / 2) * lines.count(), colour)
+    }
 
-	GlStateManager.popMatrix()
-	GlStateManager.enableCull()
+    GlStateManager.popMatrix()
+    GlStateManager.enableCull()
 
-	RenderHelper.enableStandardItemLighting()
+    RenderHelper.enableStandardItemLighting()
 }
 
 /**
  * Draws a flat string with culling disabled
  */
 fun FontRenderer.drawStillNameTag(
-	x: Int, y: Int,
-	colour: Int = 0xFFFFFF,
-	vararg string: String
+    x: Int,
+    y: Int,
+    colour: Int = 0xFFFFFF,
+    vararg string: String
 ) = this.drawStillNameTag(string.joinToString("\n"), x, y, colour)

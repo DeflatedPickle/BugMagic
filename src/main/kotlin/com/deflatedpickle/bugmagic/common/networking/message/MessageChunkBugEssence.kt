@@ -24,7 +24,7 @@ class MessageChunkBugEssence(
     operator fun component3() = this.current
 
     override fun toBytes(buf: ByteBuf) {
-		buf.writeLong(this.blockPos!!.toLong())
+        buf.writeLong(this.blockPos!!.toLong())
         buf.writeInt(this.max)
         buf.writeInt(this.current)
     }

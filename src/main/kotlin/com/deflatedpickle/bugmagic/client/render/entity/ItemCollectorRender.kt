@@ -58,7 +58,7 @@ class ItemCollectorRender(renderManager: RenderManager) :
 
         GlStateManager.rotate(entityYaw, 0f, 1f, 0f)
 
-		entity.dataManager.get(ItemCollectorEntity.dataItemStack).drawItem(entity, y = 0.2f)
+        entity.dataManager.get(ItemCollectorEntity.dataItemStack).drawItem(entity, y = 0.2f)
 
         val time = (entity.ticksExisted and 0xFFFFFF).toDouble() + partialTicks
         models["Idle"]!!.render(time)

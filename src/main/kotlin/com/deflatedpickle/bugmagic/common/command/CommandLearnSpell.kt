@@ -1,3 +1,5 @@
+/* Copyright (c) 2020 DeflatedPickle under the MIT license */
+
 package com.deflatedpickle.bugmagic.common.command
 
 import com.deflatedpickle.bugmagic.BugMagic
@@ -13,59 +15,59 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.text.TextComponentString
 
 class CommandLearnSpell : CommandBase() {
-	val names = listOf("learnspell", "bmls")
+    val names = listOf("learnspell", "bmls")
 
-	override fun getName(): String = this.names[0]
-	override fun getUsage(p0: ICommandSender): String =
-		"${this.names[0]} (\"all\" | <spell name>)"
+    override fun getName(): String = this.names[0]
+    override fun getUsage(p0: ICommandSender): String =
+        "${this.names[0]} (\"all\" | <spell name>)"
 
-	override fun getAliases(): List<String> = this.names
+    override fun getAliases(): List<String> = this.names
 
-	override fun getTabCompletions(p0: MinecraftServer, p1: ICommandSender, p2: Array<String>, p3: BlockPos?): List<String> {
-		return when (p2.size) {
-			1 -> mutableListOf("all").apply {
-				addAll(
-					(SpellInit.registry.valuesCollection as Set<Spell>).map { it.registryName.toString() }
-				)
-			}
-			else -> listOf()
-		}
-	}
+    override fun getTabCompletions(p0: MinecraftServer, p1: ICommandSender, p2: Array<String>, p3: BlockPos?): List<String> {
+        return when (p2.size) {
+            1 -> mutableListOf("all").apply {
+                addAll(
+                    (SpellInit.registry.valuesCollection as Set<Spell>).map { it.registryName.toString() }
+                )
+            }
+            else -> listOf()
+        }
+    }
 
-	override fun getRequiredPermissionLevel(): Int = 3
+    override fun getRequiredPermissionLevel(): Int = 3
 
-	override fun execute(p0: MinecraftServer, p1: ICommandSender, p2: Array<String>) {
-		if (!p1.entityWorld.isRemote) {
-			if (p2.isEmpty()) {
-				p1.sendMessage(TextComponentString("Invalid argument length"))
-			} else {
-				if (p1 is EntityLivingBase) {
-					val spellLearner = SpellLearnerCapability.isCapable(p1)
+    override fun execute(p0: MinecraftServer, p1: ICommandSender, p2: Array<String>) {
+        if (!p1.entityWorld.isRemote) {
+            if (p2.isEmpty()) {
+                p1.sendMessage(TextComponentString("Invalid argument length"))
+            } else {
+                if (p1 is EntityLivingBase) {
+                    val spellLearner = SpellLearnerCapability.isCapable(p1)
 
-					if (spellLearner != null) {
-						when (p2[0]) {
-							"all" -> {
-								for (i in SpellInit.registry.valuesCollection) {
-									spellLearner.learnSpell(i)
-								}
-								BugMagic.CHANNEL.sendToAll(
-									MessageSpellChange(p1.entityId, spellLearner.spellList)
-								)
-							}
-							else -> {
-								for (i in SpellInit.registry.valuesCollection) {
-									if (p2[0] == i.registryName.toString()) {
-										spellLearner.learnSpell(i)
-									}
-								}
-								BugMagic.CHANNEL.sendToAll(
-									MessageSpellChange(p1.entityId, spellLearner.spellList)
-								)
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+                    if (spellLearner != null) {
+                        when (p2[0]) {
+                            "all" -> {
+                                for (i in SpellInit.registry.valuesCollection) {
+                                    spellLearner.learnSpell(i)
+                                }
+                                BugMagic.CHANNEL.sendToAll(
+                                    MessageSpellChange(p1.entityId, spellLearner.spellList)
+                                )
+                            }
+                            else -> {
+                                for (i in SpellInit.registry.valuesCollection) {
+                                    if (p2[0] == i.registryName.toString()) {
+                                        spellLearner.learnSpell(i)
+                                    }
+                                }
+                                BugMagic.CHANNEL.sendToAll(
+                                    MessageSpellChange(p1.entityId, spellLearner.spellList)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

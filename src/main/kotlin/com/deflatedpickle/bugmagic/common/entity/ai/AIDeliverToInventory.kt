@@ -22,10 +22,10 @@ import net.minecraftforge.items.ItemStackHandler
  */
 // TODO: Make this not dependent on ItemCollector
 class AIDeliverToInventory(
-	private val findItem: AIFindItem,
-	private val entityIn: EntityLiving,
-	private val itemParameter: DataParameter<ItemStack>,
-	private val inventoryParameter: DataParameter<BlockPos>
+    private val findItem: AIFindItem,
+    private val entityIn: EntityLiving,
+    private val itemParameter: DataParameter<ItemStack>,
+    private val inventoryParameter: DataParameter<BlockPos>
 ) : EntityAIBase() {
     override fun shouldExecute(): Boolean {
         val blockPos = this.entityIn.dataManager.get(this.inventoryParameter)
@@ -37,23 +37,23 @@ class AIDeliverToInventory(
     }
 
     override fun updateTask() {
-		val inventoryBlockPos = this.entityIn.dataManager.get(this.inventoryParameter)
-		val itemStack = this.entityIn.dataManager.get(this.itemParameter)
+        val inventoryBlockPos = this.entityIn.dataManager.get(this.inventoryParameter)
+        val itemStack = this.entityIn.dataManager.get(this.itemParameter)
 
         val tileEntity = this.entityIn.world.getTileEntity(inventoryBlockPos)
 
         if (tileEntity != null) {
             val itemHandler = tileEntity.getCapability(
-				CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null
-			)
+                CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null
+            )
 
             if (itemHandler is IItemHandlerModifiable) {
                 entityIn.dataManager.set(
-					this.itemParameter,
-					ItemHandlerHelper.insertItemStacked(
-						itemHandler, itemStack, false
-					)
-				)
+                    this.itemParameter,
+                    ItemHandlerHelper.insertItemStacked(
+                        itemHandler, itemStack, false
+                    )
+                )
             }
         }
     }

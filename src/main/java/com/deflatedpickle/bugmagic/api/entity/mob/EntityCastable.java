@@ -6,10 +6,8 @@ import com.deflatedpickle.bugmagic.BugMagic;
 import com.deflatedpickle.bugmagic.api.common.util.AITaskString;
 import com.deflatedpickle.bugmagic.api.common.util.extension.EntityAITaskEntryKt;
 import com.deflatedpickle.bugmagic.common.networking.message.MessageEntityTasks;
-
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,70 +26,68 @@ import org.jetbrains.annotations.Nullable;
  * @author DeflatedPickle
  */
 public class EntityCastable extends EntityTameable {
-	public Set<AITaskString> clientTasks;
-	public Set<AITaskString> clientExecutingTasks;
+  public Set<AITaskString> clientTasks;
+  public Set<AITaskString> clientExecutingTasks;
 
-	public static DataParameter<BlockPos> dataHomePosition = EntityDataManager.createKey(
-		EntityCastable.class,
-		DataSerializers.BLOCK_POS
-	);
+  public static DataParameter<BlockPos> dataHomePosition =
+      EntityDataManager.createKey(EntityCastable.class, DataSerializers.BLOCK_POS);
 
-	public EntityCastable(World worldIn) {
-		super(worldIn);
+  public EntityCastable(World worldIn) {
+    super(worldIn);
 
-		this.isImmuneToFire = true;
+    this.isImmuneToFire = true;
 
-		this.enablePersistence();
-	}
+    this.enablePersistence();
+  }
 
-	@Override
-	protected void entityInit() {
-		super.entityInit();
+  @Override
+  protected void entityInit() {
+    super.entityInit();
 
-		this.dataManager.register(dataHomePosition, BlockPos.ORIGIN);
-	}
+    this.dataManager.register(dataHomePosition, BlockPos.ORIGIN);
+  }
 
-	@Override
-	public boolean isImmuneToExplosions() {
-		return true;
-	}
+  @Override
+  public boolean isImmuneToExplosions() {
+    return true;
+  }
 
-	@Override
-	public boolean isBreedingItem(ItemStack stack) {
-		return false;
-	}
+  @Override
+  public boolean isBreedingItem(ItemStack stack) {
+    return false;
+  }
 
-	@Override
-	public boolean canBeLeashedTo(EntityPlayer player) {
-		return false;
-	}
+  @Override
+  public boolean canBeLeashedTo(EntityPlayer player) {
+    return false;
+  }
 
-	@Override
-	protected boolean canDespawn() {
-		return false;
-	}
+  @Override
+  protected boolean canDespawn() {
+    return false;
+  }
 
-	@Nullable
-	@Override
-	public EntityAgeable createChild(@NotNull EntityAgeable ageable) {
-		return null;
-	}
+  @Nullable
+  @Override
+  public EntityAgeable createChild(@NotNull EntityAgeable ageable) {
+    return null;
+  }
 
-	@Override
-	protected void updateAITasks() {
-		super.updateAITasks();
+  @Override
+  protected void updateAITasks() {
+    super.updateAITasks();
 
-		// Send a packet to notify the client of AI tasks
-		BugMagic.INSTANCE
-			.getCHANNEL()
-			.sendToAll(
-				new MessageEntityTasks(
-					this.getEntityId(),
-					this.tasks.taskEntries.stream()
-						.map(EntityAITaskEntryKt::toTaskString)
-						.collect(Collectors.toSet()),
-					this.tasks.executingTaskEntries.stream()
-						.map(EntityAITaskEntryKt::toTaskString)
-						.collect(Collectors.toSet())));
-	}
+    // Send a packet to notify the client of AI tasks
+    BugMagic.INSTANCE
+        .getCHANNEL()
+        .sendToAll(
+            new MessageEntityTasks(
+                this.getEntityId(),
+                this.tasks.taskEntries.stream()
+                    .map(EntityAITaskEntryKt::toTaskString)
+                    .collect(Collectors.toSet()),
+                this.tasks.executingTaskEntries.stream()
+                    .map(EntityAITaskEntryKt::toTaskString)
+                    .collect(Collectors.toSet())));
+  }
 }

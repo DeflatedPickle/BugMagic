@@ -18,7 +18,7 @@ object BlockInit {
 
     @JvmField
     val BUG_ESSENCE = BlockFluidFinite(
-		FluidInit.BUG_ESSENCE,
-		MaterialInit.BUG_ESSENCE
-	)
+        FluidInit.BUG_ESSENCE,
+        MaterialInit.BUG_ESSENCE
+    )
 }

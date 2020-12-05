@@ -19,7 +19,6 @@ import net.minecraft.network.datasync.DataParameter
 import net.minecraft.network.datasync.DataSerializers
 import net.minecraft.network.datasync.EntityDataManager
 import net.minecraft.util.EnumHand
-import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
 /**
@@ -70,11 +69,11 @@ class ItemCollectorEntity(worldIn: World) : EntityCastable(worldIn) {
         this.tasks.addTask(1, AICollectItem(findItem, this))
         this.tasks.addTask(2, AIWalkToBlockPos(this, { !this.dataManager.get(dataItemStack).isEmpty }, { this.dataManager.get(dataHomePosition) }))
         this.tasks.addTask(3, AIDeliverToInventory(
-			findItem,
-			this,
-			dataItemStack,
-			dataHomePosition)
-		)
+            findItem,
+            this,
+            dataItemStack,
+            dataHomePosition)
+        )
         this.tasks.addTask(4, findItem)
         this.tasks.addTask(4, AIWalkToItem(findItem, this))
     }

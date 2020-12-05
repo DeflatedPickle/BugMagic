@@ -15,28 +15,28 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent
 
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID)
 object PlayerEventHandler {
-	@SubscribeEvent
-	@JvmStatic
-	fun onPlayerLoggedInEvent(event: PlayerEvent.PlayerLoggedInEvent) {
-		if (!event.player.world.isRemote) {
-			val bugEssence = BugEssenceCapability.isCapable(event.player)
+    @SubscribeEvent
+    @JvmStatic
+    fun onPlayerLoggedInEvent(event: PlayerEvent.PlayerLoggedInEvent) {
+        if (!event.player.world.isRemote) {
+            val bugEssence = BugEssenceCapability.isCapable(event.player)
 
-			if (bugEssence != null) {
-				bugEssence.max = 128
-				bugEssence.current = 64
+            if (bugEssence != null) {
+                bugEssence.max = 128
+                bugEssence.current = 64
 
-				BugMagic.CHANNEL.sendTo(
-					MessagePlayerBugEssence(
-						event.player.entityId,
-						bugEssence.max,
-						bugEssence.current),
-					event.player as EntityPlayerMP
-				)
-			}
+                BugMagic.CHANNEL.sendTo(
+                    MessagePlayerBugEssence(
+                        event.player.entityId,
+                        bugEssence.max,
+                        bugEssence.current),
+                    event.player as EntityPlayerMP
+                )
+            }
 
-			SpellLearnerCapability.isCapable(event.player)?.let {
-				BugMagic.CHANNEL.sendToAll(MessageSpellChange(event.player.entityId, it.spellList))
-			}
-		}
-	}
+            SpellLearnerCapability.isCapable(event.player)?.let {
+                BugMagic.CHANNEL.sendToAll(MessageSpellChange(event.player.entityId, it.spellList))
+            }
+        }
+    }
 }

@@ -12,8 +12,17 @@ import com.deflatedpickle.bugmagic.common.init.EntityInit
 import com.deflatedpickle.bugmagic.common.init.FluidInit
 import com.deflatedpickle.bugmagic.common.init.SmeltingInit
 import com.deflatedpickle.bugmagic.common.init.TileEntityInit
-import com.deflatedpickle.bugmagic.common.networking.handler.*
-import com.deflatedpickle.bugmagic.common.networking.message.*
+import com.deflatedpickle.bugmagic.common.networking.handler.HandlerChunkBugEssence
+import com.deflatedpickle.bugmagic.common.networking.handler.HandlerEntityTasks
+import com.deflatedpickle.bugmagic.common.networking.handler.HandlerPlayerBugEssence
+import com.deflatedpickle.bugmagic.common.networking.handler.HandlerSpellCaster
+import com.deflatedpickle.bugmagic.common.networking.handler.HandlerSpellChange
+import com.deflatedpickle.bugmagic.common.networking.message.Message
+import com.deflatedpickle.bugmagic.common.networking.message.MessageChunkBugEssence
+import com.deflatedpickle.bugmagic.common.networking.message.MessageEntityTasks
+import com.deflatedpickle.bugmagic.common.networking.message.MessagePlayerBugEssence
+import com.deflatedpickle.bugmagic.common.networking.message.MessageSpellCaster
+import com.deflatedpickle.bugmagic.common.networking.message.MessageSpellChange
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
@@ -55,10 +64,10 @@ open class CommonProxy {
             HandlerSpellChange::class.java, MessageSpellChange::class.java,
             Message.SPELL_CHANGE.ordinal, Side.CLIENT
         )
-		BugMagic.CHANNEL.registerMessage(
-			HandlerChunkBugEssence::class.java, MessageChunkBugEssence::class.java,
-			Message.CHUNK_ESSENCE.ordinal, Side.CLIENT
-		)
+        BugMagic.CHANNEL.registerMessage(
+            HandlerChunkBugEssence::class.java, MessageChunkBugEssence::class.java,
+            Message.CHUNK_ESSENCE.ordinal, Side.CLIENT
+        )
 
         // Client->Server Packets
         BugMagic.CHANNEL.registerMessage(
