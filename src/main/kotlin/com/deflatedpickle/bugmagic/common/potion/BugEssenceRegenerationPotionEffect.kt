@@ -33,7 +33,6 @@ class BugEssenceRegenerationPotionEffect : Potion(false, 0xBBFF70) {
 					),
 					entityLivingBaseIn as EntityPlayerMP
 				)
-
 			}
 		}
 	}

@@ -7,6 +7,7 @@ import com.deflatedpickle.bugmagic.api.common.tab.GenericTab
 import com.deflatedpickle.bugmagic.common.CommonProxy
 import com.deflatedpickle.bugmagic.common.command.CommandClearSpell
 import com.deflatedpickle.bugmagic.common.command.CommandLearnSpell
+import com.deflatedpickle.bugmagic.common.command.CommandSetEssence
 import com.deflatedpickle.bugmagic.common.init.BlockInit
 import com.deflatedpickle.bugmagic.common.init.EnchantmentInit
 import com.deflatedpickle.bugmagic.common.init.EnchantmentTypeInit
@@ -73,7 +74,8 @@ object BugMagic {
 	fun serverStarting(event: FMLServerStartingEvent) {
 		for (i in setOf(
 			CommandLearnSpell(),
-			CommandClearSpell()
+			CommandClearSpell(),
+			CommandSetEssence()
 		)) {
 			event.registerServerCommand(i)
 		}
