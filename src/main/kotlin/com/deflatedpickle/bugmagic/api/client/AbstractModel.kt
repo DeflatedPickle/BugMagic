@@ -12,7 +12,7 @@ import com.deflatedpickle.bugmagic.api.IModelReloadListener
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.util.ResourceLocation
 
-abstract class AbstractModel(val path: String) : IModelRegisterer, IModelReloadListener {
+abstract class AbstractModel(private val path: String) : IModelRegisterer, IModelReloadListener {
     var models: HashMap<String, IAnimatedModel> = HashMap()
 
     override fun registerModels() {

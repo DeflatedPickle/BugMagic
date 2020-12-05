@@ -4,8 +4,8 @@ package com.deflatedpickle.bugmagic.api.client
 
 import com.deflatedpickle.bugmagic.api.HasModel
 import com.deflatedpickle.bugmagic.api.client.util.OpenGLUtil
+import com.deflatedpickle.bugmagic.api.client.util.extension.drawLine
 import com.deflatedpickle.bugmagic.api.client.util.extension.drawNameTag
-import com.deflatedpickle.bugmagic.api.client.util.extension.render
 import com.deflatedpickle.bugmagic.api.common.util.AITaskString
 import com.deflatedpickle.bugmagic.api.entity.mob.EntityCastable
 import com.deflatedpickle.bugmagic.common.item.Wand
@@ -16,14 +16,10 @@ import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.entity.Render
 import net.minecraft.client.renderer.entity.RenderLiving
 import net.minecraft.client.renderer.entity.RenderManager
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.Vec3d
-import org.lwjgl.opengl.GL11
 import org.lwjgl.util.ReadableColor
 
 abstract class RenderCastable<T : EntityCastable>(
@@ -33,7 +29,7 @@ abstract class RenderCastable<T : EntityCastable>(
         renderManager,
         object : ModelBase() {},
         shadowSize), HasModel {
-    private val tessellator = Tessellator.getInstance()
+    protected val tessellator: Tessellator = Tessellator.getInstance()
 
     override fun getEntityTexture(entity: T): ResourceLocation? {
         return null
@@ -49,8 +45,9 @@ abstract class RenderCastable<T : EntityCastable>(
             GlStateManager.popMatrix()
         }
 
+		// Draw a line from the owner to this entity
         if (entity.owner?.heldItemMainhand?.item is Wand) {
-            drawLine(
+            this.tessellator.drawLine(
                     entity.owner!!.positionVector,
                     entity.positionVector,
                     ReadableColor.BLUE
@@ -78,101 +75,18 @@ abstract class RenderCastable<T : EntityCastable>(
         }
 
         GlStateManager.popMatrix()
-    }
 
-    /**
-     * Draws a line from an [Vec3d] to a target [Vec3d], using a [ReadableColor]
-     */
-    fun drawLine(
-        start: Vec3d,
-        target: Vec3d,
-        colour: ReadableColor
-    ) {
-
-        GL11.glPushAttrib(GL11.GL_CURRENT_BIT)
-
-        GlStateManager.disableTexture2D()
-
-        GlStateManager.color(
-                colour.red / 255f,
-                colour.green / 255f,
-                colour.blue / 255f,
-                colour.alpha / 255f
-        )
-
-        tessellator.buffer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION)
-        tessellator.buffer.pos(0.0, 0.0, 0.0).endVertex()
-        tessellator.buffer.pos(
-                target.x - start.x,
-                target.y - start.y,
-                target.z - start.z
-        ).endVertex()
-
-        tessellator.draw()
-
-        GlStateManager.enableTexture2D()
-
-        GL11.glPopAttrib()
-    }
-
-    /**
-     * Draws a line from an [T] to a target [Vec3d], using a [ReadableColor]
-     */
-    fun drawLine(
-        entity: T,
-        target: Vec3d,
-        colour: ReadableColor
-    ) {
-        this.drawLine(Vec3d(entity.posX, entity.posY, entity.posZ), target, colour)
-    }
-
-    /**
-     * Draws a line from an [T] to a target [BlockPos], using a [ReadableColor]
-     */
-    fun drawLine(
-        entity: T,
-        target: BlockPos,
-        colour: ReadableColor
-    ) {
-        this.drawLine(
-                Vec3d(entity.posX, entity.posY, entity.posZ),
-                Vec3d(target.x + 0.5, target.y.toDouble(), target.z.toDouble() + 0.5),
-                colour
-        )
-    }
-
-    /**
-     * Draws a line from an [Vec3d] to a target [BlockPos], using a [ReadableColor]
-     */
-    fun drawLine(
-        start: Vec3d,
-        target: BlockPos,
-        colour: ReadableColor
-    ) {
-        drawLine(
-                start,
-                Vec3d(target.x + 0.5, target.y.toDouble(), target.z + 0.5),
-                colour
-        )
-    }
-
-    /**
-     * Renders an [ItemStack] at an [EntityCastable]
-     */
-    fun drawItem(
-        entity: T,
-        itemStack: ItemStack,
-        x: Float = 0f,
-        y: Float = 0f,
-        z: Float = 0f
-    ) {
-        GlStateManager.pushMatrix()
-
-        GlStateManager.translate(x, y, z)
-
-        itemStack.render(entity.world)
-
-        GlStateManager.popMatrix()
+		// Draw a line to the home position
+		GlStateManager.pushMatrix()
+		GlStateManager.translate(x, y, z)
+		if (entity.owner?.heldItemMainhand?.item is Wand) {
+			this.tessellator.drawLine(
+				entity,
+				entity.dataManager.get(EntityCastable.dataHomePosition),
+				ReadableColor.RED
+			)
+		}
+		GlStateManager.popMatrix()
     }
 
     /**

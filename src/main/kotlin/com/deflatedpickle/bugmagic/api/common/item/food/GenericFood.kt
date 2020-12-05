@@ -20,6 +20,7 @@ import net.minecraft.world.World
  */
 class GenericFood(
     name: String,
+	creativeTab: CreativeTabs? = CreativeTabs.FOOD,
     private val useDuration: Int = 32,
     healAmount: Int,
     saturation: Float,
@@ -33,7 +34,7 @@ class GenericFood(
     ItemFood(healAmount, saturation, isWolfFood) {
     init {
         this.translationKey = name
-        this.creativeTab = CreativeTabs.FOOD
+        this.creativeTab = creativeTab
 
         if (alwaysEdible) {
             this.setAlwaysEdible()

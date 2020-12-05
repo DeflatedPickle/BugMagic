@@ -3,6 +3,9 @@
   "variants": {
     "normal": {
       "model": "bugmagic:spell_table"
+    },
+    "inventory": {
+      "model": "bugmagic:spell_table"
     }
   }
 }

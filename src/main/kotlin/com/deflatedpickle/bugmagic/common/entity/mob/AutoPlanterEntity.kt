@@ -30,7 +30,6 @@ import net.minecraft.world.World
  */
 class AutoPlanterEntity(worldIn: World) : EntityCastable(worldIn) {
     companion object {
-        val dataHomePosition: DataParameter<BlockPos> = EntityDataManager.createKey(AutoPlanterEntity::class.java, DataSerializers.BLOCK_POS)
         val dataSeeds: DataParameter<ItemStack> = EntityDataManager.createKey(AutoPlanterEntity::class.java, DataSerializers.ITEM_STACK)
     }
 
@@ -42,7 +41,6 @@ class AutoPlanterEntity(worldIn: World) : EntityCastable(worldIn) {
         super.entityInit()
 
         this.dataManager.register(dataSeeds, ItemStack.EMPTY)
-        this.dataManager.register(dataHomePosition, BlockPos.ORIGIN)
     }
 
     override fun initEntityAI() {

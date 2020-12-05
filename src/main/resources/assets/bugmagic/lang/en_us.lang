@@ -13,3 +13,6 @@ tile.spell_table.name=Spell Table
 
 # Fluid
 fluid.bug_essence=Bug Essence
+
+# Tabs
+itemGroup.bugmagic=BugMagic

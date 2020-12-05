@@ -4,7 +4,6 @@ import com.deflatedpickle.bugmagic.Reference
 import net.minecraft.enchantment.Enchantment
 import net.minecraft.enchantment.EnumEnchantmentType
 import net.minecraft.inventory.EntityEquipmentSlot
-import net.minecraft.util.ResourceLocation
 
 open class GenericEnchantment(
 	name: String,
@@ -15,7 +14,8 @@ open class GenericEnchantment(
 	private val isCurse: Boolean = false,
 	private val isTreasureEnchantment: Boolean = false,
 	private val minLevel: Int = 1,
-	private val maxLevel: Int = 1
+	private val maxLevel: Int = 1,
+	private val invalidWith: List<Enchantment> = listOf()
 ) : Enchantment(rarity, type, slots) {
 	init {
 		this.setRegistryName(Reference.MOD_ID, name)
@@ -27,4 +27,5 @@ open class GenericEnchantment(
 	override fun isTreasureEnchantment(): Boolean = this.isTreasureEnchantment
 	override fun getMinLevel(): Int = this.minLevel
 	override fun getMaxLevel(): Int = this.maxLevel
+	override fun canApplyTogether(ench: Enchantment): Boolean = ench !in this.invalidWith
 }

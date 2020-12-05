@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.network.ByteBufUtils
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage
 
 /**
- * A packet that contains; an entity ID, their casting state and their casting progress
+ * A packet that contains; an entity ID, their AI tasks and their executing AI tasks
  * @see [MessageEntityTasks]
  */
 class MessageEntityTasks(

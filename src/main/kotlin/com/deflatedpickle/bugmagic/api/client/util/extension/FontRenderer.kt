@@ -7,8 +7,14 @@ import net.minecraft.client.gui.FontRenderer
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.RenderHelper
 
-// Maybe make this take a list or varargs of strings?
-fun FontRenderer.drawNameTag(string: String, x: Int, y: Int, colour: Int = 0xFFFFFF) {
+/**
+ * Draws a series of strings, split at newlines, that face the player
+ */
+fun FontRenderer.drawNameTag(
+	string: String,
+	x: Int, y: Int,
+	colour: Int = 0xFFFFFF
+) {
     RenderHelper.disableStandardItemLighting()
 
     GlStateManager.pushMatrix()
@@ -28,3 +34,49 @@ fun FontRenderer.drawNameTag(string: String, x: Int, y: Int, colour: Int = 0xFFF
 
     RenderHelper.enableStandardItemLighting()
 }
+
+/**
+ * Draws a series of strings that face the player
+ */
+fun FontRenderer.drawNameTag(
+	x: Int, y: Int,
+	colour: Int = 0xFFFFFF,
+	vararg string: String
+) = this.drawNameTag(string.joinToString("\n"), x, y, colour)
+
+/**
+ * Draws a flat string with culling disabled
+ */
+fun FontRenderer.drawStillNameTag(
+	string: String,
+	x: Int, y: Int,
+	colour: Int = 0xFFFFFF
+) {
+	RenderHelper.disableStandardItemLighting()
+
+	GlStateManager.disableCull()
+	GlStateManager.pushMatrix()
+
+	GlStateManager.translate(0.0, 0.4, 0.0)
+	GlStateManager.scale(0.0075F, -0.0075F, 0.0075F)
+
+	val lines = string.split("\n")
+
+	for ((i, str) in lines.reversed().withIndex()) {
+		this.drawString(str, x - this.getStringWidth(str) / 2, y - i * (this.FONT_HEIGHT / 2) * lines.count(), colour)
+	}
+
+	GlStateManager.popMatrix()
+	GlStateManager.enableCull()
+
+	RenderHelper.enableStandardItemLighting()
+}
+
+/**
+ * Draws a flat string with culling disabled
+ */
+fun FontRenderer.drawStillNameTag(
+	x: Int, y: Int,
+	colour: Int = 0xFFFFFF,
+	vararg string: String
+) = this.drawStillNameTag(string.joinToString("\n"), x, y, colour)

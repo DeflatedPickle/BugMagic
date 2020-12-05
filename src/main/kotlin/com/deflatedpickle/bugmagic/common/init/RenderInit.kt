@@ -46,12 +46,18 @@ object RenderInit {
 
         // Fluid
         ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(BlockInit.BUG_ESSENCE), ItemMeshDefinition {
-            return@ItemMeshDefinition ModelResourceLocation(ResourceLocation(Reference.MOD_ID, "bug_essence"), "fluid")
+            return@ItemMeshDefinition ModelResourceLocation(
+				ResourceLocation(Reference.MOD_ID, "bug_essence"),
+				"fluid"
+			)
         })
 
         ModelLoader.setCustomStateMapper(BlockInit.BUG_ESSENCE, object : StateMapperBase() {
             override fun getModelResourceLocation(state: IBlockState): ModelResourceLocation {
-                return ModelResourceLocation(ResourceLocation(Reference.MOD_ID, "bug_essence"), "fluid")
+                return ModelResourceLocation(
+					ResourceLocation(Reference.MOD_ID, "bug_essence"),
+					"fluid"
+				)
             }
         })
     }

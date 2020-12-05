@@ -2,6 +2,7 @@
 
 package com.deflatedpickle.bugmagic.common.entity.ai
 
+import com.deflatedpickle.bugmagic.api.entity.mob.EntityCastable
 import com.deflatedpickle.bugmagic.common.entity.mob.ItemCollectorEntity
 import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.ai.EntityAIBase
@@ -23,8 +24,8 @@ class AIWalkToItem(
     override fun shouldExecute(): Boolean {
         val stack = entityIn.dataManager.get(ItemCollectorEntity.dataItemStack)
         if (stack.isEmpty &&
-                entityIn.dataManager.get(ItemCollectorEntity.dataInventoryPosition) != BlockPos.ORIGIN &&
-                entityIn.world.getTileEntity(entityIn.dataManager.get(ItemCollectorEntity.dataInventoryPosition)) != null) {
+                entityIn.dataManager.get(EntityCastable.dataHomePosition) != BlockPos.ORIGIN &&
+                entityIn.world.getTileEntity(entityIn.dataManager.get(EntityCastable.dataHomePosition)) != null) {
             return true
         }
         return false

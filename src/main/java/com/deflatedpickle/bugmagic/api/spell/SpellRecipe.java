@@ -4,13 +4,12 @@ package com.deflatedpickle.bugmagic.api.spell;
 
 import com.deflatedpickle.bugmagic.Reference;
 import com.deflatedpickle.bugmagic.api.common.spell.SpellIngredient;
-import java.util.ArrayList;
-
 import com.deflatedpickle.bugmagic.common.init.FluidInit;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * A recipe for a {@link Spell}
@@ -30,7 +29,7 @@ public abstract class SpellRecipe extends IForgeRegistryEntry.Impl<SpellRecipe> 
    *
    * @return A list of item stacks
    */
-  public @Nullable ArrayList<SpellIngredient> getIngredients() {
+  public @Nullable List<SpellIngredient> getIngredients() {
     return null;
   }
 

@@ -2,20 +2,14 @@
 
 package com.deflatedpickle.bugmagic.common.event
 
-import com.deflatedpickle.bugmagic.BugMagic
 import com.deflatedpickle.bugmagic.Reference
 import com.deflatedpickle.bugmagic.common.capability.BugEssenceCapability
 import com.deflatedpickle.bugmagic.common.capability.SpellCasterCapability
 import com.deflatedpickle.bugmagic.common.capability.SpellLearnerCapability
 import com.deflatedpickle.bugmagic.common.item.Wand
-import com.deflatedpickle.bugmagic.common.networking.message.MessageChunkBugEssence
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.ItemStack
-import net.minecraft.util.math.BlockPos
-import net.minecraft.world.biome.Biome
-import net.minecraft.world.biome.BiomePlains
 import net.minecraft.world.chunk.Chunk
 import net.minecraftforge.event.AttachCapabilitiesEvent
 import net.minecraftforge.fml.common.Mod

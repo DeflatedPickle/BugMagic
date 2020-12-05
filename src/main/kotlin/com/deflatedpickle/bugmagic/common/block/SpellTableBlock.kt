@@ -46,7 +46,15 @@ import kotlin.math.roundToInt
 /**
  * The block for the tile entity [SpellTableTileEntity] and the renderer [SpellTableTileEntitySpecialRender]
  */
-class SpellTableBlock : GenericBlock("spell_table", CreativeTabs.DECORATIONS, Material.WOOD, lightOpacity = 0, isFullBlock = false, isOpaqueCube = false, renderLayer = BlockRenderLayer.CUTOUT),
+class SpellTableBlock : GenericBlock(
+	"spell_table",
+	BugMagic.tab,
+	Material.WOOD,
+	lightOpacity = 0,
+	isFullBlock = false,
+	isOpaqueCube = false,
+	renderLayer = BlockRenderLayer.CUTOUT
+),
 	BoundingBox {
 	init {
 		setHardness(4f)

@@ -4,6 +4,9 @@ package com.deflatedpickle.bugmagic.client.render.entity
 
 import com.deflatedpickle.bugmagic.api.client.AbstractModel
 import com.deflatedpickle.bugmagic.api.client.RenderCastable
+import com.deflatedpickle.bugmagic.api.client.util.extension.drawItem
+import com.deflatedpickle.bugmagic.api.client.util.extension.drawLine
+import com.deflatedpickle.bugmagic.api.entity.mob.EntityCastable
 import com.deflatedpickle.bugmagic.common.entity.mob.ItemCollectorEntity
 import com.deflatedpickle.bugmagic.common.item.Wand
 import net.minecraft.client.Minecraft
@@ -34,7 +37,7 @@ class ItemCollectorRender(renderManager: RenderManager) :
         GlStateManager.pushMatrix()
 
         if (entity.owner?.heldItemMainhand?.item is Wand) {
-            val blockPos = entity.dataManager.get(ItemCollectorEntity.dataInventoryPosition)
+            val blockPos = entity.dataManager.get(EntityCastable.dataHomePosition)
             this.drawWorkArea(
                     axisAlignedBB,
                     blockPos,
@@ -46,16 +49,16 @@ class ItemCollectorRender(renderManager: RenderManager) :
         GlStateManager.translate(x, y, z)
 
         if (entity.owner?.heldItemMainhand?.item is Wand) {
-            drawLine(
+            this.tessellator.drawLine(
                     entity.positionVector,
-                    entity.dataManager.get(ItemCollectorEntity.dataInventoryPosition),
+                    entity.dataManager.get(EntityCastable.dataHomePosition),
                     ReadableColor.RED
             )
         }
 
         GlStateManager.rotate(entityYaw, 0f, 1f, 0f)
 
-        drawItem(entity, entity.dataManager.get(ItemCollectorEntity.dataItemStack), y = 0.2f)
+		entity.dataManager.get(ItemCollectorEntity.dataItemStack).drawItem(entity, y = 0.2f)
 
         val time = (entity.ticksExisted and 0xFFFFFF).toDouble() + partialTicks
         models["Idle"]!!.render(time)

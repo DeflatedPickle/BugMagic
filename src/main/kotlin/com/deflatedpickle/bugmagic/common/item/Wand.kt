@@ -9,6 +9,9 @@ import com.deflatedpickle.bugmagic.api.capability.SpellLearner
 import com.deflatedpickle.bugmagic.api.client.util.extension.spawn
 import com.deflatedpickle.bugmagic.api.common.item.GenericItem
 import com.deflatedpickle.bugmagic.api.common.util.WorldUtil
+import com.deflatedpickle.bugmagic.api.common.util.function.green
+import com.deflatedpickle.bugmagic.api.common.util.function.minus
+import com.deflatedpickle.bugmagic.api.common.util.function.white
 import com.deflatedpickle.bugmagic.api.spell.Spell
 import com.deflatedpickle.bugmagic.client.networking.message.MessageSelectedSpell
 import com.deflatedpickle.bugmagic.common.capability.BugEssenceCapability
@@ -35,22 +38,29 @@ import net.minecraft.util.text.TextComponentString
 import net.minecraft.util.text.TextFormatting
 import net.minecraft.world.World
 import org.lwjgl.input.Mouse
+import kotlin.math.max
+import kotlin.math.min
 
+/**
+ * An item that can be used to cast a spell
+ */
 class Wand(
 	name: String,
 	private val essenceAmount: Int
 ) : GenericItem(
 	name = name,
-	creativeTab = CreativeTabs.TOOLS,
+	creativeTab = BugMagic.tab,
 	isDamageable = false,
-	itemEnchantability = 12
+	itemEnchantability = 12,
+	showDurabilityBar = true,
+	stackLimit = 1,
+	itemUseDuration = WorldUtil.DAY,
+	actionItemUse = EnumAction.BOW
 ) {
 	companion object {
 		const val SPELL_INDEX = "spell_index"
 		const val HAS_BEEN_SCROLLED = "has_been_scrolled"
 	}
-
-	override fun getItemStackLimit(): Int = 1
 
 	override fun onItemUse(
 		player: EntityPlayer,
@@ -70,6 +80,7 @@ class Wand(
 		return EnumActionResult.PASS
 	}
 
+	// Runs through logic that *could* uncast the selected spell
 	override fun onEntitySwing(entityLiving: EntityLivingBase, stack: ItemStack): Boolean {
 		if (entityLiving is EntityPlayer) {
 			val bugEssence = BugEssenceCapability.isCapable(stack)
@@ -122,6 +133,9 @@ class Wand(
 		return false
 	}
 
+	// Checks if the spell cast was the first of it's kind
+	// If so, cast the spell and add the spell as a new entry with a value of 1
+	// If not, cast the spell and increase the cast count
 	private fun checkNewCast(
 		spellCaster: SpellCaster, spellLearner: SpellLearner,
 		spell: Spell, entityLiving: EntityPlayer, stack: ItemStack
@@ -152,7 +166,8 @@ class Wand(
 			val spellCaster = SpellCasterCapability.isCapable(stack)
 
 			if (itemBugEssence != null && entityBugEssence != null &&
-				spellLearner != null && spellCaster != null) {
+				spellLearner != null && spellCaster != null
+			) {
 				spellLearner.currentSpell?.let { spell ->
 					val bloodleakLevel = EnchantmentHelper.getEnchantmentLevel(
 						EnchantmentInit.BLOOD_LEAK,
@@ -178,6 +193,8 @@ class Wand(
 									spellCaster, spellLearner,
 									spell, entityLiving, stack
 								)
+
+								// TODO: Sync the cast spells to the client
 
 								entityLiving.cooldownTracker.setCooldown(this, spell.maxCooldown)
 
@@ -439,8 +456,6 @@ class Wand(
 		}
 	}
 
-	override fun showDurabilityBar(stack: ItemStack): Boolean = true
-
 	// Client-side only!
 	override fun getDurabilityForDisplay(stack: ItemStack): Double {
 		val spellCaster = SpellCasterCapability.isCapable(stack)
@@ -450,7 +465,10 @@ class Wand(
 		return if (spellCaster != null && spellLearner != null && bugEssence != null) {
 			if (spellCaster.isCasting) {
 				// This shows the casting progress of the current spell
-				((spellLearner.currentSpell!!.castingTime - spellCaster.castingCurrent) / spellLearner.currentSpell!!.castingTime).toDouble()
+				max(
+					0.0,
+					((spellLearner.currentSpell!!.castingTime - spellCaster.castingCurrent) / spellLearner.currentSpell!!.castingTime).toDouble()
+				)
 			} else {
 				// When going to craft a wand, it's max and current are 0
 				// So we have to check this...
@@ -466,10 +484,27 @@ class Wand(
 	// This turns the durability bar purple when casting a spell
 	override fun getRGBDurabilityForDisplay(stack: ItemStack): Int {
 		val spellCaster = SpellCasterCapability.isCapable(stack)
+		val spellLearner = SpellLearnerCapability.isCapable(Minecraft.getMinecraft().player)
+		val bugEssence = BugEssenceCapability.isCapable(stack)
 
-		return if (spellCaster != null && spellCaster.isCasting) {
-			// Magenta
-			255 shl 16 or (0 shl 8) or 255
+		@Suppress("VARIABLE_WITH_REDUNDANT_INITIALIZER", "CanBeVal")
+		return if (spellCaster != null && spellLearner != null && bugEssence != null && spellCaster.isCasting) {
+			val castUpdate = ((spellLearner.currentSpell!!.castingTime - spellCaster.castingCurrent) / spellLearner.currentSpell!!.castingTime).toDouble()
+
+			var red = 0
+			var green = 0
+			var blue = 0
+
+			if (castUpdate < 0.0) {
+				// We don't have enough to cast it, make it red
+				red = 255
+			} else {
+				// It's being cast, make it magenta
+				red = 255
+				blue = 255
+			}
+
+			red shl 16 or (green shl 8) or blue
 		} else {
 			super.getRGBDurabilityForDisplay(stack)
 		}
@@ -480,12 +515,9 @@ class Wand(
 		val bugEssence = BugEssenceCapability.isCapable(stack)
 
 		return if (bugEssence != null) {
-			super.getItemStackDisplayName(stack) +
-				" (${TextFormatting.GREEN}${
-					bugEssence.current
-				}/${
-					bugEssence.max
-				}${TextFormatting.WHITE} BE)"
+			super.getItemStackDisplayName(stack) + "(" +
+				(green - "${bugEssence.current}/${bugEssence.max}") + " " +
+				(white - "BE") + ")"
 		} else {
 			super.getItemStackDisplayName(stack)
 		}
@@ -509,9 +541,6 @@ class Wand(
 			}
 		}
 	}
-
-	override fun getMaxItemUseDuration(stack: ItemStack): Int = WorldUtil.DAY
-	override fun getItemUseAction(stack: ItemStack?): EnumAction = EnumAction.BOW
 
 	override fun onItemRightClick(worldIn: World?, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack> {
 		playerIn.activeHand = handIn

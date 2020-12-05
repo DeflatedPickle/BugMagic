@@ -29,18 +29,11 @@ import net.minecraft.world.World
  */
 class AutoHarvesterEntity(worldIn: World) : EntityCastable(worldIn) {
     companion object {
-        val dataHomePosition: DataParameter<BlockPos> = EntityDataManager.createKey(AutoHarvesterEntity::class.java, DataSerializers.BLOCK_POS)
         val random = Random()
     }
 
     init {
         setSize(0.8f, 0.5f)
-    }
-
-    override fun entityInit() {
-        super.entityInit()
-
-        this.dataManager.register(dataHomePosition, this.position)
     }
 
     override fun initEntityAI() {
@@ -84,7 +77,7 @@ class AutoHarvesterEntity(worldIn: World) : EntityCastable(worldIn) {
         ) {}
 
         this.tasks.addTask(1, findBlock)
-        this.tasks.addTask(2, AIWalkToBlockPos(this, { true }) { this.dataManager.get(AutoFertilizerEntity.dataHomePosition) })
+        this.tasks.addTask(2, AIWalkToBlockPos(this, { true }) { this.dataManager.get(dataHomePosition) })
         this.tasks.addTask(3, AIWaitWithBlock(findBlock = findBlock, entityIn = this,
                 executeCheck = { entityLiving, blockPos ->
                     !entityLiving.world.isAirBlock(blockPos) &&

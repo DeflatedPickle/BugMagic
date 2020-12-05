@@ -15,8 +15,8 @@
 		"13": "bugmagic:blocks/spell_table/177013",
 		"14": "bugmagic:blocks/spell_table/bottle_eye",
 		"15": "bugmagic:blocks/spell_table/bottle_ink",
-		"16": "blocks/planks_birch",
-		"17": "blocks/planks_big_oak"
+		"16": "minecraft:blocks/planks_birch",
+		"17": "minecraft:blocks/planks_big_oak"
 	},
 	"elements": [
 		{
@@ -747,6 +747,21 @@
 			}
 		}
 	],
+	"display": {
+		"ground": {
+			"translation": [0, 3, 0],
+			"scale": [0.9, 0.9, 0.9]
+		},
+		"gui": {
+			"rotation": [35, -150, 0],
+			"translation": [0.5, 0, 0],
+			"scale": [0.6, 0.6, 0.7]
+		},
+		"fixed": {
+			"rotation": [-35, 0, 0],
+			"translation": [0, 0, -3]
+		}
+	},
 	"groups": [0, 1, 2,
 		{
 			"name": "BottomDecorations",

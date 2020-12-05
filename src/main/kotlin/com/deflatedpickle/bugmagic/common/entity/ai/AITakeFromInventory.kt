@@ -3,6 +3,7 @@
 package com.deflatedpickle.bugmagic.common.entity.ai
 
 import com.deflatedpickle.bugmagic.BugMagic
+import com.deflatedpickle.bugmagic.api.entity.mob.EntityCastable
 import com.deflatedpickle.bugmagic.common.entity.mob.AutoPlanterEntity
 import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.ai.EntityAIBase
@@ -24,7 +25,7 @@ class AITakeFromInventory(
     private val entityIn: EntityLiving
 ) : EntityAIBase() {
     override fun shouldExecute(): Boolean {
-        val blockPos = this.entityIn.dataManager.get(AutoPlanterEntity.dataHomePosition)
+        val blockPos = this.entityIn.dataManager.get(EntityCastable.dataHomePosition)
         return blockPos != BlockPos.ORIGIN && this.entityIn.dataManager.get(AutoPlanterEntity.dataSeeds) == ItemStack.EMPTY && entityIn.getDistanceSq(
                 blockPos.x.toDouble() + 0.5,
                 blockPos.y.toDouble(),
@@ -33,7 +34,7 @@ class AITakeFromInventory(
     }
 
     override fun updateTask() {
-        val tileEntity = this.entityIn.world.getTileEntity(this.entityIn.dataManager.get(AutoPlanterEntity.dataHomePosition))
+        val tileEntity = this.entityIn.world.getTileEntity(this.entityIn.dataManager.get(EntityCastable.dataHomePosition))
 
         if (tileEntity != null) {
             val itemHandler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)

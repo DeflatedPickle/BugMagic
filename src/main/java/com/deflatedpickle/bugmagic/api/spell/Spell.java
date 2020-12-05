@@ -81,7 +81,7 @@ public abstract class Spell extends IForgeRegistryEntry.Impl<Spell> {
     return this.name;
   }
 
-  protected void setName(String value) {
+  protected void setName(@NotNull String value) {
     this.name = value;
   }
 

@@ -2,13 +2,16 @@
 
 package com.deflatedpickle.bugmagic.client.event
 
+import com.deflatedpickle.bugmagic.api.common.util.function.*
 import com.deflatedpickle.bugmagic.client.render.entity.layer.LayerCastingShape
 import com.deflatedpickle.bugmagic.common.capability.BugEssenceCapability
+import com.deflatedpickle.bugmagic.common.capability.SpellCasterCapability
 import com.deflatedpickle.bugmagic.common.capability.SpellLearnerCapability
 import com.github.upcraftlp.glasspane.api.event.client.RegisterRenderLayerEvent
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.Gui
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.util.EnumHand
 import net.minecraft.util.text.TextFormatting
 import net.minecraft.world.chunk.Chunk
 import net.minecraftforge.client.event.RenderGameOverlayEvent
@@ -38,7 +41,7 @@ object GameOverlayEventHandler {
 		// TODO: The bug essence text looks boring, make a bar asset for it
 		this.renderPlayerBugEssence(player, y)
 
-		y += textHeight * 1.4f
+		y += (textHeight * 1.4f)
 
 		this.renderChunkBugEssence(chunk, y)
 
@@ -59,44 +62,64 @@ object GameOverlayEventHandler {
 	}
 
 	private fun renderPlayerBugEssence(player: EntityPlayer, y: Float) {
-		if (player.hasCapability(BugEssenceCapability.Provider.CAPABILITY, null)) {
-			player.getCapability(BugEssenceCapability.Provider.CAPABILITY, null).also {
-				Minecraft.getMinecraft().fontRenderer.drawString(
-					"${TextFormatting.WHITE}Player Bug Essence: ${it!!.current}/${it.max}",
-					2f, y, 0, true
-				)
-			}
+		val bugEssence = BugEssenceCapability.isCapable(player)
+
+		if (bugEssence != null) {
+			Minecraft.getMinecraft().fontRenderer.drawString(
+				green - "${bugEssence.current}/${bugEssence.max}" + (white - "BE"),
+				2f, y, 0, true
+			)
 		}
 	}
 
 	private fun renderPlayerSpellList(player: EntityPlayer, initialY: Float) {
 		var y = initialY
 
-		if (player.hasCapability(SpellLearnerCapability.Provider.CAPABILITY, null)) {
-			player.getCapability(SpellLearnerCapability.Provider.CAPABILITY, null).also {
-				Minecraft.getMinecraft().fontRenderer.drawString(
-					"${TextFormatting.WHITE}${TextFormatting.UNDERLINE}Spell Library:",
-					2f, y, 0, true
-				)
+		val stack = player.getHeldItem(
+			player.activeHand ?: EnumHand.MAIN_HAND
+		)
 
-				y += textHeight
+		val spellLearner = SpellLearnerCapability.isCapable(player)
+		val spellCaster = SpellCasterCapability.isCapable(stack)
 
-				if (it!!.spellList.size > 0) {
-					for ((index, spell) in it.spellList.withIndex()) {
-						Minecraft.getMinecraft().fontRenderer.drawString(
-							"${TextFormatting.GOLD}[${
-								spell.type.name.toLowerCase().capitalize()
-							}] ${TextFormatting.WHITE}${spell.name}",
-							// ${TextFormatting.ITALIC}(Costs: ${spell.manaLoss}, Summons: ${spell.castCount})
-							2f, y + index * textHeightPadding, 0, true
-						)
-					}
-				} else {
+		if (spellLearner != null) {
+			Minecraft.getMinecraft().fontRenderer.drawString(
+				"${TextFormatting.WHITE}${TextFormatting.UNDERLINE}Spell Library:",
+				2f, y, 0, true
+			)
+
+			y += textHeight
+
+			if (spellLearner.spellList.size > 0) {
+				for ((index, spell) in spellLearner.spellList.withIndex()) {
 					Minecraft.getMinecraft().fontRenderer.drawString(
-						"${TextFormatting.WHITE}None",
-						2f, y, 0, true
+						join(
+							gold - "[${spell.type.name.toLowerCase().capitalize()}] " + (white - spell.name),
+							green - spell.manaLoss + (white - "BE")
+						),
+						2f,
+						y + (index * 2) * textHeightPadding, 0, true
+					)
+
+					Minecraft.getMinecraft().fontRenderer.drawString(
+						join(
+							white - "Cast: " + (blue - "${
+								spellCaster
+									?.castSpellMap
+									?.getOrDefault(spell, 0) ?: 0
+							}/${spell.maxCount}")
+						),
+						Minecraft.getMinecraft()
+							.fontRenderer
+							.getStringWidth("[${spell.type.name}] ").toFloat(),
+						y + (index * 2 + 1) * textHeightPadding, 0, true
 					)
 				}
+			} else {
+				Minecraft.getMinecraft().fontRenderer.drawString(
+					"${TextFormatting.WHITE}None",
+					2f, y, 0, true
+				)
 			}
 		}
 	}
@@ -106,7 +129,9 @@ object GameOverlayEventHandler {
 
 		if (bugEssence != null) {
 			Minecraft.getMinecraft().fontRenderer.drawString(
-				"${TextFormatting.WHITE}Chunk Bug Essence: ${bugEssence.current}/${bugEssence.max}",
+				"${
+					TextFormatting.WHITE
+				}Chunk Bug Essence: ${bugEssence.current}/${bugEssence.max}",
 				2f, y, 0, true
 			)
 		}

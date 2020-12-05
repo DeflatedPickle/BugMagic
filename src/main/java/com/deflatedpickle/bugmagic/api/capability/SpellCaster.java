@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * An interface for things that can cast spells
  *
- * <p>Officially, this is for items, such as a wand, but this count be added to anything
+ * <p>Officially, this is for items, such as a wand, but this could be added to anything
  *
  * @author DeflatedPickle
  * @see SpellLearner
@@ -22,7 +22,7 @@ public interface SpellCaster {
   /**
    * Returns the current amount of each spell casted
    *
-   * <p>Newly cast spells will increase the count of the spell Uncast spells will decrease the
+   * <p>Newly cast spells will increase the count of the spell uncast spells will decrease the
    * count, unless decreasing it would result in 0, then the spell key is removed.
    *
    * @return A map of cast spells.

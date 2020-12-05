@@ -2,6 +2,7 @@
 
 package com.deflatedpickle.bugmagic.common.block
 
+import com.deflatedpickle.bugmagic.BugMagic
 import com.deflatedpickle.bugmagic.api.BoundingBox
 import com.deflatedpickle.bugmagic.api.common.block.GenericBlock
 import net.minecraft.block.material.Material
@@ -24,7 +25,7 @@ import net.minecraft.world.World
  */
 class BugBundleBlock : GenericBlock(
         "bug_bundle",
-        CreativeTabs.DECORATIONS,
+        BugMagic.tab,
         Material.CLOTH,
         lightOpacity = 0,
         isFullBlock = false,

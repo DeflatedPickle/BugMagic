@@ -24,7 +24,6 @@ object OpenGLUtil {
         player: EntityPlayer,
         partialTicks: Float
     ) {
-        // Copied from RenderGlobal#drawSelectionBox
         GlStateManager.enableBlend()
         GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO)
         GlStateManager.glLineWidth(2.0f)

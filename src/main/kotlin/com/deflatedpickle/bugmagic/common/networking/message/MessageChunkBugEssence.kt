@@ -2,17 +2,14 @@
 
 package com.deflatedpickle.bugmagic.common.networking.message
 
-import com.deflatedpickle.bugmagic.common.networking.handler.HandlerPlayerBugEssence
+import com.deflatedpickle.bugmagic.common.networking.handler.HandlerChunkBugEssence
 import io.netty.buffer.ByteBuf
-import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.nbt.NBTUtil
 import net.minecraft.util.math.BlockPos
-import net.minecraftforge.fml.common.network.ByteBufUtils
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage
 
 /**
  * A packet that contains; an entity ID, the maximum amount of bug essence they can have and their current bug essence.
- * @see [HandlerPlayerBugEssence]
+ * @see [HandlerChunkBugEssence]
  */
 class MessageChunkBugEssence(
     private var blockPos: BlockPos? = null,

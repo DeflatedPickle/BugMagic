@@ -17,5 +17,8 @@ object BlockInit {
     val SPELL_TABLE = SpellTableBlock()
 
     @JvmField
-    val BUG_ESSENCE = BlockFluidFinite(FluidInit.BUG_ESSENCE, MaterialInit.BUG_ESSENCE)
+    val BUG_ESSENCE = BlockFluidFinite(
+		FluidInit.BUG_ESSENCE,
+		MaterialInit.BUG_ESSENCE
+	)
 }

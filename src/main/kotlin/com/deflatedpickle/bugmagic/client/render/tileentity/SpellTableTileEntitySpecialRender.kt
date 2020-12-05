@@ -3,6 +3,7 @@
 package com.deflatedpickle.bugmagic.client.render.tileentity
 
 import com.deflatedpickle.bugmagic.api.client.util.extension.drawNameTag
+import com.deflatedpickle.bugmagic.api.client.util.extension.drawStillNameTag
 import com.deflatedpickle.bugmagic.api.client.util.extension.render
 import com.deflatedpickle.bugmagic.api.client.util.extension.renderCube
 import com.deflatedpickle.bugmagic.api.common.util.MathUtil
@@ -25,8 +26,10 @@ import kotlin.math.roundToInt
  * @author DeflatedPickle
  */
 class SpellTableTileEntitySpecialRender : TileEntitySpecialRenderer<SpellTableTileEntity>() {
-	val eyeStack = ItemStack(Items.SPIDER_EYE)
-	val paperStack = ItemStack(Items.PAPER)
+	companion object {
+		val eyeStack = ItemStack(Items.SPIDER_EYE)
+		val paperStack = ItemStack(Items.PAPER)
+	}
 
 	override fun render(
 		te: SpellTableTileEntity,
@@ -146,7 +149,7 @@ class SpellTableTileEntitySpecialRender : TileEntitySpecialRenderer<SpellTableTi
 		)
 		GlStateManager.scale(0.6f, 0.6f, 0.6f)
 
-		this.eyeStack.render(world)
+		eyeStack.render(world)
 
 		GlStateManager.popMatrix()
 	}

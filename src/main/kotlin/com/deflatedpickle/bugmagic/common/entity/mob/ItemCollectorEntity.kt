@@ -31,7 +31,6 @@ import net.minecraft.world.World
 class ItemCollectorEntity(worldIn: World) : EntityCastable(worldIn) {
     companion object {
         val dataItemStack: DataParameter<ItemStack> = EntityDataManager.createKey(ItemCollectorEntity::class.java, DataSerializers.ITEM_STACK)
-        val dataInventoryPosition: DataParameter<BlockPos> = EntityDataManager.createKey(ItemCollectorEntity::class.java, DataSerializers.BLOCK_POS)
     }
 
     init {
@@ -46,7 +45,6 @@ class ItemCollectorEntity(worldIn: World) : EntityCastable(worldIn) {
         super.entityInit()
 
         this.dataManager.register(dataItemStack, ItemStack.EMPTY)
-        this.dataManager.register(dataInventoryPosition, BlockPos.ORIGIN)
     }
 
     override fun initEntityAI() {
@@ -60,22 +58,22 @@ class ItemCollectorEntity(worldIn: World) : EntityCastable(worldIn) {
             - Repeats steps 3 through 5
          */
 
-        val findItem = AIFindItem(this, { this.dataManager.get(dataInventoryPosition) }, 7.0)
+        val findItem = AIFindItem(this, { this.dataManager.get(dataHomePosition) }, 7.0)
 
-        this.tasks.addTask(1, AIFindClosestTileEntity(this, dataInventoryPosition, {
+        this.tasks.addTask(1, AIFindClosestTileEntity(this, dataHomePosition, {
             it is IInventory
         }, {
             if (it != null) {
-                this.dataManager.set(dataInventoryPosition, it.pos)
+                this.dataManager.set(dataHomePosition, it.pos)
             }
         }))
         this.tasks.addTask(1, AICollectItem(findItem, this))
-        this.tasks.addTask(2, AIWalkToBlockPos(this, { !this.dataManager.get(dataItemStack).isEmpty }, { this.dataManager.get(dataInventoryPosition) }))
+        this.tasks.addTask(2, AIWalkToBlockPos(this, { !this.dataManager.get(dataItemStack).isEmpty }, { this.dataManager.get(dataHomePosition) }))
         this.tasks.addTask(3, AIDeliverToInventory(
 			findItem,
 			this,
 			dataItemStack,
-			dataInventoryPosition)
+			dataHomePosition)
 		)
         this.tasks.addTask(4, findItem)
         this.tasks.addTask(4, AIWalkToItem(findItem, this))
@@ -83,7 +81,7 @@ class ItemCollectorEntity(worldIn: World) : EntityCastable(worldIn) {
 
     override fun processInteract(player: EntityPlayer, hand: EnumHand): Boolean {
         if (player.getHeldItem(hand).item is Wand) {
-            this.dataManager.set(dataInventoryPosition, NBTUtil.getPosFromTag(player.getHeldItem(hand).tagCompound!!))
+            this.dataManager.set(dataHomePosition, NBTUtil.getPosFromTag(player.getHeldItem(hand).tagCompound!!))
             return true
         } else {
             val itemStack = this.dataManager.get(dataItemStack)

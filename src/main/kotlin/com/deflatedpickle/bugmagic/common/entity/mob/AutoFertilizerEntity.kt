@@ -12,9 +12,6 @@ import java.util.concurrent.ThreadLocalRandom
 import net.minecraft.block.IGrowable
 import net.minecraft.entity.EntityLiving
 import net.minecraft.inventory.IInventory
-import net.minecraft.network.datasync.DataParameter
-import net.minecraft.network.datasync.DataSerializers
-import net.minecraft.network.datasync.EntityDataManager
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3i
@@ -27,21 +24,8 @@ import net.minecraft.world.World
  * @param worldIn The world this entity belongs to
  */
 class AutoFertilizerEntity(worldIn: World) : EntityCastable(worldIn) {
-    companion object {
-        val dataHomePosition: DataParameter<BlockPos> = EntityDataManager.createKey(
-                AutoFertilizerEntity::class.java,
-                DataSerializers.BLOCK_POS
-        )
-    }
-
     init {
         setSize(0.8f, 0.5f)
-    }
-
-    override fun entityInit() {
-        super.entityInit()
-
-        this.dataManager.register(dataHomePosition, this.position)
     }
 
     override fun initEntityAI() {
