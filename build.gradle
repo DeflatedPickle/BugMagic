@@ -7,7 +7,7 @@ buildscript {
     dependencies {
         // I did update to FG3, but resource loading is broken
         // The Forge team doesn't want to fix it, so I have to switch back1
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:4.0.23'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.diffplug.spotless:spotless-plugin-gradle:$spotless_version"
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokka_version"
