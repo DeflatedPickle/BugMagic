@@ -1,5 +1,7 @@
 /* Copyright (c) 2019-2020 DeflatedPickle under the MIT license */
 
+@file:Suppress("SpellCheckingInspection")
+
 package com.deflatedpickle.bugmagic.api.common.item
 
 import net.minecraft.creativetab.CreativeTabs
@@ -19,7 +21,7 @@ open class GenericItem(
     stackLimit: Int = 64,
     private val isDamageable: Boolean = true,
     private val isMap: Boolean = false,
-    @Suppress("SpellCheckingInspection") private val itemEnchantability: Int = 0,
+    private val itemEnchantability: Int = 0,
     private val isRepairable: Boolean = false,
     private val showDurabilityBar: Boolean = false,
     private val maxDamage: Int = 0,

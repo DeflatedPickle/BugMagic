@@ -3,6 +3,7 @@
 package com.deflatedpickle.bugmagic.common.init
 
 import com.deflatedpickle.bugmagic.Reference
+import com.deflatedpickle.bugmagic.common.item.armour.DeveloperThighHighs
 import com.deflatedpickle.bugmagic.common.item.Wand
 import com.github.upcraftlp.glasspane.api.registry.AutoRegistry
 
@@ -11,4 +12,7 @@ import com.github.upcraftlp.glasspane.api.registry.AutoRegistry
 object ItemInit {
     @JvmField
     val BASIC_WAND = Wand("basic_wand", 32)
+
+	@JvmField
+	val THIGH_HIGHS = DeveloperThighHighs()
 }

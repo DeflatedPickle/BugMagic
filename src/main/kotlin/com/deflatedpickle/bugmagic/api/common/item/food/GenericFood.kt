@@ -30,8 +30,7 @@ class GenericFood(
     potionEffectProbability: Float = 1.0f,
     val creativeEdible: Boolean = false,
     val tooltip: Collection<String> = listOf()
-) :
-    ItemFood(healAmount, saturation, isWolfFood) {
+) : ItemFood(healAmount, saturation, isWolfFood) {
     init {
         this.translationKey = name
         this.creativeTab = creativeTab

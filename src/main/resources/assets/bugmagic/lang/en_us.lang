@@ -1,7 +1,9 @@
 # Items
 item.bug.name=Bug
-item.petrified_bug_bundle.name=Petrified Bug
+item.petrified_bug_bundle.name=Petrified Bug Bundle
 item.jelly_bug.name=Gelbagu
+## Armour
+item.bugmagicdev_feet.name=Thigh Highs of Bug Squishing
 ## Wands
 item.basic_wand.name=Wand of the Bugoneer
 
@@ -10,6 +12,7 @@ enchantment.bloodleak=Bloodleak
 
 # Blocks
 tile.spell_table.name=Spell Table
+tile.bug_bundle.name=Bug Bundle
 
 # Fluid
 fluid.bug_essence=Bug Essence

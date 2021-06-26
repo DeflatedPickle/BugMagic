@@ -2,6 +2,7 @@
 
 package com.deflatedpickle.bugmagic.client
 
+import com.deflatedpickle.bugmagic.client.event.ColourHandlerEvent
 import com.deflatedpickle.bugmagic.client.event.GameOverlayEventHandler
 import com.deflatedpickle.bugmagic.common.CommonProxy
 import com.deflatedpickle.bugmagic.common.init.RenderInit
@@ -21,6 +22,8 @@ class ClientProxy : CommonProxy() {
         super.preInit(event)
 
         RenderInit
+
+		MinecraftForge.EVENT_BUS.register(ColourHandlerEvent)
     }
 
     override fun init(event: FMLInitializationEvent) {
