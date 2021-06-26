@@ -1,2 +1,19 @@
+pluginManagement {
+    repositories {
+        maven { url = "https://gitlab.com/api/v4/projects/26758973/packages/maven" }
+        gradlePluginPortal()
+        mavenCentral()
+    }
+
+    plugins {
+        id 'org.jetbrains.kotlin.jvm' version kotlin_version
+
+        id 'wtf.gofancy.fancygradle' version fancygradle_version
+
+        id 'org.jetbrains.dokka' version dokka_version
+        id 'com.diffplug.spotless' version spotless_version
+    }
+}
+
 rootProject.name = 'BugMagic'
 

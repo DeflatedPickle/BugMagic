@@ -6,6 +6,8 @@ import com.deflatedpickle.bugmagic.BugMagic;
 import com.deflatedpickle.bugmagic.api.common.util.AITaskString;
 import com.deflatedpickle.bugmagic.api.common.util.extension.EntityAITaskEntryKt;
 import com.deflatedpickle.bugmagic.common.networking.message.MessageEntityTasks;
+
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import net.minecraft.entity.EntityAgeable;
@@ -86,8 +88,10 @@ public class EntityCastable extends EntityTameable {
                 this.tasks.taskEntries.stream()
                     .map(EntityAITaskEntryKt::toTaskString)
                     .collect(Collectors.toSet()),
-                this.tasks.executingTaskEntries.stream()
+                /*this.tasks.executingTaskEntries.stream()
                     .map(EntityAITaskEntryKt::toTaskString)
-                    .collect(Collectors.toSet())));
+                    .collect(Collectors.toSet())*/
+							new HashSet<>())
+						);
   }
 }
