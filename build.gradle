@@ -58,7 +58,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2855'
+    minecraft 'net.minecraftforge:forge:1.16.5-36.1.32'
 
     // BugMagic is written mostly in Kotlin, using objects
     // For this we require a different loader
